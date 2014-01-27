@@ -1,4 +1,4 @@
-package br.nom.abdon.domino;
+package br.nom.abdon.domino.motor;
 
 public enum Vitoria {
 	CONTAGEM_DE_PONTOS(1), BATIDA_SIMPLES(1), CARROCA(2), LA_E_LO(3), CRUZADA(4);

@@ -1,6 +1,9 @@
-package br.nom.abdon.domino;
+package br.nom.abdon.domino.motor;
 
-public class BugDeJogadorException extends RuntimeException {
+import br.nom.abdon.domino.Jogador;
+import br.nom.abdon.domino.Pedra;
+
+public class BugDeJogadorException extends Exception {
 	
 	private Jogador jogadorBuguento;
 	private Pedra pedra;
@@ -20,8 +23,8 @@ public class BugDeJogadorException extends RuntimeException {
 		return jogadorBuguento;
 	}
 
-	public void setJogadorBuguento(Jogador jogadorBuguento) {
-		this.jogadorBuguento = jogadorBuguento;
+	public Pedra getPedra() {
+		return pedra;
 	}
 
 }

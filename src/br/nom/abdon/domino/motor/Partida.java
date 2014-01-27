@@ -1,55 +1,76 @@
-package br.nom.abdon.domino;
+package br.nom.abdon.domino.motor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
+
+import br.nom.abdon.domino.Jogada;
+import br.nom.abdon.domino.Jogador;
+import br.nom.abdon.domino.Lado;
+import br.nom.abdon.domino.Pedra;
 
 class Partida {
 
+	private static final Logger log = Logger.getLogger(Partida.class.getName());
+	
 	private Dupla dupla1, dupla2;
 	
-	private Mesa mesa;
+	private MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
 	private Collection<Pedra>[] maos;  
 	
 	public Partida(Dupla dupla1, Dupla dupla2) {
 		super();
+		mesa = new MesaImpl();
 		this.dupla1 = dupla1;
 		this.dupla2 = dupla2;
 	}
 
-	protected ResultadoPartida jogar(Dupla duplaQueComeca){
+	protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) throws BugDeJogadorException{
 		
 		Jogador jogadorDaVez = null;
 		Pedra pedra = null;
 		Lado lado = null;
 		
 		boolean alguemBateu = false, trancou = false;
-		
+		System.out.println("embaralhando");
 		embaralhaEdistribui();
-		int vez = defineDeQuemEAVezDeComecar(duplaQueComeca);
-		while(!alguemBateu && trancou){
+		
+		boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
+		
+		int vez;
+		if(ehPrimeiraRodada){
+			vez = primeiraJogada();
+		} else {
+			vez = decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
+		}
+		
+		while(!(alguemBateu || trancou)){
 			
 			jogadorDaVez = pegaJogadorDaVez(vez);
 			Collection<Pedra> maoDoJogadorDaVez = this.maos[vez];
 			
-			Jogada jogada = jogadorDaVez.joga();
-			//se livrando logo do objeto Jogada, que veio do jogador.
-			lado = jogada.getLado();
-			pedra = jogada.getPedra();
+			Jogada jogada = jogadorDaVez.joga(mesa);
+			System.out.println("vez " + vez + ": " + jogada);
+			if(jogada != Jogada.TOQUE){
+				//se livrando logo do objeto Jogada, que veio do jogador.
+				lado = jogada.getLado();
+				pedra = jogada.getPedra();
 
-			validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
-			
-			maoDoJogadorDaVez.remove(pedra);
+				validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
+				
+				maoDoJogadorDaVez.remove(pedra);
 
-			this.mesa.coloca(pedra, lado);
-			
-			alguemBateu = maoDoJogadorDaVez.isEmpty();
-			if(!alguemBateu) {
-				trancou = verificaTrancada();
+				this.mesa.coloca(pedra, lado);
+				
+				alguemBateu = maoDoJogadorDaVez.isEmpty();
+				if(!alguemBateu) {
+					trancou = verificaTrancada();
+				}
 			}
 			
 			vez = avanca(vez);
@@ -140,10 +161,15 @@ class Partida {
 		return taTrancado;
 	}
 
-	private void validaJogada(Jogador jogadorQueJogou, Collection<Pedra> maoDoJogadorQueJogou, Pedra pedra, Lado lado) {
-		if(pedra == null || lado == null){
-			throw new BugDeJogadorException("Retornou sem dizer direito qual era a pedra e o lado de jogar", jogadorQueJogou);
+	private void validaJogada(Jogador jogadorQueJogou, Collection<Pedra> maoDoJogadorQueJogou, Pedra pedra, Lado lado) throws BugDeJogadorException {
+		if(pedra == null){
+			throw new BugDeJogadorException("Cade a pedra?", jogadorQueJogou);
 		}
+		
+		if(lado == null && !mesa.taVazia() && mesa.getNumeroEsquerda() != mesa.getNumeroDireita()){
+			throw new BugDeJogadorException("De que lado é pra botar essa pedra?", jogadorQueJogou);
+		}
+		
 		
 		if(!maoDoJogadorQueJogou.contains(pedra)){
 			throw new BugDeJogadorException("Jogando pedra que nao tinha! ", jogadorQueJogou, pedra);
@@ -157,46 +183,58 @@ class Partida {
 		
         this.maos = new Collection[4];
         for (int i = 0; i < 4 ; i++) {
+        	System.out.println("mao " + i);
         	ArrayList<Pedra> mao = new ArrayList<Pedra>(6); //definir qual a melhor Collection usar
+        	Pedra[] mao_ = new Pedra[6]; 
         	for(int j = 0; j < 6; j++){
-        		mao.add(pedras.get((i*6) + j));
+        		Pedra pedra = pedras.get((i*6) + j);
+				mao.add(pedra);
+				mao_[j] = pedra;
+				 System.out.println(pedra);
         	}
-			this.maos[1] = mao; 
+        	System.out.println();
+			this.maos[i] = mao; 
+			pegaJogadorDaVez(i).recebeMao(mao_);
 		}
         
 		this.dorme = new Pedra[4];
 		for (int i = 24; i < 28 ; i++) {
-			dorme[i] = pedras.get(i);
+			dorme[i-24] = pedras.get(i);
 		}
 	}
 
-	private int defineDeQuemEAVezDeComecar(Dupla duplaQueComeca) {
-		int vez;
-		if(duplaQueComeca == null){
-			//primeira rodada. comeca quem tiver carroca
-			vez = veQuemTemAMaiorCarroca();
-		} else {
-			int quemDaDuplaComeca = duplaQueComeca.quemComeca();
-			//assert(duplaQueComeca.contem(quemDaDuplaComeca));
-			vez = duplaQueComeca == dupla1 ? quemDaDuplaComeca * 2 : ((quemDaDuplaComeca * 2) + 1);    
-		}
-		return vez;
+	private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) throws BugDeJogadorException {
+		int quemDaDuplaComeca = duplaQueComeca.quemComeca();
+		return duplaQueComeca == dupla1 ? quemDaDuplaComeca * 2 : ((quemDaDuplaComeca * 2) + 1);    
+	}
+
+	private int primeiraJogada() throws BugDeJogadorException{
 		
-	}
-
-	private int veQuemTemAMaiorCarroca() {
 		int vez = -1;
-		
-		for (int i = 6; i >= 2; i--) {
+		Jogada primeiraJogada = null; 
+		for (int i = 6; i >= 2 && primeiraJogada == null; i--) {
 			Pedra carroca = Pedra.carrocas[i];
 			for (int j = 0; j < 4; j++) {
-				if(this.maos[i].contains(carroca)){
-					vez = i;
+				if(this.maos[j].contains(carroca)){
+					vez = j;
+					Jogador jogadorQueComeca = pegaJogadorDaVez(vez);
+					primeiraJogada = jogadorQueComeca.joga(mesa);
+					System.out.println("primeira jogada (vez: "+ vez + ") " + primeiraJogada);
+					
+					//agora erre, meu velho
+					Pedra pedra = primeiraJogada.getPedra();
+					if(pedra != carroca){
+						throw new BugDeJogadorException("Comecou com a pedra errada me velho. Erra pra ser " + carroca,jogadorQueComeca);
+					}
+					//limpesa
+					this.maos[j].remove(pedra);
+					this.mesa.coloca(pedra, primeiraJogada.getLado());
+					
 					break;
 				}
 			}
 		}
-		return vez;
+		return avanca(vez);
 	}
 
 	private Jogador pegaJogadorDaVez(int vez) {

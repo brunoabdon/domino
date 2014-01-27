@@ -1,4 +1,6 @@
-package br.nom.abdon.domino;
+package br.nom.abdon.domino.motor;
+
+import br.nom.abdon.domino.Jogador;
 
 public class ResultadoPartida {
 	

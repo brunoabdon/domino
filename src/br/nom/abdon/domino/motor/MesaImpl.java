@@ -1,14 +1,23 @@
-package br.nom.abdon.domino;
+package br.nom.abdon.domino.motor;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 
-public class Mesa {
+import br.nom.abdon.domino.Lado;
+import br.nom.abdon.domino.Numero;
+import br.nom.abdon.domino.Pedra;
+import br.nom.abdon.domino.motor.util.IteratorReadOnly;
 
-	private Deque<Pedra> listaDePedras = new ArrayDeque<Pedra>(28-4);
-	
+public class MesaImpl implements br.nom.abdon.domino.Mesa{
+
+	private Deque<Pedra> listaDePedras;
 	private Numero numeroEsquerda, numeroDireita;
 
+	protected MesaImpl() {
+		this.listaDePedras = new ArrayDeque<Pedra>(28-4);
+	}
+	
 	public boolean taVazia(){
 		return this.listaDePedras.isEmpty();
 	}
@@ -28,8 +37,13 @@ public class Mesa {
 	 * 
 	 * @param pedra
 	 * @param lado
+	 * @throws PedraBebaException 
 	 */
-	public void coloca(Pedra pedra, Lado lado){
+	protected void coloca(Pedra pedra, Lado lado) throws PedraBebaException{
+
+		if(lado == null && (numeroEsquerda == numeroDireita)){
+			lado = Lado.ESQUERDO;
+		}
 		
 		if(!podeJogar(pedra, lado)){
 			throw new PedraBebaException(pedra);
@@ -54,8 +68,37 @@ public class Mesa {
 	}
 	public Numero getNumeroDireita() {
 		return numeroDireita;
-	} 
-	
+	}
 
+	@Override
+	public Iterator<Pedra> iterator() {
+		return iteratorEsquedaPraDireita();
+	}
+
+	public Iterator<Pedra> iteratorEsquedaPraDireita() {
+		return new IteratorReadOnly<Pedra>(listaDePedras.iterator());
+	}
+
+	public Iterator<Pedra> iteratorDireitaPraEsquerda() {
+		return new IteratorReadOnly<Pedra>(listaDePedras.descendingIterator());
+	}
 	
+	public int quantasPecas(){
+		return this.listaDePedras.size();
+	}
+	
+	public Pedra[] toArray(){
+		return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		
+		for (Pedra pedra : listaDePedras) {
+			sb.append(pedra);
+		}
+		return sb.toString();
+		
+	}
 }
