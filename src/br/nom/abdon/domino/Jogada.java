@@ -15,6 +15,9 @@ public final class Jogada {
 	private Pedra pedra;
 	private Lado lado;
 	
+	/**
+	 * A jogada singleton que um {@link Jogador} deve retornar quando vai tocar.
+	 */
 	public static final Jogada TOQUE = new Jogada();
 
 	/**
