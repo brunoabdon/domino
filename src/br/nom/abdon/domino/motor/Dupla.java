@@ -2,7 +2,7 @@ package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Jogador;
 
-class Dupla {
+public class Dupla {
 	private int pontos;
 	
 	private final Jogador jogador1;

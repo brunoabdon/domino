@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domino>
+
+  <duplas>
+     <dupla1 jogador1="bruno" jogador2="igor"/>
+     <dupla2 jogador1="eudes" jogador2="ronaldo"/>
+  </duplas>
+
+
+  
+  <jogador nome="mamao" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  
+  
+  <!-- substituir o nome das classes quando existirem -->
+  <jogador nome="bruno" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="eudes" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="igor" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+
+</domino>
