@@ -1,8 +1,9 @@
 package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Jogador;
+import br.nom.abdon.domino.Vitoria;
 
-public class ResultadoPartida {
+class ResultadoPartida {
 	
 	private final Jogador vencedor;
 	private final Vitoria tipoDeVitoria;

@@ -3,7 +3,7 @@ package br.nom.abdon.domino.motor;
 import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Pedra;
 
-public class PedraBebaException extends BugDeJogadorException {
+class PedraBebaException extends BugDeJogadorException {
 
 	private final Pedra pedraBeba;
 	

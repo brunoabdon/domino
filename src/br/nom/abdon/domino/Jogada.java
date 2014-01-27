@@ -1,6 +1,6 @@
 package br.nom.abdon.domino;
 
-public class Jogada {
+public final class Jogada {
 	private Pedra pedra;
 	private Lado lado;
 	

@@ -2,16 +2,25 @@ package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Jogador;
 
-public class Dupla {
+class Dupla {
 	private int pontos;
 	
 	private final Jogador jogador1;
 	private final Jogador jogador2;
 
-	public Dupla(Jogador jogador1, Jogador jogador2) {
+	private final String nomeJogador1;
+	private final String nomeJogador2;
+
+	public Dupla(Jogador jogador1, String nomeJogador1, Jogador jogador2, String nomeJogador2) {
 		if(jogador1 == null || jogador2 == null) throw new IllegalArgumentException("Só pode dupla de dois");
+		
+		if(nomeJogador1 == null || nomeJogador2 == null) throw new IllegalArgumentException("João SemNome não joga");
+
 		this.jogador1 = jogador1;
 		this.jogador2 = jogador2;
+
+		this.nomeJogador1 = nomeJogador1;
+		this.nomeJogador2 = nomeJogador2;
 		this.pontos = 0;
 	}
 	public Jogador getJogador1() {
@@ -59,5 +68,17 @@ public class Dupla {
 	public String toString() {
 		return this.jogador1 + " e "  + this.jogador2 + ", " + this.pontos;
 	}
+	
+	public String getNomeJogador1() {
+		return nomeJogador1;
+	}
+	public String getNomeJogador2() {
+		return nomeJogador2;
+	}
+
+	public String getNomeJogador(Jogador jogador) {
+		return jogador == jogador1 ? nomeJogador1 : jogador == jogador2 ? nomeJogador2 : null;
+	}
+
 	
 }

@@ -2,13 +2,18 @@ package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Pedra;
+import br.nom.abdon.domino.Vitoria;
+import br.nom.abdon.domino.eventos.DominoEventListener;
+import br.nom.abdon.domino.eventos.LoggerDominoEventListener;
 import br.nom.abdon.domino.exemplos.JogadorMamao;
+import br.nom.abdon.domino.motor.util.DominoEventBroadcaster;
 
 
 
 public class Jogo {
 
 	private Dupla dupla1, dupla2;
+	private DominoEventBroadcaster eventBroadcaster;
 	
 	public Jogo(Dupla dupla1, Dupla dupla2) {
 		if(dupla1 == null || dupla2 == null) throw new IllegalArgumentException("W.O.!!!");
@@ -17,12 +22,18 @@ public class Jogo {
 	}
 	
 	public void jogar(){
+		
+		eventBroadcaster = new DominoEventBroadcaster();
+		eventBroadcaster.addEventListneter(new LoggerDominoEventListener());
+		
+		eventBroadcaster.comecouJogo(dupla1.getNomeJogador1(), dupla2.getNomeJogador1(), dupla1.getNomeJogador2(), dupla2.getNomeJogador2());
+		
 		try {
 			Dupla ultimaDuplaQueVenceu = null;
 			int multiplicadorDobrada = 1;
 			while(!alguemVenceu()){
-				System.out.println("Comecando partida. " + dupla1 + " x " + dupla2);
-				Partida partida = new Partida(dupla1, dupla2);
+				this.eventBroadcaster.comecouPartida(dupla1.getPontos(), dupla2.getPontos(), multiplicadorDobrada != 1);
+				Partida partida = new Partida(dupla1, dupla2, eventBroadcaster);
 				
 				ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
 				if(resultado == ResultadoPartida.EMPATE){
@@ -33,6 +44,10 @@ public class Jogo {
 					multiplicadorDobrada = 1;
 				}
 			}
+			
+			eventBroadcaster.jogoAcabou(dupla1.getPontos(), dupla2.getPontos());
+			
+			
 		} catch (BugDeJogadorException e) {
 			System.err.println("Jogador " + e.getJogadorBuguento() + " fez merda.");
 			Pedra pedra = e.getPedra();
@@ -57,6 +72,10 @@ public class Jogo {
 		return dupla1.getPontos() >= 6 || dupla2.getPontos() >= 6;
 	}
 
+	public void addEventListner(DominoEventListener eventListener) {
+		this.eventBroadcaster.addEventListneter(eventListener);
+
+	}
 
 	public static void main(String[] args) {
 		Jogador jogador1 = new JogadorMamao();
@@ -64,8 +83,8 @@ public class Jogo {
 		Jogador jogador3 = new JogadorMamao();
 		Jogador jogador4 = new JogadorMamao();
 		
-		Dupla dupla1 = new Dupla(jogador1, jogador2);
-		Dupla dupla2 = new Dupla(jogador3, jogador4);
+		Dupla dupla1 = new Dupla(jogador1, "bruno", jogador2, "igor");
+		Dupla dupla2 = new Dupla(jogador3, "ronaldo", jogador4, "eudes");
 		
 		Jogo jogo = new Jogo(dupla1, dupla2);
 		jogo.jogar();

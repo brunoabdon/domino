@@ -5,39 +5,44 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
+import br.nom.abdon.domino.Vitoria;
+import br.nom.abdon.domino.eventos.DominoEventListener;
 
 class Partida {
 
-	private static final Logger log = Logger.getLogger(Partida.class.getName());
-	
 	private Dupla dupla1, dupla2;
-	
+
 	private MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
-	private Collection<Pedra>[] maos;  
+	private Collection<Pedra>[] maos;
 	
-	public Partida(Dupla dupla1, Dupla dupla2) {
+	private DominoEventListener eventListener;
+	
+	public Partida(Dupla dupla1, Dupla dupla2, DominoEventListener eventListener) {
 		super();
-		mesa = new MesaImpl();
+		this.mesa = new MesaImpl();
 		this.dupla1 = dupla1;
 		this.dupla2 = dupla2;
+		
+		this.eventListener = eventListener;
 	}
 
 	protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) throws BugDeJogadorException{
 		
 		Jogador jogadorDaVez = null;
+		String nomeJogadorDaVez = null;
+		
 		Pedra pedra = null;
 		Lado lado = null;
 		
 		boolean alguemBateu = false, trancou = false;
-		System.out.println("embaralhando");
+		
 		embaralhaEdistribui();
 		
 		boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
@@ -51,12 +56,16 @@ class Partida {
 		
 		while(!(alguemBateu || trancou)){
 			
-			jogadorDaVez = pegaJogadorDaVez(vez);
+			jogadorDaVez = jogadorDaVez(vez);
+			nomeJogadorDaVez = nomeJogadorDaVez(vez);
+
 			Collection<Pedra> maoDoJogadorDaVez = this.maos[vez];
 			
 			Jogada jogada = jogadorDaVez.joga(mesa);
-			System.out.println("vez " + vez + ": " + jogada);
-			if(jogada != Jogada.TOQUE){
+			
+			if(jogada == Jogada.TOQUE){
+				this.eventListener.jogadorTocou(nomeJogadorDaVez);
+			} else {
 				//se livrando logo do objeto Jogada, que veio do jogador.
 				lado = jogada.getLado();
 				pedra = jogada.getPedra();
@@ -66,6 +75,8 @@ class Partida {
 				maoDoJogadorDaVez.remove(pedra);
 
 				this.mesa.coloca(pedra, lado);
+				
+				this.eventListener.jogardorJogou(nomeJogadorDaVez,pedra,lado);
 				
 				alguemBateu = maoDoJogadorDaVez.isEmpty();
 				if(!alguemBateu) {
@@ -82,8 +93,10 @@ class Partida {
 			resultadoPartida = contaPontos();
 		} else {
 			Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
-			resultadoPartida = new ResultadoPartida(tipoDaBatida,jogadorDaVez); 
+			resultadoPartida = new ResultadoPartida(tipoDaBatida,jogadorDaVez);
 		}
+		
+		this.eventListener.jogadorBateu(nomeJogadorDaVez,resultadoPartida.getTipoDeVitoria());
 		
 		return resultadoPartida;
 
@@ -131,7 +144,7 @@ class Partida {
 		}
 		
 		if(resultado == null){
-			Jogador jogadorComMenosPontosNaMao = pegaJogadorDaVez(idxJogadorComMenos);
+			Jogador jogadorComMenosPontosNaMao = jogadorDaVez(idxJogadorComMenos);
 			resultado = new ResultadoPartida(Vitoria.CONTAGEM_DE_PONTOS, jogadorComMenosPontosNaMao);
 		}
 		
@@ -194,7 +207,7 @@ class Partida {
         	}
         	System.out.println();
 			this.maos[i] = mao; 
-			pegaJogadorDaVez(i).recebeMao(mao_);
+			jogadorDaVez(i).recebeMao(mao_);
 		}
         
 		this.dorme = new Pedra[4];
@@ -217,12 +230,13 @@ class Partida {
 			for (int j = 0; j < 4; j++) {
 				if(this.maos[j].contains(carroca)){
 					vez = j;
-					Jogador jogadorQueComeca = pegaJogadorDaVez(vez);
+					Jogador jogadorQueComeca = jogadorDaVez(vez);
 					primeiraJogada = jogadorQueComeca.joga(mesa);
-					System.out.println("primeira jogada (vez: "+ vez + ") " + primeiraJogada);
+
+					Pedra pedra = primeiraJogada.getPedra();
+					this.eventListener.jogardorJogou(nomeJogadorDaVez(vez),pedra,null);
 					
 					//agora erre, meu velho
-					Pedra pedra = primeiraJogada.getPedra();
 					if(pedra != carroca){
 						throw new BugDeJogadorException("Comecou com a pedra errada me velho. Erra pra ser " + carroca,jogadorQueComeca);
 					}
@@ -237,13 +251,25 @@ class Partida {
 		return avanca(vez);
 	}
 
-	private Jogador pegaJogadorDaVez(int vez) {
-		Dupla dupla = (vez%2)==0?dupla1:dupla2;
+	private Jogador jogadorDaVez(int vez) {
+		Dupla dupla = duplaDaVez(vez);
 		return vez<2?dupla.getJogador1():dupla.getJogador2();
 	}
+
+	private Dupla duplaDaVez(int vez) {
+		return (vez%2)==0?dupla1:dupla2;
+	}
+
+	private String nomeJogadorDaVez(int vez){
+		Dupla duplaDaVez = duplaDaVez(vez);
+		return vez<2?duplaDaVez.getNomeJogador1():duplaDaVez.getNomeJogador2();
+	}
+	
 
 	private int avanca(int vez){
 		return (vez+1)%4;
 	}
+	
+	
 	
 }

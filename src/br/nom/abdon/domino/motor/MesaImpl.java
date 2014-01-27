@@ -9,7 +9,7 @@ import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.motor.util.IteratorReadOnly;
 
-public class MesaImpl implements br.nom.abdon.domino.Mesa{
+class MesaImpl implements br.nom.abdon.domino.Mesa{
 
 	private Deque<Pedra> listaDePedras;
 	private Numero numeroEsquerda, numeroDireita;
