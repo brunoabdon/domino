@@ -10,9 +10,9 @@ public class Jogo {
 		Dupla duplaVencedoraDaPartidaAnterior = null;
 		while(!alguemVenceu()){
 			Partida partida = new Partida(dupla1, dupla2);
-			partida.jogar(duplaVencedoraDaPartidaAnterior);
 			
-			ResultadoPartida resultado = jogaPartida();
+			ResultadoPartida resultado = partida.jogar(duplaVencedoraDaPartidaAnterior);
+
 			atualizaPlacar(resultado);
 			duplaVencedoraDaPartidaAnterior = getDuplaVencedora(resultado);
 		}
@@ -25,10 +25,6 @@ public class Jogo {
 	
 	private void jogadoresSentam() {
 		
-	}
-	
-
-	private ResultadoPartida jogaPartida() {
 	}
 
 	private void atualizaPlacar(ResultadoPartida resultado) {

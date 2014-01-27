@@ -101,5 +101,9 @@ public enum Pedra implements Comparable<Pedra>{
 	public boolean temNumero(Numero numero){
 		return numero == primeiroNumero || numero == segundoNumero; 
 	}
+	
+	public boolean isCarroca(){
+		return this.primeiroNumero == this.segundoNumero;
+	}
 
 }

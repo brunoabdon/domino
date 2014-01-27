@@ -1,12 +1,9 @@
 package br.nom.abdon.domino;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 class Partida {
@@ -24,25 +21,30 @@ class Partida {
 		this.dupla2 = dupla2;
 	}
 
-	protected void jogar(Dupla duplaQueComeca){
+	protected ResultadoPartida jogar(Dupla duplaQueComeca){
+		
+		Jogador jogadorDaVez = null;
+		Pedra pedra = null;
+		Lado lado = null;
 		
 		boolean alguemBateu = false, trancou = false;
 		
 		embaralhaEdistribui();
 		int vez = defineDeQuemEAVezDeComecar(duplaQueComeca);
 		while(!alguemBateu && trancou){
-			Jogador jogadorDaVez = pegaJogadorDaVez(vez);
+			
+			jogadorDaVez = pegaJogadorDaVez(vez);
+			Collection<Pedra> maoDoJogadorDaVez = this.maos[vez];
 			
 			Jogada jogada = jogadorDaVez.joga();
-			
 			//se livrando logo do objeto Jogada, que veio do jogador.
-			Lado lado = jogada.getLado();
-			Pedra pedra = jogada.getPedra();
+			lado = jogada.getLado();
+			pedra = jogada.getPedra();
 
-			Collection<Pedra> maoDoJogadorDaVez = this.maos[vez];
 			validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
 			
 			maoDoJogadorDaVez.remove(pedra);
+
 			this.mesa.coloca(pedra, lado);
 			
 			alguemBateu = maoDoJogadorDaVez.isEmpty();
@@ -50,7 +52,7 @@ class Partida {
 				trancou = verificaTrancada();
 			}
 			
-			avanca(vez);
+			vez = avanca(vez);
 		}
 		
 		ResultadoPartida resultadoPartida;
@@ -58,11 +60,30 @@ class Partida {
 		if(trancou){
 			resultadoPartida = contaPontos();
 		} else {
-			resultadoPartida = 
+			Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
+			resultadoPartida = new ResultadoPartida(tipoDaBatida,jogadorDaVez); 
 		}
 		
-		return null;
+		return resultadoPartida;
 
+	}
+
+	private Vitoria veOTipoDaBatida(Pedra pedra) {
+
+		Vitoria tipoDaBatida;
+		boolean carroca = pedra.isCarroca();
+		boolean laELo = mesa.getNumeroEsquerda() == mesa.getNumeroDireita();
+		
+		if(carroca && laELo){
+			tipoDaBatida = Vitoria.CRUZADA;
+		} else if(laELo){
+			tipoDaBatida = Vitoria.LA_E_LO;
+		} else if (carroca) {
+			tipoDaBatida = Vitoria.CARROCA;
+		} else {
+			tipoDaBatida = Vitoria.BATIDA_SIMPLES;
+		}
+		return tipoDaBatida;
 	}
 	
 	private ResultadoPartida contaPontos() {
@@ -116,7 +137,7 @@ class Partida {
 			}
 		}
 		
-		return false;
+		return taTrancado;
 	}
 
 	private void validaJogada(Jogador jogadorQueJogou, Collection<Pedra> maoDoJogadorQueJogou, Pedra pedra, Lado lado) {
