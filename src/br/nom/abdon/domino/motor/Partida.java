@@ -190,6 +190,7 @@ class Partida {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	private void embaralhaEdistribui() {
 		List<Pedra> pedras = Arrays.asList(Pedra.values());
 		Collections.shuffle(pedras);
