@@ -11,12 +11,23 @@ import br.nom.abdon.domino.Mesa;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 
+/**
+ * Jogador mais simplorio possivel. Procura a primeira peca na mao que dah pra
+ * jogar na mesa e joga. 
+ * 
+ * @author bruno
+ *
+ */
 public class JogadorMamao implements Jogador {
 
 	private List<Pedra> mao;
 
+	boolean perguntouSeEuQueriaJogar = false;
+	
+	
 	@Override
 	public void recebeMao(Pedra[] mao) {
+		//guardar como uma List
 		this.mao = new ArrayList<>(6);
 		Collections.addAll(this.mao, mao);
 	}
@@ -29,40 +40,65 @@ public class JogadorMamao implements Jogador {
 		Lado ladoDeJogar = null;
 		
 		if(mesa.taVazia()){
-			if(mao.size() == 6){
+			//opa! minha vez e a mesa tah vazia? eh pra comecar agora! sou o primeiro
+			if(!perguntouSeEuQueriaJogar){
+				//se nao me perguntaram se eu queria ser o da dupla a comecar a jogar, 
+				//entao essa eh a primeira partida, e o sistema jah se ligou que o
+				//jogador que tem a maior carroca sou eu. Tenho que jogar ela, se nao
+				//eh roubo.
 				pedraPraJogar = aMaiorCarroca();
 			} else {
-				pedraPraJogar = mao.get(0); //joga a primeira que tiver
+				//ah, eles perguntaram se eu queria ser o da dupla a comecar a jogar,
+				//e acabou que vou ser eu mesmo a comecar. nao precisa ser carroca.
+				//vou jogar a primeira que tiver.
+				pedraPraJogar = mao.get(0); 
 			}
 		} else {
+			//a mesa nao tah vazia. o jogo tah rolando. tenho que jogar uma peca
+			//que se encaixe ou no lado esquerdo ou no direito dos dominos.
+			
+			//deixa eu ver quais sao os numeros
 			Numero numeroEsquerda = mesa.getNumeroEsquerda();
 			Numero numeroDireita = mesa.getNumeroDireita();
-			int i;
+			//hum, otimo. agora deixa achar alguma pedra na minha mao
+			//que tenha algum dessezs numeroos.
 			for (Pedra pedraDaMao : mao) {
-				if(pedraDaMao != null){
-					if(pedraDaMao.temNumero(numeroEsquerda)){
-						pedraPraJogar = pedraDaMao;
-						ladoDeJogar = Lado.ESQUERDO;
-						break;
-					} else if (pedraDaMao.temNumero(numeroDireita)){
-						pedraPraJogar = pedraDaMao;
-						ladoDeJogar = Lado.DIREITO;
-						break;
-					}
+				if(pedraDaMao.temNumero(numeroEsquerda)){
+					//opa, achei uma. vai ser ela mesmo.
+					pedraPraJogar = pedraDaMao;
+					//jogar do lado esquerdo, que foi o que eu vi que tenho o numero
+					ladoDeJogar = Lado.ESQUERDO; 
+					//precisa nem procurar mais.
+					break;
+				} else if (pedraDaMao.temNumero(numeroDireita)){
+					//opa, achei uma. vai ser ela mesmo.
+					pedraPraJogar = pedraDaMao;
+					//jogar do lado direito, que foi o que eu vi que tenho o numero
+					ladoDeJogar = Lado.DIREITO;
+					//precisa nem procurar mais.
+					break;
 				}
 			}
 		}
 		
-		if(pedraPraJogar == null){ //lasquei-me
+		if(pedraPraJogar == null){ 
+			//lasquei-me. nao achei nenhuma. toc toc
 			jogada = Jogada.TOQUE;
 		} else {
+			//pronto, vou tirar essa pedra da minha mao, pra nao jogar duplicada depois
 			mao.remove(pedraPraJogar);
+			//criando a jogada: a pedra que escolhi e a cabeca em que vou colocar
 			jogada = new Jogada(pedraPraJogar,ladoDeJogar);
 		}
-		
+		//retornando a jogada
 		return jogada; 
 	}
 
+	/**
+	 * Retorna qual eh a maior carroca que eu tenho na mao. Tem que ser essa pedra
+	 * pra jogar quando sou o primeiro a jogar numa primeira partida. 
+	 * @return Uma carroca
+	 */
 	private Pedra aMaiorCarroca() {
 		Pedra maiorCarroca = null;
 		for (Pedra pedra : mao) {
@@ -76,15 +112,11 @@ public class JogadorMamao implements Jogador {
 		return maiorCarroca;
 	}
 
+	/**
+	 * Nao sei se comece... nao sei se nao comece... vai 5 mesmo.
+	 */
 	@Override
 	public int vontadeDeComecar() {
 		return 5;
 	}
-	
-	@Override
-	public String toString() {
-		return "mamao";
-	}
-
-
 }

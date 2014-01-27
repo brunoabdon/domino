@@ -92,14 +92,30 @@ public enum Pedra implements Comparable<Pedra>{
 		return segundoNumero;
 	}
 
+	/**
+	 * A soma dos dois numeros, usada quando tranca e tem que
+	 * contar os pontos na mao.
+	 * @return
+	 */
 	public int getNumeroDePontos() {
 		return this.numeroDePontos;
 	}
 	
+	/**
+	 * Metodo auxiliar que diz se um dos dois numeros dessa 
+	 * pedra eh o numero dado como paramentro.
+	 * 
+	 * @param numero
+	 * @return
+	 */
 	public boolean temNumero(Numero numero){
 		return numero == primeiroNumero || numero == segundoNumero; 
 	}
 	
+	/**
+	 * Diz se essa peca eh uma carroca.
+	 * @return
+	 */
 	public boolean isCarroca(){
 		return this.primeiroNumero == this.segundoNumero;
 	}
