@@ -56,7 +56,11 @@ public enum Pedra implements Comparable<Pedra>{
 	//12
 	CARROCA_DE_SENA              (Numero.SENA);
 	
-	
+	/**
+	 * Uma array auxliar, contendo soh as carrocas, em ordem 
+	 * crescente (de {@link Numero#LIMPO limpo} a 
+	 * {@link Numero#SENA sena})
+	 */
 	public static final Pedra[] carrocas = 
 			new Pedra[]{
 				CARROCA_DE_LIMPO, 
@@ -93,20 +97,21 @@ public enum Pedra implements Comparable<Pedra>{
 	}
 
 	/**
-	 * A soma dos dois numeros, usada quando tranca e tem que
+	 * A soma dos dois numeros. Usado quando tranca e tem que
 	 * contar os pontos na mao.
-	 * @return
+	 * @return A soma dos dois numeros;
 	 */
 	public int getNumeroDePontos() {
 		return this.numeroDePontos;
 	}
 	
 	/**
-	 * Metodo auxiliar que diz se um dos dois numeros dessa 
+	 * Metodo auxiliar que diz se um dos dois {@link Numero}s dessa 
 	 * pedra eh o numero dado como paramentro.
 	 * 
-	 * @param numero
-	 * @return
+	 * @param numero Um {@link Numero}, pra testar se essa pedra tem ele
+	 * @return <code>true</code> se um dos dois {@link Numero}s dessa pedra
+	 * for o dado como parametro.
 	 */
 	public boolean temNumero(Numero numero){
 		return numero == primeiroNumero || numero == segundoNumero; 

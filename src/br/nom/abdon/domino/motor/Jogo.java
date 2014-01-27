@@ -19,12 +19,14 @@ public class Jogo {
 		if(dupla1 == null || dupla2 == null) throw new IllegalArgumentException("W.O.!!!");
 		this.dupla1 = dupla1;
 		this.dupla2 = dupla2;
+		
+		configuraEventListners();
+		
 	}
 	
 	public void jogar(){
 		
-		eventBroadcaster = new DominoEventBroadcaster();
-		eventBroadcaster.addEventListneter(new LoggerDominoEventListener());
+		
 		
 		eventBroadcaster.comecouJogo(dupla1.getNomeJogador1(), dupla2.getNomeJogador1(), dupla1.getNomeJogador2(), dupla2.getNomeJogador2());
 		
@@ -58,6 +60,23 @@ public class Jogo {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private void configuraEventListners() {
+		eventBroadcaster = new DominoEventBroadcaster();
+		eventBroadcaster.addEventListneter(new LoggerDominoEventListener());
+		
+		jogadorAtento(dupla1.getJogador1());
+		jogadorAtento(dupla1.getJogador2());
+		jogadorAtento(dupla2.getJogador1());
+		jogadorAtento(dupla2.getJogador2());
+		
+	}
+
+	private void jogadorAtento(Jogador jogador) {
+		if(jogador instanceof DominoEventListener){
+			eventBroadcaster.addEventListneter((DominoEventListener)jogador);
+		}
 	}
 
 	private Dupla getDuplaVencedora(ResultadoPartida resultado) {
