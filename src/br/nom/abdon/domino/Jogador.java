@@ -23,7 +23,7 @@ public interface Jogador {
 	public void recebeMao(Pedra[] pedras);
 	
 	/**
-	 * Esta na vez deste jogador jogar. Deve retornar uma {@link Jogada} dizendo qual a
+	 * Estah na vez deste jogador jogar. Deve retornar uma {@link Jogada} dizendo qual a
 	 * peca que quer jogar e, caso for ambiguo, em que ponta da mesa quer jogar.
 	 * 
 	 * Obviamente, o jogador deve ter {@link #recebeMao(Pedra[]) recebido esssa pessa}
