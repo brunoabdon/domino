@@ -2,8 +2,10 @@ package br.nom.abdon.domino;
 
 public interface Jogador {
 
-	public Jogada joga();
+	public void recebeMao(Pedra[] pedras);
+	
+	public Jogada joga(Mesa mesa);
 
-	public int querComecar();
+	public int vontadeDeComecar();
 
 }

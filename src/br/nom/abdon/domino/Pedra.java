@@ -1,7 +1,5 @@
 package br.nom.abdon.domino;
 
-import br.nom.abdon.domino.Numero;
-
 public enum Pedra implements Comparable<Pedra>{
 
 	//0
@@ -104,6 +102,11 @@ public enum Pedra implements Comparable<Pedra>{
 	
 	public boolean isCarroca(){
 		return this.primeiroNumero == this.segundoNumero;
+	}
+	
+	@Override
+	public String toString() {
+		return "[" + primeiroNumero + "|" + segundoNumero + "]";
 	}
 
 }

@@ -29,4 +29,9 @@ public class Jogada {
 	public void setLado(Lado lado) {
 		this.lado = lado;
 	}
+	
+	@Override
+	public String toString() {
+		return this == TOQUE ? "toc toc " : (this.pedra.toString() + "(" + this.lado + ")");
+	}
 }
