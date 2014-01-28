@@ -24,14 +24,14 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 	}
 	
 	private boolean podeJogar(Pedra pedra, Lado lado){
-		if(this.taVazia()) return true;
+		//if(this.taVazia()) throw new IllegalStateException("comecando com pedra jah na mesa?");
 		
 		Numero cabeca = lado == Lado.ESQUERDO ? numeroEsquerda : numeroDireita; 
 		
 		return pedra.temNumero(cabeca);
 				
 	}
-	
+
 	/**
 	 * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, lenvantando uma exceção 
 	 * se nao puder colocar essa porra.
@@ -42,21 +42,29 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 	 */
 	protected void coloca(Pedra pedra, Lado lado) throws PedraBebaException{
 
-		if(lado == null && (numeroEsquerda == numeroDireita)){
-			lado = Lado.ESQUERDO;
-		}
-		
-		if(!podeJogar(pedra, lado)){
-			throw new PedraBebaException(pedra);
-		}
-		
-		if(lado == Lado.ESQUERDO){
-			listaDePedras.addFirst(pedra);
-			numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
+		if(taVazia()){
+			this.listaDePedras.addFirst(pedra);
+			this.numeroEsquerda = pedra.getPrimeiroNumero();
+			this.numeroDireita = pedra.getSegundoNumero();
 		} else {
-			listaDePedras.addLast(pedra);
-			numeroDireita = novaCabeca(numeroDireita, pedra);
+			
+			if(lado == null && (numeroEsquerda == numeroDireita)){
+				lado = Lado.ESQUERDO;
+			}
+			
+			if(!podeJogar(pedra, lado)){
+				throw new PedraBebaException(pedra);
+			}
+			
+			if(lado == Lado.ESQUERDO){
+				listaDePedras.addFirst(pedra);
+				numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
+			} else {
+				listaDePedras.addLast(pedra);
+				numeroDireita = novaCabeca(numeroDireita, pedra);
+			}
 		}
+
 	}
 	
 	private Numero novaCabeca(Numero cabecaAtual, Pedra pedraQueFoiJogada){
