@@ -1,11 +1,11 @@
 package br.nom.abdon.domino;
 
 /**
- * Uma jogada que um jogador decidiu fazer. Ela diz qual pedra ele vai jogar e,
- * caso seja necessario, em que cabeca jogar (obrigatorio apenas quando a pedra
- * se encaixa nas duas cabecas da mesa e nao eh uma carroca).
+ * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
+ * ele vai jogar e, caso seja necessário, em que cabeça jogar (obrigatório apenas
+ * quando a pedra se encaixa nas duas cabeças da mesa e nao é uma carroça).
  * 
- * Quando o jogador toca, deve usar a jogada singleton {@link #TOQUE} (nao deve
+ * Quando o jogador toca, deve usar a jogada singleton {@link #TOQUE} (não deve
  * usar <code>null</code>, por exemplo).
  * 
  * @author bruno
@@ -21,11 +21,11 @@ public final class Jogada {
 	public static final Jogada TOQUE = new Jogada();
 
 	/**
-	 * A jogada de uma determinada pedra. O lado da mesa onde colocar ela nao eh 
-	 * especificado. Caso a pessa possa ser encaixada tando de um lado como de outro,
-	 * o sistema vai verificar e gerar um erro incorrigivel). 
+	 * A jogada de uma determinada {@link Pedra}. O {@link Lado} da {@link Mesa} onde 
+	 * colocar ela nao é especificado. Caso a pedra possa ser encaixada tanto de um 
+	 * lado como de outro, o sistema vai verificar e gerar um erro incorrígivel. 
 	 * 
-	 * @param pedra a pedra que quer jogar.
+	 * @param pedra a pedra que se quer jogar.
 	 */
 	public Jogada(Pedra pedra) {
 		this.pedra = pedra;
@@ -35,7 +35,7 @@ public final class Jogada {
 	 * A jogada de uma determinada {@link Pedra} de um determinado {@link Lado} da
 	 * {@link Mesa}.  
 	 * 
-	 * Se o lado for nulo, eh equilvalente a {@link #Jogada(Pedra)}
+	 * Se o lado for <code>null</code>, é equilvalente a {@link #Jogada(Pedra)}
 	 * 
 	 * @param pedra a pedra que quer jogar.
 	 * @param lado o lado da mesa pra colocar a pedra.

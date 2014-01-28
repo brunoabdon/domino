@@ -5,7 +5,6 @@ import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 import br.nom.abdon.domino.eventos.LoggerDominoEventListener;
-import br.nom.abdon.domino.exemplos.JogadorMamao;
 import br.nom.abdon.domino.motor.util.DominoEventBroadcaster;
 
 
@@ -95,20 +94,4 @@ public class Jogo {
 		this.eventBroadcaster.addEventListneter(eventListener);
 
 	}
-
-	public static void main(String[] args) {
-		Jogador jogador1 = new JogadorMamao();
-		Jogador jogador2 = new JogadorMamao();
-		Jogador jogador3 = new JogadorMamao();
-		Jogador jogador4 = new JogadorMamao();
-		
-		Dupla dupla1 = new Dupla(jogador1, "bruno", jogador2, "igor");
-		Dupla dupla2 = new Dupla(jogador3, "ronaldo", jogador4, "eudes");
-		
-		Jogo jogo = new Jogo(dupla1, dupla2);
-		jogo.jogar();
-	}
-	
-	
-	
 }

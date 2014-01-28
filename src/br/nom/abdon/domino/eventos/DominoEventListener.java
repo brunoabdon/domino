@@ -1,5 +1,7 @@
 package br.nom.abdon.domino.eventos;
 
+import br.nom.abdon.domino.Jogada;
+import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
@@ -7,8 +9,8 @@ import br.nom.abdon.domino.Vitoria;
 /**
  * Interface para receber eventos do que acontece durante o jogo.
  * 
- * Jogadores que implementarem esta interface serao automaticamente registrados
- * para serem avisados dos eventos.
+ * {@link Jogador}es que implementarem esta interface serao automaticamente 
+ * registrados para serem avisados dos eventos.
  * 
  * @author bruno
  *
@@ -16,8 +18,8 @@ import br.nom.abdon.domino.Vitoria;
 public interface DominoEventListener {
 
 	/**
-	 * O jogo comecou. O placar estah zero a zero. Um jogo eh a 
-	 * sequencia de varias partidas.
+	 * O jogo comecou. O placar está zero a zero (um jogo é a 
+	 * seqëncia de várias partidas).
 	 *   
 	 * @param nomeDoJogador1 nome do jogador 1 (dupla 1)
 	 * @param nomeDoJogador2 nome do jogador 2 (dupla 2)
@@ -27,17 +29,19 @@ public interface DominoEventListener {
 	public void comecouJogo(String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4);
 	
 	/**
-	 * Mais uma partida comecaou. Um jogo tem varias partidas.
+	 * Mais uma partida começou (um jogo tem várias partidas).
 	 *  
 	 * @param placarDupla1 Quantos pontos a dupla 1 tem.
 	 * @param placarDupla2 Quantos pontos a dupla 2 tem
-	 * @param ehDobrada
+	 * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por causa
+	 * de um empate na partida anterior (por ser o caso de ser uma seqüência de empates)
 	 */
 	public void comecouPartida(int placarDupla1, int placarDupla2, boolean ehDobrada);
 	
 	/**
-	 * Um determinado jogador jogou uma {@link Pedra} (e nao tocou). (Se ele
-	 * tiver batido, alem desse evento, tambem ocorrera {@link #jogadorBateu(String, Vitoria)}
+	 * Um determinado {@link Jogador} {@link Jogada jogou} uma {@link Pedra} (e 
+	 * nao {@link Jogada#TOQUE tocou}). (Se ele tiver batido, além desse evento, 
+	 * também ocorrerá {@link #jogadorBateu(String, Vitoria)}
 	 * 
 	 * @param nomeDoJogador quem jogo
 	 * @param pedra o que jogou
@@ -46,15 +50,15 @@ public interface DominoEventListener {
 	public void jogardorJogou(String nomeDoJogador, Pedra pedra, Lado lado);
 	
 	/**
-	 * Um jogador tocou
+	 * Um {@link Jogador} {@link Jogada#TOQUE tocou})
 	 * @param nomeDoJogador quem foi
 	 */
 	public void jogadorTocou(String nomeDoJogador);
 	
 	/**
-	 * Um jogador bateu e  a partida acabou. O jogo ainda pode continuar.
-	 * @param nomeDoJogador
-	 * @param tipoDeVitoria
+	 * Um {@link Jogador} bateu e a partida acabou. O jogo ainda pode continuar.
+	 * @param nomeDoJogador Quem foi.
+	 * @param tipoDeVitoria Como foi a batida.
 	 */
 	public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria);
 	

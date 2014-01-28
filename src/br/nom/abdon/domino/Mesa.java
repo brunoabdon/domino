@@ -3,34 +3,37 @@ package br.nom.abdon.domino;
 import java.util.Iterator;
 
 /**
- * A visao de como estah a mesa no momento, ou seja, qual a lista 
+ * A visão de como está a mesa no momento, ou seja, qual a lista 
  * de {@link Pedra}s nela.
  * 
- * As cabecas da lista de pedra sao chamadas de cabeca da esquerda e 
- * cabeca da direita, mas o nome eh soh uma convencao. Nao tem nada a
- * ver com pra que lado as pedras estao (isso nao importa).
+ * As cabeças da lista de pedras são referidas como cabeça da esquerda e 
+ * cabeça da direita, mas o nome é só uma convenção. Não tem nada a ver 
+ * com pra que lado as pedras estão (isso não importa).
  *   
  * @author bruno
  */
 public interface Mesa extends Iterable<Pedra>{
 
 	/**
-	 * O numero da cabeca da esquerda.
+	 * O {@link Numero} da cabeça da esquerda.
 	 * 
-	 * @return O numero da cabeca da esquerda.
+	 * @return O número da cabeça da esquerda.
 	 */
 	public Numero getNumeroEsquerda();
 	
 	/**
-	 * O numero da cabeca da direita.
+	 * O {@link Numero} da cabeça da direita.
 	 * 
-	 * @return O numero da cabeca da direita.
+	 * @return O número da cabeça da direita.
 	 */
 	public Numero getNumeroDireita();
 
 	/**
-	 * Um {@link Iterator} que permite percorer todas as pedras da mesa, no sentido
-	 * esquerda-pra-direita;
+	 * Um {@link Iterator} que permite percorer todas as {@link Pedra}s da {@link Mesa}, 
+	 * no sentido {@link #getNumeroEsquerda() esquerda}-pra-{@link #getNumeroDireita() direita};
+	 * 
+	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
+	 * é ilegal e vai causar {@link UnsupportedOperationException}.
 	 */
 	@Override
 	public Iterator<Pedra> iterator();
@@ -38,12 +41,18 @@ public interface Mesa extends Iterable<Pedra>{
 	/**
 	 * Um {@link Iterator} que permite percorer todas as pedras da mesa, no sentido
 	 * {@link #getNumeroEsquerda() esquerda}-pra-{@link #getNumeroDireita() direita}
+	 * 
+	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
+	 * é ilegal e vai causar {@link UnsupportedOperationException}.
 	 */
 	public Iterator<Pedra> iteratorEsquedaPraDireita();
 
 	/**
 	 * Um {@link Iterator} que permite percorer todas as {@link Pedra}s da mesa, no sentido
 	 * {@link #getNumeroDireita() direita}-pra-{@link #getNumeroEsquerda() esquerda};
+	 * 
+	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
+	 * é ilegal e vai causar {@link UnsupportedOperationException}.
 	 */
 	public Iterator<Pedra> iteratorDireitaPraEsquerda();
 	
@@ -61,7 +70,7 @@ public interface Mesa extends Iterable<Pedra>{
 	public Pedra[] toArray();
 	
 	/**
-	 * Diz se a mesa esta vazia (ou seja, deve-se jogar a 
+	 * Diz se a mesa está vazia (ou seja, deve-se jogar a 
 	 * primeira {@link Pedra pedra} da partida);
 	 * @return <code>true</code> so se nao tiver {@link Pedra} na mesa.
 	 */

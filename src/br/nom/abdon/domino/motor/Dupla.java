@@ -33,7 +33,8 @@ public class Dupla {
 	public int getPontos() {
 		return pontos;
 	}
-	public void adicionaPontos(int pontos) {
+	
+	void adicionaPontos(int pontos) {
 		this.pontos += pontos;
 	}
 	
@@ -43,11 +44,12 @@ public class Dupla {
 
 	
 	/**
-	 * Retorna 0 se o Jogador1 for comecar 
-	 * ou 1 se o Jogador 2 for comecar;
+	 * Retorna 0 se o Jogador1 for começar 
+	 * ou 1 se o Jogador 2 for começar;
 	 * 
 	 * @return O que eu acabei de dizer;
-	 * @throws BugDeJogadorException  
+	 * @throws BugDeJogadorException Se algum jogador se enrolar até 
+	 * pra dizer se quer começar ou não.
 	 */
 	public int quemComeca() throws BugDeJogadorException {
 		int vontadeDo1 = jogador1.vontadeDeComecar();

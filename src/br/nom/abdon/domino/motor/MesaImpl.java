@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.Iterator;
 
 import br.nom.abdon.domino.Lado;
+import br.nom.abdon.domino.Mesa;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.motor.util.IteratorReadOnly;
@@ -32,12 +33,12 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 	}
 	
 	/**
-	 * Coloca uma pedra num dado lado da mesa, lenvantando uma excecao se nao poder
-	 * colocar essa porra.
+	 * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, lenvantando uma exceção 
+	 * se nao puder colocar essa porra.
 	 * 
-	 * @param pedra
-	 * @param lado
-	 * @throws PedraBebaException 
+	 * @param pedra A pedra que é pra colocar
+	 * @param lado Onde botar ela.
+	 * @throws PedraBebaException Se não puder colocar essa pedra nesse lugar.
 	 */
 	protected void coloca(Pedra pedra, Lado lado) throws PedraBebaException{
 

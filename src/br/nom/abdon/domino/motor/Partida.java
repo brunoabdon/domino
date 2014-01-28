@@ -139,7 +139,7 @@ class Partida {
 			} else if(totalJogador == menorAteAgora && (i-idxJogadorComMenos != 2)){
 				//fudeu, empatou duas pessoas de duplas diferentes
 				resultado = ResultadoPartida.EMPATE;
-				break;
+//				break;
 			}
 		}
 		
@@ -160,7 +160,7 @@ class Partida {
 		 * ele aparece no dorme, pode excluir uma trancada...) 
 		 */
 		
-		boolean taTrancado = true; //ateh que se prove o contrario
+		boolean taTrancado = true; //até que se prove o contrario
 		
 		for (int i = 0; i < maos.length; i++) {
 			for (Pedra pedra : maos[i]) {

@@ -45,7 +45,7 @@ public class DominoApp {
 		} catch (InstantiationException e) {
 			throw new DominoAppException("Jogador nem consegui ser inicializado: " + classeJogador);
 		} catch (IllegalAccessException e) {
-			throw new DominoAppException("Jogador escodeu ateh o construtor: " + classeJogador);
+			throw new DominoAppException("Jogador escodeu até o construtor: " + classeJogador);
 		}
 		return jogador;
 	}

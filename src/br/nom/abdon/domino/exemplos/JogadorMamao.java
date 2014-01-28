@@ -12,8 +12,8 @@ import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 
 /**
- * Jogador mais simplorio possivel. Procura a primeira peca na mao que dah pra
- * jogar na mesa e joga. 
+ * {@link Jogador} mais simplório possível. Procura a primeira 
+ * {@link Pedra} na mão que dá pra jogar na mesa e joga. 
  * 
  * @author bruno
  *
@@ -40,12 +40,12 @@ public class JogadorMamao implements Jogador {
 		Lado ladoDeJogar = null;
 		
 		if(mesa.taVazia()){
-			//opa! minha vez e a mesa tah vazia? eh pra comecar agora! sou o primeiro
+			//opa! minha vez e a mesa tah vazia? é pra comecar agora! sou o primeiro
 			if(!perguntouSeEuQueriaJogar){
 				//se nao me perguntaram se eu queria ser o da dupla a comecar a jogar, 
-				//entao essa eh a primeira partida, e o sistema jah se ligou que o
+				//entao essa é a primeira partida, e o sistema jah se ligou que o
 				//jogador que tem a maior carroca sou eu. Tenho que jogar ela, se nao
-				//eh roubo.
+				//é roubo.
 				pedraPraJogar = aMaiorCarroca();
 			} else {
 				//ah, eles perguntaram se eu queria ser o da dupla a comecar a jogar,
@@ -95,8 +95,10 @@ public class JogadorMamao implements Jogador {
 	}
 
 	/**
-	 * Retorna qual eh a maior carroca que eu tenho na mao. Tem que ser essa pedra
-	 * pra jogar quando sou o primeiro a jogar numa primeira partida. 
+	 * Retorna qual é a maior {@link Pedra#isCarroca() carroca} que eu 
+	 * tenho na mão. Tem que ser essa {@link Pedra} pra jogar quando 
+	 * sou o primeiro a jogar numa primeira partida.
+	 *  
 	 * @return Uma carroca
 	 */
 	private Pedra aMaiorCarroca() {
@@ -114,6 +116,8 @@ public class JogadorMamao implements Jogador {
 
 	/**
 	 * Nao sei se comece... nao sei se nao comece... vai 5 mesmo.
+	 * 
+	 * @return 5
 	 */
 	@Override
 	public int vontadeDeComecar() {
