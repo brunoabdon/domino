@@ -1,24 +1,29 @@
 package br.nom.abdon.domino.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import br.nom.abdon.domino.Numero;
 
 class DesenhadorObjetos {
 
-	public enum Posicao {EM_PE,DEITADO};
-	
 	private final Graphics2D g;
+
+	public static final float LARGURA_DA_MESA = 1260;
+	public static final float ALTURA_DA_MESA = LARGURA_DA_MESA*0.6f;
+
+	private static final Color COR_DA_TOALHA = new Color(0.1f,0.2f,0.1f);
 	
-	private static final float alturaDaPedra = 150;
+	public static final float alturaDaPedra = LARGURA_DA_MESA/15;
+	public static final float larguraDaPedra = alturaDaPedra/2f;
 	
-	private static final float larguraDaPedra = alturaDaPedra/2f;
 	private static final float curvaturaDaQuina = larguraDaPedra*0.3f;
 	
 	private static final float afastacaoDaLinha = larguraDaPedra*0.1f;
@@ -38,6 +43,7 @@ class DesenhadorObjetos {
 	private static final float pontinhosDaSegundaLinhaY = pontinhoDoMeioY; 
 	private static final float pontinhosDaTerceiraLinhaY =  (alturaDaPedra/2) - raioDosPontinhos - afastacaoDosPontinhos;
 	
+	private static final Shape toalha = new Rectangle2D.Float(0,0,LARGURA_DA_MESA,ALTURA_DA_MESA);
 	private static final RoundRectangle2D.Float retanguloPedra = new RoundRectangle2D.Float(0f, 0f, larguraDaPedra, alturaDaPedra, curvaturaDaQuina, curvaturaDaQuina);
     private static final Line2D.Float linhaDoMeio = new Line2D.Float(afastacaoDaLinha, (alturaDaPedra/2), afastacaoDaLinha + tamanhoDaLinhaDoMeio, (alturaDaPedra/2));
     
@@ -58,11 +64,16 @@ class DesenhadorObjetos {
     	new Shape[]{pontinhoEmCimaEsquerda,pontinhoEmCimaDireita,pontinhoDoMeio,pontinhoEmbaixoEsquerda,pontinhoEmBaixoDireita}, //quina
     	new Shape[]{pontinhoEmCimaEsquerda,pontinhoNoMeioEsquerda, pontinhoEmbaixoEsquerda,pontinhoEmCimaDireita,pontinhoNoMeioDireita,pontinhoEmBaixoDireita}, //senha
     };
-    
+
+
+    private static final Color COR_DA_LETRA_DO_NOME_DOS_JOGADORES = Color.GRAY;
+    public static final int TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES = Math.round(LARGURA_DA_MESA/100);    
+	private static final Font LETRA_DO_NOME_DOS_JOGADORES = new Font(Font.SANS_SERIF, Font.PLAIN, TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES);
+
     private static final AffineTransform rotacaoPedra; 
     private static final AffineTransform translacaoCabeca = AffineTransform.getTranslateInstance(0, alturaDaPedra/2);
 
-
+	
     private AffineTransform translation;
     
     static {
@@ -73,7 +84,6 @@ class DesenhadorObjetos {
 	public DesenhadorObjetos(Graphics2D graphics2d) {
 		this.g = graphics2d;
 		this.translation = new AffineTransform();
-
 	}
 	
 	public void desenhaPedra(Numero primeiraCabeca, Numero segundaCabeca, Posicao posicao, float x, float y){
@@ -89,6 +99,7 @@ class DesenhadorObjetos {
 		desenhaNumero(primeiraCabeca, x, y,transformacao);
 		
 		if(transformacao != null){
+			transformacao = new AffineTransform(transformacao);
 			transformacao.concatenate(translacaoCabeca);
 		} else {
 			transformacao = translacaoCabeca;
@@ -112,12 +123,23 @@ class DesenhadorObjetos {
 		g.setColor(Color.DARK_GRAY);
 		preenche(retanguloPedra, x, y, transformacao);
 		desenha(retanguloPedra, x, y, transformacao);
-	
 	}
 	
-	
 	public void escreveNomeJogador(String nome, float x, float y){
+		g.setFont(LETRA_DO_NOME_DOS_JOGADORES);
+		g.setColor(COR_DA_LETRA_DO_NOME_DOS_JOGADORES);
 		g.drawString(nome, x, y);
+	}
+	
+	public void desenhaMesa(){
+        g.setColor(COR_DA_TOALHA);
+        preenche(toalha, 0, 0);
+        g.setColor(Color.BLACK);
+
+	}
+
+	private void preenche(Shape shape, float x, float y) {
+		desenha(shape, x, y, null, true);
 	}
 
 	private void preenche(Shape shape, float x, float y, AffineTransform transformacao) {
@@ -136,7 +158,8 @@ class DesenhadorObjetos {
 		}
 		
 		AffineTransform originalTransform = this.g.getTransform();
-		this.g.setTransform(translation);
+		
+		this.g.transform(translation);
 		
 		if(preenche){
 			this.g.fill(shape);
