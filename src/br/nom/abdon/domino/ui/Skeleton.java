@@ -41,8 +41,8 @@ class Surface extends JPanel {
 //        desenhador.desenhaPedraEmborcada(Posicao.EM_PE, 90f, 190f);
 //        desenhador.desenhaPedra(Numero.QUINA, Numero.SENA, Posicao.DEITADO, 220f, 100f);
 
-        CalculadorDeCordenadaDePedras calculadorDeCordenadaDePedras = new CalculadorDeCordenadaBurro();
-        calculadorDeCordenadaDePedras.init(DesenhadorObjetos.LARGURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_MESA-100, DesenhadorObjetos.larguraDaPedra, DesenhadorObjetos.alturaDaPedra);
+        CalculadorDeCordenadaDePedras calculadorDeCordenadaDePedras = new CalculadorDeCoordenadasDePedrasImpl();
+        calculadorDeCordenadaDePedras.init(DesenhadorObjetos.LARGURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_PEDRA);
 		DesenhadorMesa desenhadorMesa = new DesenhadorMesa(desenhadorObjetos, calculadorDeCordenadaDePedras);
         desenhadorMesa.desenhaMesaInicial("Bruno Abdon","Eudes Rafael","Igor Souza","Ronaldo Lopes");
         
@@ -50,6 +50,10 @@ class Surface extends JPanel {
         desenhadorMesa.desenhaJogada("bruno", Pedra.PIO_DUQUE, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_DUQUE, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.DUQUE_TERNO, Lado.DIREITO, Numero.QUINA);
+        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
+        desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
+        desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);
+        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_SENA, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);

@@ -19,33 +19,31 @@ class DesenhadorObjetos {
 	public static final float LARGURA_DA_MESA = 1260;
 	public static final float ALTURA_DA_MESA = LARGURA_DA_MESA*0.6f;
 
-	private static final Color COR_DA_TOALHA = new Color(0.1f,0.2f,0.1f);
-	
-	public static final float alturaDaPedra = LARGURA_DA_MESA/15;
-	public static final float larguraDaPedra = alturaDaPedra/2f;
-	
-	private static final float curvaturaDaQuina = larguraDaPedra*0.3f;
-	
-	private static final float afastacaoDaLinha = larguraDaPedra*0.1f;
-	private static final float tamanhoDaLinhaDoMeio = larguraDaPedra - afastacaoDaLinha - afastacaoDaLinha;
+	public static final float ALTURA_DA_PEDRA = LARGURA_DA_MESA/12;
+	public static final float LARGURA_DA_PEDRA = ALTURA_DA_PEDRA/2f;
 
-	private static final float raioDosPontinhos = larguraDaPedra/6f;
-	private static final float afastacaoDosPontinhos = larguraDaPedra*0.15f;
+	private static final float curvaturaDaQuina = LARGURA_DA_PEDRA*0.3f;
+	
+	private static final float afastacaoDaLinha = LARGURA_DA_PEDRA*0.1f;
+	private static final float tamanhoDaLinhaDoMeio = LARGURA_DA_PEDRA - afastacaoDaLinha - afastacaoDaLinha;
+
+	private static final float raioDosPontinhos = LARGURA_DA_PEDRA/6f;
+	private static final float afastacaoDosPontinhos = LARGURA_DA_PEDRA*0.15f;
 
 	private static final float pontinhosDaEsquerdaX = afastacaoDosPontinhos;
-	private static final float pontinhosDaDireitaX = larguraDaPedra - afastacaoDosPontinhos - raioDosPontinhos;
+	private static final float pontinhosDaDireitaX = LARGURA_DA_PEDRA - afastacaoDosPontinhos - raioDosPontinhos;
 
-	private static final float pontinhoDoMeioX = (alturaDaPedra/4)-(raioDosPontinhos/2);
-	private static final float pontinhoDoMeioY = (alturaDaPedra-raioDosPontinhos)/4f;
+	private static final float pontinhoDoMeioX = (ALTURA_DA_PEDRA/4)-(raioDosPontinhos/2);
+	private static final float pontinhoDoMeioY = (ALTURA_DA_PEDRA-raioDosPontinhos)/4f;
 
 	
 	private static final float pontinhosDaPrimeiraLinhaY = raioDosPontinhos;
 	private static final float pontinhosDaSegundaLinhaY = pontinhoDoMeioY; 
-	private static final float pontinhosDaTerceiraLinhaY =  (alturaDaPedra/2) - raioDosPontinhos - afastacaoDosPontinhos;
+	private static final float pontinhosDaTerceiraLinhaY =  (ALTURA_DA_PEDRA/2) - raioDosPontinhos - afastacaoDosPontinhos;
 	
 	private static final Shape toalha = new Rectangle2D.Float(0,0,LARGURA_DA_MESA,ALTURA_DA_MESA);
-	private static final RoundRectangle2D.Float retanguloPedra = new RoundRectangle2D.Float(0f, 0f, larguraDaPedra, alturaDaPedra, curvaturaDaQuina, curvaturaDaQuina);
-    private static final Line2D.Float linhaDoMeio = new Line2D.Float(afastacaoDaLinha, (alturaDaPedra/2), afastacaoDaLinha + tamanhoDaLinhaDoMeio, (alturaDaPedra/2));
+	private static final RoundRectangle2D.Float retanguloPedra = new RoundRectangle2D.Float(0f, 0f, LARGURA_DA_PEDRA, ALTURA_DA_PEDRA, curvaturaDaQuina, curvaturaDaQuina);
+    private static final Line2D.Float linhaDoMeio = new Line2D.Float(afastacaoDaLinha, (ALTURA_DA_PEDRA/2), afastacaoDaLinha + tamanhoDaLinhaDoMeio, (ALTURA_DA_PEDRA/2));
     
     private static final Shape pontinhoEmCimaEsquerda = fazPontinho(pontinhosDaEsquerdaX, pontinhosDaPrimeiraLinhaY);
     private static final Shape pontinhoNoMeioEsquerda = fazPontinho(pontinhosDaEsquerdaX, pontinhosDaSegundaLinhaY);
@@ -65,20 +63,21 @@ class DesenhadorObjetos {
     	new Shape[]{pontinhoEmCimaEsquerda,pontinhoNoMeioEsquerda, pontinhoEmbaixoEsquerda,pontinhoEmCimaDireita,pontinhoNoMeioDireita,pontinhoEmBaixoDireita}, //senha
     };
 
-
+	private static final Color COR_DA_TOALHA = new Color(0.1f,0.2f,0.1f);
     private static final Color COR_DA_LETRA_DO_NOME_DOS_JOGADORES = Color.GRAY;
+
     public static final int TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES = Math.round(LARGURA_DA_MESA/100);    
 	private static final Font LETRA_DO_NOME_DOS_JOGADORES = new Font(Font.SANS_SERIF, Font.PLAIN, TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES);
 
     private static final AffineTransform rotacaoPedra; 
-    private static final AffineTransform translacaoCabeca = AffineTransform.getTranslateInstance(0, alturaDaPedra/2);
+    private static final AffineTransform translacaoCabeca = AffineTransform.getTranslateInstance(0, ALTURA_DA_PEDRA/2);
 
 	
     private AffineTransform translation;
     
     static {
     	rotacaoPedra = AffineTransform.getQuadrantRotateInstance(3,0,0);
-    	rotacaoPedra.translate(-larguraDaPedra, 0);
+    	rotacaoPedra.translate(-LARGURA_DA_PEDRA, 0);
     }
     
 	public DesenhadorObjetos(Graphics2D graphics2d) {

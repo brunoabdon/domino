@@ -10,22 +10,22 @@ public class DesenhadorMesa {
 	private final DesenhadorObjetos desenhadorObjetos;
 	private final CalculadorDeCordenadaDePedras calculadorDeCordenadaDePedras;
 	
-	private static final float DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.larguraDaPedra/10f;
-	private static final float INCREMENTO_DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.larguraDaPedra + DISTANCIA_PEDRAS_DA_MAO;
+	private static final float DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.LARGURA_DA_PEDRA/10f;
+	private static final float INCREMENTO_DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.LARGURA_DA_PEDRA + DISTANCIA_PEDRAS_DA_MAO;
 	
 	//auxiliar. reflete o algoritimo que desenha
-	private static final float LARGURA_DE_UMA_MAO = (6 * DesenhadorObjetos.larguraDaPedra) + (5 * DISTANCIA_PEDRAS_DA_MAO); 
+	private static final float LARGURA_DE_UMA_MAO = (6 * DesenhadorObjetos.LARGURA_DA_PEDRA) + (5 * DISTANCIA_PEDRAS_DA_MAO); 
 	
 	private static final float MAO_DE_CIMA_X = (DesenhadorObjetos.LARGURA_DA_MESA - LARGURA_DE_UMA_MAO ) / 2;
 	private static final float MAO_DE_CIMA_Y = DISTANCIA_PEDRAS_DA_MAO;
 	
 	private static final float MAO_DE_BAIXO_X = MAO_DE_CIMA_X;
-	private static final float MAO_DE_BAIXO_Y = DesenhadorObjetos.ALTURA_DA_MESA - DesenhadorObjetos.alturaDaPedra - MAO_DE_CIMA_Y;
+	private static final float MAO_DE_BAIXO_Y = DesenhadorObjetos.ALTURA_DA_MESA - DesenhadorObjetos.ALTURA_DA_PEDRA - MAO_DE_CIMA_Y;
 
 	private static final float MAO_DA_ESQUERDA_X = DISTANCIA_PEDRAS_DA_MAO;
 	private static final float MAO_DA_ESQUERDA_Y = (DesenhadorObjetos.ALTURA_DA_MESA - LARGURA_DE_UMA_MAO) / 2;
 
-	private static final float MAO_DA_DIREITA_X = (DesenhadorObjetos.LARGURA_DA_MESA - DesenhadorObjetos.alturaDaPedra - MAO_DA_ESQUERDA_X);
+	private static final float MAO_DA_DIREITA_X = (DesenhadorObjetos.LARGURA_DA_MESA - DesenhadorObjetos.ALTURA_DA_PEDRA - MAO_DA_ESQUERDA_X);
 	private static final float MAO_DA_DIREITA_Y = MAO_DA_ESQUERDA_Y;
 
 	private static final float DISTANCIA_DOS_NOMES_PRA_AS_MAOS = 4*DISTANCIA_PEDRAS_DA_MAO;
@@ -61,18 +61,22 @@ public class DesenhadorMesa {
 		
 		this.calculadorDeCordenadaDePedras.calculaOndeDesenharAPedra(lado, pedra.isCarroca());
 		 
+		Numero primeiroNumero, segundoNumero;
 		
-//		Numero numero1 = calculadorDeCordenadaDePedras.direcaoFisicaInvertida() ? pedra.getSegundoNumero() : pedra.getPrimeiroNumero(); 
+		if(this.calculadorDeCordenadaDePedras.direcaoFisicaInvertida()){
+			primeiroNumero = pedra.getSegundoNumero();
+			segundoNumero = pedra.getPrimeiroNumero();
+		} else {
+			primeiroNumero = pedra.getPrimeiroNumero();
+			segundoNumero = pedra.getSegundoNumero();
+		}
 		 
 		this.desenhadorObjetos.desenhaPedra(
-				pedra.getPrimeiroNumero(), 
-				pedra.getSegundoNumero(), 
+				primeiroNumero, 
+				segundoNumero, 
 				calculadorDeCordenadaDePedras.getPosicao(),
 				calculadorDeCordenadaDePedras.getX(),
 				calculadorDeCordenadaDePedras.getY());
-			
-				
-				
 	}
 	
 	private void escreveNomeDosJogadores(String nomeJogador1, String nomeJogador2, String nomeJogador3, String nomeJogador4) {
