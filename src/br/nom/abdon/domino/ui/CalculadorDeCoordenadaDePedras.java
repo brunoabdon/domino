@@ -2,7 +2,7 @@ package br.nom.abdon.domino.ui;
 
 import br.nom.abdon.domino.Lado;
 
-public interface CalculadorDeCordenadaDePedras {
+public interface CalculadorDeCoordenadaDePedras {
 
 	public void init(float larguraDaArea, float alturaDaArea, float comprimentoDasPedras);
 	

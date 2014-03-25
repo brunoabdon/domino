@@ -8,7 +8,7 @@ import br.nom.abdon.domino.Pedra;
 public class DesenhadorMesa {
 
 	private final DesenhadorObjetos desenhadorObjetos;
-	private final CalculadorDeCordenadaDePedras calculadorDeCordenadaDePedras;
+	private final CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras;
 	
 	private static final float DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.LARGURA_DA_PEDRA/10f;
 	private static final float INCREMENTO_DISTANCIA_PEDRAS_DA_MAO = DesenhadorObjetos.LARGURA_DA_PEDRA + DISTANCIA_PEDRAS_DA_MAO;
@@ -40,7 +40,7 @@ public class DesenhadorMesa {
 	private static final float JOGADOR_DA_ESQUERDA_Y = JOGADOR_DA_DIREITA_Y;
 
 	
-	public DesenhadorMesa(DesenhadorObjetos desenhadorObjetos, CalculadorDeCordenadaDePedras calculadorDeCordenadaDePedras) {
+	public DesenhadorMesa(DesenhadorObjetos desenhadorObjetos, CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras) {
 		this.desenhadorObjetos = desenhadorObjetos;
 		this.calculadorDeCordenadaDePedras = calculadorDeCordenadaDePedras;
 	}
