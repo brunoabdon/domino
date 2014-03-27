@@ -3,7 +3,6 @@ package br.nom.abdon.domino.ui.desenhadorQuad;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.ui.CalculadorDeCoordenadaDePedras;
 import br.nom.abdon.domino.ui.Direcao;
-import br.nom.abdon.domino.ui.Posicao;
 
 public class CalculadorDeCoordenadaDePedrasQuad implements
 		CalculadorDeCoordenadaDePedras {
