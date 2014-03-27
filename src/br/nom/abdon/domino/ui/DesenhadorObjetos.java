@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import br.nom.abdon.domino.Numero;
+import br.nom.abdon.domino.Pedra;
 
 class DesenhadorObjetos {
 
@@ -69,25 +70,33 @@ class DesenhadorObjetos {
     public static final int TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES = Math.round(LARGURA_DA_MESA/100);    
 	private static final Font LETRA_DO_NOME_DOS_JOGADORES = new Font(Font.SANS_SERIF, Font.PLAIN, TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES);
 
-    private static final AffineTransform rotacaoPedra; 
-    private static final AffineTransform translacaoCabeca = AffineTransform.getTranslateInstance(0, ALTURA_DA_PEDRA/2);
-
-	
-    private AffineTransform translation;
+    private static final AffineTransform rotacao90 = fazRotacao(1);
+    private static final AffineTransform rotacao180 = fazRotacao(2);
+    private static final AffineTransform rotacao270 = fazRotacao(3);
     
-    static {
-    	rotacaoPedra = AffineTransform.getQuadrantRotateInstance(3,0,0);
-    	rotacaoPedra.translate(-LARGURA_DA_PEDRA, 0);
-    }
+    private static final AffineTransform translacaoCabeca = AffineTransform.getTranslateInstance(0, ALTURA_DA_PEDRA/2);
+	
+    private final AffineTransform translation;
+    
+	private static AffineTransform fazRotacao(int numQuadrantes) {
+		AffineTransform rotacao = AffineTransform.getQuadrantRotateInstance(numQuadrantes,0,0);
+		rotacao.translate(-LARGURA_DA_PEDRA, 0);
+		return rotacao;
+	}
     
 	public DesenhadorObjetos(Graphics2D graphics2d) {
 		this.g = graphics2d;
 		this.translation = new AffineTransform();
 	}
 	
-	public void desenhaPedra(Numero primeiraCabeca, Numero segundaCabeca, Posicao posicao, float x, float y){
+	public void desenhaPedra(Pedra pedra, Direcao direcao, float x, float y){
 		
-		AffineTransform transformacao = posicao == Posicao.EM_PE ? null : rotacaoPedra;
+		AffineTransform transformacao = 
+				direcao == Direcao.PRA_BAIXO ? rotacao90
+				: direcao == Direcao.PRA_ESQUERDA ? rotacao180
+				: direcao == Direcao.PRA_CIMA ? rotacao270
+				: null;
+				
 		
 		g.setColor(Color.WHITE);
 		preenche(retanguloPedra, x, y, transformacao);
@@ -95,7 +104,7 @@ class DesenhadorObjetos {
 		desenha(retanguloPedra, x, y, transformacao);
 		desenha(linhaDoMeio, x, y, transformacao);
 		
-		desenhaNumero(primeiraCabeca, x, y,transformacao);
+		desenhaNumero(pedra.getPrimeiroNumero(), x, y,transformacao);
 		
 		if(transformacao != null){
 			transformacao = new AffineTransform(transformacao);
@@ -104,7 +113,7 @@ class DesenhadorObjetos {
 			transformacao = translacaoCabeca;
 		}
 		
-		desenhaNumero(segundaCabeca, x, y,transformacao);
+		desenhaNumero(pedra.getSegundoNumero(), x, y,transformacao);
 		
 	}
 	
@@ -116,8 +125,8 @@ class DesenhadorObjetos {
 		}
 	}
 
-	public void desenhaPedraEmborcada(Posicao posicao, float x, float y){
-		AffineTransform transformacao = posicao == Posicao.EM_PE ? null : rotacaoPedra;
+	public void desenhaPedraEmborcada(Direcao direcao, float x, float y){
+		AffineTransform transformacao = direcao.ehHorizontal() ? null : rotacao90;
 
 		g.setColor(Color.DARK_GRAY);
 		preenche(retanguloPedra, x, y, transformacao);

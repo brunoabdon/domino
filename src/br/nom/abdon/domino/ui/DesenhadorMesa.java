@@ -61,20 +61,9 @@ public class DesenhadorMesa {
 		
 		this.calculadorDeCordenadaDePedras.calculaOndeDesenharAPedra(lado, pedra.isCarroca());
 		 
-		Numero primeiroNumero, segundoNumero;
-		
-		if(this.calculadorDeCordenadaDePedras.direcaoFisicaInvertida()){
-			primeiroNumero = pedra.getSegundoNumero();
-			segundoNumero = pedra.getPrimeiroNumero();
-		} else {
-			primeiroNumero = pedra.getPrimeiroNumero();
-			segundoNumero = pedra.getSegundoNumero();
-		}
-		 
 		this.desenhadorObjetos.desenhaPedra(
-				primeiroNumero, 
-				segundoNumero, 
-				calculadorDeCordenadaDePedras.getPosicao(),
+				pedra, 
+				calculadorDeCordenadaDePedras.getDirecao(),
 				calculadorDeCordenadaDePedras.getX(),
 				calculadorDeCordenadaDePedras.getY());
 	}
@@ -90,12 +79,12 @@ public class DesenhadorMesa {
 	private void desenhaMao(float x, float y, Posicao posicao){
 		if(posicao == Posicao.EM_PE){
 			for (int i = 0; i < 6; i++) {
-				desenhadorObjetos.desenhaPedraEmborcada(Posicao.DEITADO, x, y);
+				desenhadorObjetos.desenhaPedraEmborcada(Direcao.PRA_DIREITA, x, y);
 				y+=INCREMENTO_DISTANCIA_PEDRAS_DA_MAO;
 			}
 		} else {
 			for (int i = 0; i < 6; i++) {
-				desenhadorObjetos.desenhaPedraEmborcada(Posicao.EM_PE, x, y);
+				desenhadorObjetos.desenhaPedraEmborcada(Direcao.PRA_BAIXO, x, y);
 				x+=INCREMENTO_DISTANCIA_PEDRAS_DA_MAO;
 			}
 		}

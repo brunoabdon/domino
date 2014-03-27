@@ -41,7 +41,7 @@ class Surface extends JPanel {
 //        desenhador.desenhaPedraEmborcada(Posicao.EM_PE, 90f, 190f);
 //        desenhador.desenhaPedra(Numero.QUINA, Numero.SENA, Posicao.DEITADO, 220f, 100f);
 
-        CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras = new CalculadorDeCoordenadasDePedrasImpl();
+        CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras = null; //new CalculadorDeCoordenadasDePedrasImpl();
         calculadorDeCordenadaDePedras.init(DesenhadorObjetos.LARGURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_PEDRA);
 		DesenhadorMesa desenhadorMesa = new DesenhadorMesa(desenhadorObjetos, calculadorDeCordenadaDePedras);
         desenhadorMesa.desenhaMesaInicial("Bruno Abdon","Eudes Rafael","Igor Souza","Ronaldo Lopes");

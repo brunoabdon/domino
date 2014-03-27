@@ -10,8 +10,7 @@ public interface CalculadorDeCoordenadaDePedras {
 	
 	public float getX();
 	public float getY();
-	public Posicao getPosicao();
-	public boolean direcaoFisicaInvertida();
+	public Direcao getDirecao();
 
 	
 }
