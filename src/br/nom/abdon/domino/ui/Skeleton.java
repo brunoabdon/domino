@@ -74,7 +74,7 @@ class Surface extends JPanel {
     private static final float AFASTACAO_LINHA = LARGURA_DOMINO*0.1f;
     private static final float LINHA_DO_MEIO_TAMANHO = LARGURA_DOMINO - AFASTACAO_LINHA - AFASTACAO_LINHA;
 
-    private void desenhaDomino(Graphics2D g2d, Posicao posicao, float x, float y){
+    private void desenhaDomino(Graphics2D g2d, Direcao direcao, float x, float y){
 
     	final float meioDominoX = x + (LARGURA_DOMINO/2f); 
     	final float meioDominoY = y + (ALTURA_DOMINO/2f); 

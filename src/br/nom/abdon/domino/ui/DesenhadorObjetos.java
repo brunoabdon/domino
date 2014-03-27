@@ -91,12 +91,7 @@ class DesenhadorObjetos {
 	
 	public void desenhaPedra(Pedra pedra, Direcao direcao, float x, float y){
 		
-		AffineTransform transformacao = 
-				direcao == Direcao.PRA_BAIXO ? rotacao90
-				: direcao == Direcao.PRA_ESQUERDA ? rotacao180
-				: direcao == Direcao.PRA_CIMA ? rotacao270
-				: null;
-				
+		AffineTransform transformacao = pegaRotacao(direcao);
 		
 		g.setColor(Color.WHITE);
 		preenche(retanguloPedra, x, y, transformacao);
@@ -115,6 +110,15 @@ class DesenhadorObjetos {
 		
 		desenhaNumero(pedra.getSegundoNumero(), x, y,transformacao);
 		
+	}
+
+	private AffineTransform pegaRotacao(Direcao direcao) {
+		AffineTransform transformacao = 
+				direcao == Direcao.PRA_BAIXO ? rotacao90
+				: direcao == Direcao.PRA_ESQUERDA ? rotacao180
+				: direcao == Direcao.PRA_CIMA ? rotacao270
+				: null;
+		return transformacao;
 	}
 	
 	private void desenhaNumero(Numero numero, float x, float y, AffineTransform transformacao){

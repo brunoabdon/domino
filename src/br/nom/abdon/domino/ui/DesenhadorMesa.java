@@ -51,10 +51,10 @@ public class DesenhadorMesa {
 		
 		escreveNomeDosJogadores(nomeJogador1,nomeJogador2,nomeJogador3,nomeJogador4);
 		
-		desenhaMao(MAO_DE_CIMA_X, MAO_DE_CIMA_Y, Posicao.DEITADO);
-		desenhaMao(MAO_DE_BAIXO_X, MAO_DE_BAIXO_Y, Posicao.DEITADO);
-		desenhaMao(MAO_DA_ESQUERDA_X, MAO_DA_ESQUERDA_Y, Posicao.EM_PE);
-		desenhaMao(MAO_DA_DIREITA_X, MAO_DA_DIREITA_Y, Posicao.EM_PE);
+		desenhaMao(MAO_DE_CIMA_X, MAO_DE_CIMA_Y, Direcao.PRA_DIREITA);
+		desenhaMao(MAO_DE_BAIXO_X, MAO_DE_BAIXO_Y, Direcao.PRA_DIREITA);
+		desenhaMao(MAO_DA_ESQUERDA_X, MAO_DA_ESQUERDA_Y, Direcao.PRA_BAIXO);
+		desenhaMao(MAO_DA_DIREITA_X, MAO_DA_DIREITA_Y, Direcao.PRA_BAIXO);
 	}
 
 	public void desenhaJogada(String nomeJogador, Pedra pedra, Lado lado, Numero cabecaDoLado){
@@ -76,15 +76,15 @@ public class DesenhadorMesa {
 		
 	}
 
-	private void desenhaMao(float x, float y, Posicao posicao){
-		if(posicao == Posicao.EM_PE){
+	private void desenhaMao(float x, float y, Direcao direcao){
+		if(direcao.ehVertical()){
 			for (int i = 0; i < 6; i++) {
-				desenhadorObjetos.desenhaPedraEmborcada(Direcao.PRA_DIREITA, x, y);
+				desenhadorObjetos.desenhaPedraEmborcada(direcao, x, y);
 				y+=INCREMENTO_DISTANCIA_PEDRAS_DA_MAO;
 			}
 		} else {
 			for (int i = 0; i < 6; i++) {
-				desenhadorObjetos.desenhaPedraEmborcada(Direcao.PRA_BAIXO, x, y);
+				desenhadorObjetos.desenhaPedraEmborcada(direcao, x, y);
 				x+=INCREMENTO_DISTANCIA_PEDRAS_DA_MAO;
 			}
 		}
