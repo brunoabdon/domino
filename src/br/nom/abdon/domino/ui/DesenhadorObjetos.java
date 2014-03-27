@@ -130,7 +130,7 @@ class DesenhadorObjetos {
 	}
 
 	public void desenhaPedraEmborcada(Direcao direcao, float x, float y){
-		AffineTransform transformacao = direcao.ehHorizontal() ? null : rotacao90;
+		AffineTransform transformacao = pegaRotacao(direcao);
 
 		g.setColor(Color.DARK_GRAY);
 		preenche(retanguloPedra, x, y, transformacao);
