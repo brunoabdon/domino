@@ -49,4 +49,20 @@ class Vaga {
 		this.localizacao = localizacao;
 	}
 	
+	@Override
+	public String toString() {
+		return "[" + localizacao + "," + direcao + " (" + (ehDeCarroca?"CARROCA":"NORMAL") + ")]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Vaga)) return false;
+		
+		Vaga that = (Vaga) obj;
+		return 
+				this.ehDeCarroca() == that.ehDeCarroca() 
+				&& this.getDirecao() == that.getDirecao() 
+				&& this.getLocalizacao().equals(that.getLocalizacao());
+	}
+	
 }

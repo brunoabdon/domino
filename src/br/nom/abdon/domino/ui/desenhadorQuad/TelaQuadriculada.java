@@ -28,13 +28,13 @@ class TelaQuadriculada {
 			final Vaga ultimaVagaUsadaNesseLado = ehPraEsquerda ? ultimaVagaUsadaEsquerda : ultimaVagaUsadaDireita;
 			
 			Direcao direcao = ultimaVagaUsadaNesseLado.getDirecao();
-			final boolean andandoNoSentidoCrescenteDasCoordenadas = 
-					direcao == Direcao.PRA_DIREITA || direcao == Direcao.PRA_BAIXO;
+			final boolean andandoNoSentidoDecrescenteDasCoordenadas = 
+					direcao == Direcao.PRA_ESQUERDA || direcao == Direcao.PRA_CIMA;
 
 			
-			vaga = aindaCabe(ultimaVagaUsadaNesseLado, andandoNoSentidoCrescenteDasCoordenadas) 
-					? proximaVaga(ultimaVagaUsadaNesseLado,andandoNoSentidoCrescenteDasCoordenadas, ehCarroca)
-                    : proximaVagaFazendoCurva(ultimaVagaUsadaNesseLado, andandoNoSentidoCrescenteDasCoordenadas);
+			vaga = aindaCabe(ultimaVagaUsadaNesseLado, andandoNoSentidoDecrescenteDasCoordenadas) 
+					? proximaVaga(ultimaVagaUsadaNesseLado,andandoNoSentidoDecrescenteDasCoordenadas, ehCarroca)
+                    : proximaVagaFazendoCurva(ultimaVagaUsadaNesseLado, andandoNoSentidoDecrescenteDasCoordenadas);
 					
 			if(ehPraEsquerda){
 				ultimaVagaUsadaEsquerda = vaga;
@@ -68,12 +68,12 @@ class TelaQuadriculada {
 	 * 
 	 * @param vaga A vaga que se está testando pra ver se já estava no limite 
 	 * da mesa.
-	 * @param andandoNoSentidoCrescenteDasCoordenadas 
+	 * @param andandoNoSentidoDecrescenteDasCoordenadas 
 	 * 
 	 * @return <code>true</code>, se ainda rolar colocar mais uma Pedra do lado
 	 * dessa vaga, ou <code>false</code> se tiver já na hora de fazer a curva;
 	 */
-	private boolean aindaCabe(final Vaga vaga, boolean andandoNoSentidoCrescenteDasCoordenadas) {
+	private boolean aindaCabe(final Vaga vaga, boolean andandoNoSentidoDecrescenteDasCoordenadas) {
 		final boolean cabe;
 
 		final Direcao direcao = vaga.getDirecao();
@@ -81,10 +81,10 @@ class TelaQuadriculada {
 		final int coordenadaRelevante = direcao.ehHorizontal() ? vaga.getX() : vaga.getY();
 		final int espacoDeSeguranca = vaga.ehDeCarroca() ? 3 : 4;
 		
-		if(andandoNoSentidoCrescenteDasCoordenadas){
-			cabe = coordenadaRelevante <= this.quadradosPorLinha - espacoDeSeguranca;
-		} else {
+		if(andandoNoSentidoDecrescenteDasCoordenadas){
 			cabe = coordenadaRelevante >= espacoDeSeguranca;
+		} else {
+			cabe = coordenadaRelevante <= this.quadradosPorLinha - espacoDeSeguranca;
 		}
 
 		return cabe;
@@ -102,7 +102,7 @@ class TelaQuadriculada {
 	 * 
 	 * @return Uma vaga pra ser usada.
 	 */
-	private Vaga proximaVaga(final Vaga vagaAnterior, final boolean andandoNoSentidoCrescenteDasCoordenadas, final boolean ehPraCarroca) {
+	private Vaga proximaVaga(final Vaga vagaAnterior, final boolean andandoNoSentidoDecrescenteDasCoordenadas, final boolean ehPraCarroca) {
 		
 		final int xAnterior = vagaAnterior.getX();
 		final int yAnterior = vagaAnterior.getY();
@@ -113,7 +113,7 @@ class TelaQuadriculada {
 		final boolean ehHorizontal = direcao.ehHorizontal();
 		int distancia = (ehPraCarroca || !foiCarroca)? 2 : 1;
 		
-		if(andandoNoSentidoCrescenteDasCoordenadas) distancia *=-1;
+		if(andandoNoSentidoDecrescenteDasCoordenadas) distancia *=-1;
 		
 		final int coordenadaPraAlterar = (ehHorizontal ? xAnterior : yAnterior) + distancia;
 		
@@ -123,7 +123,7 @@ class TelaQuadriculada {
 		
 	}
 
-	private Vaga proximaVagaFazendoCurva(final Vaga vagaAnterior, boolean andandoNoSentidoCrescenteDasCoordenadas) {
+	private Vaga proximaVagaFazendoCurva(final Vaga vagaAnterior, boolean andandoNoSentidoDecrescenteDasCoordenadas) {
 
 		final int xAnterior = vagaAnterior.getX();
 		final int yAnterior = vagaAnterior.getY();
@@ -131,7 +131,7 @@ class TelaQuadriculada {
 		final Direcao direcaoAnterior = vagaAnterior.getDirecao();
 		final boolean ehHorizontal = direcaoAnterior.ehHorizontal();
 
-		final int incremento  = andandoNoSentidoCrescenteDasCoordenadas ? 2 : -2;
+		final int incremento  = andandoNoSentidoDecrescenteDasCoordenadas ? -2 : 2;
 		
 		final int coordenadaPraAlterar = (ehHorizontal ? yAnterior : xAnterior) + incremento;
 		

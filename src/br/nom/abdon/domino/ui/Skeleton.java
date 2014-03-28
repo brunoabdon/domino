@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import br.nom.abdon.domino.ui.desenhadorQuad.CalculadorDeCoordenadaDePedrasQuad;
 
 class Surface extends JPanel {
 
@@ -23,44 +24,38 @@ class Surface extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         
         
-//        g2d.scale(1, 1);
-//        desenhaDomino(g2d, Posicao.EM_PE, 100, 100 );
-//        
-//        desenhaDomino(g2d, Posicao.DEITADO, 100, 100);
-        
         DesenhadorObjetos desenhadorObjetos = new DesenhadorObjetos(g2d);
-//        desenhador.desenhaPedra(Numero.PIO, Numero.DUQUE, Posicao.EM_PE, 10f, 10f);
-//        desenhador.desenhaPedra(Numero.DUQUE, Numero.PIO, Posicao.EM_PE, 90f, 10f);
-//        desenhador.desenhaPedra(Numero.TERNO, Numero.LIMPO, Posicao.EM_PE, 170f, 10f);
-//        desenhador.desenhaPedra(Numero.QUADRA, Numero.QUADRA, Posicao.EM_PE, 250f, 10f);
-//        desenhador.desenhaPedra(Numero.QUINA, Numero.TERNO, Posicao.EM_PE, 330f, 10f);
-//        desenhador.desenhaPedra(Numero.SENA, Numero.LIMPO, Posicao.EM_PE, 410f, 10f);
-//
-//        desenhador.escreveNomeJogador("Bruno Abdon", 10f, 190f);
-//        desenhador.desenhaPedra(Numero.SENA, Numero.DUQUE, Posicao.DEITADO, 410f, 200f);
-//        desenhador.desenhaPedraEmborcada(Posicao.EM_PE, 90f, 190f);
-//        desenhador.desenhaPedra(Numero.QUINA, Numero.SENA, Posicao.DEITADO, 220f, 100f);
+        
+        testaDesenharPedras(desenhadorObjetos);
 
-        CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras = null; //new CalculadorDeCoordenadasDePedrasImpl();
+        CalculadorDeCoordenadaDePedras calculadorDeCordenadaDePedras = new CalculadorDeCoordenadaDePedrasQuad();
         calculadorDeCordenadaDePedras.init(DesenhadorObjetos.LARGURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_MESA-100, DesenhadorObjetos.ALTURA_DA_PEDRA);
 		DesenhadorMesa desenhadorMesa = new DesenhadorMesa(desenhadorObjetos, calculadorDeCordenadaDePedras);
         desenhadorMesa.desenhaMesaInicial("Bruno Abdon","Eudes Rafael","Igor Souza","Ronaldo Lopes");
         
         desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_PIO, Lado.DIREITO, Numero.QUINA);
         desenhadorMesa.desenhaJogada("bruno", Pedra.PIO_DUQUE, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_DUQUE, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.DUQUE_TERNO, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_SENA, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);
-        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_SENA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_DUQUE, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.DUQUE_TERNO, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_SENA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_TERNO, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.TERNO_QUADRA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.QUADRA_SENA, Lado.DIREITO, Numero.QUINA);
+//        desenhadorMesa.desenhaJogada("bruno", Pedra.CARROCA_DE_SENA, Lado.DIREITO, Numero.QUINA);
         
         
     }
+
+
+	private void testaDesenharPedras(DesenhadorObjetos desenhadorObjetos) {
+        desenhadorObjetos.desenhaPedra(Pedra.LIMPO_PIO, Direcao.PRA_BAIXO, 120f, 120f);
+        desenhadorObjetos.desenhaPedra(Pedra.LIMPO_DUQUE, Direcao.PRA_ESQUERDA, 120f, 120f);
+        desenhadorObjetos.desenhaPedra(Pedra.LIMPO_TERNO, Direcao.PRA_CIMA, 120f, 120f);
+        desenhadorObjetos.desenhaPedra(Pedra.LIMPO_QUADRA, Direcao.PRA_DIREITA, 120f, 120f);
+	}
     
 
     
@@ -158,7 +153,7 @@ public class Skeleton extends JFrame {
 		add(comp);
 
         setSize((int)DesenhadorObjetos.LARGURA_DA_MESA+10, (int)DesenhadorObjetos.ALTURA_DA_MESA+10);
-        System.out.println(getSize());
+//        System.out.println(getSize());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }

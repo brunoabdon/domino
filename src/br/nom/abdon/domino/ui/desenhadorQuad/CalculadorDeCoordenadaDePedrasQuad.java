@@ -36,14 +36,14 @@ public class CalculadorDeCoordenadaDePedrasQuad implements
 	@Override
 	public void calculaOndeDesenharAPedra(Lado lado, boolean ehCarroca) {
 		final Vaga vaga = this.telaQuadriculada.getVaga(lado, ehCarroca);
-		Direcao direcao = vaga.getDirecao();
+		
 		
 		final float[] coordenadaPraDesenhar = calculaCoordenadaPraDesenhar(vaga); 
 		
 		this.x = coordenadaPraDesenhar[0];
 		this.y = coordenadaPraDesenhar[1];
 		
-		this.direcao = direcao;
+		this.direcao = vaga.getDirecao();
 
 	}
 
@@ -57,15 +57,21 @@ public class CalculadorDeCoordenadaDePedrasQuad implements
 		
 		final float[] coordenadaPraDesenhar = coordenadaDoQuadrado;  //hehe. reaproveitando
 
+		if(vaga.ehDeCarroca()){
+			
+		} else {
+			
+		}
+		
 		//acha a coordenada do ponto no alto à esquerda do quadrado
-		coordenadaPraDesenhar[0] = xQuadrado - ladoDeUmQuadrado/2;
-		coordenadaPraDesenhar[1] = yQuadrado - ladoDeUmQuadrado/2;
+//		coordenadaPraDesenhar[0] = xQuadrado - ladoDeUmQuadrado/2;
+//		coordenadaPraDesenhar[1] = yQuadrado - ladoDeUmQuadrado/2;
 
 		return coordenadaPraDesenhar;
 	}
 
 	private float[] calculaCoordenadaQuadrado(Localizacao localizacao) {
-		return null;
+		return new float[]{ladoDeUmQuadrado/2 + localizacao.getX() * ladoDeUmQuadrado, ladoDeUmQuadrado/2 + localizacao.getY()*ladoDeUmQuadrado};
 	}
 
 	@Override

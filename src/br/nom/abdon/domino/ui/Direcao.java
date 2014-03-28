@@ -26,5 +26,16 @@ public enum Direcao {
 		return !ehHorizontal();
 	}
 	
-	
+	@Override
+	public String toString() {
+		String str;
+		switch (this) {
+			case PRA_ESQUERDA: str = "<-"; break;
+			case PRA_BAIXO: str = "v"; break;
+			case PRA_CIMA: str = "^"; break;
+			case PRA_DIREITA: str = "->"; break;
+			default: throw new IllegalStateException();
+		}
+		return str;
+	}
 }

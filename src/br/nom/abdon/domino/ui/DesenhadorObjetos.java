@@ -80,7 +80,7 @@ class DesenhadorObjetos {
     
 	private static AffineTransform fazRotacao(int numQuadrantes) {
 		AffineTransform rotacao = AffineTransform.getQuadrantRotateInstance(numQuadrantes,0,0);
-		rotacao.translate(-LARGURA_DA_PEDRA, 0);
+		if(numQuadrantes!=1)rotacao.translate(-LARGURA_DA_PEDRA, 0);
 		return rotacao;
 	}
     
@@ -114,9 +114,9 @@ class DesenhadorObjetos {
 
 	private AffineTransform pegaRotacao(Direcao direcao) {
 		AffineTransform transformacao = 
-				direcao == Direcao.PRA_BAIXO ? rotacao90
-				: direcao == Direcao.PRA_ESQUERDA ? rotacao180
-				: direcao == Direcao.PRA_CIMA ? rotacao270
+				direcao == Direcao.PRA_ESQUERDA ? rotacao90
+				: direcao == Direcao.PRA_CIMA ? rotacao180
+				: direcao == Direcao.PRA_DIREITA ? rotacao270
 				: null;
 		return transformacao;
 	}
