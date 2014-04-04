@@ -3,4 +3,4 @@
  * @author bruno
  *
  */
-package br.nom.abdon.domino.ui.desenhadorQuad;
+package br.nom.abdon.domino.ui.j2d.desenhadorQuad;

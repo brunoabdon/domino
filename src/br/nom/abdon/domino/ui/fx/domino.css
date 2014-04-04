@@ -1,0 +1,15 @@
+#mesa {
+    -fx-fill: #025906;
+}
+
+.pedra{
+    -fx-fill: #e2e2e2;
+    -fx-arc-height: 20;
+    -fx-arc-width: 20;
+    
+}
+
+.linhaDePedra{
+    -fx-stroke: black;
+    
+}

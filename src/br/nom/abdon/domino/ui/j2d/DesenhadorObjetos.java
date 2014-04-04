@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui;
+package br.nom.abdon.domino.ui.j2d;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -64,7 +64,7 @@ class DesenhadorObjetos {
     	new Shape[]{pontinhoEmCimaEsquerda,pontinhoNoMeioEsquerda, pontinhoEmbaixoEsquerda,pontinhoEmCimaDireita,pontinhoNoMeioDireita,pontinhoEmBaixoDireita}, //senha
     };
 
-	private static final Color COR_DA_TOALHA = new Color(0.1f,0.2f,0.1f);
+    private static final Color COR_DA_TOALHA = new Color(0.1f,0.2f,0.1f);
     private static final Color COR_DA_LETRA_DO_NOME_DOS_JOGADORES = Color.GRAY;
 
     public static final int TAMANHO_DA_LETRA_DO_NOME_DOS_JOGADORES = Math.round(LARGURA_DA_MESA/100);    

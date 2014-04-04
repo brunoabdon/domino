@@ -1,6 +1,6 @@
-package br.nom.abdon.domino.ui.desenhadorQuad;
+package br.nom.abdon.domino.ui.j2d.desenhadorQuad;
 
-import br.nom.abdon.domino.ui.Direcao;
+import br.nom.abdon.domino.ui.j2d.Direcao;
 
 class Vaga {
 

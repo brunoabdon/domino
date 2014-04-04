@@ -1,8 +1,11 @@
-package br.nom.abdon.domino.ui.desenhadorQuad;
+package br.nom.abdon.domino.ui.j2d.desenhadorQuad;
 
 import br.nom.abdon.domino.Lado;
-import br.nom.abdon.domino.ui.CalculadorDeCoordenadaDePedras;
-import br.nom.abdon.domino.ui.Direcao;
+import br.nom.abdon.domino.ui.j2d.CalculadorDeCoordenadaDePedras;
+import br.nom.abdon.domino.ui.j2d.Direcao;
+import static br.nom.abdon.domino.ui.j2d.Direcao.PRA_BAIXO;
+import static br.nom.abdon.domino.ui.j2d.Direcao.PRA_DIREITA;
+import static br.nom.abdon.domino.ui.j2d.Direcao.PRA_ESQUERDA;
 
 public class CalculadorDeCoordenadaDePedrasQuad implements
 		CalculadorDeCoordenadaDePedras {

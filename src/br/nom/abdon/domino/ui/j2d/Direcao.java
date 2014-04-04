@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui;
+package br.nom.abdon.domino.ui.j2d;
 
 public enum Direcao {
 	PRA_ESQUERDA, PRA_BAIXO, PRA_DIREITA, PRA_CIMA;

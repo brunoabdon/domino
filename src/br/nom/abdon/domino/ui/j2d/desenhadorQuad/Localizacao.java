@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui.desenhadorQuad;
+package br.nom.abdon.domino.ui.j2d.desenhadorQuad;
 
 class Localizacao {
 	private int x, y;

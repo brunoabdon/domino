@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui;
+package br.nom.abdon.domino.ui.j2d;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
-import br.nom.abdon.domino.ui.desenhadorQuad.CalculadorDeCoordenadaDePedrasQuad;
+import br.nom.abdon.domino.ui.j2d.desenhadorQuad.CalculadorDeCoordenadaDePedrasQuad;
 
 class Surface extends JPanel {
 

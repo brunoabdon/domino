@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui;
+package br.nom.abdon.domino.ui.j2d;
 
 import br.nom.abdon.domino.Lado;
 
