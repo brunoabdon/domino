@@ -9,18 +9,26 @@ package br.nom.abdon.domino.ui.fx;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import java.util.Collection;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -33,7 +41,7 @@ public class DominoApp extends Application {
     	public static final float LARGURA_DA_MESA = 1260;
 	public static final float ALTURA_DA_MESA = LARGURA_DA_MESA*0.6f;
 
-	public static final float ALTURA_DA_PEDRA = LARGURA_DA_MESA/8;
+	public static final float ALTURA_DA_PEDRA = LARGURA_DA_MESA/10;
 	public static final float LARGURA_DA_PEDRA = ALTURA_DA_PEDRA/2f;
 
 	private static final float afastacaoDaLinha = LARGURA_DA_PEDRA*0.1f;
@@ -63,9 +71,9 @@ public class DominoApp extends Application {
         
 //        drawShapes(gc);
         
-        Node desenhoPioTerno = fazPedra(Pedra.QUINA_SENA);
-        desenhoPioTerno.setTranslateX(20);
-        desenhoPioTerno.setTranslateY(20);
+        Node pedra1 = fazPedra(Pedra.QUINA_SENA);
+        pedra1.setTranslateX(20);
+        pedra1.setTranslateY(20);
         
         Rectangle mesa = new Rectangle(LARGURA_DA_MESA,ALTURA_DA_MESA);
         mesa.setId("mesa");
@@ -76,20 +84,43 @@ public class DominoApp extends Application {
         Group root = new Group();
         Collection<Node> nos = root.getChildren();
         nos.add(mesa);
-        nos.add(desenhoPioTerno);
+        nos.add(pedra1);
 
-        Scene scene = new Scene(root, 300, 300);
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         
         final String css = DominoApp.class.getResource("domino.css").toExternalForm();
         scene.getStylesheets().add(css);
         
-        
-        
-        
-        
-        
         primaryStage.show();
+        final Duration duracao = Duration.millis(1500);
+        final Duration metadeDaDuraco = duracao.divide(2);
+        
+        TranslateTransition translation = new TranslateTransition(duracao);
+        translation.setToX(pedra1.getTranslateX() + 400);
+        
+        RotateTransition rotation = new RotateTransition(duracao);
+        rotation.setByAngle(360+360+90);
+        
+        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
+        cresce.setByX(1);
+        cresce.setByY(1);
+        
+        ScaleTransition encolhe = new ScaleTransition(metadeDaDuraco);
+        encolhe.setByX(-1);
+        encolhe.setByY(-1);
+        
+        SequentialTransition cresceEncolhe = new SequentialTransition(cresce,encolhe);
+        final Group g = (Group)pedra1;
+        
+        ParallelTransition transicao = new ParallelTransition(pedra1,rotation,translation);
+        transicao.setOnFinished((ActionEvent t) -> {
+            ((Shape)g.getChildren().get(2)).setFill(Color.TRANSPARENT);
+        });
+        
+        
+        transicao.play();
+        
 
     }
 
@@ -110,7 +141,9 @@ public class DominoApp extends Application {
         Group desenhoPedraEmBranco = fazPedraEmBranco();
         Group pontinhos = fazPontinhos(pedra);
 
-        Group desenhoPedra = new Group(desenhoPedraEmBranco,pontinhos);
+        Rectangle rec = new Rectangle(LARGURA_DA_PEDRA, ALTURA_DA_PEDRA);
+        
+        Group desenhoPedra = new Group(desenhoPedraEmBranco,pontinhos,rec);
         desenhoPedra.setId(pedra.name());
         desenhoPedra.getStyleClass().add("pedra");
         
