@@ -100,23 +100,21 @@ public class DominoApp extends Application {
         translation.setToX(pedra1.getTranslateX() + 400);
         
         RotateTransition rotation = new RotateTransition(duracao);
-        rotation.setByAngle(360+360+90);
-        
-        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
-        cresce.setByX(1);
-        cresce.setByY(1);
-        
+        rotation.setByAngle(90);
+
         ScaleTransition encolhe = new ScaleTransition(metadeDaDuraco);
-        encolhe.setByX(-1);
-        encolhe.setByY(-1);
+        encolhe.setByX(-0.8);
+
+        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
+        cresce.setByX(0.8);
         
-        SequentialTransition cresceEncolhe = new SequentialTransition(cresce,encolhe);
+        SequentialTransition vira = new SequentialTransition(encolhe,cresce);
         final Group g = (Group)pedra1;
         
-        ParallelTransition transicao = new ParallelTransition(pedra1,rotation,translation);
-        transicao.setOnFinished((ActionEvent t) -> {
-            ((Shape)g.getChildren().get(2)).setFill(Color.TRANSPARENT);
-        });
+        ParallelTransition transicao = new ParallelTransition(pedra1,vira);
+//        transicao.setOnFinished((ActionEvent t) -> {
+//            ((Shape)g.getChildren().get(2)).setFill(Color.TRANSPARENT);
+//        });
         
         
         transicao.play();
@@ -141,9 +139,9 @@ public class DominoApp extends Application {
         Group desenhoPedraEmBranco = fazPedraEmBranco();
         Group pontinhos = fazPontinhos(pedra);
 
-        Rectangle rec = new Rectangle(LARGURA_DA_PEDRA, ALTURA_DA_PEDRA);
+//        Rectangle rec = new Rectangle(LARGURA_DA_PEDRA, ALTURA_DA_PEDRA);
         
-        Group desenhoPedra = new Group(desenhoPedraEmBranco,pontinhos,rec);
+        Group desenhoPedra = new Group(desenhoPedraEmBranco,pontinhos);
         desenhoPedra.setId(pedra.name());
         desenhoPedra.getStyleClass().add("pedra");
         
