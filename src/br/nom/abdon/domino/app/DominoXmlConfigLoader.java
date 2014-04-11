@@ -59,7 +59,7 @@ public class DominoXmlConfigLoader {
 
 	private JogadorWrapper getJogador(String nomeJogador) throws DominoAppException {
 		
-		Class<? extends Jogador> klass  = pegaClasseJogador(configHandler.jogador1_dupla1);
+		Class<? extends Jogador> klass  = pegaClasseJogador(nomeJogador);
 		Jogador jogador = carrega(klass);
 		
 		return new JogadorWrapper(jogador, nomeJogador);
@@ -69,7 +69,7 @@ public class DominoXmlConfigLoader {
 	private Class<? extends Jogador> pegaClasseJogador(String nomeJogador) throws DominoAppException {
 		
 		String jogadorClassName = configHandler.pegaClasseJogador(nomeJogador);
-		
+                
 		Class<? extends Jogador> klass;
 		try {
 			klass = Class.forName(jogadorClassName).asSubclass(Jogador.class);
