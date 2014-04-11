@@ -97,7 +97,7 @@ public class EventoDomino {
 	protected EventoDomino(Tipo tipo){
 		this.tipo = tipo;
 	}
-	
+
 	public EventoDomino(Tipo tipo,String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4) {
 		this(tipo);
 		this.nomeDoJogador1 = nomeDoJogador1;
@@ -129,6 +129,7 @@ public class EventoDomino {
 		this(tipo);
 		this.quemFoi = quemFoi;
 		this.tipoDeVitoria = tipoDeVitoria;
+                this.foiEmpate = Boolean.FALSE;
 	}
 
 	public EventoDomino(Tipo tipo,int pontosDupla1, int pontosDupla2) {

@@ -73,13 +73,17 @@ public class LoggerDominoEventListener implements DominoEventListener {
 	
 	private void acabouPartida(EventoDomino eventoDomino) {
 		String nomeDoJogador = eventoDomino.getQuemFoi();
-		Vitoria tipoDeVitoria = eventoDomino.getTipoDeVitoria();
 		
-		System.out.println(nomeDoJogador + ":\tbateu.");
-		if(tipoDeVitoria != Vitoria.BATIDA_SIMPLES){
-			System.out.println("("+ tipoDeVitoria+ ")");
-		}
-		
+                if(eventoDomino.foiEmpate()){
+                    System.out.println("Empatou. A proxima vale dobrada.");
+                } else {
+                    Vitoria tipoDeVitoria = eventoDomino.getTipoDeVitoria();
+
+                    System.out.println(nomeDoJogador + ":\tbateu.");
+                    if(tipoDeVitoria != Vitoria.BATIDA_SIMPLES){
+                            System.out.println("("+ tipoDeVitoria+ ")");
+                    }
+                }
 	}
 
 	
