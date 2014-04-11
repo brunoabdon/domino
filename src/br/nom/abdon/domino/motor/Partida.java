@@ -22,7 +22,7 @@ class Partida {
 	private MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
-	private DominoEventListener eventListener;
+	private final DominoEventListener eventListener;
 	
 	public Partida(Dupla dupla1, Dupla dupla2, DominoEventListener eventListener) {
 		super();
@@ -36,10 +36,10 @@ class Partida {
 	protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) throws BugDeJogadorException{
 		
 		JogadorWrapper jogadorDaVez = null;
-		String nomeJogadorDaVez = null;
+		String nomeJogadorDaVez;
 		
 		Pedra pedra = null;
-		Lado lado = null;
+		Lado lado;
 		
 		boolean alguemBateu = false, trancou = false;
 		
@@ -65,8 +65,21 @@ class Partida {
 			
 			Jogada jogada = jogadorDaVez.joga(mesa);
 			
-			if(jogada == Jogada.TOQUE){
-				this.eventListener.eventoAconteceu(new EventoDomino(Tipo.JOGADOR_TOCOU,nomeJogadorDaVez));
+                        if(jogada == null){
+                            throw new BugDeJogadorException("Qual é a jogada? Nenhuma?", jogadorDaVez);
+                        } else if(jogada == Jogada.TOQUE){
+                            //tocou mesmo?
+                            boolean tinhaPedraPraJogar = 
+                                    maoDoJogadorDaVez.stream().anyMatch(
+                                        pedraNaMao -> 
+                                                pedraNaMao.temNumero(mesa.getNumeroDireita()) 
+                                                || pedraNaMao.temNumero(mesa.getNumeroDireita()));
+                            
+                            if(tinhaPedraPraJogar){
+                                throw new BugDeJogadorException("Tocou tendo pedra pra jogar!", jogadorDaVez);
+                            }
+                            this.eventListener.eventoAconteceu(new EventoDomino(Tipo.JOGADOR_TOCOU,nomeJogadorDaVez));
+			
 			} else {
 				//se livrando logo do objeto Jogada, que veio do jogador.
 				lado = jogada.getLado();
@@ -273,4 +286,5 @@ class Partida {
 	private int avanca(int vez){
 		return (vez+1)%4;
 	}
+
 }
