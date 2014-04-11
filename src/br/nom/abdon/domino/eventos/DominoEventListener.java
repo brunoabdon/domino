@@ -3,7 +3,7 @@ package br.nom.abdon.domino.eventos;
 import br.nom.abdon.domino.Jogador;
 
 /**
- * Interface para receber eventos do que acontece durante o jogo.
+ * Interface para receber eventos públicos do que acontece durante o jogo.
  * 
  * {@link Jogador}es que implementarem esta interface serao automaticamente 
  * registrados para serem avisados dos eventos.

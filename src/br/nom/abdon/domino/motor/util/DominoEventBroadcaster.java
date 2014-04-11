@@ -6,7 +6,7 @@ import java.util.List;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 import br.nom.abdon.domino.eventos.DominoRootEventListener;
 import br.nom.abdon.domino.eventos.EventoDomino;
-import br.nom.abdon.domino.eventos.EventoSecreto;
+import br.nom.abdon.domino.eventos.EventoSigiloso;
 
 public class DominoEventBroadcaster implements DominoEventListener, DominoRootEventListener {
 	
@@ -35,7 +35,7 @@ public class DominoEventBroadcaster implements DominoEventListener, DominoRootEv
 	}
 
         @Override
-	public void eventoAconteceu(EventoSecreto eventoSecreto) {
+	public void eventoAconteceu(EventoSigiloso eventoSecreto) {
             rootEventListeners.parallelStream().forEach(
                     (eventListener) -> {
                         eventListener.eventoAconteceu(eventoSecreto);
