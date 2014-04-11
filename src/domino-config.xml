@@ -13,8 +13,8 @@
   
   <!-- substituir o nome das classes quando existirem -->
   <jogador nome="bruno" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="eudes" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="eudes" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
   <jogador nome="igor" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
 
 </domino>
