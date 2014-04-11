@@ -22,8 +22,6 @@ class Partida {
 	private MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
-	private Collection<Pedra>[] maos;
-	
 	private DominoEventListener eventListener;
 	
 	public Partida(Dupla dupla1, Dupla dupla2, DominoEventListener eventListener) {
@@ -56,12 +54,14 @@ class Partida {
 			vez = decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
 		}
 		
+                final Collection<Pedra>[] maos = mesa.getMaos();
+                
 		while(!(alguemBateu || trancou)){
 			
 			jogadorDaVez = jogadorDaVez(vez);
 			nomeJogadorDaVez = jogadorDaVez.getNome();
 
-			Collection<Pedra> maoDoJogadorDaVez = this.maos[vez];
+			Collection<Pedra> maoDoJogadorDaVez = maos[vez];
 			
 			Jogada jogada = jogadorDaVez.joga(mesa);
 			
@@ -138,6 +138,8 @@ class Partida {
 		int menorAteAgora = 1000; 
 		int idxJogadorComMenos=-1;
 		
+                final Collection<Pedra>[] maos = mesa.getMaos();
+                
 		for (int i = 0; i < maos.length; i++) {
 			int totalJogador = 0;
 		
@@ -163,14 +165,9 @@ class Partida {
 	}
 
 	private boolean verificaTrancada() {
-		/* 
-		 * da pra melhorar pra caralho isso aqui.. ver o numero
-		 * minimo de pedras que tem que ter sido jogado pra poder 
-		 * ter chegado a trancar... ir contando quantas vezes cada
-		 * numero foi jogado (somando isso com o numero de vezes que
-		 * ele aparece no dorme, pode excluir uma trancada...) 
-		 */
-		
+
+                final Collection<Pedra>[] maos = mesa.getMaos();
+                
 		boolean taTrancado = true; //até que se prove o contrario
 		
 		for (int i = 0; i < maos.length; i++) {
@@ -206,7 +203,7 @@ class Partida {
 		List<Pedra> pedras = Arrays.asList(Pedra.values());
 		Collections.shuffle(pedras);
 		
-        this.maos = new Collection[4];
+        final Collection<Pedra>[] maos = mesa.getMaos();
         for (int i = 0; i < 4 ; i++) {
         	System.out.println("mao " + i);
         	ArrayList<Pedra> mao = new ArrayList<Pedra>(6); //definir qual a melhor Collection usar
@@ -218,7 +215,7 @@ class Partida {
 				 System.out.println(pedra);
         	}
         	System.out.println();
-			this.maos[i] = mao; 
+			maos[i] = mao; 
 			jogadorDaVez(i).recebeMao(mao_);
 		}
         
@@ -237,10 +234,11 @@ class Partida {
 		
 		int vez = -1;
 		Jogada primeiraJogada = null; 
+                final Collection<Pedra>[] maos = mesa.getMaos();
 		for (int i = 6; i >= 2 && primeiraJogada == null; i--) {
 			Pedra carroca = Pedra.carrocas[i];
 			for (int j = 0; j < 4; j++) {
-				if(this.maos[j].contains(carroca)){
+				if(maos[j].contains(carroca)){
 					vez = j;
 					JogadorWrapper jogadorQueComeca = jogadorDaVez(vez);
 					primeiraJogada = jogadorQueComeca.joga(mesa);
@@ -253,7 +251,7 @@ class Partida {
 						throw new BugDeJogadorException("Comecou com a pedra errada me velho. Erra pra ser " + carroca,jogadorQueComeca);
 					}
 					//limpesa
-					this.maos[j].remove(pedra);
+					maos[j].remove(pedra);
 					this.mesa.coloca(pedra,primeiraJogada.getLado());
 					
 					break;

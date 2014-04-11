@@ -62,6 +62,14 @@ public interface Mesa extends Iterable<Pedra>{
 	 */
 	public Iterator<Pedra> iteratorDireitaPraEsquerda();
 	
+        
+        /**
+         * Diz quantas {@link  Pedra}s um dado {@link Jogador} tem na mão no momento.
+         * @return Quantas pedras o jogador de indice <code>qualJogado<code> tem
+         * na mão.
+         */
+        public int quantasPedrasOJogadoresTem(int qualJogador);
+        
 	/**
 	 * Diz quantas {@link Pedra}s tem na mesa
 	 * @return quantas  {@link Pedra}s tem na mesa

@@ -9,17 +9,25 @@ import br.nom.abdon.domino.Mesa;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.motor.util.IteratorReadOnly;
+import java.util.Collection;
 
 class MesaImpl implements br.nom.abdon.domino.Mesa{
 
-	private Deque<Pedra> listaDePedras;
+	private final Deque<Pedra> listaDePedras;
 	private Numero numeroEsquerda, numeroDireita;
+        final Collection<Pedra>[] maos;
 
 	protected MesaImpl() {
-		this.listaDePedras = new ArrayDeque<Pedra>(28-4);
+            this.listaDePedras = new ArrayDeque<Pedra>(28-4);
+            this.maos = new Collection[4];
 	}
-	
-	public boolean taVazia(){
+
+        Collection<Pedra>[] getMaos() {
+            return maos;
+        }
+
+        @Override
+        public boolean taVazia(){
 		return this.listaDePedras.isEmpty();
 	}
 	
@@ -31,6 +39,13 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 		return pedra.temNumero(cabeca);
 				
 	}
+        @Override
+        public int quantasPedrasOJogadoresTem(int qualJogador) {
+            if(qualJogador < 1 || qualJogador >4 ) 
+                throw new IllegalArgumentException("Dominó se joga com 4.");
+            System.out.println(qualJogador);
+            return this.maos[qualJogador-1].size();
+        }
 
 	/**
 	 * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, lenvantando uma exceção 
@@ -72,9 +87,11 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 		return primeiroNumeroDaPedra == cabecaAtual ? pedraQueFoiJogada.getSegundoNumero() : primeiroNumeroDaPedra;
 	}
 
+        @Override
 	public Numero getNumeroEsquerda() {
 		return numeroEsquerda;
 	}
+        @Override
 	public Numero getNumeroDireita() {
 		return numeroDireita;
 	}
@@ -84,18 +101,22 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 		return iteratorEsquedaPraDireita();
 	}
 
+        @Override
 	public Iterator<Pedra> iteratorEsquedaPraDireita() {
 		return new IteratorReadOnly<Pedra>(listaDePedras.iterator());
 	}
 
+        @Override
 	public Iterator<Pedra> iteratorDireitaPraEsquerda() {
 		return new IteratorReadOnly<Pedra>(listaDePedras.descendingIterator());
 	}
 	
+        @Override
 	public int quantasPecas(){
 		return this.listaDePedras.size();
 	}
 	
+        @Override
 	public Pedra[] toArray(){
 		return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
 	}
