@@ -66,6 +66,6 @@ public final class Jogada {
 	
 	@Override
 	public String toString() {
-		return this == TOQUE ? "toc toc " : (this.pedra.toString() + "(" + this.lado + ")");
+		return this == TOQUE ? "toc toc" : (this.pedra.toString() + "(" + this.lado + ")");
 	}
 }
