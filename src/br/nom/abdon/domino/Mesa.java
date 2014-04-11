@@ -34,7 +34,9 @@ public interface Mesa extends Iterable<Pedra>{
 	 * 
 	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
 	 * é ilegal e vai causar {@link UnsupportedOperationException}.
-	 */
+         * 
+         * @return um Iterator pra ver as pedras da mesa
+         */
 	@Override
 	public Iterator<Pedra> iterator();
 
@@ -44,6 +46,8 @@ public interface Mesa extends Iterable<Pedra>{
 	 * 
 	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
 	 * é ilegal e vai causar {@link UnsupportedOperationException}.
+         * 
+         * @return um Iterator pra ver as pedras da mesa
 	 */
 	public Iterator<Pedra> iteratorEsquedaPraDireita();
 
@@ -53,6 +57,8 @@ public interface Mesa extends Iterable<Pedra>{
 	 * 
 	 * O iterator será "read-only", ou seja, uma chamada a {@link Iterator#remove()}
 	 * é ilegal e vai causar {@link UnsupportedOperationException}.
+         * 
+         * @return um Iterator pra ver as pedras da mesa
 	 */
 	public Iterator<Pedra> iteratorDireitaPraEsquerda();
 	
