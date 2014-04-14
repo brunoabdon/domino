@@ -4,8 +4,6 @@ import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.eventos.EventoDomino;
-import br.nom.abdon.domino.eventos.EventoDomino.Tipo;
 import br.nom.abdon.domino.eventos.LoggerDominoEventListener;
 import br.nom.abdon.domino.motor.util.DominoEventBroadcaster;
 
@@ -27,19 +25,16 @@ public class Jogo {
 	
 	public void jogar(){
 		
-		eventBroadcaster.eventoAconteceu(
-				new EventoDomino(
-						Tipo.JOGO_COMECOU,
-						dupla1.getJogador1().getNome(), 
+		eventBroadcaster.jogoComecou(dupla1.getJogador1().getNome(), 
 						dupla2.getJogador1().getNome(), 
 						dupla1.getJogador2().getNome(), 
-						dupla2.getJogador2().getNome()));
+						dupla2.getJogador2().getNome());
 		
 		try {
 			Dupla ultimaDuplaQueVenceu = null;
 			int multiplicadorDobrada = 1;
 			while(!alguemVenceu()){
-				this.eventBroadcaster.eventoAconteceu(new EventoDomino(Tipo.PARTIDA_COMECOU,dupla1.getPontos(), dupla2.getPontos(), multiplicadorDobrada != 1));
+				this.eventBroadcaster.partidaComecou(dupla1.getPontos(), dupla2.getPontos(), multiplicadorDobrada != 1);
 				Partida partida = new Partida(dupla1, dupla2, eventBroadcaster);
 				
 				ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
@@ -52,7 +47,7 @@ public class Jogo {
 				}
 			}
 			
-			eventBroadcaster.eventoAconteceu(new EventoDomino(Tipo.JOGO_ACABOU,dupla1.getPontos(), dupla2.getPontos()));
+			eventBroadcaster.jogoAcabou(dupla1.getPontos(), dupla2.getPontos());
 			
 			
 		} catch (BugDeJogadorException e) {

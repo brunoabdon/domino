@@ -54,7 +54,7 @@ public final class JogadorWrapper implements Jogador {
 	
 	@Override
 	public String toString() {
-		return this.getNome() + "[" + wrapped.getClass() + "]";
+		return this.getNome() + " [" + wrapped.getClass() + "]";
 	}
 
 }

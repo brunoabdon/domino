@@ -12,14 +12,12 @@ import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.eventos.EventoDomino;
-import br.nom.abdon.domino.eventos.EventoDomino.Tipo;
 
 class Partida {
 
-	private Dupla dupla1, dupla2;
+	private final Dupla dupla1, dupla2;
 
-	private MesaImpl mesa;
+	private final MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
 	private final DominoEventListener eventListener;
@@ -36,7 +34,7 @@ class Partida {
 	protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) throws BugDeJogadorException{
 		
 		JogadorWrapper jogadorDaVez = null;
-		String nomeJogadorDaVez;
+		String nomeJogadorDaVez = null;
 		
 		Pedra pedra = null;
 		Lado lado;
@@ -78,7 +76,7 @@ class Partida {
                             if(tinhaPedraPraJogar){
                                 throw new BugDeJogadorException("Tocou tendo pedra pra jogar!", jogadorDaVez);
                             }
-                            this.eventListener.eventoAconteceu(new EventoDomino(Tipo.JOGADOR_TOCOU,nomeJogadorDaVez));
+                            this.eventListener.jogadorTocou(nomeJogadorDaVez);
 			
 			} else {
 				//se livrando logo do objeto Jogada, que veio do jogador.
@@ -91,7 +89,7 @@ class Partida {
 
 				this.mesa.coloca(pedra, lado);
 				
-				this.eventListener.eventoAconteceu(new EventoDomino(Tipo.JOGADOR_JOGOU,nomeJogadorDaVez,pedra,lado));
+				this.eventListener.jogadorJogou(nomeJogadorDaVez,lado,pedra);
 				
 				alguemBateu = maoDoJogadorDaVez.isEmpty();
 				if(!alguemBateu) {
@@ -104,23 +102,18 @@ class Partida {
 		
 		ResultadoPartida resultadoPartida;
 		
-		EventoDomino eventoPartidaAcabou = null;
-
 		if(trancou){
 			resultadoPartida = contaPontos();
 			if(resultadoPartida == ResultadoPartida.EMPATE){
-				eventoPartidaAcabou = new EventoDomino(Tipo.PARTIDA_ACABOU, true);
-			}
+                            this.eventListener.partidaEmpatou();
+			} else {
+                            this.eventListener.jogadorBateu(nomeJogadorDaVez,Vitoria.CONTAGEM_DE_PONTOS);
+                        }
 		} else {
 			Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
+                        this.eventListener.jogadorBateu(nomeJogadorDaVez,tipoDaBatida);
 			resultadoPartida = new ResultadoPartida(tipoDaBatida,jogadorDaVez);
 		}
-		
-		if(eventoPartidaAcabou == null){
-			eventoPartidaAcabou = new EventoDomino(Tipo.PARTIDA_ACABOU, resultadoPartida.getVencedor().getNome(), resultadoPartida.getTipoDeVitoria());
-		}
-
-		this.eventListener.eventoAconteceu(eventoPartidaAcabou);
 		
 		return resultadoPartida;
 
@@ -257,13 +250,13 @@ class Partida {
 					primeiraJogada = jogadorQueComeca.joga(mesa);
 
 					Pedra pedra = primeiraJogada.getPedra();
-					this.eventListener.eventoAconteceu(new EventoDomino(Tipo.JOGADOR_JOGOU,jogadorQueComeca.getNome(),pedra,null));
+					this.eventListener.jogadorJogou(jogadorQueComeca.getNome(),null,pedra);
 					
 					//agora erre, meu velho
 					if(pedra != carroca){
 						throw new BugDeJogadorException("Comecou com a pedra errada me velho. Erra pra ser " + carroca,jogadorQueComeca);
 					}
-					//limpesa
+					//limpeza
 					maos[j].remove(pedra);
 					this.mesa.coloca(pedra,primeiraJogada.getLado());
 					

@@ -3,39 +3,22 @@ package br.nom.abdon.domino.eventos;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
-import br.nom.abdon.domino.eventos.EventoDomino.Tipo;
 
 public class LoggerDominoEventListener implements DominoEventListener {
 
 	private String nomeDoJogador1, nomeDoJogador2, nomeDoJogador3, nomeDoJogador4;
 	
 	
-	@Override
-	public void eventoAconteceu(EventoDomino eventoDomino) {
-		Tipo tipoDoEvento = eventoDomino.getTipo();
-		switch (tipoDoEvento) {
-			case JOGO_COMECOU: comecouJogo(eventoDomino); break;	
-			case PARTIDA_COMECOU: comecouPartida(eventoDomino); break;
-			case JOGADOR_JOGOU: jogardorJogou(eventoDomino); break;
-			case JOGADOR_TOCOU: jogadorTocou(eventoDomino); break;
-			case PARTIDA_ACABOU: acabouPartida(eventoDomino); break;
-			case JOGO_ACABOU: jogoAcabou(eventoDomino); break;
-		}
-	}
-	
-	
-	private void comecouPartida(EventoDomino eventoDomino) {
+	@Override 
+        public void partidaComecou(int pontosDupla1, int pontosDupla2, boolean ehDobrada) {
 		System.out.println("Comecando partida.");
-		imprimePlacar(eventoDomino.getPontosDupla1(), eventoDomino.getPontosDupla2());
+		imprimePlacar(pontosDupla1,pontosDupla2);
 
 	}
 
 	
-	private void jogardorJogou(EventoDomino eventoDomino) {
-		
-		String nomeDoJogador = eventoDomino.getQuemFoi();
-	    Pedra pedra = eventoDomino.getPedra();
-		Lado lado = eventoDomino.getLado();
+	@Override 
+        public void jogadorJogou(String nomeDoJogador, Lado lado, Pedra pedra) {
 		
 		String str = nomeDoJogador +  ":\t" + pedra;
 		if(lado != null){
@@ -46,19 +29,20 @@ public class LoggerDominoEventListener implements DominoEventListener {
 	}
 
 	
-	private void jogadorTocou(EventoDomino eventoDomino){
-		String nomeDoJogador = eventoDomino.getQuemFoi();
+	@Override
+        public void jogadorTocou(String nomeDoJogador){
 		System.out.println(nomeDoJogador + ":\t\"toc, toc.\"");
 
 	}
 
 	
-	private void comecouJogo(EventoDomino eventoDomino){
+        @Override
+        public void jogoComecou(String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4){
 		System.out.println("Comecou o jogo");
-		this.nomeDoJogador1 = eventoDomino.getNomeDoJogador1();
-		this.nomeDoJogador2 = eventoDomino.getNomeDoJogador2();
-		this.nomeDoJogador3 = eventoDomino.getNomeDoJogador3();
-		this.nomeDoJogador4 = eventoDomino.getNomeDoJogador4();
+		this.nomeDoJogador1 = nomeDoJogador1;
+		this.nomeDoJogador2 = nomeDoJogador2;
+		this.nomeDoJogador3 = nomeDoJogador3;
+		this.nomeDoJogador4 = nomeDoJogador4;
 		imprimePlacar(0,0);
 		
 	}
@@ -71,25 +55,23 @@ public class LoggerDominoEventListener implements DominoEventListener {
 	}
 
 	
-	private void acabouPartida(EventoDomino eventoDomino) {
-		String nomeDoJogador = eventoDomino.getQuemFoi();
-		
-                if(eventoDomino.foiEmpate()){
-                    System.out.println("Empatou. A proxima vale dobrada.");
-                } else {
-                    Vitoria tipoDeVitoria = eventoDomino.getTipoDeVitoria();
+        @Override
+        public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria) {
 
-                    System.out.println(nomeDoJogador + ":\tbateu.");
-                    if(tipoDeVitoria != Vitoria.BATIDA_SIMPLES){
-                            System.out.println("("+ tipoDeVitoria+ ")");
-                    }
-                }
-	}
+            System.out.println(nomeDoJogador + ":\tbateu.");
+            if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
+                System.out.println("(" + tipoDeVitoria + ")");
+            }
+        }
 
-	
-	private void jogoAcabou(EventoDomino eventoDomino) {
-		int placarDupla1 = eventoDomino.getPontosDupla1();
-		int placarDupla2 = eventoDomino.getPontosDupla2();
+
+       	@Override
+        public void partidaEmpatou(){
+            System.out.println("Empatou. A proxima vale dobrada.");   
+        }
+
+	@Override
+        public void jogoAcabou(int placarDupla1,int placarDupla2) {
 		
 		System.out.println("Acabou!");
 		imprimePlacar(placarDupla1,placarDupla2);
