@@ -32,10 +32,10 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
          As não-carroças eu passo pra a super, que é um JogadorMamao, e 
          vai jogar alguma entre elas sempre que eu não tiver carroça pra
          jogar.
-               
          */
         List<Pedra> naoCarrocas = new ArrayList<>();
         this.carrocas = new Pedra[7];
+        quantasCarrocasEuTenho = 0;
         for (Pedra pedra : mao) {
             if (pedra.isCarroca()) {
                 carrocas[pedra.getPrimeiroNumero().getNumeroDePontos()] = pedra;
