@@ -56,7 +56,7 @@ public class Dupla {
 	}
 	private void validaVontade(int vontade, Jogador jogador) throws BugDeJogadorException {
 		if(vontade < 0 || vontade > 10){
-			throw new BugDeJogadorException("Vontade é de zero a dez só, meu velho. Não inventa",jogador);
+			throw new BugDeJogadorException("Vontade é de zero a dez só, meu velho. Não inventa.",jogador);
 		}
 	}
 	
