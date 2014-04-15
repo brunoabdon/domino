@@ -4,3 +4,6 @@ br.nom.abdon.domino.eventos
 br.nom.abdon.domino.exemplos
 br.nom.abdon.domino.motor
 br.nom.abdon.domino.motor.util
+br.nom.abdon.domino.ui.fx
+br.nom.abdon.domino.ui.j2d
+br.nom.abdon.domino.ui.j2d.desenhadorQuad
