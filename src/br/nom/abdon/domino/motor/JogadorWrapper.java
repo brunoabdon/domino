@@ -9,7 +9,6 @@ public final class JogadorWrapper implements Jogador {
 
 	private final String nome;
 	private final Jogador wrapped;
-	private Dupla dupla;
 	
 	public JogadorWrapper(Jogador wrapped, String nome) {
 		
@@ -36,15 +35,7 @@ public final class JogadorWrapper implements Jogador {
 		return wrapped.vontadeDeComecar();
 	}
 
-	public Dupla getDupla() {
-		return dupla;
-	}
-
-	public void setDupla(Dupla dupla) {
-		this.dupla = dupla;
-	}
-
-	public String getNome() {
+        public String getNome() {
 		return nome;
 	}
 

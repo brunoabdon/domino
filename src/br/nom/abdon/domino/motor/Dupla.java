@@ -16,10 +16,6 @@ public class Dupla {
 		this.jogador2 = jogador2;
 
 		this.pontos = 0;
-		
-		this.jogador1.setDupla(this);
-		this.jogador2.setDupla(this);
-		
 	}
 	public JogadorWrapper getJogador1() {
 		return jogador1;
