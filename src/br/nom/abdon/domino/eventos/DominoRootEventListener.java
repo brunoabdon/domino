@@ -11,7 +11,7 @@ public interface DominoRootEventListener {
     
     /**
      *
-     * @param eventoSecreto
+     * @param eventoSecreto O evento que aconteceu
      */
     public void eventoAconteceu(EventoSigiloso eventoSecreto);
     

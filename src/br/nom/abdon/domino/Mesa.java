@@ -65,7 +65,8 @@ public interface Mesa extends Iterable<Pedra>{
         
         /**
          * Diz quantas {@link  Pedra}s um dado {@link Jogador} tem na mão no momento.
-         * @return Quantas pedras o jogador de indice <code>qualJogado<code> tem
+         * @param qualJogador qual o jogador que se deseja saber.
+         * @return Quantas pedras o jogador de indice <code>qualJogador</code> tem
          * na mão.
          */
         public int quantasPedrasOJogadoresTem(int qualJogador);

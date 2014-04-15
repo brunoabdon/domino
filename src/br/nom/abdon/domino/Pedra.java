@@ -119,7 +119,7 @@ public enum Pedra implements Comparable<Pedra>{
 	
 	/**
 	 * Diz se essa pedra é uma carroça.
-	 * @return
+	 * @return se a predra é ou não carroça.
 	 */
 	public boolean isCarroca(){
 		return this.primeiroNumero == this.segundoNumero;
