@@ -82,12 +82,13 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
         public void jogoComecou(String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4){
 
                 this.printStream.println("Comecou o jogo");
-                imprimePlacar(0,0);
                 
 		this.nomeDoJogador1 = nomeDoJogador1;
 		this.nomeDoJogador2 = nomeDoJogador2;
 		this.nomeDoJogador3 = nomeDoJogador3;
 		this.nomeDoJogador4 = nomeDoJogador4;
+                
+                imprimePlacar(0,0);
                 
                 int maiorTamanhoDeNome = 
                         Math.max(nomeDoJogador1.length(), 
