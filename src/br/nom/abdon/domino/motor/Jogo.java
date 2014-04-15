@@ -4,7 +4,6 @@ import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.motor.util.DominoEventBroadcaster;
 
 
 
@@ -34,7 +33,7 @@ public class Jogo {
 			int multiplicadorDobrada = 1;
 			while(!alguemVenceu()){
 				this.eventBroadcaster.partidaComecou(dupla1.getPontos(), dupla2.getPontos(), multiplicadorDobrada != 1);
-				Partida partida = new Partida(dupla1, dupla2, eventBroadcaster);
+				Partida partida = new Partida(dupla1, dupla2, this.eventBroadcaster);
 				
 				ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
 				if(resultado == ResultadoPartida.EMPATE){
@@ -46,7 +45,7 @@ public class Jogo {
 				}
 			}
 			
-			eventBroadcaster.jogoAcabou(dupla1.getPontos(), dupla2.getPontos());
+			this.eventBroadcaster.jogoAcabou(dupla1.getPontos(), dupla2.getPontos());
 			
 			
 		} catch (BugDeJogadorException e) {
@@ -62,18 +61,19 @@ public class Jogo {
 	}
 
 	private DominoEventBroadcaster configuraEventListners(Dupla dupla1, Dupla dupla2) {
-                DominoEventBroadcaster eventBroadcaster = new DominoEventBroadcaster();
-		jogadorAtento(dupla1.getJogador1());
-		jogadorAtento(dupla1.getJogador2());
-		jogadorAtento(dupla2.getJogador1());
-		jogadorAtento(dupla2.getJogador2());
-                return eventBroadcaster;
+                final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
+
+		jogadorAtento(broadcaster, dupla1.getJogador1());
+		jogadorAtento(broadcaster, dupla1.getJogador2());
+		jogadorAtento(broadcaster, dupla2.getJogador1());
+		jogadorAtento(broadcaster, dupla2.getJogador2());
+                return broadcaster;
 		
 	}
 
-	private void jogadorAtento(Jogador jogador) {
+	private void jogadorAtento(DominoEventBroadcaster eventBroadcaster, Jogador jogador) {
 		if(jogador instanceof DominoEventListener){
-			eventBroadcaster.addEventListener((DominoEventListener)jogador);
+			eventBroadcaster.addEventListener((DominoEventListener)jogador,false);
 		}
 	}
 
@@ -90,7 +90,6 @@ public class Jogo {
 	}
 
 	public void addEventListener(DominoEventListener eventListener) {
-		this.eventBroadcaster.addEventListener(eventListener);
-
+		this.eventBroadcaster.addEventListener(eventListener,true);
 	}
 }

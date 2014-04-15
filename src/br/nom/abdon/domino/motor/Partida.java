@@ -11,7 +11,7 @@ import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
-import br.nom.abdon.domino.eventos.DominoEventListener;
+import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 
 class Partida {
 
@@ -20,9 +20,9 @@ class Partida {
 	private final MesaImpl mesa;
 	private Pedra[] dorme = new Pedra[4];
 
-	private final DominoEventListener eventListener;
+	private final OmniscientDominoEventListener eventListener;
 	
-	public Partida(Dupla dupla1, Dupla dupla2, DominoEventListener eventListener) {
+	public Partida(Dupla dupla1, Dupla dupla2, OmniscientDominoEventListener eventListener) {
 		super();
 		this.mesa = new MesaImpl();
 		this.dupla1 = dupla1;
@@ -37,7 +37,6 @@ class Partida {
 		String nomeJogadorDaVez = null;
 		
 		Pedra pedra = null;
-		Lado lado;
 		
 		boolean alguemBateu = false, trancou = false;
 		
@@ -80,7 +79,7 @@ class Partida {
 			
 			} else {
 				//se livrando logo do objeto Jogada, que veio do jogador.
-				lado = jogada.getLado();
+				final Lado lado = jogada.getLado();
 				pedra = jogada.getPedra();
 
 				validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
@@ -211,18 +210,20 @@ class Partida {
 		
         final Collection<Pedra>[] maos = mesa.getMaos();
         for (int i = 0; i < 4 ; i++) {
-        	System.out.println("mao " + i);
+
         	ArrayList<Pedra> mao = new ArrayList<Pedra>(6); //definir qual a melhor Collection usar
         	Pedra[] mao_ = new Pedra[6]; 
         	for(int j = 0; j < 6; j++){
         		Pedra pedra = pedras.get((i*6) + j);
 				mao.add(pedra);
 				mao_[j] = pedra;
-				 System.out.println(pedra);
         	}
-        	System.out.println();
+
 			maos[i] = mao; 
-			jogadorDaVez(i).recebeMao(mao_);
+                        
+                        final JogadorWrapper jogadorDaVez = jogadorDaVez(i);
+			jogadorDaVez.recebeMao(mao_);
+                        eventListener.jogadorRecebeuPedras(jogadorDaVez.getNome(),Collections.unmodifiableList(mao));
 		}
         
 		this.dorme = new Pedra[4];
@@ -230,6 +231,7 @@ class Partida {
 			dorme[i-24] = pedras.get(i);
 		}
 	}
+
 
 	private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) throws BugDeJogadorException {
 		int quemDaDuplaComeca = duplaQueComeca.quemComeca();

@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.motor.util;
+package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.eventos.DominoRootEventListener;
-import br.nom.abdon.domino.eventos.EventoSigiloso;
+import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,36 +15,40 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class DominoEventBroadcaster implements DominoEventListener, DominoRootEventListener {
+public class DominoEventBroadcaster implements DominoEventListener, OmniscientDominoEventListener {
 
     private final List<DominoEventListener> eventListeners;
-    private final List<DominoRootEventListener> rootEventListeners;
+    private final List<OmniscientDominoEventListener> omniscientEventListeners;
 
     private final Map<String, Consumer<DominoEventListener>> cachedToques;
     private final Map<String,Map<Optional<Lado>,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
     
-    private final static Function<String, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> jogadaPorUmJogador =
+    private static final Function<String, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> jogadaPorUmJogador =
             (nome) -> {return (l) -> {return (p) -> {return (el) -> {el.jogadorJogou(nome, l, p);};};};};
-    
+
+    private static final Optional<Lado> optionalEsquerda = Optional.ofNullable(Lado.ESQUERDO);
+    private static final Optional<Lado> optionalDireita = Optional.ofNullable(Lado.DIREITO);
+    private static final Optional<Lado> optionalLadoNenhum = Optional.empty();
+
     public DominoEventBroadcaster() {
         this.eventListeners = new LinkedList<>();
-        this.rootEventListeners = new LinkedList<>();
+        this.omniscientEventListeners = new LinkedList<>();
         
         this.cachedJogadasNoLado = new HashMap<>(4);
         this.cachedToques = new HashMap<>(4);
 
     }
 
-    public void addEventListener(DominoEventListener eventListener) {
+    public void addEventListener(DominoEventListener eventListener, boolean permiteAcessoTotal) {
         this.eventListeners.add(eventListener);
-    }
-
-    public void addEventListener(DominoRootEventListener rootEventListener) {
-        this.rootEventListeners.add(rootEventListener);
+        
+        if(permiteAcessoTotal && eventListener instanceof OmniscientDominoEventListener){
+            OmniscientDominoEventListener omniscientEventListener = (OmniscientDominoEventListener) eventListener;
+            this.omniscientEventListeners.add(omniscientEventListener);
+        } 
     }
 
     private <E> void broadCastEvent(Collection<E> listeners, Consumer<? super E> c) {
-        if(c == null)System.out.println(c);
         listeners.parallelStream().forEach(c);
     }
 
@@ -76,7 +79,6 @@ public class DominoEventBroadcaster implements DominoEventListener, DominoRootEv
         );
     }
 
-
     @Override
     public void jogadorTocou(String nomeDoJogador) {
         broadCastEvent(eventListeners, cachedToques.get(nomeDoJogador));
@@ -85,13 +87,20 @@ public class DominoEventBroadcaster implements DominoEventListener, DominoRootEv
     @Override
     public void jogadorJogou(String nomeDoJogador, Lado lado, Pedra pedra) {
         final Function<Pedra, Consumer<DominoEventListener>> jodadaDoJogadorDaqueleLado 
-                = this.cachedJogadasNoLado.get(nomeDoJogador).get(Optional.ofNullable(lado));
+                = this.cachedJogadasNoLado.get(nomeDoJogador).get(optional(lado));
         
         final Consumer<DominoEventListener> jogadaDessaPedraDesseLadoPorEsseJogador = 
                     jodadaDoJogadorDaqueleLado.apply(pedra);
 
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
                 
+    }
+
+    private Optional<Lado> optional(Lado lado) {
+        return lado == Lado.ESQUERDO 
+                ? optionalEsquerda : lado == Lado.DIREITO 
+                ? optionalDireita
+                : optionalLadoNenhum;
     }
                 
     @Override
@@ -134,16 +143,16 @@ public class DominoEventBroadcaster implements DominoEventListener, DominoRootEv
             final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado, 
             final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor,
             Lado lado) {
-        Optional<Lado> talvezLado = Optional.ofNullable(lado);
+        final Optional<Lado> talvezLado = optional(lado);
         return jogadasDoJogadorDoLado.put(talvezLado,jogadaPorEsseJogdor.apply(lado));
     }
 
-    public void eventoAconteceu(EventoSigiloso eventoSecreto) {
-        rootEventListeners.parallelStream().forEach(
+    @Override
+    public void jogadorRecebeuPedras(String quemFoi, Collection<Pedra> pedras) {
+        broadCastEvent(omniscientEventListeners,
                 (eventListener) -> {
-                    eventListener.eventoAconteceu(eventoSecreto);
+                    eventListener.jogadorRecebeuPedras(quemFoi, pedras);
                 }
         );
     }
-
 }

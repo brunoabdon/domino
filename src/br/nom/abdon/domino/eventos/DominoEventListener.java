@@ -7,7 +7,7 @@ import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 
 /**
- * Interface para receber eventos do que acontece durante o jogo.
+ * Interface para receber eventos publicos do que acontece durante o jogo.
  * 
  * {@link Jogador}es que implementarem esta interface serao automaticamente 
  * registrados para serem avisados dos eventos.
