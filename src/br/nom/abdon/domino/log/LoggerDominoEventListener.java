@@ -1,8 +1,9 @@
-package br.nom.abdon.domino.eventos;
+package br.nom.abdon.domino.log;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
+import br.nom.abdon.domino.eventos.DominoEventListener;
 
 public class LoggerDominoEventListener implements DominoEventListener {
 

@@ -36,11 +36,11 @@ public class DominoEventBroadcaster implements DominoEventListener, DominoRootEv
 
     }
 
-    public void addEventListneter(DominoEventListener eventListener) {
+    public void addEventListener(DominoEventListener eventListener) {
         this.eventListeners.add(eventListener);
     }
 
-    public void addEventListneter(DominoRootEventListener rootEventListener) {
+    public void addEventListener(DominoRootEventListener rootEventListener) {
         this.rootEventListeners.add(rootEventListener);
     }
 

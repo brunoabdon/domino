@@ -4,22 +4,21 @@ import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.eventos.LoggerDominoEventListener;
 import br.nom.abdon.domino.motor.util.DominoEventBroadcaster;
 
 
 
 public class Jogo {
 
-	private Dupla dupla1, dupla2;
-	private DominoEventBroadcaster eventBroadcaster;
+	private final Dupla dupla1, dupla2;
+	private final DominoEventBroadcaster eventBroadcaster;
 	
 	public Jogo(Dupla dupla1, Dupla dupla2) {
 		if(dupla1 == null || dupla2 == null) throw new IllegalArgumentException("W.O.!!!");
 		this.dupla1 = dupla1;
 		this.dupla2 = dupla2;
-		
-		configuraEventListners();
+
+		this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
 		
 	}
 	
@@ -62,20 +61,19 @@ public class Jogo {
 		
 	}
 
-	private void configuraEventListners() {
-		eventBroadcaster = new DominoEventBroadcaster();
-		eventBroadcaster.addEventListneter(new LoggerDominoEventListener());
-		
+	private DominoEventBroadcaster configuraEventListners(Dupla dupla1, Dupla dupla2) {
+                DominoEventBroadcaster eventBroadcaster = new DominoEventBroadcaster();
 		jogadorAtento(dupla1.getJogador1());
 		jogadorAtento(dupla1.getJogador2());
 		jogadorAtento(dupla2.getJogador1());
 		jogadorAtento(dupla2.getJogador2());
+                return eventBroadcaster;
 		
 	}
 
 	private void jogadorAtento(Jogador jogador) {
 		if(jogador instanceof DominoEventListener){
-			eventBroadcaster.addEventListneter((DominoEventListener)jogador);
+			eventBroadcaster.addEventListener((DominoEventListener)jogador);
 		}
 	}
 
@@ -91,8 +89,8 @@ public class Jogo {
 		return dupla1.getPontos() >= 6 || dupla2.getPontos() >= 6;
 	}
 
-	public void addEventListner(DominoEventListener eventListener) {
-		this.eventBroadcaster.addEventListneter(eventListener);
+	public void addEventListener(DominoEventListener eventListener) {
+		this.eventBroadcaster.addEventListener(eventListener);
 
 	}
 }

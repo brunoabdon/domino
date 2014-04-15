@@ -1,5 +1,6 @@
 package br.nom.abdon.domino.app;
 
+import br.nom.abdon.domino.log.LoggerDominoEventListener;
 import br.nom.abdon.domino.motor.Dupla;
 import br.nom.abdon.domino.motor.JogadorWrapper;
 import br.nom.abdon.domino.motor.Jogo;
@@ -21,7 +22,9 @@ public class DominoApp {
 			Dupla dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
 			
 			Jogo jogo = new Jogo(dupla1,dupla2);
-			jogo.jogar();
+                        jogo.addEventListener(new LoggerDominoEventListener());
+                        jogo.jogar();
+			
 			
 		} catch (DominoAppException e) {
 			System.err.println("Pipoco: " + e.getMessage());
