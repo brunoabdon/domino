@@ -40,6 +40,8 @@ class Partida {
 		
 		boolean alguemBateu = false, trancou = false;
 		
+                int numeroDeToquesSeguidos = 0;
+                
 		embaralhaEdistribui();
 		
 		boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
@@ -75,6 +77,9 @@ class Partida {
                             if(tinhaPedraPraJogar){
                                 throw new BugDeJogadorException("Tocou tendo pedra pra jogar!", jogadorDaVez);
                             }
+                            
+                            trancou = ++numeroDeToquesSeguidos == 4;
+                            
                             this.eventListener.jogadorTocou(nomeJogadorDaVez);
 			
 			} else {
@@ -88,12 +93,12 @@ class Partida {
 
 				this.mesa.coloca(pedra, lado);
 				
-				this.eventListener.jogadorJogou(nomeJogadorDaVez,lado,pedra);
-				
+                                numeroDeToquesSeguidos = 0;
+                                
 				alguemBateu = maoDoJogadorDaVez.isEmpty();
-				if(!alguemBateu) {
-					trancou = verificaTrancada();
-				}
+                                
+                                this.eventListener.jogadorJogou(nomeJogadorDaVez,lado,pedra);
+
 			}
 			
 			vez = avanca(vez);
@@ -168,23 +173,6 @@ class Partida {
 		
 		return resultado;
 	}
-
-        private boolean verificaTrancada() {
-
-            final Collection<Pedra>[] maos = mesa.getMaos();
-
-            boolean taTrancado = true; //até que se prove o contrario
-            for (Collection<Pedra> mao : maos) {
-                for (Pedra pedra : mao) {
-                    if (pedra.temNumero(mesa.getNumeroEsquerda()) || pedra.temNumero(mesa.getNumeroDireita())) {
-                        taTrancado = false; //provou-se
-                        break;
-                    }
-                }
-            }
-
-            return taTrancado;
-        }
 
 	private void validaJogada(Jogador jogadorQueJogou, Collection<Pedra> maoDoJogadorQueJogou, Pedra pedra, Lado lado) throws BugDeJogadorException {
 		if(pedra == null){
