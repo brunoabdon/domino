@@ -69,7 +69,7 @@ class Partida {
                             boolean tinhaPedraPraJogar = 
                                     maoDoJogadorDaVez.stream().anyMatch(
                                         pedraNaMao -> 
-                                                pedraNaMao.temNumero(mesa.getNumeroDireita()) 
+                                                pedraNaMao.temNumero(mesa.getNumeroEsquerda()) 
                                                 || pedraNaMao.temNumero(mesa.getNumeroDireita()));
                             
                             if(tinhaPedraPraJogar){
@@ -177,12 +177,12 @@ class Partida {
 		
 		for (int i = 0; i < maos.length; i++) {
 			for (Pedra pedra : maos[i]) {
-				if(pedra.temNumero(mesa.getNumeroEsquerda()) || pedra.temNumero(mesa.getNumeroDireita())){
-					taTrancado = false; //provou-se
-					break;
-				}
-			}
-		}
+                        if(pedra.temNumero(mesa.getNumeroEsquerda()) || pedra.temNumero(mesa.getNumeroDireita())){
+                            taTrancado = false; //provou-se
+                            break;
+                        }
+                    }
+                }
 		
 		return taTrancado;
 	}
