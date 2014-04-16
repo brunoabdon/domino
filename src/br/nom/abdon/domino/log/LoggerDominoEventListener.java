@@ -1,11 +1,13 @@
 package br.nom.abdon.domino.log;
 
+import java.util.Collection;
+
+import java.io.PrintStream;
+
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
-import java.io.PrintStream;
-import java.util.Collection;
 
 /**
  * Escuta tudo o que vai acontecendo no jogo e loga no {@link System#out}.
@@ -98,8 +100,6 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
                 this.baseDoPaddingDePedra = maiorTamanhoDeNome + 13;
                 this.baseDoPaddingDeLado = baseDoPaddingDePedra + 13;
                 this.baseDoPaddingDeTocToc = baseDoPaddingDePedra + 4;
-                
-		
 	}
 
 	private void imprimePlacar(int placarDupla1, int placarDupla2) {
@@ -110,12 +110,15 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
 
         @Override
         public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria) {
-            this.printStream.print("\n" + nomeDoJogador + " bateu!");
-            if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
-                this.printStream.println(" (" + tipoDeVitoria + ")");
+            if(tipoDeVitoria == Vitoria.CONTAGEM_DE_PONTOS){
+                this.printStream.print("\nTravou. " + nomeDoJogador + " ganhou pela contagem.");
+            } else {
+                this.printStream.print("\n" + nomeDoJogador + " bateu!");
+                if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
+                    this.printStream.println(" (" + tipoDeVitoria + ")");
+                }
             }
             this.printStream.println();
-            
         }
 
         @Override
@@ -154,5 +157,4 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
             final int leftPadPedra = leftpadInicial + distaciaDaBarraProFim;
             return String.format("%1$" + leftPadPedra + "s", pedraStr);
         }
-
 }
