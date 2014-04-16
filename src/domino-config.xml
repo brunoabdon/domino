@@ -2,8 +2,8 @@
 <domino>
 
   <duplas>
-     <dupla1 jogador1="bruno" jogador2="igor"/>
-     <dupla2 jogador1="eudes" jogador2="ronaldo"/>
+     <dupla1 jogador1="Bruno" jogador2="Igor"/>
+     <dupla2 jogador1="Eudes" jogador2="Ronaldo"/>
   </duplas>
 
 
@@ -12,9 +12,9 @@
   
   
   <!-- substituir o nome das classes quando existirem -->
-  <jogador nome="bruno" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="eudes" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="igor" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Bruno" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Eudes" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Igor" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
 
 </domino>

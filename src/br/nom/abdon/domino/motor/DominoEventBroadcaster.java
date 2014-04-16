@@ -1,19 +1,19 @@
 package br.nom.abdon.domino.motor;
 
-import br.nom.abdon.domino.Lado;
-import br.nom.abdon.domino.Pedra;
-import br.nom.abdon.domino.Vitoria;
-import java.util.LinkedList;
-import java.util.List;
-
-import br.nom.abdon.domino.eventos.DominoEventListener;
-import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import br.nom.abdon.domino.Lado;
+import br.nom.abdon.domino.Pedra;
+import br.nom.abdon.domino.Vitoria;
+import br.nom.abdon.domino.eventos.DominoEventListener;
+import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 
 public class DominoEventBroadcaster implements DominoEventListener, OmniscientDominoEventListener {
 

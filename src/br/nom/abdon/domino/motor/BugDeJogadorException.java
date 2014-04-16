@@ -5,26 +5,29 @@ import br.nom.abdon.domino.Pedra;
 
 class BugDeJogadorException extends Exception {
 	
-	private Jogador jogadorBuguento;
-	private Pedra pedra;
+    private Jogador jogadorBuguento;
+    private Pedra pedra;
 
-	public BugDeJogadorException(String msg, Jogador jogadorBuguento) {
-		this(msg,jogadorBuguento,null);
-	}
+    public BugDeJogadorException(String msg, Jogador jogadorBuguento) {
+            this(msg,jogadorBuguento,null);
+    }
 
-	public BugDeJogadorException(String msg, Jogador jogadorQueJogou, Pedra pedra) {
-		super(msg);
-		this.jogadorBuguento = jogadorQueJogou;
-		this.pedra = pedra;
-		
-	}
+    public BugDeJogadorException(
+            String msg, 
+            Jogador jogadorBuguento, 
+            Pedra pedra) {
+        
+            super(msg);
+            this.jogadorBuguento = jogadorBuguento;
+            this.pedra = pedra;
 
-	public Jogador getJogadorBuguento() {
-		return jogadorBuguento;
-	}
+    }
 
-	public Pedra getPedra() {
-		return pedra;
-	}
+    public Jogador getJogadorBuguento() {
+            return jogadorBuguento;
+    }
 
+    public Pedra getPedra() {
+            return pedra;
+    }
 }

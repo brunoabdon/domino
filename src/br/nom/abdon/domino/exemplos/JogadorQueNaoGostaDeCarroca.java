@@ -74,7 +74,8 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
             jogada = fazJogadaDeAlgumaCarroca(mesa, ladoComMaiorNumero);
 
             if (jogada == null) {
-                //As carroças que eu tenho não cabem na mesa. Vou jogar como mamão.
+                //As carroças que eu tenho não cabem na mesa. Vou jogar como 
+                //mamão mesmo.
                 jogada = super.joga(mesa);
             }
         }
@@ -94,7 +95,9 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * mesa estiver fechada.
      */
     private Lado pegaLadoComMaiorNumero(Mesa mesa) {
-        return mesa.getNumeroEsquerda().compareTo(mesa.getNumeroDireita()) > 0 ? Lado.ESQUERDO : Lado.DIREITO;
+        return mesa.getNumeroEsquerda().compareTo(mesa.getNumeroDireita()) > 0 
+                ? Lado.ESQUERDO 
+                : Lado.DIREITO;
     }
 
     /**
@@ -105,11 +108,12 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @param mesa Uma mesa de uma partida que já começou. A mesa não pode
      * {@link Mesa#taVazia() estar vazia}.
      * 
-     * @param ladoPreferencial O lado que deve se dar preferencia pra jogar
+     * @param ladoPreferencial O lado que deve se dar preferencia pra jogar.
      * @return Uma jogada de carroça, ou <code>null</code> se não tiver carroça
      * pra isso.
      */
-    private Jogada fazJogadaDeAlgumaCarroca(final Mesa mesa, Lado ladoPreferencial) {
+    private Jogada fazJogadaDeAlgumaCarroca(
+            final Mesa mesa, final Lado ladoPreferencial) {
         
         Jogada jogada = pegaJogadaDeCarroca(mesa, ladoPreferencial);
         if (jogada == null) {
@@ -152,7 +156,9 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @return Uma jogada de carroça no lado dado, ou <code>null</code> se não 
      * tiver a carroça.
      */
-    private Jogada pegaJogadaDeCarroca(final Mesa mesa, final Lado ladoPraJogar) {
+    private Jogada pegaJogadaDeCarroca(
+            final Mesa mesa, final Lado ladoPraJogar) {
+
         final Jogada jogada;
 
         final Numero numeroDaCabeca
@@ -193,14 +199,17 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @param indexNoArrayDeCarrocas O indice da carroça no array.
      * @return Uma jogada inical com aquela carroça.
      */
-    private Jogada fazJogadaCarroca(final int indexNoArrayDeCarrocas, final Lado ladoPraJogar) {
+    private Jogada fazJogadaCarroca(
+            final int indexNoArrayDeCarrocas, final Lado ladoPraJogar) {
+        
         Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
         return new Jogada(carroca, ladoPraJogar);
     }
 
     /**
-     * Tira e retorna a carroça que tá num índice específico do array, diminuindo também o
-     * contador de quantas carroças eu tenho. 
+     * Tira e retorna a carroça que tá num índice específico do array, 
+     * diminuindo também o contador de quantas carroças eu tenho. 
+     * 
      * @param indexNoArrayDeCarrocas O indice da carroça no array.
      * @return A carroça que tava lá.
      */
