@@ -19,11 +19,20 @@ public class Jogo {
 	}
 	
 	public void jogar(){
+                final JogadorWrapper primeiroJogadorDaPrimeiraDupla = dupla1.getJogador1();
+                final JogadorWrapper primeiroJogadorDaSegundaDupla = dupla2.getJogador1();
+                final JogadorWrapper segundoJogadorDaPrimeiraDupla = dupla1.getJogador2();
+                final JogadorWrapper segundoJogadorDaSegundaDupla = dupla2.getJogador2();
 		
-		eventBroadcaster.jogoComecou(dupla1.getJogador1().getNome(), 
-						dupla2.getJogador1().getNome(), 
-						dupla1.getJogador2().getNome(), 
-						dupla2.getJogador2().getNome());
+		eventBroadcaster.jogoComecou(primeiroJogadorDaPrimeiraDupla.getNome(), 
+                                                primeiroJogadorDaSegundaDupla.getNome(), 
+						segundoJogadorDaPrimeiraDupla.getNome(), 
+						segundoJogadorDaSegundaDupla.getNome());
+
+                primeiroJogadorDaPrimeiraDupla.sentaNaMesa(1);
+                primeiroJogadorDaSegundaDupla.sentaNaMesa(2);
+                segundoJogadorDaPrimeiraDupla.sentaNaMesa(3);
+                segundoJogadorDaSegundaDupla.sentaNaMesa(4);
 		
 		try {
 			Dupla ultimaDuplaQueVenceu = null;

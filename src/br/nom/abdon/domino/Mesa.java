@@ -64,10 +64,22 @@ public interface Mesa extends Iterable<Pedra>{
 	
         
         /**
-         * Diz quantas {@link  Pedra}s um dado {@link Jogador} tem na mão no momento.
-         * @param qualJogador qual o jogador que se deseja saber.
-         * @return Quantas pedras o jogador de indice <code>qualJogador</code> tem
-         * na mão.
+         * Diz quantas {@link  Pedra}s um dado {@link Jogador} tem na mão no 
+         * momento. <b>Importante:</b> Os jogadores são identificados pelos 
+         * números de 1 a 4 (e não de zero a três, como nerds esperariam) no 
+         * sentido anti-horário (fazendo então que as duplas sejam <i>1 e 3</i> contra
+         * <i>2 e 4</i>). Todo jogador é avisado sobre a posição que esta sentado
+         * no inicio do jogo pelo método {@link Jogador#sentaNaMesa(int)} (de 
+         * implementação opcional).
+         * 
+         * @param qualJogador qual o jogador que se deseja saber (de 1 a 4).
+         * 
+         * @return Quantas pedras o jogador de indice <code>qualJogador</code> 
+         * tem na mão.
+         * 
+         * @throws IllegalArgumentException Se for passado um número que não 
+         * seja 1, 2, 3 nem 4.
+         * 
          */
         public int quantasPedrasOJogadoresTem(int qualJogador);
         

@@ -35,6 +35,11 @@ public final class JogadorWrapper implements Jogador {
 		return wrapped.vontadeDeComecar();
 	}
 
+        @Override
+        public void sentaNaMesa(int cadeiraQueSentou) {
+                wrapped.sentaNaMesa(cadeiraQueSentou);
+        }
+        
         public String getNome() {
 		return nome;
 	}

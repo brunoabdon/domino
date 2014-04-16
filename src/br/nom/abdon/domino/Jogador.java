@@ -8,6 +8,22 @@ package br.nom.abdon.domino;
  */
 public interface Jogador {
 
+        /**
+         * O jogador toma uma das quatro posições pra jogar no inicio do Jogo.
+         * <b>Importante:</b> Os jogadores são identificados pelos números de 1 
+         * a 4 (e não de 0 a 3, como nerds esperariam) no sentido anti-horário 
+         * (fazendo então que as duplas sejam <i>1 e 3</i> contra <i>2 e 4</i>).
+         * 
+         * Esta numeração é consistente com a usada em 
+         * {@link Mesa#quantasPedrasOJogadoresTem(int)}.
+         * 
+         * @param cadeiraQueSentou O número da cadeira em que o jogador se 
+         * sentou (entre 1 e 4).
+         */
+        public default void sentaNaMesa(int cadeiraQueSentou){
+            
+        }
+    
 	/**
 	 * O jogador recebe sua mão 6 {@link Pedra}s no início de cada partida.
 	 * 
