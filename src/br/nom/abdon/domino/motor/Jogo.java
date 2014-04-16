@@ -24,16 +24,17 @@ public class Jogo {
                 final JogadorWrapper segundoJogadorDaPrimeiraDupla = dupla1.getJogador2();
                 final JogadorWrapper segundoJogadorDaSegundaDupla = dupla2.getJogador2();
 		
-		eventBroadcaster.jogoComecou(primeiroJogadorDaPrimeiraDupla.getNome(), 
-                                                primeiroJogadorDaSegundaDupla.getNome(), 
-						segundoJogadorDaPrimeiraDupla.getNome(), 
-						segundoJogadorDaSegundaDupla.getNome());
-
                 primeiroJogadorDaPrimeiraDupla.sentaNaMesa(1);
                 primeiroJogadorDaSegundaDupla.sentaNaMesa(2);
                 segundoJogadorDaPrimeiraDupla.sentaNaMesa(3);
                 segundoJogadorDaSegundaDupla.sentaNaMesa(4);
-		
+
+                eventBroadcaster.jogoComecou(primeiroJogadorDaPrimeiraDupla.getNome(), 
+                                primeiroJogadorDaSegundaDupla.getNome(), 
+                                segundoJogadorDaPrimeiraDupla.getNome(), 
+                                segundoJogadorDaSegundaDupla.getNome());
+
+
 		try {
 			Dupla ultimaDuplaQueVenceu = null;
 			int multiplicadorDobrada = 1;
