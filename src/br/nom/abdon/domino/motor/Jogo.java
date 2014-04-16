@@ -5,20 +5,17 @@ import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 
-
-
 public class Jogo {
 
 	private final Dupla dupla1, dupla2;
 	private final DominoEventBroadcaster eventBroadcaster;
 	
-	public Jogo(Dupla dupla1, Dupla dupla2) {
+	public Jogo(final Dupla dupla1, final Dupla dupla2) {
 		if(dupla1 == null || dupla2 == null) throw new IllegalArgumentException("W.O.!!!");
 		this.dupla1 = dupla1;
 		this.dupla2 = dupla2;
 
 		this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
-		
 	}
 	
 	public void jogar(){
@@ -60,7 +57,7 @@ public class Jogo {
 		
 	}
 
-	private DominoEventBroadcaster configuraEventListners(Dupla dupla1, Dupla dupla2) {
+	private DominoEventBroadcaster configuraEventListners(final Dupla dupla1, final Dupla dupla2) {
                 final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
 
 		jogadorAtento(broadcaster, dupla1.getJogador1());
@@ -71,17 +68,17 @@ public class Jogo {
 		
 	}
 
-	private void jogadorAtento(DominoEventBroadcaster eventBroadcaster, Jogador jogador) {
+	private void jogadorAtento(final DominoEventBroadcaster eventBroadcaster, final Jogador jogador) {
 		if(jogador instanceof DominoEventListener){
 			eventBroadcaster.addEventListener((DominoEventListener)jogador,false);
 		}
 	}
 
-	private Dupla getDuplaVencedora(ResultadoPartida resultado) {
+	private Dupla getDuplaVencedora(final ResultadoPartida resultado) {
 		return dupla1.contem(resultado.getVencedor())?dupla1:dupla2;
 	}
 
-	private void atualizaPlacar(Dupla duplaDoVencdor , Vitoria tipoDeBatida, int multiplicadorDobrada) {
+	private void atualizaPlacar(final Dupla duplaDoVencdor , final Vitoria tipoDeBatida, final int multiplicadorDobrada) {
 		duplaDoVencdor.adicionaPontos(tipoDeBatida.getPontos() * multiplicadorDobrada);
 	}
 
@@ -89,7 +86,7 @@ public class Jogo {
 		return dupla1.getPontos() >= 6 || dupla2.getPontos() >= 6;
 	}
 
-	public void addEventListener(DominoEventListener eventListener) {
+	public void addEventListener(final DominoEventListener eventListener) {
 		this.eventBroadcaster.addEventListener(eventListener,true);
 	}
 }

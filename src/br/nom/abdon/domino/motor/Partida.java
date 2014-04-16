@@ -169,23 +169,22 @@ class Partida {
 		return resultado;
 	}
 
-	private boolean verificaTrancada() {
+        private boolean verificaTrancada() {
 
-                final Collection<Pedra>[] maos = mesa.getMaos();
-                
-		boolean taTrancado = true; //até que se prove o contrario
-		
-		for (int i = 0; i < maos.length; i++) {
-			for (Pedra pedra : maos[i]) {
-                        if(pedra.temNumero(mesa.getNumeroEsquerda()) || pedra.temNumero(mesa.getNumeroDireita())){
-                            taTrancado = false; //provou-se
-                            break;
-                        }
+            final Collection<Pedra>[] maos = mesa.getMaos();
+
+            boolean taTrancado = true; //até que se prove o contrario
+            for (Collection<Pedra> mao : maos) {
+                for (Pedra pedra : mao) {
+                    if (pedra.temNumero(mesa.getNumeroEsquerda()) || pedra.temNumero(mesa.getNumeroDireita())) {
+                        taTrancado = false; //provou-se
+                        break;
                     }
                 }
-		
-		return taTrancado;
-	}
+            }
+
+            return taTrancado;
+        }
 
 	private void validaJogada(Jogador jogadorQueJogou, Collection<Pedra> maoDoJogadorQueJogou, Pedra pedra, Lado lado) throws BugDeJogadorException {
 		if(pedra == null){
@@ -203,34 +202,34 @@ class Partida {
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	private void embaralhaEdistribui() {
-		List<Pedra> pedras = Arrays.asList(Pedra.values());
-		Collections.shuffle(pedras);
-		
-        final Collection<Pedra>[] maos = mesa.getMaos();
-        for (int i = 0; i < 4 ; i++) {
+        @SuppressWarnings("unchecked")
+        private void embaralhaEdistribui() {
+            List<Pedra> pedras = Arrays.asList(Pedra.values());
+            Collections.shuffle(pedras);
 
-        	ArrayList<Pedra> mao = new ArrayList<Pedra>(6); //definir qual a melhor Collection usar
-        	Pedra[] mao_ = new Pedra[6]; 
-        	for(int j = 0; j < 6; j++){
-        		Pedra pedra = pedras.get((i*6) + j);
-				mao.add(pedra);
-				mao_[j] = pedra;
-        	}
+            final Collection<Pedra>[] maos = this.mesa.getMaos();
+            for (int i = 0; i < 4; i++) {
 
-			maos[i] = mao; 
-                        
-                        final JogadorWrapper jogadorDaVez = jogadorDaVez(i);
-			jogadorDaVez.recebeMao(mao_);
-                        eventListener.jogadorRecebeuPedras(jogadorDaVez.getNome(),Collections.unmodifiableList(mao));
-		}
-        
-		this.dorme = new Pedra[4];
-		for (int i = 24; i < 28 ; i++) {
-			dorme[i-24] = pedras.get(i);
-		}
-	}
+                ArrayList<Pedra> mao = new ArrayList<>(6); //definir qual a melhor Collection usar
+                Pedra[] mao_ = new Pedra[6];
+                for(int j = 0; j < 6; j++) {
+                    Pedra pedra = pedras.get((i*6) + j);
+                    mao.add(pedra);
+                    mao_[j] = pedra;
+                }
+
+                maos[i] = mao;
+
+                final JogadorWrapper jogadorDaVez = jogadorDaVez(i);
+                jogadorDaVez.recebeMao(mao_);
+                this.eventListener.jogadorRecebeuPedras(jogadorDaVez.getNome(), Collections.unmodifiableList(mao));
+            }
+
+            this.dorme = new Pedra[4];
+            for (int i = 24; i < 28; i++) {
+                dorme[i-24] = pedras.get(i);
+            }
+        }
 
 
 	private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) throws BugDeJogadorException {

@@ -1,6 +1,7 @@
 package br.nom.abdon.domino.motor;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
 
@@ -9,16 +10,15 @@ import br.nom.abdon.domino.Mesa;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.motor.util.IteratorReadOnly;
-import java.util.Collection;
 
 class MesaImpl implements br.nom.abdon.domino.Mesa{
 
 	private final Deque<Pedra> listaDePedras;
 	private Numero numeroEsquerda, numeroDireita;
-        final Collection<Pedra>[] maos;
+        private final Collection<Pedra>[] maos;
 
 	protected MesaImpl() {
-            this.listaDePedras = new ArrayDeque<Pedra>(28-4);
+            this.listaDePedras = new ArrayDeque<>(28-4);
             this.maos = new Collection[4];
 	}
 
@@ -31,7 +31,7 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 		return this.listaDePedras.isEmpty();
 	}
 	
-	private boolean podeJogar(Pedra pedra, Lado lado){
+	private boolean podeJogar(final Pedra pedra, final Lado lado){
 		//if(this.taVazia()) throw new IllegalStateException("comecando com pedra jah na mesa?");
 		
 		Numero cabeca = lado == Lado.ESQUERDO ? numeroEsquerda : numeroDireita; 
@@ -48,14 +48,14 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
         }
 
 	/**
-	 * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, lenvantando uma exceção 
-	 * se nao puder colocar essa porra.
+	 * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, 
+         * lenvantando uma exceção se nao puder colocar.
 	 * 
 	 * @param pedra A pedra que é pra colocar
 	 * @param lado Onde botar ela.
 	 * @throws PedraBebaException Se não puder colocar essa pedra nesse lugar.
 	 */
-	protected void coloca(Pedra pedra, Lado lado) throws PedraBebaException{
+	protected void coloca(final Pedra pedra, Lado lado) throws PedraBebaException{
 
 		if(taVazia()){
 			this.listaDePedras.addFirst(pedra);
@@ -82,9 +82,12 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 
 	}
 	
-	private Numero novaCabeca(Numero cabecaAtual, Pedra pedraQueFoiJogada){
+	private Numero novaCabeca(final Numero cabecaAtual, final Pedra pedraQueFoiJogada){
 		Numero primeiroNumeroDaPedra = pedraQueFoiJogada.getPrimeiroNumero();
-		return primeiroNumeroDaPedra == cabecaAtual ? pedraQueFoiJogada.getSegundoNumero() : primeiroNumeroDaPedra;
+		
+                return primeiroNumeroDaPedra == cabecaAtual 
+                        ? pedraQueFoiJogada.getSegundoNumero() 
+                        : primeiroNumeroDaPedra;
 	}
 
         @Override
@@ -103,12 +106,12 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 
         @Override
 	public Iterator<Pedra> iteratorEsquedaPraDireita() {
-		return new IteratorReadOnly<Pedra>(listaDePedras.iterator());
+		return new IteratorReadOnly<>(listaDePedras.iterator());
 	}
 
         @Override
 	public Iterator<Pedra> iteratorDireitaPraEsquerda() {
-		return new IteratorReadOnly<Pedra>(listaDePedras.descendingIterator());
+		return new IteratorReadOnly<>(listaDePedras.descendingIterator());
 	}
 	
         @Override
@@ -121,14 +124,13 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
 		return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
 	}
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		
-		for (Pedra pedra : listaDePedras) {
-			sb.append(pedra);
-		}
-		return sb.toString();
-		
-	}
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            listaDePedras.stream().forEach((pedra) -> {
+                sb.append(pedra);
+            });
+            return sb.toString();
+
+        }
 }
