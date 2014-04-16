@@ -1,3 +1,5 @@
 package br.nom.abdon.domino;
 
-public enum Lado {	ESQUERDO, DIREITO }
+public enum Lado {
+    ESQUERDO, DIREITO
+}

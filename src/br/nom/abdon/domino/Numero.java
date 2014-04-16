@@ -12,5 +12,4 @@ public enum Numero {
 	public int getNumeroDePontos() {
 		return numeroDePontos;
 	}
-
 }
