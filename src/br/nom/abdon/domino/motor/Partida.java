@@ -35,6 +35,12 @@ class Partida {
     protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
         throws BugDeJogadorException{
 
+        ResultadoPartida resultadoPartida = verificaMorteSubita();
+        if(resultadoPartida != null){
+            //retorno subito!
+            return resultadoPartida;
+        }
+        
         JogadorWrapper jogadorDaVez = null;
         String nomeJogadorDaVez = null;
 
@@ -105,8 +111,6 @@ class Partida {
 
             vez = avanca(vez);
         }
-
-        ResultadoPartida resultadoPartida;
 
         if(trancou){
             resultadoPartida = contaPontos();
@@ -296,4 +300,27 @@ class Partida {
             return (vez+1)%4;
     }
 
+    private ResultadoPartida verificaMorteSubita() {
+        
+        ResultadoPartida resultado = null;
+        
+        final Collection<Pedra>[] maos = mesa.getMaos();
+         for (int i = 0, quantasNaoCarrocas = 0; i < maos.length; i++) {
+            for (Pedra pedra : maos[i]) {
+                if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
+                    break;
+                }
+            }
+            if(quantasNaoCarrocas <= 1){
+                JogadorWrapper jogador = jogadorDaVez(i);
+                if(quantasNaoCarrocas == 1){
+                    resultado = new ResultadoPartidaVolta(jogador);
+                } else if (quantasNaoCarrocas == 0){
+                    resultado = new Batida(Vitoria.SEIS_CARROCAS_NA_MAO, jogador);
+                }
+                break;
+            }
+         }
+         return resultado;
     }
+}
