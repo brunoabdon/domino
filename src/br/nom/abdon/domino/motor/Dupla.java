@@ -2,13 +2,13 @@ package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Jogador;
 
-public class Dupla {
+class Dupla {
     private int pontos;
 
     private final JogadorWrapper jogador1;
     private final JogadorWrapper jogador2;
 
-    public Dupla(JogadorWrapper jogador1, JogadorWrapper jogador2) {
+    Dupla(JogadorWrapper jogador1, JogadorWrapper jogador2) {
         if(jogador1 == null || jogador2 == null) 
             throw new IllegalArgumentException("Só pode dupla de dois");
 

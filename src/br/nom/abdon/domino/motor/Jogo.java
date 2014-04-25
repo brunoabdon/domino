@@ -10,13 +10,13 @@ public class Jogo {
     private final Dupla dupla1, dupla2;
     private final DominoEventBroadcaster eventBroadcaster;
 
-    public Jogo(final Dupla dupla1, final Dupla dupla2) {
+    public Jogo(JogadorWrapper jogador1dupla1, JogadorWrapper jogador1dupla2, JogadorWrapper jogador2dupla1, JogadorWrapper jogador2dupla2) {
             
-            if(dupla1 == null || dupla2 == null) 
+            if(jogador1dupla1 == null || jogador2dupla1 == null || jogador1dupla2 == null || jogador2dupla2 == null) 
                 throw new IllegalArgumentException("W.O.!!!");
             
-            this.dupla1 = dupla1;
-            this.dupla2 = dupla2;
+            this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
+            this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
 
             this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
     }
