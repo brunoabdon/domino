@@ -14,9 +14,10 @@ import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
  * 
  * @author bruno
  */
-public class LoggerDominoEventListener implements OmniscientDominoEventListener {
+public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
-    private String nomeDoJogador1, nomeDoJogador2, nomeDoJogador3, nomeDoJogador4;
+    private String nomeDoJogador1, nomeDoJogador2;
+    private String nomeDoJogador3, nomeDoJogador4; 
 
     private final PrintStream printStream;
 
@@ -35,17 +36,20 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
     }
 
     @Override 
-    public void partidaComecou(int pontosDupla1, int pontosDupla2, boolean ehDobrada) {
-            this.printStream.println("======================================");	
-            this.printStream.println("Comecando partida\n");
-            imprimePlacar(pontosDupla1,pontosDupla2);
-            this.printStream.println("=================");	
+    public void partidaComecou(
+            int pontosDupla1, int pontosDupla2, boolean ehDobrada) {
+        
+        this.printStream.println("======================================");	
+        this.printStream.println("Comecando partida\n");
+        imprimePlacar(pontosDupla1,pontosDupla2);
+        this.printStream.println("=================");	
     }
 
     @Override
     public void jogadorRecebeuPedras(String quemFoi, Collection<Pedra> pedras) {
         this.printStream.println("Mão de " + quemFoi + ":");
-        pedras.stream().forEach((pedra)->printStream.println(formataPedra(pedra, 20)));
+        pedras.stream().forEach(
+                (pedra) -> printStream.println(formataPedra(pedra, 20)));
 
         contadorRecebimentoDePedra++;
         if(contadorRecebimentoDePedra == 4){
@@ -63,7 +67,10 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
 
         if(lado != null){
             int padLado = baseDoPaddingDeLado - sb.length();
-            sb.append(String.format("%1$" + padLado + "s","(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
+            sb.append(
+                    String.format(
+                            "%1$" + padLado + "s",
+                            "(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
         }
 
 
@@ -80,7 +87,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
     }
 
     @Override
-    public void jogoComecou(String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4){
+    public void jogoComecou(
+            String nomeDoJogador1, String nomeDoJogador2, 
+            String nomeDoJogador3, String nomeDoJogador4){
 
             this.printStream.println("Comecou o jogo");
 
@@ -112,9 +121,13 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
     @Override
     public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria) {
         if(tipoDeVitoria == Vitoria.CONTAGEM_DE_PONTOS){
-            this.printStream.print("\nTravou. " + nomeDoJogador + " ganhou pela contagem.");
+            this.printStream.print(
+                    "\nTravou. " + nomeDoJogador + " ganhou pela contagem.");
         } else if(tipoDeVitoria == Vitoria.SEIS_CARROCAS_NA_MAO){
-            this.printStream.print("\nCagada! " + nomeDoJogador + " tirou 6 carroças na mão! A Dupla ganha automaticamente.");
+            this.printStream.print(
+                "\nCagada! " 
+                + nomeDoJogador 
+                + " tirou 6 carroças na mão! A Dupla ganha automaticamente.");
         } else {
             this.printStream.print("\n" + nomeDoJogador + " bateu!");
             if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
@@ -146,25 +159,26 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
         int min = placarDupla1 < placarDupla2 ? placarDupla1 : placarDupla2;
 
         if(min == 0){
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   ===========    BUXUDINHA!!!      ======   ");
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   ===========    BUXUDINHA!!!      ======   ");
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   ===========    BUXUDINHA!!!      ======   ");
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   =======================================   ");
+            this.printStream.println("   ====================================");
+            this.printStream.println("   ====================================");
+            this.printStream.println("   ========      BUXUDINHA!!!    ======");
+            this.printStream.println("   ====================================");
+            this.printStream.println("   ========      BUXUDINHA!!!    ======");
+            this.printStream.println("   ====================================");
+            this.printStream.println("   ========      BUXUDINHA!!!    ======");
+            this.printStream.println("   ====================================");
+            this.printStream.println("   ====================================");
         } else if (min == 1){
-            this.printStream.println("   =======================================   ");
-            this.printStream.println("   ===========    INCHADINHA!      ======   ");
-            this.printStream.println("   =======================================   ");
+            this.printStream.println("   ===================================");
+            this.printStream.println("   =======      INCHADINHA!    =======");
+            this.printStream.println("   ===================================");
         }
     }
 
     private String formataPedra(Pedra pedra, final int leftpadInicial) {
         final String pedraStr = pedra.toString();
-        final int distaciaDaBarraProFim = pedraStr.substring(pedraStr.indexOf("|")).length();
+        final int distaciaDaBarraProFim = 
+                pedraStr.substring(pedraStr.indexOf("|")).length();
         final int leftPadPedra = leftpadInicial + distaciaDaBarraProFim;
         return String.format("%1$" + leftPadPedra + "s", pedraStr);
     }

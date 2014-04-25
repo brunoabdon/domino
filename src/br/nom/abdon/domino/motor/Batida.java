@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.nom.abdon.domino.motor;
 
 import br.nom.abdon.domino.Vitoria;
 
 /**
- *
- * @author bruno
+ * Um {@link ResultadoPartida} indicando que um determinado {@link Jogador} 
+ * bateu.
+ * 
  */
 class Batida extends ResultadoPartida{
 

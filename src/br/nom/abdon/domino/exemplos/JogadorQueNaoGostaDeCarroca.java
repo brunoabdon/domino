@@ -83,7 +83,6 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         return jogada;
     }
 
-    
     /**
      * Diz qual o {@link Lado} da mesa tem o maior {@link Numero}. Se empatar, 
      * diz qualquer um.

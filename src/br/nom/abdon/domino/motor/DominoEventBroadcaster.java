@@ -15,7 +15,8 @@ import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 
-public class DominoEventBroadcaster implements DominoEventListener, OmniscientDominoEventListener {
+public class DominoEventBroadcaster implements 
+        DominoEventListener, OmniscientDominoEventListener {
 
     private final List<DominoEventListener> eventListeners;
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
@@ -39,16 +40,20 @@ public class DominoEventBroadcaster implements DominoEventListener, OmniscientDo
 
     }
 
-    public void addEventListener(DominoEventListener eventListener, boolean permiteAcessoTotal) {
+    public void addEventListener(
+            DominoEventListener eventListener, boolean permiteAcessoTotal) {
         this.eventListeners.add(eventListener);
         
-        if(permiteAcessoTotal && eventListener instanceof OmniscientDominoEventListener){
-            OmniscientDominoEventListener omniscientEventListener = (OmniscientDominoEventListener) eventListener;
+        if(permiteAcessoTotal 
+                && eventListener instanceof OmniscientDominoEventListener){
+            OmniscientDominoEventListener omniscientEventListener = 
+                    (OmniscientDominoEventListener) eventListener;
             this.omniscientEventListeners.add(omniscientEventListener);
         } 
     }
 
-    private <E> void broadCastEvent(Collection<E> listeners, Consumer<? super E> c) {
+    private <E> void broadCastEvent(
+            Collection<E> listeners, Consumer<? super E> c) {
         listeners.parallelStream().forEach(c);
     }
 
@@ -96,11 +101,11 @@ public class DominoEventBroadcaster implements DominoEventListener, OmniscientDo
 
     @Override
     public void jogadorJogou(String nomeDoJogador, Lado lado, Pedra pedra) {
-        final Function<Pedra, Consumer<DominoEventListener>> jodadaDoJogadorDaqueleLado 
-                = this.cachedJogadasNoLado.get(nomeDoJogador).get(optional(lado));
+        final Function<Pedra, Consumer<DominoEventListener>> jodadaDoJogadorDaqueleLado =
+            this.cachedJogadasNoLado.get(nomeDoJogador).get(optional(lado));
         
         final Consumer<DominoEventListener> jogadaDessaPedraDesseLadoPorEsseJogador = 
-                    jodadaDoJogadorDaqueleLado.apply(pedra);
+            jodadaDoJogadorDaqueleLado.apply(pedra);
 
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
                 
@@ -114,32 +119,37 @@ public class DominoEventBroadcaster implements DominoEventListener, OmniscientDo
     }
                 
     @Override
-    public void partidaComecou(int placarDupla1, int placarDupla2, boolean ehDobrada) {
+    public void partidaComecou(
+            int placarDupla1, int placarDupla2, boolean ehDobrada) {
         broadCastEvent(eventListeners,
                 (eventListener) -> {
-                    eventListener.partidaComecou(placarDupla1, placarDupla2, ehDobrada);
+                    eventListener.partidaComecou(
+                            placarDupla1, placarDupla2, ehDobrada);
                 }
         );
     }
 
     @Override
-    public void jogoComecou(String nomeDoJogador1, String nomeDoJogador2, String nomeDoJogador3, String nomeDoJogador4) {
+    public void jogoComecou(
+            String nomeDoJogador1, String nomeDoJogador2, 
+            String nomeDoJogador3, String nomeDoJogador4) {
+        
         broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.jogoComecou(nomeDoJogador1, nomeDoJogador2, nomeDoJogador3, nomeDoJogador4);
-                }
+            (eventListener) -> {
+                eventListener.jogoComecou(
+                        nomeDoJogador1, nomeDoJogador2, 
+                        nomeDoJogador3, nomeDoJogador4);
+            }
         );
 
         montaCacheJogadasDoJogador(nomeDoJogador1);
         montaCacheJogadasDoJogador(nomeDoJogador2);
         montaCacheJogadasDoJogador(nomeDoJogador3);
         montaCacheJogadasDoJogador(nomeDoJogador4);
-        
-        
     }
 
     private void montaCacheJogadasDoJogador(final String nomeDoJogador) {
-        final Map<Optional<Lado>,Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado = new HashMap<>(3);
+        final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado = new HashMap<>(3);
         final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor = jogadaPorUmJogador.apply(nomeDoJogador);
         fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.ESQUERDO);
         fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.DIREITO);
