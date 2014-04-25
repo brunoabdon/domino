@@ -113,6 +113,8 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
     public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria) {
         if(tipoDeVitoria == Vitoria.CONTAGEM_DE_PONTOS){
             this.printStream.print("\nTravou. " + nomeDoJogador + " ganhou pela contagem.");
+        } else if(tipoDeVitoria == Vitoria.SEIS_CARROCAS_NA_MAO){
+            this.printStream.print("\nCagada! " + nomeDoJogador + " tirou 6 carroças na mão! A Dupla ganha automaticamente.");
         } else {
             this.printStream.print("\n" + nomeDoJogador + " bateu!");
             if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
@@ -126,7 +128,15 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener 
     public void partidaEmpatou(){
         this.printStream.println("Empatou. A proxima vale dobrada.");   
     }
-
+    
+    @Override
+    public void partidaVoltou(String nomeDoJogador) {
+        this.printStream.println("Não vai ter partida!"
+                + nomeDoJogador 
+                + " tem 5 carroças na mão."
+                + "\nVoltem as pedras...");   
+    }
+    
     @Override
     public void jogoAcabou(int placarDupla1,int placarDupla2) {
 

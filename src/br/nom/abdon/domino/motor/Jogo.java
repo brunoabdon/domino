@@ -53,15 +53,21 @@ public class Jogo {
                 ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
                 if(resultado == ResultadoPartida.EMPATE){
                         multiplicadorDobrada *=2;
-                } else {
-                        ultimaDuplaQueVenceu = getDuplaVencedora(resultado);
+                } else if(resultado instanceof Batida){
+                        Batida batida = (Batida) resultado;
+                        
+                        ultimaDuplaQueVenceu = getDuplaVencedora(batida);
                         
                         atualizaPlacar(
                                 ultimaDuplaQueVenceu,
-                                resultado.getTipoDeVitoria(),
+                                batida.getTipoDeVitoria(),
                                 multiplicadorDobrada);
                         
                         multiplicadorDobrada = 1;
+                } else {
+                    //partida voltou! 5 carrocas na mao!
+                    this.eventBroadcaster.partidaVoltou(
+                            resultado.getJogadorRelevante().getNome());
                 }
             }
 
@@ -97,7 +103,7 @@ public class Jogo {
         }
     }
 
-    private Dupla getDuplaVencedora(final ResultadoPartida resultado) {
+    private Dupla getDuplaVencedora(final Batida resultado) {
         return dupla1.contem(resultado.getVencedor())?dupla1:dupla2;
     }
 

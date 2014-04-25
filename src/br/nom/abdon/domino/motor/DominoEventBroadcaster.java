@@ -71,6 +71,16 @@ public class DominoEventBroadcaster implements DominoEventListener, OmniscientDo
     }
 
     @Override
+    public void partidaVoltou(String nomeDoJogador) {
+        broadCastEvent(eventListeners,
+                (eventListener) -> {
+                    eventListener.partidaVoltou(nomeDoJogador);
+                }
+        );
+    }
+
+    
+    @Override
     public void jogadorBateu(String quemFoi, Vitoria tipoDeVitoria) {
         broadCastEvent(eventListeners,
                 (eventListener) -> {

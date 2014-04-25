@@ -1,26 +1,20 @@
 package br.nom.abdon.domino.motor;
 
-import br.nom.abdon.domino.Vitoria;
-
 class ResultadoPartida {
 	
-    private final JogadorWrapper vencedor;
-    private final Vitoria tipoDeVitoria;
+    private final JogadorWrapper jogadorRelevante;
 
-    public static final ResultadoPartida EMPATE = 
-            new ResultadoPartida(null,null);
+    public static final ResultadoPartida EMPATE = new ResultadoPartida();
 
-    public ResultadoPartida(Vitoria tipoDeVitoria, JogadorWrapper vencedor) {
-            this.tipoDeVitoria = tipoDeVitoria;
-            this.vencedor = vencedor;
+    private ResultadoPartida() {
+        this(null);
     }
 
-    public JogadorWrapper getVencedor() {
-            return vencedor;
+    protected ResultadoPartida(JogadorWrapper jogadorRelevante) {
+        this.jogadorRelevante = jogadorRelevante;
     }
 
-    public Vitoria getTipoDeVitoria() {
-            return tipoDeVitoria;
+    JogadorWrapper getJogadorRelevante() {
+        return jogadorRelevante;
     }
-	
 }

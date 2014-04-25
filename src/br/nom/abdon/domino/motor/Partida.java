@@ -113,12 +113,12 @@ class Partida {
             if(resultadoPartida == ResultadoPartida.EMPATE){
                 this.eventListener.partidaEmpatou();
             } else {
-                this.eventListener.jogadorBateu(resultadoPartida.getVencedor().getNome(),Vitoria.CONTAGEM_DE_PONTOS);
+                this.eventListener.jogadorBateu(resultadoPartida.getJogadorRelevante().getNome(),Vitoria.CONTAGEM_DE_PONTOS);
             }
         } else {
             Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
             this.eventListener.jogadorBateu(nomeJogadorDaVez,tipoDaBatida);
-            resultadoPartida = new ResultadoPartida(tipoDaBatida,jogadorDaVez);
+            resultadoPartida = new Batida(tipoDaBatida,jogadorDaVez);
         }
 
         return resultadoPartida;
@@ -170,7 +170,7 @@ class Partida {
             JogadorWrapper jogadorComMenosPontosNaMao = 
                     jogadorDaVez(idxJogadorComMenos);
             
-            resultado = new ResultadoPartida(
+            resultado = new Batida(
                     Vitoria.CONTAGEM_DE_PONTOS, 
                     jogadorComMenosPontosNaMao);
         }
@@ -296,4 +296,4 @@ class Partida {
             return (vez+1)%4;
     }
 
-}
+    }

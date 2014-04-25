@@ -5,7 +5,7 @@ package br.nom.abdon.domino;
  * @author bruno
  */
 public enum Vitoria {
-    CONTAGEM_DE_PONTOS, BATIDA_SIMPLES, CARROCA(2), LA_E_LO(3), CRUZADA(4);
+    CONTAGEM_DE_PONTOS, BATIDA_SIMPLES, SEIS_CARROCAS_NA_MAO, CARROCA(2), LA_E_LO(3), CRUZADA(4);
 
     private final int pontos;
 

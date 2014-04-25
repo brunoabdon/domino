@@ -73,6 +73,17 @@ public interface DominoEventListener {
     }
 
     /**
+     * A partida voltou logo depois de serem distribuidas as {@link Pedra}s 
+     * porque um dos {@link Jogador}es tinha 5 {@link Pedra#isCarroca() 
+     * Carrocas} na mão. (Ninguém marca ponto quando isso acontece).
+     * 
+     * @param nomeDoJogador O jogador que tinha cinco pedras na mão.
+     */
+    public default void partidaVoltou(String nomeDoJogador){
+        
+    }
+    
+    /**
      * Um {@link Jogador} bateu e a partida acabou. O jogo ainda pode continuar.
      * @param quemFoi Quem bateu 
      * @param tipoDeVitoria Como foi a batida.
