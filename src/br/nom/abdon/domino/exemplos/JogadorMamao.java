@@ -45,7 +45,7 @@ public class JogadorMamao implements Jogador {
             if(!perguntouSeEuQueriaJogar){
                 /* 
                 se nao me perguntaram se eu queria ser o da dupla a comecar a 
-                jogar,  entao essa é a primeira partida, e o sistema jah se 
+                jogar,  entao essa é a primeira partida, e o sistema já se 
                 ligou que o jogador que tem a maior carroca sou eu. Tenho que 
                 jogar ela, se não é roubo.
                 */
@@ -129,6 +129,9 @@ public class JogadorMamao implements Jogador {
      */
     @Override
     public int vontadeDeComecar() {
+        //isso é pra eu me ligar que a primeira rodada já foi.
+        this.perguntouSeEuQueriaJogar = true; 
+        //vai 5 mesmo
         return 5;
     }
 }
