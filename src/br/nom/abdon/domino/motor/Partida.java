@@ -112,7 +112,7 @@ class Partida {
             if(resultadoPartida == ResultadoPartida.EMPATE){
                 this.eventListener.partidaEmpatou();
             } else {
-                this.eventListener.jogadorBateu(nomeJogadorDaVez,Vitoria.CONTAGEM_DE_PONTOS);
+                this.eventListener.jogadorBateu(resultadoPartida.getVencedor().getNome(),Vitoria.CONTAGEM_DE_PONTOS);
             }
         } else {
             Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
