@@ -70,7 +70,8 @@ class Partida {
             } else if(jogada == Jogada.TOQUE){
                 //tocou mesmo?
                 boolean tinhaPedraPraJogar = 
-                    maoDoJogadorDaVez.stream().anyMatch(
+                    mesa.taVazia()
+                    || maoDoJogadorDaVez.stream().anyMatch(
                         pedraNaMao -> 
                             pedraNaMao.temNumero(mesa.getNumeroEsquerda()) 
                             || pedraNaMao.temNumero(mesa.getNumeroDireita()));
