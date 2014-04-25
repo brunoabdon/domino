@@ -91,6 +91,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             String nomeDoJogador1, String nomeDoJogador2, 
             String nomeDoJogador3, String nomeDoJogador4){
 
+            this.printStream.println("++++++++++++++++++++++++++++++++");    
             this.printStream.println("Comecou o jogo");
 
             this.nomeDoJogador1 = nomeDoJogador1;
@@ -144,7 +145,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     
     @Override
     public void partidaVoltou(String nomeDoJogador) {
-        this.printStream.println("Não vai ter partida!"
+        this.printStream.println("Não vai ter partida! "
                 + nomeDoJogador 
                 + " tem 5 carroças na mão."
                 + "\nVoltem as pedras...");   
