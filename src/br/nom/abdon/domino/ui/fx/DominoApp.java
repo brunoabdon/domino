@@ -6,31 +6,23 @@
 
 package br.nom.abdon.domino.ui.fx;
 
-import br.nom.abdon.domino.Numero;
-import br.nom.abdon.domino.Pedra;
 import java.util.Collection;
-import javafx.animation.FadeTransition;
-import javafx.animation.FillTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
+
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+
+import br.nom.abdon.domino.Numero;
+import br.nom.abdon.domino.Pedra;
 
 /**
  *
@@ -65,26 +57,38 @@ public class DominoApp extends Application {
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("Domino");
-        
-        
 
-        
-//        drawShapes(gc);
-        
-        Node pedra1 = fazPedra(Pedra.QUINA_SENA);
-        pedra1.setTranslateX(20);
-        pedra1.setTranslateY(20);
-        
-        Rectangle mesa = new Rectangle(LARGURA_DA_MESA,ALTURA_DA_MESA);
+        Rectangle mesa = new Rectangle();//LARGURA_DA_MESA,ALTURA_DA_MESA);
         mesa.setId("mesa");
         
         
+//        Group root = new Group();
+        Pane root = new Pane();
+                
+        
+        final double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
+        final double PROPORCAO_MESA_JANELA = 0.95;
+
+        
+        // here we bind rectangle size to pane size 
+        mesa.widthProperty().bind(Bindings.min(root.widthProperty().multiply(PROPORCAO_MESA_JANELA),root.heightProperty().multiply(PROPORCAO_MESA_JANELA).divide(PROPORCAO_ALTURA_LARGURA_MESA)));
+        mesa.heightProperty().bind(mesa.widthProperty().multiply(PROPORCAO_ALTURA_LARGURA_MESA));
+        
+        mesa.xProperty().bind(root.widthProperty().divide(2).subtract(mesa.widthProperty().divide(2)));
+        mesa.yProperty().bind(root.heightProperty().divide(2).subtract(mesa.heightProperty().divide(2)));
         
         
-        Group root = new Group();
         Collection<Node> nos = root.getChildren();
         nos.add(mesa);
-        nos.add(pedra1);
+
+        Group pedra1 = fazPedra(Pedra.QUINA_SENA);
+//        pedra1.setTranslateX(20);
+//        pedra1.setTranslateY(20);
+
+//        pedra1.
+//        
+//        
+//        nos.add(pedra1);
 
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
@@ -93,31 +97,31 @@ public class DominoApp extends Application {
         scene.getStylesheets().add(css);
         
         primaryStage.show();
-        final Duration duracao = Duration.millis(1500);
-        final Duration metadeDaDuraco = duracao.divide(2);
-        
-        TranslateTransition translation = new TranslateTransition(duracao);
-        translation.setToX(pedra1.getTranslateX() + 400);
-        
-        RotateTransition rotation = new RotateTransition(duracao);
-        rotation.setByAngle(90);
-
-        ScaleTransition encolhe = new ScaleTransition(metadeDaDuraco);
-        encolhe.setByX(-0.8);
-
-        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
-        cresce.setByX(0.8);
-        
-        SequentialTransition vira = new SequentialTransition(encolhe,cresce);
-        final Group g = (Group)pedra1;
-        
-        ParallelTransition transicao = new ParallelTransition(pedra1,vira);
-//        transicao.setOnFinished((ActionEvent t) -> {
-//            ((Shape)g.getChildren().get(2)).setFill(Color.TRANSPARENT);
-//        });
-        
-        
-        transicao.play();
+//        final Duration duracao = Duration.millis(1500);
+//        final Duration metadeDaDuraco = duracao.divide(2);
+//        
+//        TranslateTransition translation = new TranslateTransition(duracao);
+//        translation.setToX(pedra1.getTranslateX() + 400);
+//        
+//        RotateTransition rotation = new RotateTransition(duracao);
+//        rotation.setByAngle(90);
+//
+//        ScaleTransition encolhe = new ScaleTransition(metadeDaDuraco);
+//        encolhe.setByX(-0.8);
+//
+//        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
+//        cresce.setByX(0.8);
+//        
+//        SequentialTransition vira = new SequentialTransition(encolhe,cresce);
+//        final Group g = (Group)pedra1;
+//        
+//        ParallelTransition transicao = new ParallelTransition(pedra1,vira);
+////        transicao.setOnFinished((ActionEvent t) -> {
+////            ((Shape)g.getChildren().get(2)).setFill(Color.TRANSPARENT);
+////        });
+//        
+//        
+//        transicao.play();
         
 
     }
@@ -134,7 +138,7 @@ public class DominoApp extends Application {
         launch(args);
     }
 
-    private Node fazPedra(Pedra pedra) {
+    private Group fazPedra(Pedra pedra) {
         
         Group desenhoPedraEmBranco = fazPedraEmBranco();
         Group pontinhos = fazPontinhos(pedra);
