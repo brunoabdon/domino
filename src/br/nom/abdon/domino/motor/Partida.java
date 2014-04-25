@@ -16,9 +16,8 @@ import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 class Partida {
 
     private final Dupla dupla1, dupla2;
-
     private final MesaImpl mesa;
-    private Pedra[] dorme = new Pedra[4];
+    
 
     private final OmniscientDominoEventListener eventListener;
 
@@ -26,11 +25,11 @@ class Partida {
         Dupla dupla1, Dupla dupla2, 
         OmniscientDominoEventListener eventListener) {
 
-        this.mesa = new MesaImpl();
         this.dupla1 = dupla1;
         this.dupla2 = dupla2;
-
+        
         this.eventListener = eventListener;
+        this.mesa = embaralhaEdistribui();
     }
 
     protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
@@ -44,8 +43,6 @@ class Partida {
         boolean alguemBateu = false, trancou = false;
 
         int numeroDeToquesSeguidos = 0;
-
-        embaralhaEdistribui();
 
         boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
 
@@ -206,11 +203,11 @@ class Partida {
         }
     }
 
-    private void embaralhaEdistribui() {
+    private MesaImpl embaralhaEdistribui() {
         List<Pedra> pedras = Arrays.asList(Pedra.values());
         Collections.shuffle(pedras);
 
-        final Collection<Pedra>[] maos = this.mesa.getMaos();
+        final Collection<Pedra>[] maos = new Collection[4];
         for (int i = 0; i < 4; i++) {
 
             ArrayList<Pedra> mao = new ArrayList<>(6);
@@ -231,10 +228,12 @@ class Partida {
                     Collections.unmodifiableList(mao));
         }
 
-        this.dorme = new Pedra[4];
+        Pedra[] dorme = new Pedra[4];
         for (int i = 24; i < 28; i++) {
             dorme[i-24] = pedras.get(i);
         }
+        
+        return new MesaImpl(maos, dorme);
     }
 
 

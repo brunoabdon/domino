@@ -11,15 +11,17 @@ import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.motor.util.IteratorReadOnly;
 
-class MesaImpl implements br.nom.abdon.domino.Mesa{
+class MesaImpl implements Mesa{
 
     private final Deque<Pedra> listaDePedras;
     private Numero numeroEsquerda, numeroDireita;
     private final Collection<Pedra>[] maos;
+    private final Pedra[] dorme;
 
-    protected MesaImpl() {
+    MesaImpl(final Collection<Pedra>[] maos, final Pedra[] dorme) {
         this.listaDePedras = new ArrayDeque<>(28-4);
-        this.maos = new Collection[4];
+        this.maos = maos;
+        this.dorme = dorme;
     }
 
     Collection<Pedra>[] getMaos() {
@@ -32,7 +34,6 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
     }
 
     private boolean podeJogar(final Pedra pedra, final Lado lado){
-
         Numero cabeca = lado == Lado.ESQUERDO ? numeroEsquerda : numeroDireita; 
         return pedra.temNumero(cabeca);
     }
@@ -41,7 +42,6 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
     public int quantasPedrasOJogadoresTem(int qualJogador) {
         if(qualJogador < 1 || qualJogador >4 ) 
             throw new IllegalArgumentException("Dominó se joga com 4.");
-        System.out.println(qualJogador);
         return this.maos[qualJogador-1].size();
     }
 
@@ -53,7 +53,7 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
      * @param lado Onde botar ela.
      * @throws PedraBebaException Se não puder colocar essa pedra nesse lugar.
      */
-    protected void coloca(final Pedra pedra, Lado lado) throws PedraBebaException{
+    void coloca(final Pedra pedra, Lado lado) throws PedraBebaException{
 
             if(taVazia()){
                     this.listaDePedras.addFirst(pedra);
@@ -88,6 +88,7 @@ class MesaImpl implements br.nom.abdon.domino.Mesa{
                     : primeiroNumeroDaPedra;
     }
 
+    
     @Override
     public Numero getNumeroEsquerda() {
             return numeroEsquerda;
