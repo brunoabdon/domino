@@ -12,7 +12,7 @@ public final class JogadorWrapper implements Jogador {
 
     public JogadorWrapper(Jogador wrapped, String nome) {
 
-        if(nome == null) throw new IllegalArgumentException("João SemNome não joga");
+        if(nome == null) throw new IllegalArgumentException("João SemNome não joga.");
         if(wrapped == null) throw new IllegalArgumentException("bug");
 
         this.wrapped = wrapped;
