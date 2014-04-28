@@ -31,7 +31,6 @@ public interface DominoEventListener {
             String nomeDoJogador2, 
             String nomeDoJogador3, 
             String nomeDoJogador4){
-
     }
 
     /**

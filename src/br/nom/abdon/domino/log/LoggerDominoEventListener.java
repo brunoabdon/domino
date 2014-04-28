@@ -73,7 +73,6 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
                             "(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
         }
 
-
         this.printStream.println(sb);
 
     }
