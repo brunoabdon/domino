@@ -41,8 +41,8 @@ class Dupla {
      * ou 1 se o Jogador 2 for começar;
      * 
      * @return O que eu acabei de dizer;
-     * @throws BugDeJogadorException Se algum jogador se enrolar até 
-     * pra dizer se quer começar ou não.
+     * @throws BugDeJogadorException Se algum jogador se enrolar até pra dizer 
+     * se quer começar ou não.
      */
     int quemComeca() throws BugDeJogadorException {
             int vontadeDo1 = jogador1.vontadeDeComecar();
@@ -72,5 +72,4 @@ class Dupla {
     public String toString() {
             return this.jogador1 + " e "  + this.jogador2 + ", " + this.pontos;
     }
-
 }
