@@ -99,11 +99,6 @@ class MesaImpl implements Mesa{
     }
 
     @Override
-    public Iterator<Pedra> iterator() {
-            return iteratorEsquedaPraDireita();
-    }
-
-    @Override
     public Iterator<Pedra> iteratorEsquedaPraDireita() {
             return new IteratorReadOnly<>(listaDePedras.iterator());
     }

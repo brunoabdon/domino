@@ -38,7 +38,9 @@ public interface Mesa extends Iterable<Pedra>{
          * @return um Iterator pra ver as pedras da mesa
          */
 	@Override
-	public Iterator<Pedra> iterator();
+	public default Iterator<Pedra> iterator(){
+            return iteratorEsquedaPraDireita();
+        }
 
 	/**
 	 * Um {@link Iterator} que permite percorer todas as pedras da mesa, no sentido
@@ -61,7 +63,6 @@ public interface Mesa extends Iterable<Pedra>{
          * @return um Iterator pra ver as pedras da mesa
 	 */
 	public Iterator<Pedra> iteratorDireitaPraEsquerda();
-	
         
         /**
          * Diz quantas {@link  Pedra}s um dado {@link Jogador} tem na mão no 
@@ -87,7 +88,9 @@ public interface Mesa extends Iterable<Pedra>{
 	 * Diz quantas {@link Pedra}s tem na mesa
 	 * @return quantas  {@link Pedra}s tem na mesa
 	 */
-	public int quantasPecas();
+	public default int quantasPecas(){
+            return toArray().length;
+        }
 	
 	/**
 	 * Retorna a lista de {@link Pedra}s como um array, no sentido 
@@ -101,7 +104,7 @@ public interface Mesa extends Iterable<Pedra>{
 	 * primeira {@link Pedra pedra} da partida);
 	 * @return <code>true</code> so se nao tiver {@link Pedra} na mesa.
 	 */
-	public boolean taVazia();
-
-
+	public default boolean taVazia(){
+            return this.quantasPecas() == 0;
+        };
 }
