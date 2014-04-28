@@ -32,7 +32,7 @@ class Dupla {
             this.pontos += pontos;
     }
 
-    public boolean contem(Jogador jogador){
+    boolean contem(Jogador jogador){
             return this.jogador1 == jogador || this.jogador2 == jogador;
     }
 
@@ -44,7 +44,7 @@ class Dupla {
      * @throws BugDeJogadorException Se algum jogador se enrolar até 
      * pra dizer se quer começar ou não.
      */
-    public int quemComeca() throws BugDeJogadorException {
+    int quemComeca() throws BugDeJogadorException {
             int vontadeDo1 = jogador1.vontadeDeComecar();
             validaVontade(vontadeDo1,jogador1);
 
@@ -62,6 +62,10 @@ class Dupla {
                     "Vontade é de zero a dez só, meu velho. Não inventa.",
                     jogador);
         }
+    }
+    
+    boolean venceu() {
+        return this.getPontos() >= 6;
     }
 
     @Override

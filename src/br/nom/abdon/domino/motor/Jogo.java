@@ -115,7 +115,7 @@ public class Jogo {
     }
 
     private boolean alguemVenceu() {
-            return dupla1.getPontos() >= 6 || dupla2.getPontos() >= 6;
+            return dupla1.venceu() || dupla2.venceu();
     }
 
     public void addEventListener(final DominoEventListener eventListener) {
