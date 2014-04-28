@@ -42,7 +42,7 @@ class Partida {
         }
         
         JogadorWrapper jogadorDaVez = null;
-        String nomeJogadorDaVez = null;
+        String nomeJogadorDaVez;
 
         Pedra pedra = null;
 
@@ -117,12 +117,13 @@ class Partida {
             if(resultadoPartida == ResultadoPartida.EMPATE){
                 this.eventListener.partidaEmpatou();
             } else {
-                this.eventListener.jogadorBateu(resultadoPartida.getJogadorRelevante().getNome(),Vitoria.CONTAGEM_DE_PONTOS);
+                this.eventListener.jogadorBateu(
+                        resultadoPartida.getJogadorRelevante().getNome(),
+                        Vitoria.CONTAGEM_DE_PONTOS);
             }
         } else {
             Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
-            this.eventListener.jogadorBateu(nomeJogadorDaVez,tipoDaBatida);
-            resultadoPartida = new Batida(tipoDaBatida,jogadorDaVez);
+            resultadoPartida = batida(jogadorDaVez,tipoDaBatida);
         }
 
         return resultadoPartida;
@@ -164,7 +165,8 @@ class Partida {
             if(totalJogador < menorAteAgora){
                 menorAteAgora = totalJogador;
                 idxJogadorComMenos = i; 
-            } else if(totalJogador == menorAteAgora && (i-idxJogadorComMenos != 2)){
+            } else if(totalJogador == menorAteAgora 
+                        && (i-idxJogadorComMenos != 2)){
                 //fudeu, empatou duas pessoas de duplas diferentes
                 resultado = ResultadoPartida.EMPATE;
             }
@@ -174,9 +176,9 @@ class Partida {
             JogadorWrapper jogadorComMenosPontosNaMao = 
                     jogadorDaVez(idxJogadorComMenos);
             
-            resultado = new Batida(
-                    Vitoria.CONTAGEM_DE_PONTOS, 
-                    jogadorComMenosPontosNaMao);
+            resultado = batida(
+                    jogadorComMenosPontosNaMao,
+                    Vitoria.CONTAGEM_DE_PONTOS);
         }
 
         return resultado;
@@ -211,7 +213,7 @@ class Partida {
     private MesaImpl embaralhaEdistribui() {
         List<Pedra> pedras = Arrays.asList(Pedra.values());
         Collections.shuffle(pedras);
-
+        
         final Collection<Pedra>[] maos = new Collection[4];
         for (int i = 0; i < 4; i++) {
 
@@ -314,13 +316,33 @@ class Partida {
             if(quantasNaoCarrocas <= 1){
                 JogadorWrapper jogador = jogadorDaVez(i);
                 if(quantasNaoCarrocas == 1){
+                    //partida voltou! 5 carrocas na mao!
+                    this.eventListener.partidaVoltou(jogador.getNome());
                     resultado = new ResultadoPartidaVolta(jogador);
+                    
                 } else if (quantasNaoCarrocas == 0){
-                    resultado = new Batida(Vitoria.SEIS_CARROCAS_NA_MAO, jogador);
+                    //batida imediata! 6 carrocas na mao!
+                    resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
                 }
                 break;
             }
          }
          return resultado;
+    }
+
+    /**
+     * Métido auxiliar que anuncia o evento de que um dado {@link Jogador} bateu 
+     * (com um dado {@link Vitoria tipo de batida}) e cria e retorna um {@link 
+     * ResultadoPartida} equivalente a essa vitória.
+     * 
+     * @param vencedor O jogador que bateu.
+     * @param tipoDeBatida O tipo de batida.
+     * @return Um {@link ResultadoPartida} equivalente a essa vitória.
+     */
+    private ResultadoPartida batida(
+            JogadorWrapper vencedor, Vitoria tipoDeBatida) {
+        
+        this.eventListener.jogadorBateu(vencedor.getNome(),tipoDeBatida);
+        return new Batida(tipoDeBatida, vencedor);
     }
 }

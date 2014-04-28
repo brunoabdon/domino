@@ -64,10 +64,6 @@ public class Jogo {
                                 multiplicadorDobrada);
                         
                         multiplicadorDobrada = 1;
-                } else {
-                    //partida voltou! 5 carrocas na mao!
-                    this.eventBroadcaster.partidaVoltou(
-                            resultado.getJogadorRelevante().getNome());
                 }
             }
 
