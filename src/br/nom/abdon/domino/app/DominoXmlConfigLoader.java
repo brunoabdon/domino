@@ -115,7 +115,9 @@ public class DominoXmlConfigLoader {
             try {
                 File configFile = new File(CONFIG_XML);
                 if(!configFile.exists()){
-                    System.err.println("Arquivo de configuracao nao econtrado:" + configFile.getAbsolutePath());
+                    throw new DominoAppException( 
+                            "Arquivo de configuração não econtrado: " 
+                            + configFile.getAbsolutePath());
                 }
                 InputStream is = new FileInputStream(configFile);
                 SAXParserFactory
