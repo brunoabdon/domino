@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Mesa;
@@ -17,6 +19,10 @@ class MesaImpl implements Mesa{
     private Numero numeroEsquerda, numeroDireita;
     private final Collection<Pedra>[] maos;
     private final Pedra[] dorme;
+
+    //usado no toString()
+    private final static Collector<CharSequence, ?, String> joining = 
+        Collectors.joining("","{","}");
 
     MesaImpl(final Collection<Pedra>[] maos, final Pedra[] dorme) {
         this.listaDePedras = new ArrayDeque<>(28-4);
@@ -55,30 +61,29 @@ class MesaImpl implements Mesa{
      */
     void coloca(final Pedra pedra, Lado lado) throws PedraBebaException{
 
-            if(taVazia()){
-                    this.listaDePedras.addFirst(pedra);
-                    this.numeroEsquerda = pedra.getPrimeiroNumero();
-                    this.numeroDireita = pedra.getSegundoNumero();
-            } else {
-                
-                    final Lado ladoQueVaiColocar = 
-                        lado == null && (numeroEsquerda == numeroDireita)
-                            ? Lado.ESQUERDO
-                            : lado;
+        if(taVazia()){
+            this.listaDePedras.addFirst(pedra);
+            this.numeroEsquerda = pedra.getPrimeiroNumero();
+            this.numeroDireita = pedra.getSegundoNumero();
+        } else {
 
-                    if(!podeJogar(pedra, ladoQueVaiColocar)){
-                            throw new PedraBebaException(pedra);
-                    }
+            final Lado ladoQueVaiColocar = 
+                lado == null && (numeroEsquerda == numeroDireita)
+                    ? Lado.ESQUERDO
+                    : lado;
 
-                    if(ladoQueVaiColocar == Lado.ESQUERDO){
-                            listaDePedras.addFirst(pedra);
-                            numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
-                    } else {
-                            listaDePedras.addLast(pedra);
-                            numeroDireita = novaCabeca(numeroDireita, pedra);
-                    }
+            if(!podeJogar(pedra, ladoQueVaiColocar)){
+                    throw new PedraBebaException(pedra);
             }
 
+            if(ladoQueVaiColocar == Lado.ESQUERDO){
+                    listaDePedras.addFirst(pedra);
+                    numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
+            } else {
+                    listaDePedras.addLast(pedra);
+                    numeroDireita = novaCabeca(numeroDireita, pedra);
+            }
+        }
     }
 
     private Numero novaCabeca(final Numero cabecaAtual, final Pedra pedraQueFoiJogada){
@@ -88,7 +93,6 @@ class MesaImpl implements Mesa{
                     ? pedraQueFoiJogada.getSegundoNumero() 
                     : primeiroNumeroDaPedra;
     }
-
     
     @Override
     public Numero getNumeroEsquerda() {
@@ -121,11 +125,8 @@ class MesaImpl implements Mesa{
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        listaDePedras.stream().forEach((pedra) -> {
-            sb.append(pedra);
-        });
-        return sb.toString();
-
+        return listaDePedras.stream()
+                .map(Object::toString)
+                .collect(joining);
     }
 }
