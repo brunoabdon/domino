@@ -114,13 +114,6 @@ class Partida {
 
         if(trancou){
             resultadoPartida = contaPontos();
-            if(resultadoPartida == ResultadoPartida.EMPATE){
-                this.eventListener.partidaEmpatou();
-            } else {
-                this.eventListener.jogadorBateu(
-                        resultadoPartida.getJogadorRelevante().getNome(),
-                        Vitoria.CONTAGEM_DE_PONTOS);
-            }
         } else {
             Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
             resultadoPartida = batida(jogadorDaVez,tipoDaBatida);
@@ -147,6 +140,13 @@ class Partida {
             return tipoDaBatida;
     }
 
+    /**
+     * Conta quantos pontos cada jogador tem na mão, definindo quem ganha numa
+     * mesa travada. Lança o evento correspondete os resultado, que pode ser 
+     * avisar sobre um empate ou sobre uma vitória por pontos.
+     * @return O resultado da partida, que vai ser ou um empate ou uma vitória
+     * por pontos (pelo Jogador que tiver menos pontos).
+     */
     private ResultadoPartida contaPontos() {
 
         ResultadoPartida resultado = null;
@@ -169,6 +169,7 @@ class Partida {
                         && (i-idxJogadorComMenos != 2)){
                 //fudeu, empatou duas pessoas de duplas diferentes
                 resultado = ResultadoPartida.EMPATE;
+                this.eventListener.partidaEmpatou();
             }
         }
 
