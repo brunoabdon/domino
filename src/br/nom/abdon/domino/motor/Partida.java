@@ -12,6 +12,9 @@ import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class Partida {
 
@@ -140,6 +143,9 @@ class Partida {
             return tipoDaBatida;
     }
 
+    private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
+            menorNoArray = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
+    
     /**
      * Conta quantos pontos cada jogador tem na mão, definindo quem ganha numa
      * mesa travada. Lança o evento correspondete os resultado, que pode ser 
@@ -149,39 +155,35 @@ class Partida {
      */
     private ResultadoPartida contaPontos() {
 
-        ResultadoPartida resultado = null;
-
-        int menorAteAgora = 1000; 
-        int idxJogadorComMenos=-1;
+        final ResultadoPartida resultado;
 
         final Collection<Pedra>[] maos = mesa.getMaos();
+        final Integer pontos[] = new Integer[4];
 
         for (int i = 0; i < maos.length; i++) {
-            int totalJogador = 0;
-
-            for (Pedra pedra : maos[i]) {
-                totalJogador += pedra.getNumeroDePontos();
-            }
-            if(totalJogador < menorAteAgora){
-                menorAteAgora = totalJogador;
-                idxJogadorComMenos = i; 
-            } else if(totalJogador == menorAteAgora 
-                        && (i-idxJogadorComMenos != 2)){
-                //fudeu, empatou duas pessoas de duplas diferentes
-                resultado = ResultadoPartida.EMPATE;
-                this.eventListener.partidaEmpatou();
-            }
+            pontos[i] = maos[i].stream().collect(
+                    Collectors.summingInt(p -> p.getNumeroDePontos()));
         }
-
-        if(resultado == null){
-            JogadorWrapper jogadorComMenosPontosNaMao = 
-                    jogadorDaVez(idxJogadorComMenos);
+        
+        final BiFunction<Integer,Integer, Integer> menor = 
+                menorNoArray.apply(pontos);
+        
+        final int melhorIdxDupla1 = menor.apply(0,2);
+        final int melhorIdxDupla2 = menor.apply(1,3);
+        
+        if(melhorIdxDupla1 == melhorIdxDupla2){
+            resultado = ResultadoPartida.EMPATE;
+            eventListener.partidaEmpatou();
+        } else {
+            final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
+            final JogadorWrapper jogadorComMenosPontosNaMao = 
+                    jogadorDaVez(melhorIdx);
             
             resultado = batida(
                     jogadorComMenosPontosNaMao,
                     Vitoria.CONTAGEM_DE_PONTOS);
         }
-
+        
         return resultado;
     }
 
@@ -346,4 +348,5 @@ class Partida {
         this.eventListener.jogadorBateu(vencedor.getNome(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }
+
 }
