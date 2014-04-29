@@ -25,7 +25,7 @@ public class DominoEventBroadcaster implements
     private final Map<String,Map<Optional<Lado>,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
     
     private static final Function<String, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> jogadaPorUmJogador =
-            (nome) -> {return (l) -> {return (p) -> {return (el) -> {el.jogadorJogou(nome, l, p);};};};};
+        (nome) -> {return (l) -> (p) -> (el) -> {el.jogadorJogou(nome, l, p);};};
 
     private static final Optional<Lado> optionalEsquerda = Optional.ofNullable(Lado.ESQUERDO);
     private static final Optional<Lado> optionalDireita = Optional.ofNullable(Lado.DIREITO);
@@ -172,6 +172,15 @@ public class DominoEventBroadcaster implements
         broadCastEvent(omniscientEventListeners,
                 (eventListener) -> {
                     eventListener.jogadorRecebeuPedras(quemFoi, pedras);
+                }
+        );
+    }
+
+    @Override
+    public void dormeDefinido(Collection<Pedra> pedras) {
+        broadCastEvent(omniscientEventListeners,
+                (eventListener) -> {
+                    eventListener.dormeDefinido(pedras);
                 }
         );
     }

@@ -242,6 +242,9 @@ class Partida {
             dorme[i-24] = pedras.get(i);
         }
         
+        this.eventListener.dormeDefinido(
+                Collections.unmodifiableList(pedras.subList(24, 28)));
+
         return new MesaImpl(maos, dorme);
     }
 

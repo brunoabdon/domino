@@ -26,4 +26,13 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     public default void jogadorRecebeuPedras(
             final String quemFoi, Collection<Pedra> pedras){
     }
+    
+    /**
+     * As pedras foram distribuidas, e as quatro que sobraram foram pro dorme.
+     * 
+     * @param pedras As pedras que foram pro dorme.
+     */
+    public default void dormeDefinido(final Collection<Pedra> pedras){
+        
+    }
 }

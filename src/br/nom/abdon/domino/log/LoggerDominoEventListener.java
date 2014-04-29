@@ -1,6 +1,7 @@
 package br.nom.abdon.domino.log;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import java.io.PrintStream;
 
@@ -42,7 +43,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         this.printStream.println("======================================");	
         this.printStream.println("Comecando partida\n");
         imprimePlacar(pontosDupla1,pontosDupla2);
-        this.printStream.println("=================");	
+        imprimeUmaBarrinha();	
     }
 
     @Override
@@ -53,11 +54,19 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
         contadorRecebimentoDePedra++;
         if(contadorRecebimentoDePedra == 4){
-            this.printStream.println("=================");
+            imprimeUmaBarrinha();
             contadorRecebimentoDePedra = 0;
         }
     }
 
+    @Override
+    public void dormeDefinido(Collection<Pedra> pedras) {
+        printStream.println(
+                (pedras.stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(" | ", "(Dorme: ", ")"))));
+        imprimeUmaBarrinha();
+    }
 
     @Override 
     public void jogadorJogou(String nomeDoJogador, Lado lado, Pedra pedra) {
@@ -182,4 +191,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         final int leftPadPedra = leftpadInicial + distaciaDaBarraProFim;
         return String.format("%1$" + leftPadPedra + "s", pedraStr);
     }
+    
+    private void imprimeUmaBarrinha() {
+        this.printStream.println("=================");
+    }
+
 }
