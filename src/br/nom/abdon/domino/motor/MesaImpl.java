@@ -60,16 +60,17 @@ class MesaImpl implements Mesa{
                     this.numeroEsquerda = pedra.getPrimeiroNumero();
                     this.numeroDireita = pedra.getSegundoNumero();
             } else {
+                
+                    final Lado ladoQueVaiColocar = 
+                        lado == null && (numeroEsquerda == numeroDireita)
+                            ? Lado.ESQUERDO
+                            : lado;
 
-                    if(lado == null && (numeroEsquerda == numeroDireita)){
-                            lado = Lado.ESQUERDO;
-                    }
-
-                    if(!podeJogar(pedra, lado)){
+                    if(!podeJogar(pedra, ladoQueVaiColocar)){
                             throw new PedraBebaException(pedra);
                     }
 
-                    if(lado == Lado.ESQUERDO){
+                    if(ladoQueVaiColocar == Lado.ESQUERDO){
                             listaDePedras.addFirst(pedra);
                             numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
                     } else {
