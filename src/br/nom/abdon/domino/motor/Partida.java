@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Jogador;
@@ -12,9 +15,6 @@ import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 class Partida {
 
@@ -204,7 +204,6 @@ class Partida {
                 "De que lado é pra botar essa pedra?", 
                 jogadorQueJogou);
         }
-
 
         if(!maoDoJogadorQueJogou.contains(pedra)){
             throw new BugDeJogadorException(
