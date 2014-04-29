@@ -1,6 +1,6 @@
 package br.nom.abdon.domino;
 
-public enum Pedra implements Comparable<Pedra>{
+public enum Pedra {
 
     //0
     CARROCA_DE_LIMPO            (Numero.LIMPO), 
