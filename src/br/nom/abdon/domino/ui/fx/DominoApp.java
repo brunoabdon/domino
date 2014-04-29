@@ -61,37 +61,45 @@ public class DominoApp extends Application {
         Rectangle mesa = new Rectangle();//LARGURA_DA_MESA,ALTURA_DA_MESA);
         mesa.setId("mesa");
         
-        
-//        Group root = new Group();
         Pane root = new Pane();
-                
         
         final double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
         final double PROPORCAO_MESA_JANELA = 0.95;
-
         
         // here we bind rectangle size to pane size 
         mesa.widthProperty().bind(Bindings.min(root.widthProperty().multiply(PROPORCAO_MESA_JANELA),root.heightProperty().multiply(PROPORCAO_MESA_JANELA).divide(PROPORCAO_ALTURA_LARGURA_MESA)));
         mesa.heightProperty().bind(mesa.widthProperty().multiply(PROPORCAO_ALTURA_LARGURA_MESA));
-        
+
         mesa.xProperty().bind(root.widthProperty().divide(2).subtract(mesa.widthProperty().divide(2)));
         mesa.yProperty().bind(root.heightProperty().divide(2).subtract(mesa.heightProperty().divide(2)));
-        
-        
+
+//        mesa.widthProperty().addListener(node -> {System.out.println(mesa.getWidth() + " x " +mesa.getHeight() + "|" + root.getScaleX() + " x " +root.getScaleY());});
+//        mesa.widthProperty().addListener(node -> {System.out.println(mesa.widthProperty().get() + " x " + mesa.heightProperty().get());});
+
+        PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
+        pedra1.heightProperty().bind(mesa.widthProperty().divide(10));
+
+        pedra1.translateXProperty().bind(mesa.xProperty().add(mesa.widthProperty().divide(2)));
+        pedra1.translateYProperty().bind(mesa.yProperty().add(mesa.heightProperty().divide(3)));
+
         Collection<Node> nos = root.getChildren();
         nos.add(mesa);
+        nos.add(pedra1);
 
-        Group pedra1 = fazPedra(Pedra.QUINA_SENA);
-//        pedra1.setTranslateX(20);
-//        pedra1.setTranslateY(20);
-
-//        pedra1.
-//        
-//        
-//        nos.add(pedra1);
-
+        System.out.println(pedra1.scaleXProperty());
+        System.out.println(pedra1.scaleYProperty());
+        System.out.println(pedra1.widthProperty());
+        System.out.println(pedra1.heightProperty());
+        
         Scene scene = new Scene(root, 800, 600);
+        
+
+        
+        
         primaryStage.setScene(scene);
+
+        
+
         
         final String css = DominoApp.class.getResource("domino.css").toExternalForm();
         scene.getStylesheets().add(css);
