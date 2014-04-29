@@ -15,7 +15,7 @@ import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 
-public class DominoEventBroadcaster implements 
+class DominoEventBroadcaster implements 
         DominoEventListener, OmniscientDominoEventListener {
 
     private final List<DominoEventListener> eventListeners;
