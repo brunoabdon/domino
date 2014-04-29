@@ -171,7 +171,7 @@ class Partida {
         final int melhorIdxDupla1 = menor.apply(0,2);
         final int melhorIdxDupla2 = menor.apply(1,3);
         
-        if(melhorIdxDupla1 == melhorIdxDupla2){
+        if(pontos[melhorIdxDupla1] == pontos[melhorIdxDupla2]){
             resultado = ResultadoPartida.EMPATE;
             eventListener.partidaEmpatou();
         } else {
