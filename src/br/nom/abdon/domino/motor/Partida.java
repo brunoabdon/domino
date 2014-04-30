@@ -213,39 +213,42 @@ class Partida {
     }
 
     private MesaImpl embaralhaEdistribui() {
+        //embaralha
         List<Pedra> pedras = Arrays.asList(Pedra.values());
         Collections.shuffle(pedras);
-        
+
+        //distribui
         final Collection<Pedra>[] maos = new Collection[4];
-        for (int i = 0; i < 4; i++) {
+        //mao dos 4 jogadores
+        for (int i = 0, idx = 0; i < 4; i++) {
 
-            ArrayList<Pedra> mao = new ArrayList<>(6);
-            Pedra[] mao_ = new Pedra[6];
-            for(int j = 0; j < 6; j++) {
-                Pedra pedra = pedras.get((i*6) + j);
-                mao.add(pedra);
-                mao_[j] = pedra;
-            }
-
-            maos[i] = mao;
-
-            final JogadorWrapper jogadorDaVez = jogadorDaVez(i);
-            jogadorDaVez.recebeMao(mao_);
+            Collection<Pedra> mao = pedras.subList(idx, idx+=6); //imutavel
+            maos[i] = new ArrayList<>(mao);
             
-            this.eventListener.jogadorRecebeuPedras(
-                    jogadorDaVez.getNome(), 
-                    Collections.unmodifiableList(mao));
+            entregaPedras(jogadorDaVez(i), mao);
         }
+        //dorme
+        this.eventListener.dormeDefinido(pedras.subList(24, 28)); //imutavel
 
-        Pedra[] dorme = new Pedra[4];
-        for (int i = 24; i < 28; i++) {
-            dorme[i-24] = pedras.get(i);
-        }
+        //criando e retornando a mesa zerada.
+        return new MesaImpl(maos);
+    }
+
+    /**
+     * Entrega uma coleçao de {@link Pedra}s a um {@link Jogador} e anuncia o
+     * evento correspondente.
+     * 
+     * @param jogador O jogador que vai receber as pedras.
+     * @param mao As pedras que o jogador vai receber.
+     */
+    private void entregaPedras(
+            final JogadorWrapper jogador, final Collection<Pedra> mao) {
+
+        jogador.recebeMao(mao.toArray(new Pedra[6]));
         
-        this.eventListener.dormeDefinido(
-                Collections.unmodifiableList(pedras.subList(24, 28)));
-
-        return new MesaImpl(maos, dorme);
+        this.eventListener.jogadorRecebeuPedras(
+                jogador.getNome(),
+                Collections.unmodifiableCollection(mao));
     }
 
 
@@ -258,36 +261,54 @@ class Partida {
                 : ((quemDaDuplaComeca * 2) + 1);    
     }
 
+    /**
+     * Realiza a primeira rodada da primeira partida, que deve ser do {@link 
+     * Jogador} que tiver a maior {@link Pedra#isCarroca() carroça} na mão.
+     * 
+     * O jogador será definido e será 
+     * {@link Jogador#joga(br.nom.abdon.domino.Mesa) chamado a jogar}. Sua 
+     * {@link Jogada} será validada, devendo ser obrigatoriamente a maior
+     * carroça.
+     * 
+     * 
+     * @return A vez do próximo jogador a jogar.
+     * 
+     * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
+     * não seja a da maior carroça da mesa (que está na mão dele).
+     */
     private int primeiraJogada() throws BugDeJogadorException{
 
         int vez = -1;
-        Jogada primeiraJogada = null; 
+
         final Collection<Pedra>[] maos = mesa.getMaos();
-        for (int i = 6; i >= 2 && primeiraJogada == null; i--) {
+        loopProcurarMaiorCarroca: 
+        for (int i = 6; i >= 2; i--) {
             Pedra carroca = Pedra.carrocas[i];
             for (int j = 0; j < 4; j++) {
                 if(maos[j].contains(carroca)){
                     vez = j;
-                    JogadorWrapper jogadorQueComeca = jogadorDaVez(vez);
-                    primeiraJogada = jogadorQueComeca.joga(mesa);
+                    final JogadorWrapper jogadorQueComeca = jogadorDaVez(vez);
 
-                    Pedra pedra = primeiraJogada.getPedra();
+                    final Jogada primeiraJogada = jogadorQueComeca.joga(mesa);
+
+                    final Pedra pedra = primeiraJogada.getPedra();
+
                     this.eventListener.jogadorJogou(
                             jogadorQueComeca.getNome(),
                             null,
                             pedra);
-
+                    
                     //agora erre, meu velho
                     if(pedra != carroca){
                         throw new BugDeJogadorException(
-                            "Comecou com a pedra errada, meu velho. Erra pra ser " + carroca,
+                            "Errou a saída, meu velho. Erra pra ser " + carroca,
                             jogadorQueComeca);
                     }
                     //limpeza
                     maos[j].remove(pedra);
                     this.mesa.coloca(pedra,primeiraJogada.getLado());
 
-                    break;
+                    break loopProcurarMaiorCarroca;
                 }
             }
         }
@@ -312,27 +333,26 @@ class Partida {
         ResultadoPartida resultado = null;
         
         final Collection<Pedra>[] maos = mesa.getMaos();
-         for (int i = 0, quantasNaoCarrocas = 0; i < maos.length; i++) {
+        for (int i = 0, quantasNaoCarrocas = 0; i < maos.length; i++) {
             for (Pedra pedra : maos[i]) {
                 if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
                     break;
                 }
             }
-            if(quantasNaoCarrocas <= 1){
-                JogadorWrapper jogador = jogadorDaVez(i);
-                if(quantasNaoCarrocas == 1){
-                    //partida voltou! 5 carrocas na mao!
-                    this.eventListener.partidaVoltou(jogador.getNome());
-                    resultado = new ResultadoPartidaVolta(jogador);
-                    
-                } else if (quantasNaoCarrocas == 0){
-                    //batida imediata! 6 carrocas na mao!
-                    resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
-                }
-                break;
+            
+            JogadorWrapper jogador = jogadorDaVez(i);
+            if(quantasNaoCarrocas == 1){
+                //partida voltou! 5 carrocas na mao!
+                this.eventListener.partidaVoltou(jogador.getNome());
+                resultado = new ResultadoPartidaVolta(jogador);
+
+            } else if (quantasNaoCarrocas == 0){
+                //batida imediata! 6 carrocas na mao!
+                resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
             }
-         }
-         return resultado;
+            break;
+        }
+        return resultado;
     }
 
     /**

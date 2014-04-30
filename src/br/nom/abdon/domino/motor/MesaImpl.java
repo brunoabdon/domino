@@ -18,16 +18,14 @@ class MesaImpl implements Mesa{
     private final Deque<Pedra> listaDePedras;
     private Numero numeroEsquerda, numeroDireita;
     private final Collection<Pedra>[] maos;
-    private final Pedra[] dorme;
 
     //usado no toString()
     private final static Collector<CharSequence, ?, String> joining = 
         Collectors.joining("","{","}");
 
-    MesaImpl(final Collection<Pedra>[] maos, final Pedra[] dorme) {
+    MesaImpl(final Collection<Pedra>[] maos) {
         this.listaDePedras = new ArrayDeque<>(28-4);
         this.maos = maos;
-        this.dorme = dorme;
     }
 
     Collection<Pedra>[] getMaos() {
