@@ -340,17 +340,19 @@ class Partida {
                 }
             }
             
-            JogadorWrapper jogador = jogadorDaVez(i);
-            if(quantasNaoCarrocas == 1){
-                //partida voltou! 5 carrocas na mao!
-                this.eventListener.partidaVoltou(jogador.getNome());
-                resultado = new ResultadoPartidaVolta(jogador);
+            if(quantasNaoCarrocas <= 1){
+                JogadorWrapper jogador = jogadorDaVez(i);
+                if(quantasNaoCarrocas == 1){
+                    //partida voltou! 5 carrocas na mao!
+                    this.eventListener.partidaVoltou(jogador.getNome());
+                    resultado = new ResultadoPartidaVolta(jogador);
 
-            } else if (quantasNaoCarrocas == 0){
-                //batida imediata! 6 carrocas na mao!
-                resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
+                } else if (quantasNaoCarrocas == 0){
+                    //batida imediata! 6 carrocas na mao!
+                    resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
+                }
+                break;
             }
-            break;
         }
         return resultado;
     }
