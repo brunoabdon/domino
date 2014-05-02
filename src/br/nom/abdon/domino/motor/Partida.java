@@ -333,7 +333,8 @@ class Partida {
         ResultadoPartida resultado = null;
         
         final Collection<Pedra>[] maos = mesa.getMaos();
-        for (int i = 0, quantasNaoCarrocas = 0; i < maos.length; i++) {
+        for (int i = 0; i < maos.length; i++) {
+            int quantasNaoCarrocas = 0;
             for (Pedra pedra : maos[i]) {
                 if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
                     break;
