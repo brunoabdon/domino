@@ -45,7 +45,6 @@ class Partida {
         }
         
         JogadorWrapper jogadorDaVez = null;
-        String nomeJogadorDaVez;
 
         Pedra pedra = null;
 
@@ -67,7 +66,7 @@ class Partida {
         while(!(alguemBateu || trancou)){
 
             jogadorDaVez = jogadorDaVez(vez);
-            nomeJogadorDaVez = jogadorDaVez.getNome();
+            final String nomeJogadorDaVez = jogadorDaVez.getNome();
 
             Collection<Pedra> maoDoJogadorDaVez = maos[vez];
 
@@ -255,7 +254,7 @@ class Partida {
     private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) 
             throws BugDeJogadorException {
             
-        int quemDaDuplaComeca = duplaQueComeca.quemComeca();
+        final int quemDaDuplaComeca = duplaQueComeca.quemComeca();
         return duplaQueComeca == dupla1 
                 ? quemDaDuplaComeca * 2 
                 : ((quemDaDuplaComeca * 2) + 1);    
@@ -283,7 +282,7 @@ class Partida {
         final Collection<Pedra>[] maos = mesa.getMaos();
         loopProcurarMaiorCarroca: 
         for (int i = 6; i >= 2; i--) {
-            Pedra carroca = Pedra.carrocas[i];
+            final Pedra carroca = Pedra.carrocas[i];
             for (int j = 0; j < 4; j++) {
                 if(maos[j].contains(carroca)){
                     vez = j;
@@ -316,12 +315,8 @@ class Partida {
     }
 
     private JogadorWrapper jogadorDaVez(int vez) {
-            Dupla dupla = duplaDaVez(vez);
+            final Dupla dupla = (vez%2)==0?dupla1:dupla2;
             return vez<2?dupla.getJogador1():dupla.getJogador2();
-    }
-
-    private Dupla duplaDaVez(int vez) {
-            return (vez%2)==0?dupla1:dupla2;
     }
 
     private int avanca(int vez){
@@ -342,7 +337,7 @@ class Partida {
             }
             
             if(quantasNaoCarrocas <= 1){
-                JogadorWrapper jogador = jogadorDaVez(i);
+                final JogadorWrapper jogador = jogadorDaVez(i);
                 if(quantasNaoCarrocas == 1){
                     //partida voltou! 5 carrocas na mao!
                     this.eventListener.partidaVoltou(jogador.getNome());
@@ -373,5 +368,4 @@ class Partida {
         this.eventListener.jogadorBateu(vencedor.getNome(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }
-
 }
