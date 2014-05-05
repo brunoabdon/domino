@@ -8,18 +8,21 @@ package br.nom.abdon.domino.ui.fx;
 
 import java.util.Collection;
 
-import javafx.animation.PathTransition;
-import javafx.animation.PathTransition.OrientationType;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.DoubleExpression;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -60,119 +63,150 @@ public class DominoApp extends Application {
         primaryStage.setTitle("Domino");
         Pane root = new Pane();
 
-        Rectangle mesa = new Rectangle();//LARGURA_DA_MESA,ALTURA_DA_MESA);
-        mesa.setId("mesa");
-        
         final double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
         final double PROPORCAO_MESA_JANELA = 0.95;
+
+        Rectangle mesa = UtilsFx.retanguloProporcaoFixa(
+                LARGURA_DA_MESA, 
+                0.6);
+        mesa.setId("mesa");
         
+        
+        final ReadOnlyDoubleProperty bndLarguraJanela = root.widthProperty();
+        final ReadOnlyDoubleProperty bndAlturaJanela = root.heightProperty();
+        final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
+                
         // here we bind rectangle size to pane size 
-        mesa.widthProperty().bind(Bindings.min(root.widthProperty().multiply(PROPORCAO_MESA_JANELA),root.heightProperty().multiply(PROPORCAO_MESA_JANELA).divide(PROPORCAO_ALTURA_LARGURA_MESA)));
-        mesa.heightProperty().bind(mesa.widthProperty().multiply(PROPORCAO_ALTURA_LARGURA_MESA));
+        bndLarguraDaMesa.bind(Bindings.min(bndLarguraJanela.multiply(PROPORCAO_MESA_JANELA),bndAlturaJanela.multiply(PROPORCAO_MESA_JANELA/PROPORCAO_ALTURA_LARGURA_MESA)));
+        
+//        mesa.heightProperty().bind(bndLarguraDaMesa.multiply(PROPORCAO_ALTURA_LARGURA_MESA));
 
-        mesa.xProperty().bind(root.widthProperty().divide(2).subtract(mesa.widthProperty().divide(2)));
-        mesa.yProperty().bind(root.heightProperty().divide(2).subtract(mesa.heightProperty().divide(2)));
-
-//        mesa.widthProperty().addListener(node -> {System.out.println(mesa.getWidth() + " x " +mesa.getHeight() + "|" + root.getScaleX() + " x " +root.getScaleY());});
-//        mesa.widthProperty().addListener(node -> {System.out.println(mesa.widthProperty().get() + " x " + mesa.heightProperty().get());});
+        centraliza(root,mesa);
 
         PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
-        pedra1.heightProperty().bind(mesa.widthProperty().divide(10));
-
-        pedra1.layoutXProperty().bind(mesa.xProperty().add(mesa.widthProperty().divide(2)));
-        pedra1.layoutYProperty().bind(mesa.yProperty().add(mesa.heightProperty().divide(3)));
+        final DoubleBinding bindingUmQuintoLarguraDaMesa = mesa.widthProperty().divide(20);
+        pedra1.widthProperty().bind(bindingUmQuintoLarguraDaMesa);
+        UtilsFx.posiciona(mesa, pedra1, pedra1.widthProperty(), pedra1.heightProperty(), 50,50);
+        
+//        pedra1.layoutXProperty().bind(mesa.layoutXProperty().add(bindingUmQuintoLarguraDaMesa.divide(3)));
+//        pedra1.layoutYProperty().bind(mesa.layoutYProperty().add(bindingUmQuintoLarguraDaMesa.divide(3)));
 
         Collection<Node> nos = root.getChildren();
         nos.add(mesa);
         nos.add(pedra1);
+        pedra1.setRotate(90);
 
+        pedra1.setOnMousePressed(
+                (event) -> {
+                    
+                    System.out.println("clicou");
+                    PedraFx pedra = new PedraFx(Pedra.DUQUE_SENA);
+                    pedra.widthProperty().bind(bindingUmQuintoLarguraDaMesa);
+                    nos.add(pedra);
+                    pedra.layoutXProperty().bind(pedra1.layoutXProperty().add(pedra1.layoutBoundsProperty().get().getWidth()));
+                    pedra.layoutYProperty().bind(pedra1.layoutYProperty());
+                    
+                    
+                }
+        );
+        
+        
+        double x = 100;
+        double y = 80;
+        
+        botatexto(nos,x, y+=20,"Mesa W: ",mesa.widthProperty());
+        botatexto(nos,x, y+=20,"Mesa H: ",mesa.heightProperty());
+
+        botatexto(nos,x, y+=25,"Mesa ScaleX: ",mesa.scaleXProperty());
+        botatexto(nos,x, y+=20,"Mesa ScaleY: ",mesa.scaleYProperty());
+
+        botatexto(nos,x, y+=25,"Mesa X: ",mesa.xProperty());
+        botatexto(nos,x, y+=20,"Mesa Y: ",mesa.yProperty());
+
+        botatexto(nos,x, y+=25,"Mesa LayoutX: ",mesa.layoutXProperty());
+        botatexto(nos,x, y+=20,"Mesa LayoutY: ",mesa.layoutYProperty());
+
+        botatexto(nos,x, y+=25,"Mesa TransX: ",mesa.translateXProperty());
+        botatexto(nos,x, y+=20,"Mesa TransY: ",mesa.translateYProperty());
+
+        botatexto(nos,x+=200, y=100,"root W: ",root.widthProperty());
+        botatexto(nos,x,y+=20,"root H: ",root.heightProperty());
+
+        botatexto(nos,x,y+=25,"root LayoutX: ",root.layoutXProperty());
+        botatexto(nos,x,y+=20,"root LayoutY: ",root.layoutYProperty());
+
+        botatexto(nos,x,y+=25,"root ScaleX: ",root.scaleXProperty());
+        botatexto(nos,x,y+=20,"root ScaleY: ",root.scaleYProperty());
+
+        botatexto(nos,x,y+=25,"root TransX: ",root.translateXProperty());
+        botatexto(nos,x,y+=20,"root TransY: ",root.translateYProperty());
+
+        botatexto(nos,x+=200,y=100,"pedra W: ",pedra1.widthProperty());
+        botatexto(nos,x,y+=20,"pedra H: ",pedra1.heightProperty());
+
+        botatexto(nos,x,y+=25,"pedra LayoutX: ",pedra1.layoutXProperty());
+        botatexto(nos,x,y+=20,"pedra LayoutY: ",pedra1.layoutYProperty());
+
+        botatexto(nos,x,y+=25,"pedra ScaleX: ",pedra1.scaleXProperty());
+        botatexto(nos,x,y+=20,"pedra ScaleY: ",pedra1.scaleYProperty());
+
+        botatexto(nos,x,y+=25,"pedra TransX: ",pedra1.translateXProperty());
+        botatexto(nos,x,y+=20,"pedra TransY: ",pedra1.translateYProperty());
+        
         
         Scene scene = new Scene(root, 800, 600);
-        
-
-        
-        
         primaryStage.setScene(scene);
-
-        
-     Path path = new Path();
-     path.getElements().add (new MoveTo(pedra1.getTranslateX(),pedra1.getTranslateY()));
-     path.getElements().add (new LineTo(100,200));
-
-        PathTransition pathTransition = new PathTransition();
-     
-     pathTransition.setDelay(Duration.millis(600));
-     pathTransition.setDuration(Duration.millis(600));
-     pathTransition.setNode(pedra1);
-     pathTransition.setPath(path);
-     pathTransition.setOrientation(OrientationType.NONE);
-//     pathTransition.setCycleCount(6);
-//     pathTransition.setAutoReverse(false);
-
-//     pathTransition.play();
-
-        
-//        mover(mesa, pedra1, 100, 0);
-//        pedra1.relocate(100, 340);
 
         
         final String css = DominoApp.class.getResource("domino.css").toExternalForm();
         scene.getStylesheets().add(css);
         
         primaryStage.show();
-//        final Duration duracao = Duration.millis(600);
-//        final Duration metadeDaDuraco = duracao.divide(2);
-//        
-//        TranslateTransition translation = new TranslateTransition(duracao);
-//        translation.setToX(pedra1.getTranslateX() + 100);
-//        
-//        RotateTransition rotation = new RotateTransition(duracao);
-//        rotation.setByAngle(90);
-//
-//        ScaleTransition encolhe = new ScaleTransition(metadeDaDuraco);
-//        encolhe.setByX(-0.8);
-//
-//        ScaleTransition cresce = new ScaleTransition(metadeDaDuraco);
-//        cresce.setByX(0.8);
-//        
-//        SequentialTransition vira = new SequentialTransition(encolhe,cresce);
-//        final Group g = (Group)pedra1;
-//        
-//        ParallelTransition transicao = new ParallelTransition(pedra1,translation);
-//        
-//        transicao.setOnFinished(
-//                (o) -> {
-//                    final double larguraMesa = mesa.getWidth();
-//                    final double xPedra = pedra1.getTranslateX();
-//
-//                    System.out.println("mesax = " + mesa.getX());
-////                    System.out.println("largura mesa = " + larguraMesa);
-//                    System.out.println("xPedra = " + pedra1.getTranslateX());
-//
-//                    pedra1.translateXProperty().addListener(
-//                            (x) -> {
-//                                System.out.println("mudando xPedra = " + pedra1.getTranslateX());
-//                                System.out.println("mesax = " + mesa.getX());
-//                                System.out.println("mesatx = " + mesa.getTranslateX());
-//                                System.out.println("mesaw = " + mesa.getWidth());
-//                                                        
-//                            }
-//                    );
-//                    
-//                    final double xrelativopedra = xPedra - mesa.getTranslateX();
-//
-//                    pedra1.translateXProperty().bind(
-//                            mesa.xProperty().subtract(mesa.getX()).add(
-//                            mesa.widthProperty().multiply(xrelativopedra/mesa.getWidth())));
-//
-//                }
-//                
-//                
-//        );
-        
-//        pedra1.translateXProperty().unbind();
-//        transicao.play();
+    }
 
+    
+    
+    private void centraliza(Region externo, Rectangle interno) {
+        centraliza(
+                externo.widthProperty(),
+                externo.heightProperty(),
+                interno.widthProperty(),
+                interno.heightProperty(),
+                interno.layoutXProperty(),
+                interno.layoutYProperty()
+        );
+    }
+
+    
+    private void centraliza(Region externo, Region interno) {
+        centraliza(
+                externo.widthProperty(),
+                externo.heightProperty(),
+                interno.widthProperty(),
+                interno.heightProperty(),
+                interno.layoutXProperty(),
+                interno.layoutYProperty()
+        );
+    }
+    
+    private void centraliza(
+            DoubleExpression expWidthExt, DoubleExpression expHeightExt, 
+            DoubleExpression expWidthInt, DoubleExpression expHeightInt,
+            DoubleProperty bndLayoutXInt, DoubleProperty bndLayoutYInt){
+        bndLayoutXInt.bind(metade(expWidthExt).subtract(metade(expWidthInt)));
+        bndLayoutYInt.bind(metade(expHeightExt).subtract(metade(expHeightInt)));
+    }
+    
+    
+    private DoubleExpression metade(DoubleExpression exp){
+        return exp.divide(2);
+    }
+    
+
+    private void botatexto(Collection<Node> nos, double x, double y, String desc, Object val) {
+        Text textMesaW = new Text(x,y,"");
+        textMesaW.textProperty().bind(Bindings.concat(desc,val));
+        nos.add(textMesaW);
     }
     
     
@@ -235,84 +269,5 @@ public class DominoApp extends Application {
         launch(args);
     }
 
-//    private Group fazPedra(Pedra pedra) {
-//        
-//        Group desenhoPedraEmBranco = fazPedraEmBranco();
-//        Group pontinhos = fazPontinhos(pedra);
-//
-////        Rectangle rec = new Rectangle(LARGURA_DA_PEDRA, ALTURA_DA_PEDRA);
-//        
-//        Group desenhoPedra = new Group(desenhoPedraEmBranco,pontinhos);
-//        desenhoPedra.setId(pedra.name());
-//        desenhoPedra.getStyleClass().add("pedra");
-//        
-//        return desenhoPedra;
-//        
-//    }
-
-//    private Group fazPedraEmBranco() {
-//        Rectangle retanguloPedra = new Rectangle(LARGURA_DA_PEDRA, ALTURA_DA_PEDRA);
-//        Line linhaDoMeio = new Line(0,0,LARGURA_DA_PEDRA-2*afastacaoDaLinha,0);
-//        linhaDoMeio.translateXProperty().set(afastacaoDaLinha);
-//        linhaDoMeio.translateYProperty().set(ALTURA_DA_PEDRA/2);
-//        linhaDoMeio.getStyleClass().add("linhaDePedra");
-//        Group desenhoPedra = new Group(retanguloPedra,linhaDoMeio);
-//        return desenhoPedra;
-//    }
-//
-//    private Group fazPontinhos(Pedra pedra) {
-//        Group pontinhosPrimeiroNumero = fazPontinhos(pedra.getPrimeiroNumero());
-//        Group pontinhosSegundoNumero = fazPontinhos(pedra.getSegundoNumero());
-//        pontinhosSegundoNumero.setTranslateY(ALTURA_DA_PEDRA/2);
-//        
-//        Group pontinhosDaPEdra = new Group(pontinhosPrimeiroNumero,pontinhosSegundoNumero);
-//        return pontinhosDaPEdra;
-//        
-//    }
-//
-//    
-//    private Group fazPontinhos(final Numero numero) {
-//        final Group grupoDePontinhos = new Group();
-//        final ObservableList<Node> pontinhos = grupoDePontinhos.getChildren();
-//        
-//        final int numeroDePontos = numero.getNumeroDePontos();
-//        
-//        if((numeroDePontos % 2)!= 0){
-//            pontinhos.add(fazPontinho(pontinhoDoMeioX, pontinhoDoMeioY));
-//        }
-//                
-//        if(numeroDePontos >= 2){
-//            pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaPrimeiraLinhaY));
-//            pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaTerceiraLinhaY));
-//
-//            if(numeroDePontos >= 4){
-//                pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaTerceiraLinhaY));
-//                pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaPrimeiraLinhaY));
-//            
-//                if(numeroDePontos == 6){
-//                    pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaSegundaLinhaY));
-//                    pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaSegundaLinhaY));
-//                }
-//            
-//            }
-//        }
-//        
-//        return grupoDePontinhos;
-//        
-//    }
-//
-//    
-//    private Shape fazPontinho(float x, float y) {
-//        Circle pontinho = fazPontinho();
-//        pontinho.setTranslateX(x);
-//        pontinho.setTranslateY(y);
-//        return pontinho;
-//    }
-//
-//    private Circle fazPontinho() {
-//        Circle pontinho = new Circle(raioDosPontinhos);
-//        pontinho.getStyleClass().add("pontinho");
-//        return pontinho;
-//    }
     
 }

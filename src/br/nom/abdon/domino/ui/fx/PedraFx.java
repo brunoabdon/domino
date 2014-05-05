@@ -41,11 +41,11 @@ public class PedraFx extends Group {
     public PedraFx(Pedra pedra) {
         super();
         
-        this.retanguloPrincipal = new Rectangle(1,2);
+        this.retanguloPrincipal = UtilsFx.retanguloProporcaoFixa(1, 2);  //new Rectangle(1,2);
         final DoubleProperty propAltura = this.retanguloPrincipal.heightProperty();
         final DoubleBinding bindingMetadeAltura = propAltura.divide(2);
         
-        this.retanguloPrincipal.widthProperty().bind(bindingMetadeAltura);
+//        this.retanguloPrincipal.widthProperty().bind(bindingMetadeAltura);
         final DoubleProperty propriedadeTamArco = this.retanguloPrincipal.arcHeightProperty();
         propriedadeTamArco.bind(propAltura.divide(8));
         this.retanguloPrincipal.arcWidthProperty().bind(propriedadeTamArco);
