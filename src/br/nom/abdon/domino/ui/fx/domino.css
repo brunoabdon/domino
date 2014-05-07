@@ -9,8 +9,6 @@
 
 .pedra Rectangle {
     -fx-fill: #e2e2e2;
-/*    -fx-arc-height: 55%;
-    -fx-arc-width: 55%;*/
     -fx-effect: innershadow(gaussian , darkgrey , 10 , 0.5 , 2 , 2)
     
 }

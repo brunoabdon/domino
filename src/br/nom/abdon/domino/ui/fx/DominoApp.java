@@ -15,8 +15,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -34,29 +33,6 @@ import br.nom.abdon.domino.Pedra;
  */
 public class DominoApp extends Application {
     
-    	public static final float LARGURA_DA_MESA = 1260;
-	public static final float ALTURA_DA_MESA = LARGURA_DA_MESA*0.6f;
-
-	public static final float ALTURA_DA_PEDRA = LARGURA_DA_MESA/10;
-	public static final float LARGURA_DA_PEDRA = ALTURA_DA_PEDRA/2f;
-
-	private static final float afastacaoDaLinha = LARGURA_DA_PEDRA*0.1f;
-
-      	private static final float raioDosPontinhos = LARGURA_DA_PEDRA/9f;
-	private static final float afastacaoDosPontinhos = LARGURA_DA_PEDRA*0.2f;
-
-	private static final float pontinhosDaEsquerdaX = afastacaoDosPontinhos;
-	private static final float pontinhosDaDireitaX = LARGURA_DA_PEDRA - afastacaoDosPontinhos;
-
-	private static final float pontinhoDoMeioX = (LARGURA_DA_PEDRA/2);
-	private static final float pontinhoDoMeioY = (ALTURA_DA_PEDRA)/4f;
-
-	
-	private static final float pontinhosDaPrimeiraLinhaY = afastacaoDosPontinhos;
-	private static final float pontinhosDaSegundaLinhaY = pontinhoDoMeioY; 
-	private static final float pontinhosDaTerceiraLinhaY =  (ALTURA_DA_PEDRA/2) - afastacaoDosPontinhos;
-
-        
     @Override
     public void start(Stage primaryStage) {
 
@@ -66,9 +42,7 @@ public class DominoApp extends Application {
         final double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
         final double PROPORCAO_MESA_JANELA = 0.95;
 
-        Rectangle mesa = UtilsFx.retanguloProporcaoFixa(
-                LARGURA_DA_MESA, 
-                0.6);
+        Rectangle mesa = UtilsFx.retanguloProporcaoFixa(0.6);
         mesa.setId("mesa");
         
         
@@ -77,39 +51,37 @@ public class DominoApp extends Application {
         final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
                 
         // here we bind rectangle size to pane size 
-        bndLarguraDaMesa.bind(Bindings.min(bndLarguraJanela.multiply(PROPORCAO_MESA_JANELA),bndAlturaJanela.multiply(PROPORCAO_MESA_JANELA/PROPORCAO_ALTURA_LARGURA_MESA)));
-        
-//        mesa.heightProperty().bind(bndLarguraDaMesa.multiply(PROPORCAO_ALTURA_LARGURA_MESA));
+        bndLarguraDaMesa.bind(
+                Bindings.min(
+                        bndLarguraJanela.multiply(PROPORCAO_MESA_JANELA),
+                        bndAlturaJanela.multiply(PROPORCAO_MESA_JANELA/PROPORCAO_ALTURA_LARGURA_MESA)));
 
         centraliza(root,mesa);
 
         PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
-        final DoubleBinding bindingUmQuintoLarguraDaMesa = mesa.widthProperty().divide(20);
+        final DoubleBinding bindingUmQuintoLarguraDaMesa = mesa.widthProperty().divide(15);
         pedra1.widthProperty().bind(bindingUmQuintoLarguraDaMesa);
         UtilsFx.posiciona(mesa, pedra1, pedra1.widthProperty(), pedra1.heightProperty(), 50,50);
         
-//        pedra1.layoutXProperty().bind(mesa.layoutXProperty().add(bindingUmQuintoLarguraDaMesa.divide(3)));
-//        pedra1.layoutYProperty().bind(mesa.layoutYProperty().add(bindingUmQuintoLarguraDaMesa.divide(3)));
+        root.getChildren().addAll(mesa,pedra1);
 
-        Collection<Node> nos = root.getChildren();
-        nos.add(mesa);
-        nos.add(pedra1);
-        pedra1.setRotate(90);
-
-        pedra1.setOnMousePressed(
-                (event) -> {
-                    
-                    System.out.println("clicou");
-                    PedraFx pedra = new PedraFx(Pedra.DUQUE_SENA);
-                    pedra.widthProperty().bind(bindingUmQuintoLarguraDaMesa);
-                    nos.add(pedra);
-                    pedra.layoutXProperty().bind(pedra1.layoutXProperty().add(pedra1.layoutBoundsProperty().get().getWidth()));
-                    pedra.layoutYProperty().bind(pedra1.layoutYProperty());
-                    
-                    
-                }
-        );
+        imprimeDebugInfo(root, mesa, pedra1);
         
+        Scene scene = new Scene(root, 800, 600);
+        setCss(scene,"domino.css");
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private void setCss(Scene scene, String resource) {
+        final String css = DominoApp.class.getResource(resource).toExternalForm();
+        scene.getStylesheets().add(css);
+    }
+
+    private void imprimeDebugInfo(Pane root, Rectangle mesa, PedraFx pedra1) {
+        
+        Collection<Node> nos = root.getChildren();
         
         double x = 100;
         double y = 80;
@@ -128,6 +100,9 @@ public class DominoApp extends Application {
 
         botatexto(nos,x, y+=25,"Mesa TransX: ",mesa.translateXProperty());
         botatexto(nos,x, y+=20,"Mesa TransY: ",mesa.translateYProperty());
+
+        botatexto(nos,x,y+=55,"pedra BoundPar: ",pedra1.boundsInParentProperty());
+        botatexto(nos,x,y+=20,"pedra BoundLoc: ",pedra1.boundsInLocalProperty());
 
         botatexto(nos,x+=200, y=100,"root W: ",root.widthProperty());
         botatexto(nos,x,y+=20,"root H: ",root.heightProperty());
@@ -153,15 +128,14 @@ public class DominoApp extends Application {
         botatexto(nos,x,y+=25,"pedra TransX: ",pedra1.translateXProperty());
         botatexto(nos,x,y+=20,"pedra TransY: ",pedra1.translateYProperty());
         
-        
-        Scene scene = new Scene(root, 800, 600);
-        primaryStage.setScene(scene);
-
-        
-        final String css = DominoApp.class.getResource("domino.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        
-        primaryStage.show();
+//        botatexto(nos,x,y+=20,"pedra BoundParMaxX: ",pedra1.getBoundsInParent().getMaxX());
+//        botatexto(nos,x,y+=20,"pedra BoundParMinY: ",pedra1.getBoundsInParent().getMinY());
+//        botatexto(nos,x,y+=20,"pedra BoundParMaxY: ",pedra1.getBoundsInParent().getMaxY());
+//        
+//        botatexto(nos,x,y+=25,"pedra BoundLocMinX: ",pedra1.getBoundsInLocal().getMinX());
+//        botatexto(nos,x,y+=20,"pedra BoundLocMaxX: ",pedra1.getBoundsInLocal().getMaxX());
+//        botatexto(nos,x,y+=20,"pedra BoundLocMinY: ",pedra1.getBoundsInLocal().getMinY());
+//        botatexto(nos,x,y+=20,"pedra BoundLocMaxY: ",pedra1.getBoundsInLocal().getMaxY());
     }
 
     

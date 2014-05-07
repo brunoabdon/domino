@@ -6,10 +6,12 @@
 
 package br.nom.abdon.domino.ui.fx;
 
+
 import javafx.beans.binding.DoubleExpression;
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+
 
 /**
  *
@@ -41,8 +43,8 @@ public class UtilsFx {
     public static final void posiciona(
             Rectangle referencia, 
             Node node, 
-            DoubleProperty nodeWidhtProp,
-            DoubleProperty nodeHeightProp,
+            ReadOnlyDoubleProperty nodeWidhtProp,
+            ReadOnlyDoubleProperty nodeHeightProp,
             double xPercent, double yPercent){
 
         DoubleExpression incrementoX = (referencia.widthProperty().subtract(nodeWidhtProp)).multiply(xPercent/100d);
@@ -52,5 +54,4 @@ public class UtilsFx {
         node.layoutYProperty().bind(referencia.layoutYProperty().add(incrementoY));
 
     }
-    
 }

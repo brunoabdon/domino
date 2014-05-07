@@ -1,14 +1,17 @@
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.function.BiConsumer;
+
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
@@ -19,143 +22,109 @@ import br.nom.abdon.domino.Pedra;
  */
 public class PedraFx extends Group {
 
-        public static final float LARGURA_DA_MESA = 1260;
-	public static final float ALTURA_DA_MESA = LARGURA_DA_MESA*0.6f;
-
-	public static final float ALTURA_DA_PEDRA = LARGURA_DA_MESA/10;
-	public static final float LARGURA_DA_PEDRA = ALTURA_DA_PEDRA/2f;
-
-	private static final float pontinhosDaEsquerdaX = 0;
-	private static final float pontinhosDaDireitaX = 2;
-
-	private static final float pontinhoDoMeioX = 1;
-	private static final float pontinhoDoMeioY = 1;
-
-	
-	private static final float pontinhosDaPrimeiraLinhaY = 0;
-	private static final float pontinhosDaSegundaLinhaY = 1; 
-	private static final float pontinhosDaTerceiraLinhaY =  2;
-
-    private final Rectangle retanguloPrincipal;
+    private final DoubleProperty widthProperty;
+    private final ReadOnlyDoubleProperty heightProperty;
         
     public PedraFx(Pedra pedra) {
         super();
-        
-        this.retanguloPrincipal = UtilsFx.retanguloProporcaoFixa(1, 2);  //new Rectangle(1,2);
-        final DoubleProperty propAltura = this.retanguloPrincipal.heightProperty();
-        final DoubleBinding bindingMetadeAltura = propAltura.divide(2);
-        
-//        this.retanguloPrincipal.widthProperty().bind(bindingMetadeAltura);
-        final DoubleProperty propriedadeTamArco = this.retanguloPrincipal.arcHeightProperty();
-        propriedadeTamArco.bind(propAltura.divide(8));
-        this.retanguloPrincipal.arcWidthProperty().bind(propriedadeTamArco);
-        
-        Line linhaDoMeio = new Line();
-        final DoubleProperty propWidthLinha = linhaDoMeio.endXProperty();
-        propWidthLinha.bind(propAltura.multiply(0.4));
-        linhaDoMeio.strokeWidthProperty().bind(propWidthLinha.divide(20));
-            
-        linhaDoMeio.layoutXProperty().bind(propAltura.divide(20));
-        linhaDoMeio.layoutYProperty().bind(bindingMetadeAltura);
-        linhaDoMeio.getStyleClass().add("linhaDePedra");
 
-        final Circle pontinho = new Circle();
+        Rectangle retanguloPrincipal = fazRetangulo();
         
-        pontinho.radiusProperty().bind(propAltura.divide(18));
-        pontinho.layoutXProperty().bind(propAltura.divide(4));
-        pontinho.layoutYProperty().bind(propAltura.divide(4));
+        this.widthProperty = retanguloPrincipal.widthProperty();
+        this.heightProperty = retanguloPrincipal.heightProperty();
 
-        
-        pontinho.getStyleClass().add("pontinhoDoMeio");
+        Line linhaDoMeio = fazLinhaDoMeio();
 
-        Circle pontinho2 = new Circle();
+        Group pontinhosDeCima = fazPontinhos(pedra.getPrimeiroNumero());
         
-        pontinho2.radiusProperty().bind(propAltura.divide(18));
-        pontinho2.layoutXProperty().bind(propAltura.divide(8));
-        pontinho2.layoutYProperty().bind(propAltura.divide(8));
-
+        Group pontinhosDeBaixo = fazPontinhos(pedra.getSegundoNumero());
+        pontinhosDeBaixo.layoutYProperty().bind(this.heightProperty.divide(2));
         
-        pontinho2.getStyleClass().add("pontinhoDoMeio");
+        super.getChildren().addAll(
+                retanguloPrincipal, 
+                linhaDoMeio, 
+                pontinhosDeCima, 
+                pontinhosDeBaixo);
         
-        Group desenhoPedraEmBranco = new Group(retanguloPrincipal, linhaDoMeio, pontinho, pontinho2);
-            
-        
-//        Group pontinhosPrimeiroNumero = fazPontinhos(pedra.getPrimeiroNumero());
-//        Group pontinhosSegundoNumero = fazPontinhos(pedra.getSegundoNumero());
-//        pontinhosSegundoNumero.setTranslateY(ALTURA_DA_PEDRA/2);
-//        
-//        Group pontinhosDaPEdra = new Group(pontinhosPrimeiroNumero,pontinhosSegundoNumero);
-        
-        
-//        final Circle pontinho = fazPontinho();
-        
-        
-//        Group pontinhosDaPEdra = new Group(pontinho);
-//        System.out.println(this.isAutoSizeChildren());
-        
-        super.getChildren().add(desenhoPedraEmBranco);
-//        super.getChildren().add(pontinhosDaPEdra);
-        this.setId(pedra.name());
+        this.setId(pedra.name());        
         this.getStyleClass().add("pedra");
      }
 
+
+    private Line fazLinhaDoMeio() {
+        Line linhaDoMeio = new Line();
+        final DoubleProperty propWidthLinha = linhaDoMeio.endXProperty();
+        propWidthLinha.bind(this.heightProperty.multiply(0.4));
+        linhaDoMeio.strokeWidthProperty().bind(propWidthLinha.divide(20));
+        linhaDoMeio.layoutXProperty().bind(this.heightProperty.divide(20));
+        linhaDoMeio.layoutYProperty().bind(this.heightProperty.divide(2));
+        linhaDoMeio.getStyleClass().add("linhaDePedra");
+        return linhaDoMeio;
+    }
+
     public DoubleProperty widthProperty(){
-        return this.retanguloPrincipal.widthProperty();
+        return this.widthProperty;
     }
-    public DoubleProperty heightProperty(){
-        return this.retanguloPrincipal.heightProperty();
+
+    public ReadOnlyDoubleProperty heightProperty(){
+        return this.widthProperty;
     }
-    
 
+    private Group fazPontinhos(final Numero numero) {
+        
+        final Group grupoDePontinhos = new Group();
+        final ObservableList<Node> pontinhos = grupoDePontinhos.getChildren();
+        final DoubleBinding raio = this.heightProperty.divide(18);
 
-//    private Group fazPontinhos(final Numero numero) {
-//        final Group grupoDePontinhos = new Group();
-//        final ObservableList<Node> pontinhos = grupoDePontinhos.getChildren();
-//        
-//        final int numeroDePontos = numero.getNumeroDePontos();
-//        
-//        if((numeroDePontos % 2)!= 0){
-//            pontinhos.add(fazPontinho(pontinhoDoMeioX, pontinhoDoMeioY));
-//        }
-//                
-//        if(numeroDePontos >= 2){
-//            pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaPrimeiraLinhaY));
-//            pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaTerceiraLinhaY));
-//
-//            if(numeroDePontos >= 4){
-//                pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaTerceiraLinhaY));
-//                pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaPrimeiraLinhaY));
-//            
-//                if(numeroDePontos == 6){
-//                    pontinhos.add(fazPontinho(pontinhosDaEsquerdaX, pontinhosDaSegundaLinhaY));
-//                    pontinhos.add(fazPontinho(pontinhosDaDireitaX, pontinhosDaSegundaLinhaY));
-//                }
-//            
-//            }
-//        }
-//        
-//        return grupoDePontinhos;
-//        
-//    }
+        final BiConsumer<DoubleExpression, DoubleExpression> colocaPontinho = 
+            (x,y) -> {
+                    Circle pontinho = new Circle();
+                    pontinho.radiusProperty().bind(raio);
+                    pontinho.getStyleClass().add("pontinho");
+                    pontinho.layoutXProperty().bind(x);
+                    pontinho.layoutYProperty().bind(y);
+                    pontinhos.add(pontinho);
+                };
+        
+        final DoubleBinding esquerda, meio, direita;
+        final DoubleBinding primeiraLinha, linhaDoMeio, linhaDeBaixo;
 
-    
-//    private Shape fazPontinho(float x, float y) {
-//        Circle pontinho = fazPontinho();
-//        pontinho.setTranslateX(x);
-//        pontinho.setTranslateY(y);
-//        return pontinho;
-//    }
-//
-//    private Circle fazPontinho() {
-//        Circle pontinho = new Circle();
-//        
-//        final DoubleProperty heightProperty 
-//                = this.retanguloPrincipal.heightProperty();
-//        final DoubleProperty radiusProperty = pontinho.radiusProperty();
-//        
-//        radiusProperty.bind(heightProperty.divide(18));
-//        pontinho.getStyleClass().add("pontinho");
-//        return pontinho;
-//    }
+        esquerda = primeiraLinha = this.heightProperty.multiply(1d/2d * 1d/5d);
+        meio = linhaDoMeio = this.heightProperty.multiply(1d/2d * 1d/2d); 
+        direita = linhaDeBaixo = this.heightProperty.multiply(1d/2d * 4d/5d);
+
+        final int numeroDePontos = numero.getNumeroDePontos();
+        
+        if((numeroDePontos % 2)!= 0){
+            colocaPontinho.accept(meio, linhaDoMeio);
+        }
+                
+        if(numeroDePontos >= 2){
+            colocaPontinho.accept(esquerda, primeiraLinha);
+            colocaPontinho.accept(direita, linhaDeBaixo);
+
+            if(numeroDePontos >= 4){
+                
+                colocaPontinho.accept(esquerda,linhaDeBaixo);
+                colocaPontinho.accept(direita, primeiraLinha);
+                
+                if(numeroDePontos == 6){
+                    colocaPontinho.accept(esquerda, linhaDoMeio);
+                    colocaPontinho.accept(direita, linhaDoMeio);
+                }
+            }
+        }
+        return grupoDePontinhos;
+    }
+
+    private Rectangle fazRetangulo() {
+        final Rectangle retangulo = UtilsFx.retanguloProporcaoFixa(1, 2); 
+        final DoubleProperty propAltura = retangulo.heightProperty();
+        
+        final DoubleProperty propriedadeTamArco = retangulo.arcHeightProperty();
+        propriedadeTamArco.bind(propAltura.divide(8));
+        retangulo.arcWidthProperty().bind(propriedadeTamArco);
+        return retangulo;
+    }
 
 }
