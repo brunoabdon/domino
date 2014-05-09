@@ -8,8 +8,10 @@ package br.nom.abdon.domino.ui.fx;
 
 
 import javafx.beans.binding.DoubleExpression;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Node;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 
 
@@ -49,4 +51,42 @@ public class UtilsFx {
 
 
     }
+    
+    public static void centraliza(Region externo, Rectangle interno) {
+        centraliza(
+                externo.widthProperty(),
+                externo.heightProperty(),
+                interno.widthProperty(),
+                interno.heightProperty(),
+                interno.layoutXProperty(),
+                interno.layoutYProperty()
+        );
+    }
+
+    
+    public static void centraliza(Region externo, Region interno) {
+        centraliza(
+                externo.widthProperty(),
+                externo.heightProperty(),
+                interno.widthProperty(),
+                interno.heightProperty(),
+                interno.layoutXProperty(),
+                interno.layoutYProperty()
+        );
+    }
+    
+    public static void centraliza(
+            DoubleExpression expWidthExt, DoubleExpression expHeightExt, 
+            DoubleExpression expWidthInt, DoubleExpression expHeightInt,
+            DoubleProperty bndLayoutXInt, DoubleProperty bndLayoutYInt){
+        bndLayoutXInt.bind(metade(expWidthExt).subtract(metade(expWidthInt)));
+        bndLayoutYInt.bind(metade(expHeightExt).subtract(metade(expHeightInt)));
+    }
+    
+    
+    private static DoubleExpression metade(DoubleExpression exp){
+        return exp.divide(2);
+    }
+
+
 }

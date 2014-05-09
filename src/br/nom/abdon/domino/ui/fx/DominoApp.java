@@ -28,7 +28,6 @@ import br.nom.abdon.domino.Pedra;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.scene.Parent;
 
 /**
  *
@@ -42,34 +41,15 @@ public class DominoApp extends Application {
         primaryStage.setTitle("Domino");
         Pane root = new Pane();
 
-        final double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
-        final double PROPORCAO_MESA_JANELA = 0.95;
+        root.getChildren().add(new CenarioDeJogo(root));
 
-        Rectangle mesa = UtilsFx.retanguloProporcaoFixa(0.6);
-        mesa.setId("mesa");
-        
-        
-        final ReadOnlyDoubleProperty bndLarguraJanela = root.widthProperty();
-        final ReadOnlyDoubleProperty bndAlturaJanela = root.heightProperty();
-        final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
-                
-        // here we bind rectangle size to pane size 
-        bndLarguraDaMesa.bind(
-                Bindings.min(
-                        bndLarguraJanela.multiply(PROPORCAO_MESA_JANELA),
-                        bndAlturaJanela.multiply(PROPORCAO_MESA_JANELA/PROPORCAO_ALTURA_LARGURA_MESA)));
-
-        centraliza(root,mesa);
-
-        root.getChildren().add(mesa);
-
-        PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
-        colocaPedra(root, mesa, pedra1, 50, 50);
-        
-        PedraFx pedra2 = new PedraFx(Pedra.CARROCA_DE_PIO);
-        colocaPedra(root, mesa, pedra2, 40, 70);
-
-        imprimeDebugInfo(root, mesa, pedra1, pedra2);
+//        PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
+//        colocaPedra(root, mesa, pedra1, 50, 50);
+//        
+//        PedraFx pedra2 = new PedraFx(Pedra.CARROCA_DE_PIO);
+//        colocaPedra(root, mesa, pedra2, 40, 70);
+//
+//        imprimeDebugInfo(root, mesa, pedra1, pedra2);
         
         Scene scene = new Scene(root, 800, 600);
         setCss(scene,"domino.css");
@@ -77,7 +57,7 @@ public class DominoApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        animation(pedra1, pedra2);
+//        animation(pedra1, pedra2);
         
         
     }
@@ -174,43 +154,8 @@ public class DominoApp extends Application {
 
     
     
-    private void centraliza(Region externo, Rectangle interno) {
-        centraliza(
-                externo.widthProperty(),
-                externo.heightProperty(),
-                interno.widthProperty(),
-                interno.heightProperty(),
-                interno.layoutXProperty(),
-                interno.layoutYProperty()
-        );
-    }
-
-    
-    private void centraliza(Region externo, Region interno) {
-        centraliza(
-                externo.widthProperty(),
-                externo.heightProperty(),
-                interno.widthProperty(),
-                interno.heightProperty(),
-                interno.layoutXProperty(),
-                interno.layoutYProperty()
-        );
-    }
-    
-    private void centraliza(
-            DoubleExpression expWidthExt, DoubleExpression expHeightExt, 
-            DoubleExpression expWidthInt, DoubleExpression expHeightInt,
-            DoubleProperty bndLayoutXInt, DoubleProperty bndLayoutYInt){
-        bndLayoutXInt.bind(metade(expWidthExt).subtract(metade(expWidthInt)));
-        bndLayoutYInt.bind(metade(expHeightExt).subtract(metade(expHeightInt)));
-    }
     
     
-    private DoubleExpression metade(DoubleExpression exp){
-        return exp.divide(2);
-    }
-    
-
     private void botatexto(Collection<Node> nos, double x, double y, String desc, Object val) {
         Text textMesaW = new Text(x,y,"");
         textMesaW.textProperty().bind(Bindings.concat(desc,val));
