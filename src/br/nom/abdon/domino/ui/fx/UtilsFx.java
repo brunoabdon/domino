@@ -47,11 +47,6 @@ public class UtilsFx {
             ReadOnlyDoubleProperty nodeHeightProp,
             double xPercent, double yPercent){
 
-        DoubleExpression incrementoX = (referencia.widthProperty().subtract(nodeWidhtProp)).multiply(xPercent/100d);
-        DoubleExpression incrementoY = (referencia.heightProperty().subtract(nodeHeightProp)).multiply(yPercent/100d);
-        
-        node.layoutXProperty().bind(referencia.layoutXProperty().add(incrementoX));
-        node.layoutYProperty().bind(referencia.layoutYProperty().add(incrementoY));
 
     }
 }
