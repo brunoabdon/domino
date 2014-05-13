@@ -16,6 +16,7 @@ import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 
@@ -39,6 +40,7 @@ public class CenarioDeJogo extends Group{
     private final DoubleBinding bndUmPorCentoLarguraDaMesa;
     private final DoubleBinding bndUmPorCentoAlturaDaMesa;
 
+    private final GridPane panePedras;
     
     public CenarioDeJogo(Region parent) {
         this(parent,PROPORCAO_MESA_REGIAO);
@@ -68,11 +70,67 @@ public class CenarioDeJogo extends Group{
         UtilsFx.centraliza(parent,mesa);
         
         super.getChildren().add(mesa);
-        adicionaPedras();
+                
+        panePedras = new GridPane();
+        panePedras.setLayoutX(100);
+        panePedras.setLayoutY(100);
+
+        DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(10);
+        DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(10);
+        
+        final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
+        final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
+        
+        panePedras.layoutXProperty().bind(xNaTela);
+        panePedras.layoutYProperty().bind(yNaTela);
+
+        
+        
+        super.getChildren().add(panePedras);
+        
+        
+        
+//        adicionaPedras();
+//        
+        PedraFx pedra1 = new PedraFx(Pedra.PIO_SENA);
+        pedra1.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        
+        PedraFx pedra2 = new PedraFx(Pedra.TERNO_SENA);
+        pedra2.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+
+        PedraFx pedra3 = new PedraFx(Pedra.CARROCA_DE_TERNO);
+//        pedra3.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        
+        pedra1.widthProperty().bind(this.bndLarguraDasPedras);
+        pedra2.widthProperty().bind(this.bndLarguraDasPedras);
+        pedra3.widthProperty().bind(this.bndLarguraDasPedras);
+        
+        Group p1 = new Group(pedra1);
+        Group p2 = new Group(pedra2);
+        Group p3 = new Group(pedra3);
+        
+        GridPane.setConstraints(p1, 0, 0); 
+        GridPane.setConstraints(p2, 1, 0); 
+        GridPane.setConstraints(p3, 2, 0); 
+        
+        this.panePedras.getChildren().add(p1);
+        this.panePedras.getChildren().add(p2);
+        this.panePedras.getChildren().add(p3);
+
+        
+//
+//        
+//        colocaNaMesa(pedra1);
+//        colocaNaMesa(pedra2);
+////        colocaNaMesa(pedra3);
+
+        
+
 
     }
 
     public final void adicionaPedras(){
+
         this.pedras = new HashMap<>();
         
         Random rand = new Random();
@@ -92,14 +150,16 @@ public class CenarioDeJogo extends Group{
             
             pedras.put(pedra, pedraFx);
             this.colocaNaMesa(pedraFx);
-            this.posicionaPedraNaMesa(pedraFx, x , y, d);
+//            this.posicionaPedraNaMesa(pedraFx, x , y, d);
         }
         
     }
 
     private void colocaNaMesa(PedraFx pedraFx){
         pedraFx.widthProperty().bind(this.bndLarguraDasPedras);
-        super.getChildren().add(pedraFx);
+        this.panePedras.getChildren().add(pedraFx);
+        
+//        super.getChildren().add(pedraFx);
     }
 
     private void posicionaPedraNaMesa(
@@ -123,6 +183,4 @@ public class CenarioDeJogo extends Group{
         pedraFx.layoutXProperty().bind(xNaTela);
         pedraFx.layoutYProperty().bind(yNaTela);
     }
-    
-    
 }
