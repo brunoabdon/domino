@@ -96,7 +96,7 @@ public class CenarioDeJogo extends Group{
         pedra1.setRotate(Direcao.PRA_ESQUERDA.getGraus());
         
         PedraFx pedra2 = new PedraFx(Pedra.TERNO_SENA);
-        pedra2.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        pedra2.setRotate(Direcao.PRA_DIREITA.getGraus());
 
         PedraFx pedra3 = new PedraFx(Pedra.CARROCA_DE_TERNO);
 //        pedra3.setRotate(Direcao.PRA_ESQUERDA.getGraus());
@@ -117,7 +117,7 @@ public class CenarioDeJogo extends Group{
         this.panePedras.getChildren().add(p2);
         this.panePedras.getChildren().add(p3);
 
-        
+
 //
 //        
 //        colocaNaMesa(pedra1);
