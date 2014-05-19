@@ -28,7 +28,7 @@ import br.nom.abdon.domino.Pedra;
  */
 public class CenarioDeJogo extends Group{
 
-    private final static double PROPORCAO_ALTURA_LARGURA_MESA = 0.6;
+    private final static double PROPORCAO_ALTURA_LARGURA_MESA = 1;
     private final static double PROPORCAO_MESA_REGIAO = 0.95;
 
     private Rectangle mesa;
@@ -56,7 +56,7 @@ public class CenarioDeJogo extends Group{
         final ReadOnlyDoubleProperty bndAlturaJanela = parent.heightProperty();
         final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
         
-        this.bndLarguraDasPedras = bndLarguraDaMesa.divide(25);
+        this.bndLarguraDasPedras = bndLarguraDaMesa.divide(20);
         this.bndAlturaDasPedras = this.bndLarguraDasPedras.multiply(2);
         
         this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
@@ -75,8 +75,8 @@ public class CenarioDeJogo extends Group{
         panePedras.setLayoutX(100);
         panePedras.setLayoutY(100);
 
-        DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(10);
-        DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(10);
+        final DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(10);
+        final DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(10);
         
         final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
         final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
@@ -93,13 +93,12 @@ public class CenarioDeJogo extends Group{
 //        adicionaPedras();
 //        
         PedraFx pedra1 = new PedraFx(Pedra.PIO_SENA);
-        pedra1.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        pedra1.setDirecao(Direcao.PRA_ESQUERDA);
         
         PedraFx pedra2 = new PedraFx(Pedra.TERNO_SENA);
-        pedra2.setRotate(Direcao.PRA_DIREITA.getGraus());
+        pedra2.setDirecao(Direcao.PRA_DIREITA);
 
         PedraFx pedra3 = new PedraFx(Pedra.CARROCA_DE_TERNO);
-//        pedra3.setRotate(Direcao.PRA_ESQUERDA.getGraus());
         
         pedra1.widthProperty().bind(this.bndLarguraDasPedras);
         pedra2.widthProperty().bind(this.bndLarguraDasPedras);
@@ -117,6 +116,45 @@ public class CenarioDeJogo extends Group{
         this.panePedras.getChildren().add(p2);
         this.panePedras.getChildren().add(p3);
 
+                
+        GridPane paneMao = new GridPane();
+        paneMao.setLayoutX(1);
+        paneMao.setLayoutY(1);
+        
+        super.getChildren().add(paneMao);
+
+        DoubleExpression xNaMesa2 = bndUmPorCentoLarguraDaMesa.multiply(40);
+        DoubleExpression yNaMesa2 = bndUmPorCentoAlturaDaMesa.multiply(90);
+        
+        final DoubleBinding xNaTela2 = mesa.layoutXProperty().add(xNaMesa2);
+        final DoubleBinding yNaTela2 = mesa.layoutYProperty().add(yNaMesa2);
+        
+        paneMao.layoutXProperty().bind(xNaTela2);
+        paneMao.layoutYProperty().bind(yNaTela2);
+
+        
+        final PedraFx pedra4 = new PedraFx(Pedra.TERNO_SENA);
+        pedra4.widthProperty().bind(this.bndLarguraDasPedras);
+        Group p4 = new Group(pedra4);
+        
+        GridPane.setConstraints(p4, 0, 0); 
+        
+        paneMao.getChildren().add(p4);
+        
+        
+        p4.setOnMouseClicked(
+                e -> {
+                    System.out.println(p4.getBoundsInParent().getMinX());
+                    System.out.println(p4.getBoundsInParent().getMaxX());
+                    paneMao.getChildren().remove(p4);
+                    pedra4.setDirecao(Direcao.PRA_ESQUERDA);
+                    GridPane.setConstraints(p4, 3, 0); 
+                    panePedras.getChildren().add(p4);
+                    System.out.println(p4.getBoundsInParent().getMinX());
+                    System.out.println(p4.getBoundsInParent().getMaxX());
+                }
+        );
+        
 
 //
 //        
