@@ -127,4 +127,9 @@ public class PedraFx extends Group {
         return retangulo;
     }
 
+    
+    public void setDirecao(Direcao d){
+        this.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+    }
+    
 }
