@@ -21,6 +21,16 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 
 import br.nom.abdon.domino.Pedra;
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.util.Duration;
+import javax.accessibility.AccessibleRole;
 
 /**
  *
@@ -140,22 +150,84 @@ public class CenarioDeJogo extends Group{
         GridPane.setConstraints(p4, 0, 0); 
         
         paneMao.getChildren().add(p4);
+
+        DebugInfoChart  debugPanel = new DebugInfoChart();
+        debugPanel.setLayoutY(200);
+        
+//        debugPanel.addDebugInfo("p1.getBoundsInParent()",p1.boundsInParentProperty());
+//        debugPanel.addDebugInfo("p2.getBoundsInParent()",p2.boundsInParentProperty());
+//        debugPanel.addDebugInfo("p3.getBoundsInParent()",p3.boundsInParentProperty());
+//        debugPanel.addDebugInfo("p4.getBoundsInParent()",p4.boundsInParentProperty());
+//        debugPanel.addDebugInfo("panePedras lx",panePedras.layoutXProperty());
+//        debugPanel.addDebugInfo("panePedras ly",panePedras.layoutYProperty());
+//        debugPanel.addDebugInfo("paneMao lx",paneMao.layoutXProperty());
+//        debugPanel.addDebugInfo("paneMao ly",paneMao.layoutYProperty());
+//        
+        super.getChildren().add(debugPanel);
+
         
         
-        p4.setOnMouseClicked(
-                e -> {
-                    System.out.println(p4.getBoundsInParent().getMinX());
-                    System.out.println(p4.getBoundsInParent().getMaxX());
+        
+        FadeTransition fout = new FadeTransition(Duration.millis(800), p4);
+        fout.setToValue(0);
+        fout.setOnFinished(
+             e -> {
                     paneMao.getChildren().remove(p4);
                     pedra4.setDirecao(Direcao.PRA_ESQUERDA);
                     GridPane.setConstraints(p4, 3, 0); 
                     panePedras.getChildren().add(p4);
-                    System.out.println(p4.getBoundsInParent().getMinX());
-                    System.out.println(p4.getBoundsInParent().getMaxX());
+             }
+        );
+        TranslateTransition transl = new TranslateTransition(Duration.millis(800),p4);
+        
+        FadeTransition fin = new FadeTransition(Duration.millis(800), p4);
+        fin.setToValue(100);
+        
+        SequentialTransition apagacende = new SequentialTransition(p4,fout,fin);
+        
+        
+        Rectangle coringa = UtilsFx.retanguloProporcaoFixa(2);
+        coringa.widthProperty().bind(this.bndLarguraDasPedras);
+        GridPane.setConstraints(coringa, 3, 0); 
+        panePedras.getChildren().add(coringa);
+                    
+        
+        
+        debugPanel.addDebugInfo("panePedras.layoutXProperty()", panePedras.layoutXProperty());
+        debugPanel.addDebugInfo("coringa.layoutBoundsProperty()", coringa.layoutBoundsProperty());
+        p4.setOnMouseClicked(
+                e -> {
+                    
+                    transl.byXProperty().bind(panePedras.layoutXProperty().add(coringa.boundsInParentProperty().get().getMinX()).subtract(paneMao.layoutXProperty()));
+                    transl.byYProperty().bind(panePedras.layoutYProperty().add(coringa.boundsInParentProperty().get().getMinY()).subtract(paneMao.layoutYProperty()));
+//                    transl.setDelay(Duration.millis(400));
+                    transl.setOnFinished(
+                        xxx -> {
+                            panePedras.getChildren().remove(coringa);
+                            paneMao.getChildren().remove(p4);
+                            p4.setTranslateX(0);
+                            p4.setTranslateY(0);
+                            GridPane.setConstraints(p4, 3, 0); 
+                            panePedras.getChildren().add(p4);
+                    });
+                    transl.play();
+//                  
+                    
+//                    System.out.println(p4.getBoundsInParent().getMinX());
+//                    System.out.println(p4.getBoundsInParent().getMaxX());
+//                    paneMao.getChildren().remove(p4);
+//                    pedra4.setDirecao(Direcao.PRA_ESQUERDA);
+//                    GridPane.setConstraints(p4, 3, 0); 
+//                    panePedras.getChildren().add(p4);
+//                    System.out.println(p4.getBoundsInParent().getMinX());
+//                    System.out.println(p4.getBoundsInParent().getMaxX());
                 }
         );
         
 
+
+        
+        
 //
 //        
 //        colocaNaMesa(pedra1);

@@ -38,6 +38,7 @@ public class DominoApp extends Application {
         Pane root = new Pane();
 
         root.getChildren().add(new CenarioDeJogo(root));
+        
 
 //        PedraFx pedra1 = new PedraFx(Pedra.QUINA_SENA);
 //        colocaPedra(root, mesa, pedra1, 50, 50);
