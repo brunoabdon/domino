@@ -118,7 +118,6 @@ public class JogadorMamao implements Jogador {
                 }
             }
         }
-
         return maiorCarroca;
     }
 

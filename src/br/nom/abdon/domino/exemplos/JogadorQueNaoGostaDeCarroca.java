@@ -11,8 +11,8 @@ import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 
 /**
- * {@link Jogador} que da prioridade a jogar as carrocas Não tendo carroca, joga
- * a primeira {@link Pedra} encontrar que caiba na {@link Mesa}.
+ * {@link Jogador} que da prioridade a jogar as carrocas. Não tendo carroca, 
+ * joga a primeira {@link Pedra} encontrar que caiba na {@link Mesa}.
  *
  * @author bruno
  *
@@ -24,14 +24,14 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
 
     @Override
     public void recebeMao(Pedra[] mao) {
-        /* Separando as carroçaas das nao carroças. 
-         As carroças eu mantenho em no array carrocas, cada uma guardada
-         no indici de seu número (carroça de limpo no carrocas[0], carroça
-         de terno no carrocas[3], etc.. Onde ficar null é pq não tenho 
-         aquela carroça.
-         As não-carroças eu passo pra a super, que é um JogadorMamao, e 
-         vai jogar alguma entre elas sempre que eu não tiver carroça pra
-         jogar.
+        /* Separando as carroças das nao carroças. 
+           As carroças eu mantenho no array carrocas, cada uma guardada no 
+           indice de seu número (carroça de limpo no carrocas[0], carroça de 
+           terno no carrocas[3], etc...). Onde ficar null, é pq não tenho aquela 
+           carroça.
+           As não-carroças eu passo pra a super, que é um JogadorMamao, e 
+           vai jogar alguma entre elas sempre que eu não tiver carroça pra
+           jogar.
          */
         List<Pedra> naoCarrocas = new ArrayList<>();
         this.carrocas = new Pedra[7];

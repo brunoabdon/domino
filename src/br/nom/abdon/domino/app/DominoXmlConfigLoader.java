@@ -40,6 +40,7 @@ public class DominoXmlConfigLoader {
     public JogadorWrapper getJogador1Dupla2() throws DominoAppException {
         return getJogador(configHandler.jogador1_dupla2);
     }
+    
     public JogadorWrapper getJogador2Dupla2() throws DominoAppException {
         return getJogador(configHandler.jogador2_dupla2);
     }

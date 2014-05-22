@@ -41,7 +41,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             int pontosDupla1, int pontosDupla2, boolean ehDobrada) {
         
         this.printStream.println("======================================");	
-        this.printStream.println("Comecando partida\n");
+        this.printStream.println("Começando partida\n");
         imprimePlacar(pontosDupla1,pontosDupla2);
         imprimeUmaBarrinha();	
     }

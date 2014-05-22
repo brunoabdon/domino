@@ -10,18 +10,26 @@ public class Jogo {
     private final Dupla dupla1, dupla2;
     private final DominoEventBroadcaster eventBroadcaster;
 
-    public Jogo(JogadorWrapper jogador1dupla1, JogadorWrapper jogador1dupla2, JogadorWrapper jogador2dupla1, JogadorWrapper jogador2dupla2) {
+    public Jogo(
+        JogadorWrapper jogador1dupla1, 
+        JogadorWrapper jogador1dupla2, 
+        JogadorWrapper jogador2dupla1, 
+        JogadorWrapper jogador2dupla2) {
             
-            if(jogador1dupla1 == null || jogador2dupla1 == null || jogador1dupla2 == null || jogador2dupla2 == null) 
-                throw new IllegalArgumentException("W.O.!!!");
-            
-            this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
-            this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
+        if(jogador1dupla1 == null 
+            || jogador2dupla1 == null 
+            || jogador1dupla2 == null 
+            || jogador2dupla2 == null) 
+            throw new IllegalArgumentException("W.O.!!!");
 
-            this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
+        this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
+        this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
+
+        this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
     }
 
     public void jogar(){
+        
         final JogadorWrapper primeiroJogadorDaPrimeiraDupla = dupla1.getJogador1();
         final JogadorWrapper primeiroJogadorDaSegundaDupla = dupla2.getJogador1();
         final JogadorWrapper segundoJogadorDaPrimeiraDupla = dupla1.getJogador2();
@@ -32,10 +40,11 @@ public class Jogo {
         segundoJogadorDaPrimeiraDupla.sentaNaMesa(3);
         segundoJogadorDaSegundaDupla.sentaNaMesa(4);
 
-        eventBroadcaster.jogoComecou(primeiroJogadorDaPrimeiraDupla.getNome(), 
-                        primeiroJogadorDaSegundaDupla.getNome(), 
-                        segundoJogadorDaPrimeiraDupla.getNome(), 
-                        segundoJogadorDaSegundaDupla.getNome());
+        eventBroadcaster.jogoComecou(
+            primeiroJogadorDaPrimeiraDupla.getNome(), 
+            primeiroJogadorDaSegundaDupla.getNome(), 
+            segundoJogadorDaPrimeiraDupla.getNome(), 
+            segundoJogadorDaSegundaDupla.getNome());
 
 
         try {

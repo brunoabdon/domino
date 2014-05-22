@@ -24,13 +24,7 @@ import br.nom.abdon.domino.Pedra;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.util.Duration;
-import javax.accessibility.AccessibleRole;
 
 /**
  *
@@ -190,8 +184,6 @@ public class CenarioDeJogo extends Group{
         coringa.widthProperty().bind(this.bndLarguraDasPedras);
         GridPane.setConstraints(coringa, 3, 0); 
         panePedras.getChildren().add(coringa);
-                    
-        
         
         debugPanel.addDebugInfo("panePedras.layoutXProperty()", panePedras.layoutXProperty());
         debugPanel.addDebugInfo("coringa.layoutBoundsProperty()", coringa.layoutBoundsProperty());
