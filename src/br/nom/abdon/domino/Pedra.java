@@ -1,5 +1,9 @@
 package br.nom.abdon.domino;
 
+/**
+ * Cada uma das 28 pedras de uma dominó.
+ * @author bruno
+ */
 public enum Pedra {
 
     //0
@@ -88,10 +92,20 @@ public enum Pedra {
             this(numeroDaCarroca,numeroDaCarroca);
     }
 
+    /**
+     * O menor {@link Numero}dessa pedra. (Ou o {@link Numero} repetido, caso
+     * seja uma carroça).
+     * @return O menor número dessa pedra.
+     */
     public Numero getPrimeiroNumero() {
             return primeiroNumero;
     }
 
+    /**
+     * O maior {@link Numero}dessa pedra. (Ou o {@link Numero} repetido, caso
+     * seja uma carroça).
+     * @return O menor número dessa pedra.
+     */
     public Numero getSegundoNumero() {
             return segundoNumero;
     }
