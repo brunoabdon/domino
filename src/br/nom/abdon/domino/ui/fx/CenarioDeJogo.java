@@ -6,10 +6,12 @@
 
 package br.nom.abdon.domino.ui.fx;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 import java.util.Random;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
@@ -19,12 +21,9 @@ import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import br.nom.abdon.domino.Pedra;
-import javafx.animation.FadeTransition;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
 
 /**
  *
@@ -36,7 +35,7 @@ public class CenarioDeJogo extends Group{
     private final static double PROPORCAO_MESA_REGIAO = 0.95;
 
     private Rectangle mesa;
-    private Map<Pedra,PedraFx> pedras;
+    private EnumMap<Pedra,PedraFx> pedras;
 
     private final DoubleBinding bndLarguraDasPedras;
     private final DoubleBinding bndAlturaDasPedras;
@@ -233,7 +232,7 @@ public class CenarioDeJogo extends Group{
 
     public final void adicionaPedras(){
 
-        this.pedras = new HashMap<>();
+        this.pedras = new EnumMap(Pedra.class);
         
         Random rand = new Random();
         for (Pedra pedra : Pedra.values()) {
