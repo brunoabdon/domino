@@ -46,7 +46,7 @@ public class JogadorMamao implements Jogador {
                 /* 
                 se nao me perguntaram se eu queria ser o da dupla a comecar a 
                 jogar,  entao essa é a primeira partida, e o sistema já se 
-                ligou que o jogador que tem a maior carroca sou eu. Tenho que 
+                ligou que o jogador que tem a maior carroça sou eu. Tenho que 
                 jogar ela, se não é roubo.
                 */
                 pedraPraJogar = aMaiorCarroca();
@@ -54,7 +54,7 @@ public class JogadorMamao implements Jogador {
                 /* 
                 ah, eles perguntaram se eu queria ser o da dupla a comecar a 
                 jogar, e acabou que vou ser eu mesmo a comecar. nao precisa ser 
-                carroca. vou jogar a primeira que tiver.
+                carroça. vou jogar a primeira que tiver.
                 */
                 pedraPraJogar = mao.get(0); 
             }
@@ -102,11 +102,11 @@ public class JogadorMamao implements Jogador {
     }
 
     /**
-     * Retorna qual é a maior {@link Pedra#isCarroca() carroca} que eu 
+     * Retorna qual é a maior {@link Pedra#isCarroca() carroça} que eu 
      * tenho na mão. Tem que ser essa {@link Pedra} pra jogar quando 
      * sou o primeiro a jogar numa primeira partida.
      *  
-     * @return Uma carroca
+     * @return Uma carroça.
      */
     private Pedra aMaiorCarroca() {
         Pedra maiorCarroca = null;

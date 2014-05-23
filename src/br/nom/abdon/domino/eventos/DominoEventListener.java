@@ -74,7 +74,7 @@ public interface DominoEventListener {
     /**
      * A partida voltou logo depois de serem distribuidas as {@link Pedra}s 
      * porque um dos {@link Jogador}es tinha 5 {@link Pedra#isCarroca() 
-     * Carrocas} na mão. (Ninguém marca ponto quando isso acontece).
+     * Carroças} na mão. (Ninguém marca ponto quando isso acontece).
      * 
      * @param nomeDoJogador O jogador que tinha cinco pedras na mão.
      */

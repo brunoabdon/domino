@@ -11,7 +11,7 @@ import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 
 /**
- * {@link Jogador} que da prioridade a jogar as carrocas. Não tendo carroca, 
+ * {@link Jogador} que dá prioridade a jogar as carroças. Não tendo carroça, 
  * joga a primeira {@link Pedra} encontrar que caiba na {@link Mesa}.
  *
  * @author bruno
@@ -178,7 +178,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
 
     /**
      * Cria uma {@link Jogada} inicial (sem {@link Lado}) pra a carroça que tá 
-     * no dado indice do array de carrocas, e tira a carroça do array, pra não
+     * no dado indice do array de carroças, e tira a carroça do array, pra não
      * usar mais ela. Diminui também o contador de quantas carroças eu tenho. 
      * 
      * @param indexNoArrayDeCarrocas O indice da carroça no array.
@@ -191,7 +191,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
 
     /**
      * Cria uma {@link Jogada} pra a carroça que tá 
-     * no dado indice do array de carrocas, em um {@link Lado} específico da 
+     * no dado indice do array de carroças, em um {@link Lado} específico da 
      * {@link Mesa}, e tira a carroça do array, pra não usar mais ela. Diminui
      * também o contador de quantas carroças eu tenho. 
      * 
