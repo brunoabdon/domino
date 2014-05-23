@@ -2,6 +2,7 @@ br.nom.abdon.domino
 br.nom.abdon.domino.app
 br.nom.abdon.domino.eventos
 br.nom.abdon.domino.exemplos
+br.nom.abdon.domino.log
 br.nom.abdon.domino.motor
 br.nom.abdon.domino.motor.util
 br.nom.abdon.domino.ui.fx
