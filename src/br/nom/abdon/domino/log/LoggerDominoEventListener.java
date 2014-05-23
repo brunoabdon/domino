@@ -22,11 +22,11 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     private final PrintStream printStream;
 
-    int contadorRecebimentoDePedra;
+    private int contadorRecebimentoDePedra;
 
-    public int baseDoPaddingDePedra;
-    public int baseDoPaddingDeLado;
-    public int baseDoPaddingDeTocToc;
+    private int baseDoPaddingDePedra;
+    private int baseDoPaddingDeLado;
+    private int baseDoPaddingDeTocToc;
 
     public LoggerDominoEventListener(){
         this(System.out);
