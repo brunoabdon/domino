@@ -2,7 +2,7 @@ package br.nom.abdon.domino.ui.fx;
 
 public enum Direcao {
     PRA_ESQUERDA(270), PRA_BAIXO(0), PRA_DIREITA(90), PRA_CIMA(180);
-
+	
     private final double graus;    
     
     private Direcao(double graus) {

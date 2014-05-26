@@ -1,4 +1,4 @@
-package br.nom.abdon.domino.ui.j2d.desenhadorQuad;
+package br.nom.abdon.domino.ui.fx;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.ui.j2d.Direcao;
