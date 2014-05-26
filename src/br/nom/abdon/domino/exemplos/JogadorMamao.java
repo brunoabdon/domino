@@ -24,7 +24,6 @@ public class JogadorMamao implements Jogador {
 
     boolean perguntouSeEuQueriaJogar = false;
 
-
     @Override
     public void recebeMao(Pedra[] mao) {
             //guardar como uma List
