@@ -1,7 +1,6 @@
 package br.nom.abdon.domino.ui.fx;
 
 import br.nom.abdon.domino.Lado;
-import br.nom.abdon.domino.ui.j2d.Direcao;
 
 
 class TelaQuadriculada {
@@ -19,7 +18,7 @@ class TelaQuadriculada {
 		Vaga vaga;
 		if(ultimaVagaUsadaEsquerda == null){
 			//primeira chamada
-			vaga = primeiraVaga(ehCarroca);
+			vaga = primeiraVaga();
 			
 			ultimaVagaUsadaEsquerda = vaga;
 			ultimaVagaUsadaDireita = pegaVagaComSentidoInverso(vaga);
@@ -33,7 +32,7 @@ class TelaQuadriculada {
 
 			
 			vaga = aindaCabe(ultimaVagaUsadaNesseLado, andandoNoSentidoDecrescenteDasCoordenadas) 
-					? proximaVaga(ultimaVagaUsadaNesseLado,andandoNoSentidoDecrescenteDasCoordenadas, ehCarroca)
+					? proximaVaga(ultimaVagaUsadaNesseLado,andandoNoSentidoDecrescenteDasCoordenadas)
                     : proximaVagaFazendoCurva(ultimaVagaUsadaNesseLado, andandoNoSentidoDecrescenteDasCoordenadas);
 					
 			if(ehPraEsquerda){
@@ -51,20 +50,19 @@ class TelaQuadriculada {
 	 * Retorna a primeira vaga, que vai ser bem no meiozinho da mesa (mais
 	 * ou menos). 
 	 * 
-	 * @param ehDeCarroca Se é pra ser vaga pra carroça ou não.
 	 * @return
 	 */
-	private Vaga primeiraVaga(final boolean ehDeCarroca) {
+	private Vaga primeiraVaga() {
 
 		final int xInicial = quadradosPorLinha / 2 ;
 		final int yInicial = quadradosPorColuna / 2 ;
 
-		return new Vaga(xInicial, yInicial, Direcao.PRA_ESQUERDA, ehDeCarroca);
+		return new Vaga(xInicial, yInicial, Direcao.PRA_ESQUERDA);
 	}
 
 	/**
-	 * Diz se ainda tem vaga pra pelo menos mais uma pedra (de carroça ou não) do 
-	 * lado dessa vaga, sem ter que fazer curva.
+	 * Diz se ainda tem vaga pra pelo menos mais uma pedra do lado dessa 
+         * vaga, sem ter que fazer curva.
 	 * 
 	 * @param vaga A vaga que se está testando pra ver se já estava no limite 
 	 * da mesa.
@@ -79,7 +77,7 @@ class TelaQuadriculada {
 		final Direcao direcao = vaga.getDirecao();
 		
 		final int coordenadaRelevante = direcao.ehHorizontal() ? vaga.getX() : vaga.getY();
-		final int espacoDeSeguranca = vaga.ehDeCarroca() ? 3 : 4;
+		final int espacoDeSeguranca = 3;
 		
 		if(andandoNoSentidoDecrescenteDasCoordenadas){
 			cabe = coordenadaRelevante >= espacoDeSeguranca;
@@ -97,29 +95,23 @@ class TelaQuadriculada {
 	 * 
 	 * @param vagaAnterior A vaga a partir do qual se vai pegar a próxima.
 	 * 
-	 * @param ehPraCarroca Se a próxima vaga que se quer é ou não pra carroça.
-	 * @param ehCarroca 
-	 * 
 	 * @return Uma vaga pra ser usada.
 	 */
-	private Vaga proximaVaga(final Vaga vagaAnterior, final boolean andandoNoSentidoDecrescenteDasCoordenadas, final boolean ehPraCarroca) {
+	private Vaga proximaVaga(final Vaga vagaAnterior, final boolean andandoNoSentidoDecrescenteDasCoordenadas) {
 		
 		final int xAnterior = vagaAnterior.getX();
 		final int yAnterior = vagaAnterior.getY();
 		
 		final Direcao direcao = vagaAnterior.getDirecao();
-		final boolean foiCarroca = vagaAnterior.ehDeCarroca();
 		
 		final boolean ehHorizontal = direcao.ehHorizontal();
-		int distancia = (ehPraCarroca || !foiCarroca)? 2 : 1;
-		
-		if(andandoNoSentidoDecrescenteDasCoordenadas) distancia *=-1;
+		int distancia = andandoNoSentidoDecrescenteDasCoordenadas?-1:1;
 		
 		final int coordenadaPraAlterar = (ehHorizontal ? xAnterior : yAnterior) + distancia;
 		
 		final Localizacao localizacao = fazLocalizacao(xAnterior, yAnterior, ehHorizontal, coordenadaPraAlterar);
 
-		return new Vaga(localizacao, direcao, ehPraCarroca);
+		return new Vaga(localizacao, direcao);
 		
 	}
 
@@ -139,7 +131,7 @@ class TelaQuadriculada {
 		
 		final Localizacao localizacao = fazLocalizacao(xAnterior, yAnterior, ehHorizontal, coordenadaPraAlterar);
 
-		return new Vaga(localizacao, direcao, false);
+		return new Vaga(localizacao, direcao);
 	}
 
 	
@@ -152,8 +144,7 @@ class TelaQuadriculada {
 
 	private Vaga pegaVagaComSentidoInverso(final Vaga vaga) {
 		return new Vaga(vaga.getLocalizacao(),
-						vaga.getDirecao().inverver(), 
-						vaga.ehDeCarroca());
+                                vaga.getDirecao().inverver());
 	}
 	
 	private Localizacao fazLocalizacao(
@@ -163,8 +154,8 @@ class TelaQuadriculada {
 			final int novoValorCoordenada) {
 
 		Localizacao localizacao = ehHorizontal 
-				? new Localizacao(novoValorCoordenada, yAnterior)
-				: new Localizacao(xAnterior, novoValorCoordenada);
+                            ? new Localizacao(novoValorCoordenada, yAnterior)
+                            : new Localizacao(xAnterior, novoValorCoordenada);
 		return localizacao;
 	}
 
