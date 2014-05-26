@@ -8,13 +8,14 @@ class TelaQuadriculada {
     private final int quadradosPorLinha, quadradosPorColuna;
     private Vaga ultimaVagaUsadaEsquerda, ultimaVagaUsadaDireita;
 
-    public TelaQuadriculada(final int quadradosPorLinha, final int quadradosPorColuna) {
+    public TelaQuadriculada(
+            final int quadradosPorLinha, final int quadradosPorColuna) {
         this.quadradosPorLinha = quadradosPorLinha;
         this.quadradosPorColuna = quadradosPorColuna;
 
     }
 
-    public Vaga getVaga(final Lado lado, final boolean ehCarroca) {
+    public Vaga getVaga(final Lado lado) {
         Vaga vaga;
         if(ultimaVagaUsadaEsquerda == null){
             //primeira chamada
@@ -24,7 +25,10 @@ class TelaQuadriculada {
             ultimaVagaUsadaDireita = pegaVagaComSentidoInverso(vaga);
         } else {
             final boolean ehPraEsquerda = lado == Lado.ESQUERDO;
-            final Vaga ultimaVagaUsadaNesseLado = ehPraEsquerda ? ultimaVagaUsadaEsquerda : ultimaVagaUsadaDireita;
+            final Vaga ultimaVagaUsadaNesseLado = 
+                    ehPraEsquerda
+                        ? ultimaVagaUsadaEsquerda 
+                        : ultimaVagaUsadaDireita;
 
             Direcao direcao = ultimaVagaUsadaNesseLado.getDirecao();
             final boolean andandoNoSentidoDecrescenteDasCoordenadas = 
@@ -32,15 +36,14 @@ class TelaQuadriculada {
 
             vaga = aindaCabe(
                     ultimaVagaUsadaNesseLado, 
-                    andandoNoSentidoDecrescenteDasCoordenadas) ? 
-                
-                proximaVaga(
-                        ultimaVagaUsadaNesseLado,
-                        andandoNoSentidoDecrescenteDasCoordenadas)
-                
-                : proximaVagaFazendoCurva(
-                        ultimaVagaUsadaNesseLado, 
-                        andandoNoSentidoDecrescenteDasCoordenadas);
+                    andandoNoSentidoDecrescenteDasCoordenadas)
+                        ? proximaVaga(
+                                ultimaVagaUsadaNesseLado,
+                                andandoNoSentidoDecrescenteDasCoordenadas)
+
+                        : proximaVagaFazendoCurva(
+                                ultimaVagaUsadaNesseLado, 
+                                andandoNoSentidoDecrescenteDasCoordenadas);
 
             if(ehPraEsquerda){
                     ultimaVagaUsadaEsquerda = vaga;
@@ -77,7 +80,10 @@ class TelaQuadriculada {
      * @return <code>true</code>, se ainda rolar colocar mais uma Pedra do lado
      * dessa vaga, ou <code>false</code> se tiver já na hora de fazer a curva;
      */
-    private boolean aindaCabe(final Vaga vaga, boolean andandoNoSentidoDecrescenteDasCoordenadas) {
+    private boolean aindaCabe(
+            final Vaga vaga, 
+            boolean andandoNoSentidoDecrescenteDasCoordenadas) {
+        
         final boolean cabe;
 
         final Direcao direcao = vaga.getDirecao();

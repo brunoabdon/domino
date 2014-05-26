@@ -1,10 +1,8 @@
 
 package br.nom.abdon.domino.ui.fx;
 
-import java.util.Collection;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
