@@ -7,6 +7,8 @@
 package br.nom.abdon.domino.ui.fx;
 
 
+import javafx.animation.TranslateTransition;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -89,4 +91,21 @@ public class UtilsFx {
     }
 
 
+    public static void fillTranslation(Node node, Node destLocation, TranslateTransition translation){
+
+        final DoubleBinding xAbsDest = destLocation.layoutXProperty().add(destLocation.getParent().layoutXProperty());
+        final DoubleBinding yAbsDest = destLocation.layoutYProperty().add(destLocation.getParent().layoutYProperty());
+
+        final DoubleBinding xAbsIni = node.layoutXProperty().add(node.getParent().layoutXProperty());
+        final DoubleBinding yAbsIni = node.layoutYProperty().add(node.getParent().layoutYProperty());
+
+        final DoubleBinding xTrans = xAbsDest.subtract(xAbsIni);
+        final DoubleBinding yTrans = yAbsDest.subtract(yAbsIni);
+
+        translation.setNode(node);
+        translation.toXProperty().bind(xTrans);
+        translation.toYProperty().bind(yTrans);
+    }
+    
+    
 }
