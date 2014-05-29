@@ -24,6 +24,8 @@ public class PedraFx extends Group {
 
     private final DoubleProperty widthProperty;
     private final ReadOnlyDoubleProperty heightProperty;
+    
+    private final Group grupoTudo;
         
     public PedraFx(Pedra pedra) {
         super();
@@ -40,11 +42,13 @@ public class PedraFx extends Group {
         Group pontinhosDeBaixo = fazPontinhos(pedra.getSegundoNumero());
         pontinhosDeBaixo.layoutYProperty().bind(this.heightProperty.divide(2));
         
-        super.getChildren().addAll(
+        this.grupoTudo = new Group(
                 retanguloPrincipal, 
                 linhaDoMeio, 
                 pontinhosDeCima, 
                 pontinhosDeBaixo);
+        
+        super.getChildren().add(grupoTudo);
         
         this.setId(pedra.name());        
         this.getStyleClass().add("pedra");
@@ -129,7 +133,7 @@ public class PedraFx extends Group {
 
     
     public void setDirecao(Direcao d){
-        this.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        this.grupoTudo.setRotate(Direcao.PRA_ESQUERDA.getGraus());
     }
     
 }

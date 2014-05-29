@@ -235,6 +235,10 @@ public class CenarioDeJogo extends Group{
                 }
         );
         
+        if(!pedra.isCarroca()){
+            pedraFx.setDirecao(vaga.getDirecao().inverver());
+        }
+        
         UtilsFx.fillTranslation(pedraFx, placeHolder, transl);
         transl.play();
         
