@@ -31,6 +31,7 @@ class TelaQuadriculada {
                         : ultimaVagaUsadaDireita;
 
             Direcao direcao = ultimaVagaUsadaNesseLado.getDirecao();
+
             final boolean andandoNoSentidoDecrescenteDasCoordenadas = 
                 direcao == Direcao.PRA_ESQUERDA || direcao == Direcao.PRA_CIMA;
 
@@ -40,10 +41,7 @@ class TelaQuadriculada {
                         ? proximaVaga(
                                 ultimaVagaUsadaNesseLado,
                                 andandoNoSentidoDecrescenteDasCoordenadas)
-
-                        : proximaVagaFazendoCurva(
-                                ultimaVagaUsadaNesseLado, 
-                                andandoNoSentidoDecrescenteDasCoordenadas);
+                        : proximaVagaFazendoCurva(ultimaVagaUsadaNesseLado);
 
             if(ehPraEsquerda){
                     ultimaVagaUsadaEsquerda = vaga;
@@ -90,7 +88,7 @@ class TelaQuadriculada {
 
         final int coordenadaRelevante = 
                 direcao.ehHorizontal() ? vaga.getX() : vaga.getY();
-        final int espacoDeSeguranca = 3;
+        final int espacoDeSeguranca = 2;
 
         if(andandoNoSentidoDecrescenteDasCoordenadas){
                 cabe = coordenadaRelevante >= espacoDeSeguranca;
@@ -137,8 +135,7 @@ class TelaQuadriculada {
     }
 
     private Vaga proximaVagaFazendoCurva(
-        final Vaga vagaAnterior, 
-        boolean andandoNoSentidoDecrescenteDasCoordenadas) {
+        final Vaga vagaAnterior) {
 
         final int xAnterior = vagaAnterior.getX();
         final int yAnterior = vagaAnterior.getY();
@@ -146,19 +143,22 @@ class TelaQuadriculada {
         final Direcao direcaoAnterior = vagaAnterior.getDirecao();
         final boolean ehHorizontal = direcaoAnterior.ehHorizontal();
 
+        final Direcao direcao = proximaDirecao(direcaoAnterior);
+
+        final boolean andandoNoSentidoDecrescenteDasCoordenadas = 
+            direcao == Direcao.PRA_ESQUERDA || direcao == Direcao.PRA_CIMA;
+        
         final int incremento = 
-                andandoNoSentidoDecrescenteDasCoordenadas ? -2 : 2;
+                andandoNoSentidoDecrescenteDasCoordenadas ? -1 : 1;
 
         final int coordenadaPraAlterar = 
                 (ehHorizontal ? yAnterior : xAnterior) + incremento;
-
-        final Direcao direcao = proximaDirecao(direcaoAnterior);
-
+        
         final Localizacao localizacao = 
                 fazLocalizacao(
                         xAnterior, 
                         yAnterior, 
-                        ehHorizontal, 
+                        direcao.ehHorizontal(), 
                         coordenadaPraAlterar);
 
         return new Vaga(localizacao, direcao);

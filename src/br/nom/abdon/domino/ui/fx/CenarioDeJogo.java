@@ -120,6 +120,15 @@ public class CenarioDeJogo extends Group{
         posicionaNaMesa(this.paneMao1,20,80,Direcao.PRA_BAIXO);
         this.getChildren().add(this.paneMao1);
         
+        posicionaNaMesa(this.paneMao2,80,20,Direcao.PRA_DIREITA);
+        this.getChildren().add(this.paneMao2);
+        
+        posicionaNaMesa(this.paneMao3,20,20,Direcao.PRA_BAIXO);
+        this.getChildren().add(this.paneMao3);
+        
+        posicionaNaMesa(this.paneMao4,80,80,Direcao.PRA_DIREITA);
+        this.getChildren().add(this.paneMao4);
+        
         this.telaQuadriculada = new TelaQuadriculada(
                 PROPORCAO_MESA_PEDRA/2,
                 PROPORCAO_MESA_PEDRA/2);
@@ -151,20 +160,16 @@ public class CenarioDeJogo extends Group{
         
         mesa.setOnMouseClicked(
                 e -> {
-//                    jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
-                    jogaPedra(pedrasIterator.next(), Lado.DIREITO );
+                    jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
+//                    jogaPedra(pedrasIterator.next(), Lado.DIREITO );
                 }
         );
         
     }
-
-    
-    
     
     private void entregaPedra(int jogador, PedraFx pedra){
         this.maosPanes[jogador].getChildren().add(pedra);
     }
-    
     
     public final void adicionaPedras(){
 
@@ -174,7 +179,7 @@ public class CenarioDeJogo extends Group{
         Collections.shuffle(pedras);
         int i = 0;
         int p = 0;
-        while (p<=24) {
+        while (p<=27) {
             final Pedra pedra = pedras.get(p);
             PedraFx pedraFx = new PedraFx(pedra);
             System.out.println("mao " + i + " -> " + pedra);
