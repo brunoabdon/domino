@@ -235,10 +235,18 @@ public class CenarioDeJogo extends Group{
                 }
         );
         
-        if(!pedra.isCarroca()){
-            pedraFx.setDirecao(vaga.getDirecao().inverver());
+        final Direcao direcaoVaga = vaga.getDirecao();
+        final Direcao direcaoPedra;
+        if(pedra.isCarroca()){
+            direcaoPedra = direcaoVaga.ehHorizontal()
+                ? Direcao.PRA_BAIXO 
+                : Direcao.PRA_DIREITA;
+        } else {
+            direcaoPedra = direcaoVaga;
         }
-        
+
+        pedraFx.setDirecao(direcaoPedra);
+
         UtilsFx.fillTranslation(pedraFx, placeHolder, transl);
         transl.play();
         
