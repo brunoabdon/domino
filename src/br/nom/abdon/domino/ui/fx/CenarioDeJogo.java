@@ -160,8 +160,8 @@ public class CenarioDeJogo extends Group{
         
         mesa.setOnMouseClicked(
                 e -> {
-                    jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
-//                    jogaPedra(pedrasIterator.next(), Lado.DIREITO );
+                    if(pedrasIterator.hasNext())
+                        jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
                 }
         );
         

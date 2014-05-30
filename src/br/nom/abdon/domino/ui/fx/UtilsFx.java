@@ -64,7 +64,6 @@ public class UtilsFx {
                 interno.layoutYProperty()
         );
     }
-
     
     public static void centraliza(Region externo, Region interno) {
         centraliza(
