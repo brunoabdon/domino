@@ -130,10 +130,9 @@ public class PedraFx extends Group {
         retangulo.arcWidthProperty().bind(propriedadeTamArco);
         return retangulo;
     }
-
     
     public void setDirecao(Direcao d){
-        this.grupoTudo.setRotate(Direcao.PRA_ESQUERDA.getGraus());
+        this.grupoTudo.setRotate(d.getGraus());
     }
     
 }
