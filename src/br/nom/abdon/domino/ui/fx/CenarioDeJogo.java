@@ -153,17 +153,40 @@ public class CenarioDeJogo extends Group{
         
         adicionaPedras();
         List<Pedra> pedras = Arrays.asList(Pedra.values());
-        Collections.shuffle(pedras);
-        final Iterator<Pedra> pedrasIterator = pedras.iterator();
         
-        Random r  = new Random(2604);
+        jogaPedra(Pedra.CARROCA_DE_TERNO,Lado.ESQUERDO );
+        jogaPedra(Pedra.LIMPO_TERNO,Lado.ESQUERDO );
+        jogaPedra(Pedra.TERNO_QUADRA,Lado. DIREITO);
+        jogaPedra(Pedra.LIMPO_DUQUE,Lado.ESQUERDO );
+        jogaPedra(Pedra.QUADRA_SENA,Lado. DIREITO);
+        jogaPedra(Pedra.DUQUE_QUINA,Lado.ESQUERDO );
+        jogaPedra(Pedra.DUQUE_SENA,Lado.DIREITO );
+        jogaPedra(Pedra.DUQUE_QUADRA,Lado.DIREITO );
+        jogaPedra(Pedra.QUADRA_QUINA,Lado.ESQUERDO);
+        jogaPedra(Pedra.LIMPO_QUADRA,Lado.ESQUERDO);
+        jogaPedra(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO );
+        jogaPedra(Pedra.CARROCA_DE_LIMPO,Lado.ESQUERDO);
+        jogaPedra(Pedra.PIO_QUADRA,Lado.DIREITO);
+        jogaPedra(Pedra.CARROCA_DE_PIO,Lado.DIREITO);
+        jogaPedra(Pedra.PIO_SENA,Lado.DIREITO);
+        jogaPedra(Pedra.LIMPO_SENA,Lado.ESQUERDO);
+        jogaPedra(Pedra.QUINA_SENA,Lado.ESQUERDO);
+        jogaPedra(Pedra.TERNO_SENA,Lado.DIREITO );
+        jogaPedra(Pedra.LIMPO_QUINA,Lado.ESQUERDO);
+        jogaPedra(Pedra.PIO_TERNO,Lado.DIREITO);
+
         
-        mesa.setOnMouseClicked(
-                e -> {
-                    if(pedrasIterator.hasNext())
-                        jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
-                }
-        );
+//        Collections.shuffle(pedras);
+//        final Iterator<Pedra> pedrasIterator = pedras.iterator();
+//        
+//        Random r  = new Random(2604);
+//        
+//        mesa.setOnMouseClicked(
+//                e -> {
+//                    if(pedrasIterator.hasNext())
+//                        jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
+//                }
+//        );
         
     }
     
@@ -221,7 +244,7 @@ public class CenarioDeJogo extends Group{
         
         PedraFx pedraFx = pedras.get(pedra);
                 
-        TranslateTransition transl = new TranslateTransition(Duration.millis(600));
+        TranslateTransition transl = new TranslateTransition(Duration.millis(0));
         transl.setOnFinished(
                 (ActionEvent e) -> {
                         final TranslateTransition t = (TranslateTransition)e.getSource();
