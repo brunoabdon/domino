@@ -27,9 +27,11 @@ public class PedraFx extends Group {
     
     private final Group grupoTudo;
         
+    private final Pedra pedra;
+    
     public PedraFx(Pedra pedra) {
         super();
-
+        this.pedra = pedra;
         Rectangle retanguloPrincipal = fazRetangulo();
         
         this.widthProperty = retanguloPrincipal.widthProperty();
@@ -134,5 +136,9 @@ public class PedraFx extends Group {
     public void setDirecao(Direcao d){
         this.grupoTudo.setRotate(d.getGraus());
     }
-    
+
+    public Pedra getPedra() {
+        return pedra;
+    }
+
 }

@@ -9,9 +9,7 @@ package br.nom.abdon.domino.ui.fx;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -33,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import br.nom.abdon.domino.Lado;
+import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 
 /**
@@ -64,6 +63,9 @@ public class CenarioDeJogo extends Group{
     
     
     private TelaQuadriculada telaQuadriculada;
+    
+    private Chicote chicoteEsquerda;
+    private Chicote chicoteDireita;
     
     public CenarioDeJogo() {
         this(PROPORCAO_MESA_REGIAO);
@@ -237,7 +239,7 @@ public class CenarioDeJogo extends Group{
         
     }
 
-    public void jogaPedra(Pedra pedra, Lado lado){
+    public void jogaPedraaa(Pedra pedra, Lado lado){
         Vaga vaga = telaQuadriculada.getVaga(lado);
         System.out.println(vaga);
         coloca(this.placeHolder,vaga);
@@ -302,6 +304,79 @@ public class CenarioDeJogo extends Group{
         
         node.layoutXProperty().bind(xNaTela);
         node.layoutYProperty().bind(yNaTela);
+    }
+    
+    
+    public void jogaPedra(Pedra pedra, Lado lado){    
+        
+        PedraFx pedraFx = pedras.get(pedra);
+        
+        if(mesaTaVazia()){
+            colocaNoMeio(pedra);
+            this.chicoteEsquerda = 
+                new Chicote(
+                    pedraFx,
+                    Direcao.PRA_ESQUERDA,
+                    pedra.getPrimeiroNumero());
+
+            this.chicoteDireita = 
+                new Chicote(
+                    pedraFx,
+                    Direcao.PRA_DIREITA,
+                    pedra.getSegundoNumero());
+            
+        } else {
+            
+        }
+            Chicote chicote = 
+                lado == Lado.ESQUERDO ? chicoteEsquerda : chicoteDireita;
+            
+            PedraFx pedraNaPonta = chicote.getPedra();
+            
+            if(pedraNaPonta.getPedra().isCarroca()){
+                colocaEmPeDoLado(pedraFx,chicote);
+                chicote.setPedra(pedraFx);
+                chicote.setNumeroExposto(pedra.getPrimeiroNumero()); //tantufa
+                
+            } else {
+                Numero numero = chicote.getNumeroExposto();
+                rodaONumeroProLugarCerto(pedraFx,chicote.getDirecao());
+                if(cabeMaisUma(chicote)){
+                    colocaSeguindoOFluxo(pedraFx,chicote);
+                } else {
+                    colocaFazendoCurva(pedraFx,chicote);
+                }
+            }
+            
+            
+        }
+
+    private void colocaEmPeDoLado(PedraFx pedraFx, Chicote chicote) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void rodaONumeroProLugarCerto(PedraFx pedraFx, Direcao direcao) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean cabeMaisUma(Chicote chicote) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void colocaSeguindoOFluxo(PedraFx pedraFx, Chicote chicote) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void colocaFazendoCurva(PedraFx pedraFx, Chicote chicote) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+        
+    private boolean mesaTaVazia() {
+        return this.chicoteEsquerda == null;
+    }
+
+    private void colocaNoMeio(Pedra pedra) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
