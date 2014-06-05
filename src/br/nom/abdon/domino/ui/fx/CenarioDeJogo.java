@@ -161,6 +161,7 @@ public class CenarioDeJogo extends Group{
         pedra1.widthProperty().bind(this.bndLarguraDasPedras);
         colocaNoMeio(pedra1);
         super.getChildren().add(pedra1);
+        pedra1.setDirecao(Direcao.PRA_ESQUERDA);
         
         //coloca uma numa ponta
         PedraFx pedra2 = new PedraFx(Pedra.PIO_DUQUE);
@@ -168,22 +169,13 @@ public class CenarioDeJogo extends Group{
         posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
         super.getChildren().add(pedra2);
         
-        pedra2.setOnMouseClicked(
-            evt -> { 
-                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().add(this.bndLarguraDasPedras));
-                
-               
-            }
-        );
-        
         Text emCima = new Text("Em Cima");
         posicionaNaMesa(emCima, 10, 90, Direcao.PRA_BAIXO);
         this.getChildren().add(emCima);        
         emCima.setOnMouseClicked(
             evt -> { 
-                pedra2.setDirecao(Direcao.PRA_CIMA);
-                pedra2.layoutXProperty().bind(pedra1.layoutXProperty());
-                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
+                pedra1.posicionaEmCima(pedra2);
+//                pedra2.posiciona(Direcao.PRA_CIMA,pedra1.layoutXProperty(),pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
             }
         );
         

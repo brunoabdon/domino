@@ -6,6 +6,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -28,10 +29,12 @@ public class PedraFx extends Group {
     private final Group grupoTudo;
         
     private final Pedra pedra;
+    private Direcao direcao;
     
     public PedraFx(Pedra pedra) {
         super();
         this.pedra = pedra;
+        this.direcao = Direcao.PRA_BAIXO;
         Rectangle retanguloPrincipal = fazRetangulo();
         
         this.widthProperty = retanguloPrincipal.widthProperty();
@@ -133,12 +136,34 @@ public class PedraFx extends Group {
         return retangulo;
     }
     
-    public void setDirecao(Direcao d){
-        this.grupoTudo.setRotate(d.getGraus());
+    public void setDirecao(Direcao direcao){
+        this.direcao = direcao;
+        this.grupoTudo.setRotate(direcao.getGraus()); //criar um bind depois...
     }
 
     public Pedra getPedra() {
         return pedra;
     }
+    
+    public void posiciona(
+            Direcao direcao, 
+            ObservableDoubleValue layoutX, 
+            ObservableDoubleValue layoutY){
+        
+        this.setDirecao(direcao);
+        this.layoutXProperty().bind(layoutX);
+        this.layoutYProperty().bind(layoutY);
+    }
+    
+    
+    public void posicionaEmCima(PedraFx pedra){
+        if(this.direcao.ehVertical()){
+            pedra.posiciona(Direcao.PRA_CIMA,this.layoutXProperty(),this.layoutYProperty().subtract(this.heightProperty));
+        } else {
+            pedra.posiciona(Direcao.PRA_CIMA,this.layoutXProperty(),this.layoutYProperty().subtract(this.heightProperty.multiply(3).divide(4)));
+        }
+        
+    }
+    
 
 }
