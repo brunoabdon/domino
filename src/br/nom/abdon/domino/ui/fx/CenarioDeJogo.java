@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import br.nom.abdon.domino.Lado;
@@ -50,6 +51,8 @@ public class CenarioDeJogo extends Group{
     private final DoubleBinding bndLarguraDasPedras;
     private final DoubleBinding bndAlturaDasPedras;
 
+    private final DoubleProperty bndLarguraDaMesa;
+    
     private final DoubleBinding bndUmPorCentoLarguraDaMesa;
     private final DoubleBinding bndUmPorCentoAlturaDaMesa;
 
@@ -78,7 +81,7 @@ public class CenarioDeJogo extends Group{
         this.mesa = UtilsFx.retanguloProporcaoFixa(PROPORCAO_ALTURA_LARGURA_MESA);
         this.mesa.setId("mesa");
         
-        final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
+        bndLarguraDaMesa = mesa.widthProperty();
         
         this.bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
         this.bndAlturaDasPedras = this.bndLarguraDasPedras.multiply(2);
@@ -153,29 +156,76 @@ public class CenarioDeJogo extends Group{
         
         super.getChildren().add(panePedras);
         
-        adicionaPedras();
-        List<Pedra> pedras = Arrays.asList(Pedra.values());
+        //coloca uma pedra no meio
+        PedraFx pedra1 = new PedraFx(Pedra.DUQUE_QUADRA);
+        pedra1.widthProperty().bind(this.bndLarguraDasPedras);
+        colocaNoMeio(pedra1);
+        super.getChildren().add(pedra1);
         
-        jogaPedra(Pedra.CARROCA_DE_TERNO,Lado.ESQUERDO );
-        jogaPedra(Pedra.LIMPO_TERNO,Lado.ESQUERDO );
-        jogaPedra(Pedra.TERNO_QUADRA,Lado. DIREITO);
-        jogaPedra(Pedra.LIMPO_DUQUE,Lado.ESQUERDO );
-        jogaPedra(Pedra.QUADRA_SENA,Lado. DIREITO);
-        jogaPedra(Pedra.DUQUE_QUINA,Lado.ESQUERDO );
-        jogaPedra(Pedra.DUQUE_SENA,Lado.DIREITO );
-        jogaPedra(Pedra.DUQUE_QUADRA,Lado.DIREITO );
-        jogaPedra(Pedra.QUADRA_QUINA,Lado.ESQUERDO);
-        jogaPedra(Pedra.LIMPO_QUADRA,Lado.ESQUERDO);
-        jogaPedra(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO );
-        jogaPedra(Pedra.CARROCA_DE_LIMPO,Lado.ESQUERDO);
-        jogaPedra(Pedra.PIO_QUADRA,Lado.DIREITO);
-        jogaPedra(Pedra.CARROCA_DE_PIO,Lado.DIREITO);
-        jogaPedra(Pedra.PIO_SENA,Lado.DIREITO);
-        jogaPedra(Pedra.LIMPO_SENA,Lado.ESQUERDO);
-        jogaPedra(Pedra.QUINA_SENA,Lado.ESQUERDO);
-        jogaPedra(Pedra.TERNO_SENA,Lado.DIREITO );
-        jogaPedra(Pedra.LIMPO_QUINA,Lado.ESQUERDO);
-        jogaPedra(Pedra.PIO_TERNO,Lado.DIREITO);
+        //coloca uma numa ponta
+        PedraFx pedra2 = new PedraFx(Pedra.PIO_DUQUE);
+        pedra2.widthProperty().bind(this.bndLarguraDasPedras);
+        posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
+        super.getChildren().add(pedra2);
+        
+        pedra2.setOnMouseClicked(
+            evt -> { 
+                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().add(this.bndLarguraDasPedras));
+                
+               
+            }
+        );
+        
+        Text emCima = new Text("Em Cima");
+        posicionaNaMesa(emCima, 10, 90, Direcao.PRA_BAIXO);
+        this.getChildren().add(emCima);        
+        emCima.setOnMouseClicked(
+            evt -> { 
+                pedra2.setDirecao(Direcao.PRA_CIMA);
+                pedra2.layoutXProperty().bind(pedra1.layoutXProperty());
+                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
+            }
+        );
+        
+        Text emBaixo = new Text("Em Baixo");
+        emBaixo.layoutXProperty().bind(emCima.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
+        emBaixo.layoutYProperty().bind(emCima.layoutYProperty());
+        this.getChildren().add(emBaixo);        
+        emBaixo.setOnMouseClicked(
+            evt -> { 
+                pedra2.setDirecao(Direcao.PRA_BAIXO);
+                pedra2.layoutXProperty().bind(pedra1.layoutXProperty());
+                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras));
+            }
+        );
+        
+        Text esquerda = new Text("Esquerda");
+        esquerda.layoutXProperty().bind(emBaixo.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
+        esquerda.layoutYProperty().bind(emCima.layoutYProperty());
+        this.getChildren().add(esquerda);        
+        esquerda.setOnMouseClicked(
+            evt -> { 
+                pedra2.setDirecao(Direcao.PRA_ESQUERDA);
+                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().subtract(bndLarguraDasPedras.multiply(1.5)));
+                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras.multiply(1/4)));
+            }
+        );
+        
+        Text direita = new Text("Direita");
+        direita.layoutXProperty().bind(esquerda.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
+        direita.layoutYProperty().bind(emCima.layoutYProperty());
+        this.getChildren().add(direita);
+        direita.setOnMouseClicked(
+            evt -> { 
+                pedra2.setDirecao(Direcao.PRA_DIREITA);
+                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().add(bndLarguraDasPedras.multiply(1.5)));
+                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras.multiply(1/4)));
+            }
+        );
+        
+        
+//        adicionaPedras();
+        
 
         
 //        Collections.shuffle(pedras);
@@ -312,7 +362,7 @@ public class CenarioDeJogo extends Group{
         PedraFx pedraFx = pedras.get(pedra);
         
         if(mesaTaVazia()){
-            colocaNoMeio(pedra);
+            colocaNoMeio(pedraFx);
             this.chicoteEsquerda = 
                 new Chicote(
                     pedraFx,
@@ -327,7 +377,6 @@ public class CenarioDeJogo extends Group{
             
         } else {
             
-        }
             Chicote chicote = 
                 lado == Lado.ESQUERDO ? chicoteEsquerda : chicoteDireita;
             
@@ -347,9 +396,8 @@ public class CenarioDeJogo extends Group{
                     colocaFazendoCurva(pedraFx,chicote);
                 }
             }
-            
-            
         }
+    }
 
     private void colocaEmPeDoLado(PedraFx pedraFx, Chicote chicote) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -375,8 +423,17 @@ public class CenarioDeJogo extends Group{
         return this.chicoteEsquerda == null;
     }
 
-    private void colocaNoMeio(Pedra pedra) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void colocaNoMeio(PedraFx pedraFx) {
+ 
+        pedraFx.setDirecao(Direcao.PRA_BAIXO);
+        DoubleExpression metadeDaMesa = bndLarguraDaMesa.divide(2);
+        
+        final DoubleBinding xNaTela = mesa.layoutXProperty().add(metadeDaMesa);
+        final DoubleBinding yNaTela = mesa.layoutYProperty().add(metadeDaMesa);
+        
+        pedraFx.layoutXProperty().bind(xNaTela);
+        pedraFx.layoutYProperty().bind(yNaTela);
+
     }
 
 }
