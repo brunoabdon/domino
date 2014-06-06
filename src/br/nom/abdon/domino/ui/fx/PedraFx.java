@@ -17,6 +17,10 @@ import javafx.scene.shape.Rectangle;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
 import java.util.Random;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 
 /**
  *
@@ -165,9 +169,37 @@ public class PedraFx extends Group {
             ObservableDoubleValue layoutX, 
             ObservableDoubleValue layoutY){
         
-        this.setDirecao(direcao);
-        this.layoutXProperty().bind(layoutX);
-        this.layoutYProperty().bind(layoutY);
+        final double pixelsPorSegundo = 400;
+        
+        
+        final double byX = this.layoutXProperty().subtract(layoutX).multiply(-1).get();
+        final double byY = this.layoutYProperty().subtract(layoutY).multiply(-1).get();
+        
+        final double somaDoQuadradoDosCatetos = Math.pow(byX, 2) + Math.pow(byY, 2);
+        final double hipotenusa = Math.sqrt(somaDoQuadradoDosCatetos);
+        final Duration tempo = Duration.seconds(pixelsPorSegundo / hipotenusa);
+
+        TranslateTransition translation = new TranslateTransition(tempo);
+        translation.setByX(byX);
+        translation.setToY(byY);
+
+        
+        RotateTransition rotation = new RotateTransition(tempo);
+        rotation.setByAngle(direcao.getGraus());
+        
+        ParallelTransition animation = new ParallelTransition(translation,rotation);
+        animation.setNode(this);
+        animation.setOnFinished(
+                x -> {
+                    this.setTranslateX(0);
+                    this.setTranslateY(0);
+                    this.setDirecao(direcao);
+                    this.layoutXProperty().bind(layoutX);
+                    this.layoutYProperty().bind(layoutY);
+                }
+        );
+        animation.play();
+        
     }
     public void encaixa(PedraFx pedraFx){
         if(direcaoFileira == null){
