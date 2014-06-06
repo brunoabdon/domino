@@ -9,33 +9,29 @@ package br.nom.abdon.domino.ui.fx;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
 
+import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Lado;
-import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
-import java.util.Random;
-import javafx.scene.shape.Line;
+
 
 /**
  *
@@ -51,23 +47,20 @@ public class CenarioDeJogo extends Group{
     private EnumMap<Pedra,PedraFx> pedras;
 
     private final DoubleBinding bndLarguraDasPedras;
-    private final DoubleBinding bndAlturaDasPedras;
 
     private final DoubleProperty bndLarguraDaMesa;
     
     private final DoubleBinding bndUmPorCentoLarguraDaMesa;
     private final DoubleBinding bndUmPorCentoAlturaDaMesa;
 
-    private PedraFx placeHolder;
-    private final GridPane panePedras;
+    private final DoubleExpression xMeioDaTela;
+    private final DoubleExpression yMeioDaTela;
 
+    
     private final HBox paneMao1, paneMao3;
     private final VBox paneMao2, paneMao4;
     
     private final Pane[] maosPanes;
-    
-    
-    private TelaQuadriculada telaQuadriculada;
     
     private Chicote chicoteEsquerda;
     private Chicote chicoteDireita;
@@ -86,7 +79,6 @@ public class CenarioDeJogo extends Group{
         bndLarguraDaMesa = mesa.widthProperty();
         
         this.bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
-        this.bndAlturaDasPedras = this.bndLarguraDasPedras.multiply(2);
         
         this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
         this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
@@ -136,146 +128,74 @@ public class CenarioDeJogo extends Group{
         posicionaNaMesa(this.paneMao4,80,80,Direcao.PRA_DIREITA);
         this.getChildren().add(this.paneMao4);
         
-        this.telaQuadriculada = new TelaQuadriculada(
-                PROPORCAO_MESA_PEDRA/2,
-                PROPORCAO_MESA_PEDRA/2);
-        
-        this.placeHolder = new PedraFx(Pedra.CARROCA_DE_SENA);
-        
-        
-        this.panePedras = new GridPane();
+        final DoubleExpression metadeDaMesa = bndLarguraDaMesa.divide(2);
 
-        panePedras.setGridLinesVisible(true);
+        this.xMeioDaTela = mesa.layoutXProperty().add(metadeDaMesa);
+        this.yMeioDaTela = mesa.layoutYProperty().add(metadeDaMesa);
         
-        final DoubleExpression xNaMesa = bndLarguraDaMesa.divide(20);
-        final DoubleExpression yNaMesa = bndLarguraDaMesa.divide(20);
+        pedras = new EnumMap<>(Pedra.class);
+        Arrays.asList(Pedra.values()).forEach((Pedra p) -> {
+            PedraFx pfx = new PedraFx(p);
+            pedras.put(p,pfx);
+            pfx.widthProperty().bind(this.bndLarguraDasPedras);
+            super.getChildren().add(pfx);
+        });
         
-        final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
-        final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
-        
-        panePedras.layoutXProperty().bind(xNaTela);
-        panePedras.layoutYProperty().bind(yNaTela);
-        
-        super.getChildren().add(panePedras);
-        
-        Random r = new Random();
+//        Random r = new Random();
         //coloca uma pedra no meio
 //        PedraFx pedra1 = new PedraFx(r.nextBoolean() ? Pedra.CARROCA_DE_PIO : Pedra.CARROCA_DE_DUQUE);
-        PedraFx pedra1 = new PedraFx(Pedra.DUQUE_QUINA);
-        pedra1.widthProperty().bind(this.bndLarguraDasPedras);
-        colocaNoMeio(pedra1);
-        super.getChildren().add(pedra1);
-        pedra1.setDirecao(Direcao.PRA_BAIXO);
-        
-        //coloca uma numa ponta
-        PedraFx pedra2 = new PedraFx(Pedra.QUINA_SENA);
-        pedra2.widthProperty().bind(this.bndLarguraDasPedras);
-        posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
-        super.getChildren().add(pedra2);
-
-        Text msg = new Text();
-        msg.textProperty().bind(Bindings.concat("Rotate: ",pedra2.rotateProperty()));
-        posicionaNaMesa(msg, 10, 30, Direcao.PRA_BAIXO);
-        this.getChildren().add(msg);        
-        Text msg2 = new Text();
-        msg2.textProperty().bind(Bindings.concat("InnerRotate: ",pedra2.innerRotateProperty()));
-        posicionaNaMesa(msg2, 10, 33, Direcao.PRA_BAIXO);
-        this.getChildren().add(msg2);        
-
-
-        apontaProAlvo(pedra1);
-        apontaProAlvo(pedra2);
-        
-        pedra2.setOnMouseClicked(
-           x -> {
-               pedra2.setRotate((pedra2.getRotate()+90)%360);
-//               msg.setText(pedra2.rotateProperty().toString());
-               
-           }
-        );
-        
-        
-        
-        Text emCima = new Text("Em Cima");
-        posicionaNaMesa(emCima, 10, 90, Direcao.PRA_BAIXO);
-        this.getChildren().add(emCima);        
-        emCima.setOnMouseClicked(
-            evt -> { 
-                pedra1.posicionaEmCima(pedra2);
-//                pedra2.posiciona(Direcao.PRA_CIMA,pedra1.layoutXProperty(),pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
-            }
-        );
-        
-        Text emBaixo = new Text("Em Baixo");
-        emBaixo.layoutXProperty().bind(emCima.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
-        emBaixo.layoutYProperty().bind(emCima.layoutYProperty());
-        this.getChildren().add(emBaixo);        
-        emBaixo.setOnMouseClicked(
-            evt -> { 
-                pedra2.setDirecao(Direcao.PRA_BAIXO);
-                pedra2.layoutXProperty().bind(pedra1.layoutXProperty());
-                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras));
-            }
-        );
-        
-        Text esquerda = new Text("Esquerda");
-        esquerda.layoutXProperty().bind(emBaixo.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
-        esquerda.layoutYProperty().bind(emCima.layoutYProperty());
-        this.getChildren().add(esquerda);        
-        esquerda.setOnMouseClicked(
-            evt -> { 
-                pedra2.setDirecao(Direcao.PRA_ESQUERDA);
-                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().subtract(bndLarguraDasPedras.multiply(1.5)));
-                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras.multiply(1/4)));
-            }
-        );
-        
-        Text direita = new Text("Direita");
-        direita.layoutXProperty().bind(esquerda.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
-        direita.layoutYProperty().bind(emCima.layoutYProperty());
-        this.getChildren().add(direita);
-        direita.setOnMouseClicked(
-            evt -> { 
-                pedra2.setDirecao(Direcao.PRA_DIREITA);
-                pedra2.layoutXProperty().bind(pedra1.layoutXProperty().add(bndLarguraDasPedras.multiply(1.5)));
-                pedra2.layoutYProperty().bind(pedra1.layoutYProperty().add(bndAlturaDasPedras.multiply(1/4)));
-            }
-        );
-        
-        Text encaixa = new Text("Encaixa");
-        encaixa.layoutXProperty().bind(direita.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
-        encaixa.layoutYProperty().bind(emCima.layoutYProperty());
-        this.getChildren().add(encaixa);        
-        encaixa.setOnMouseClicked(
-            evt -> { 
-                pedra1.encaixa(pedra2);
-//                pedra2.posiciona(Direcao.PRA_CIMA,pedra1.layoutXProperty(),pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
-            }
-        );
-        
-//        adicionaPedras();
-        
-
-        
-//        Collections.shuffle(pedras);
-//        final Iterator<Pedra> pedrasIterator = pedras.iterator();
+//        PedraFx pedra1 = pedras.get(Pedra.DUQUE_QUINA);
+//        pedra1.posiciona(Direcao.PRA_BAIXO, xMeioDaTela, yMeioDaTela);
 //        
-//        Random r  = new Random(2604);
-//        
-//        mesa.setOnMouseClicked(
-//                e -> {
-//                    if(pedrasIterator.hasNext())
-//                        jogaPedra(pedrasIterator.next(), r.nextBoolean() ?  Lado.DIREITO : Lado.ESQUERDO );
-//                }
-//        );
+//        //coloca uma numa ponta
+//        PedraFx pedra2 = pedras.get(Pedra.QUINA_SENA);
+//        posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
         
+        
+        List<Jogada> jogo = new LinkedList<>();
+        jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE));           //meio
+        jogo.add(new Jogada(Pedra.DUQUE_QUINA,Lado.DIREITO));   //normal, direito, nao inverte
+        jogo.add(new Jogada(Pedra.QUADRA_QUINA,Lado.DIREITO));   //normal, direito, inverte
+        jogo.add(new Jogada(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO)); //carroca,  direito
+        jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO)); //na carroca, direito, inverte
+
+        jogo.add(new Jogada(Pedra.DUQUE_TERNO,Lado.ESQUERDO));   //normal, esquero, nao inverte
+        jogo.add(new Jogada(Pedra.PIO_TERNO,Lado.ESQUERDO));   //normal, esquerdo, inverte
+        jogo.add(new Jogada(Pedra.CARROCA_DE_PIO,Lado.ESQUERDO)); //carroca,  esquerdo
+        jogo.add(new Jogada(Pedra.PIO_SENA,Lado.ESQUERDO)); //na carroca, esquerdo, inverte
+        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.ESQUERDO)); //carroca, esquerdo (repetido)
+        jogo.add(new Jogada(Pedra.LIMPO_SENA,Lado.ESQUERDO)); //na carroca, esquerdo, invente
+
+        final Iterator<Jogada> iterator = jogo.iterator();
+        
+        
+        mesa.setOnMouseClicked(
+                e -> {
+                    Jogada jogada = iterator.next();
+                    jogaPedra(jogada.getPedra(), jogada.getLado());
+                }
+        );
+        
+        
+//        Text msg = new Text();
+//        msg.textProperty().bind(Bindings.concat("Rotate: ",pedra2.rotateProperty()));
+//        posicionaNaMesa(msg, 10, 30, Direcao.PRA_BAIXO);
+//        this.getChildren().add(msg);        
+//        Text msg2 = new Text();
+//        msg2.textProperty().bind(Bindings.concat("InnerRotate: ",pedra2.innerRotateProperty()));
+//        posicionaNaMesa(msg2, 10, 33, Direcao.PRA_BAIXO);
+//        this.getChildren().add(msg2);        
+
+//        UtilsFx.apontaProAlvo(pedra1,mesa,this.getChildren());
+//        UtilsFx.apontaProAlvo(pedra2,mesa,this.getChildren());
+
     }
     
     private void entregaPedra(int jogador, PedraFx pedra){
         this.maosPanes[jogador].getChildren().add(pedra);
     }
     
-    public final void adicionaPedras(){
+    private final void adicionaPedras(){
 
         this.pedras = new EnumMap(Pedra.class);
         
@@ -294,76 +214,8 @@ public class CenarioDeJogo extends Group{
             this.pedras.put(pedra, pedraFx);
             pedraFx.widthProperty().bind(this.bndLarguraDasPedras);
         }
-        
-        
-//        Random rand = new Random();
-//        for (Pedra pedra : Pedra.values()) {
-//            PedraFx pedraFx = new PedraFx(pedra);
-//            int x = rand.nextInt(80);
-//            int y = rand.nextInt(80);
-//            
-////            int dir = rand.nextInt(4);
-////            Direcao d = dir == 1? 
-////                Direcao.PRA_BAIXO
-////                : dir == 2? 
-////                    Direcao.PRA_CIMA
-////                    : dir == 3?
-////                        Direcao.PRA_DIREITA
-////                        : Direcao.PRA_ESQUERDA;
-//            
-//            pedras.put(pedra, pedraFx);
-//            this.colocaNaMesa(pedraFx);
-//            this.posicionaPedraNaMesa(pedraFx, x , y, Direcao.PRA_BAIXO);
-//        }
-        
     }
-
-    public void jogaPedraaa(Pedra pedra, Lado lado){
-        Vaga vaga = telaQuadriculada.getVaga(lado);
-        System.out.println(vaga);
-        coloca(this.placeHolder,vaga);
         
-        PedraFx pedraFx = pedras.get(pedra);
-                
-        TranslateTransition transl = new TranslateTransition(Duration.millis(0));
-        transl.setOnFinished(
-                (ActionEvent e) -> {
-                        final TranslateTransition t = (TranslateTransition)e.getSource();
-                        Node node = t.getNode();
-                    
-                        panePedras.getChildren().remove(placeHolder);
-                        this.getChildren().remove(node);
-                        node.setTranslateX(0);
-                        node.setTranslateY(0);
-                        coloca(node, vaga);
-                }
-        );
-        
-        final Direcao direcaoVaga = vaga.getDirecao();
-        final Direcao direcaoPedra;
-        if(pedra.isCarroca()){
-            direcaoPedra = direcaoVaga.ehHorizontal()
-                ? Direcao.PRA_BAIXO 
-                : Direcao.PRA_DIREITA;
-        } else {
-            direcaoPedra = direcaoVaga;
-        }
-
-        pedraFx.setDirecao(direcaoPedra);
-
-        UtilsFx.fillTranslation(pedraFx, placeHolder, transl);
-        transl.play();
-        
-        
-    }
-
-    private void coloca(Node node, Vaga vaga) {
-        node.layoutXProperty().unbind();
-        node.layoutYProperty().unbind();
-        GridPane.setConstraints(node, vaga.getX(), vaga.getY()); 
-        panePedras.getChildren().add(node);
-    }
-
     private void posicionaNaMesa(
             final Node node, 
             final double percentX, 
@@ -389,109 +241,28 @@ public class CenarioDeJogo extends Group{
     public void jogaPedra(Pedra pedra, Lado lado){    
         
         PedraFx pedraFx = pedras.get(pedra);
-        
-        if(mesaTaVazia()){
-            colocaNoMeio(pedraFx);
-            this.chicoteEsquerda = 
-                new Chicote(
-                    pedraFx,
-                    Direcao.PRA_ESQUERDA,
-                    pedra.getPrimeiroNumero());
 
-            this.chicoteDireita = 
-                new Chicote(
-                    pedraFx,
-                    Direcao.PRA_DIREITA,
-                    pedra.getSegundoNumero());
+        if(mesaTaVazia()){
+
+            Chicote[] chicotes = 
+                Chicote.inicia(pedraFx, xMeioDaTela, yMeioDaTela);
+
+            this.chicoteEsquerda = chicotes[0];
+            this.chicoteDireita = chicotes[1];
             
         } else {
             
             Chicote chicote = 
                 lado == Lado.ESQUERDO ? chicoteEsquerda : chicoteDireita;
             
-            PedraFx pedraNaPonta = chicote.getPedra();
-            
-            if(pedraNaPonta.getPedra().isCarroca()){
-                colocaEmPeDoLado(pedraFx,chicote);
-                chicote.setPedra(pedraFx);
-                chicote.setNumeroExposto(pedra.getPrimeiroNumero()); //tantufa
-                
-            } else {
-                Numero numero = chicote.getNumeroExposto();
-                rodaONumeroProLugarCerto(pedraFx,chicote.getDirecao());
-                if(cabeMaisUma(chicote)){
-                    colocaSeguindoOFluxo(pedraFx,chicote);
-                } else {
-                    colocaFazendoCurva(pedraFx,chicote);
-                }
-            }
+            chicote.encaixa(pedraFx);
         }
     }
 
-    private void colocaEmPeDoLado(PedraFx pedraFx, Chicote chicote) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void rodaONumeroProLugarCerto(PedraFx pedraFx, Direcao direcao) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private boolean cabeMaisUma(Chicote chicote) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void colocaSeguindoOFluxo(PedraFx pedraFx, Chicote chicote) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void colocaFazendoCurva(PedraFx pedraFx, Chicote chicote) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-        
     private boolean mesaTaVazia() {
         return this.chicoteEsquerda == null;
     }
 
-    private void colocaNoMeio(PedraFx pedraFx) {
- 
-        pedraFx.setDirecao(Direcao.PRA_BAIXO);
-        DoubleExpression metadeDaMesa = bndLarguraDaMesa.divide(2);
-        
-        final DoubleBinding xNaTela = mesa.layoutXProperty().add(metadeDaMesa);
-        final DoubleBinding yNaTela = mesa.layoutYProperty().add(metadeDaMesa);
-        
-        pedraFx.layoutXProperty().bind(xNaTela);
-        pedraFx.layoutYProperty().bind(yNaTela);
-
-    }
-
-    private void apontaProAlvo(Node node){
-        Line linhah = new Line(0,0,0,0);
-        linhah.startXProperty().bind(mesa.layoutXProperty());
-        linhah.endXProperty().bind(mesa.layoutXProperty().add(mesa.widthProperty()));
-        
-        linhah.startYProperty().bind(node.layoutYProperty());
-        linhah.endYProperty().bind(node.layoutYProperty());
-
-        Line linhav = new Line(0,0,0,0);
-        linhav.startYProperty().bind(mesa.layoutYProperty());
-        linhav.endYProperty().bind(mesa.layoutYProperty().add(mesa.heightProperty()));
-        
-        linhav.startXProperty().bind(node.layoutXProperty());
-        linhav.endXProperty().bind(node.layoutXProperty());
-
-        Text lxmsg = new Text();
-        lxmsg.textProperty().bind(Bindings.concat("Layout x: ",node.layoutXProperty()));
-        lxmsg.layoutXProperty().bind(linhav.startXProperty().add(bndLarguraDaMesa.divide(40)));
-        lxmsg.layoutYProperty().bind(linhav.startYProperty().add(bndLarguraDaMesa.divide(40)));
-
-        Text lymsg = new Text();
-        lymsg.textProperty().bind(Bindings.concat("Layout y: ",node.layoutYProperty()));
-        lymsg.layoutXProperty().bind(linhah.startXProperty().add(bndLarguraDaMesa.divide(40)));
-        lymsg.layoutYProperty().bind(linhah.startYProperty().add(bndLarguraDaMesa.divide(40)));
-        
-        this.getChildren().addAll(linhah,linhav,lxmsg,lymsg);        
-        
-    }
+   
     
 }

@@ -7,14 +7,20 @@
 package br.nom.abdon.domino.ui.fx;
 
 
+import java.util.Collection;
 import javafx.animation.TranslateTransition;
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 
 /**
@@ -106,5 +112,81 @@ public class UtilsFx {
         translation.toYProperty().bind(yTrans);
     }
     
+
+    public static void apontaProAlvo(
+            Node node, 
+            Rectangle parent,
+            Collection<Node> children){
+
+        UtilsFx.apontaProAlvo(
+                node,
+                parent.layoutXProperty(), 
+                parent.layoutYProperty(), 
+                parent.widthProperty(),
+                parent.heightProperty(), 
+                children);
+    }
+
+    
+    public static void apontaProAlvo(
+            Node node, 
+            DoubleExpression parentLayoutX,
+            DoubleExpression parentLayoutY,
+            DoubleExpression parentWidth,
+            DoubleExpression parentHeight,
+            Collection<Node> children){
+        
+        Line linhah = bindedLine(
+                parentLayoutX,
+                node.layoutYProperty(),
+                parentLayoutX.add(parentWidth),
+                node.layoutYProperty());
+
+        Line linhav = bindedLine(
+                node.layoutXProperty(),
+                parentLayoutY,
+                node.layoutXProperty(),
+                parentLayoutY.add(parentHeight));
+                
+        final DoubleExpression textGap = parentWidth.divide(40);
+        
+        Text lxmsg = attachText("Layout x",node.layoutXProperty(),textGap,linhav);
+        Text lymsg = attachText("Layout y",node.layoutYProperty(),textGap,linhah);
+        
+        children.add(linhah);
+        children.add(linhav);
+        children.add(lxmsg);
+        children.add(lymsg);        
+        
+    }
+
+    public static Line bindedLine(
+        DoubleExpression startX, DoubleExpression startY, 
+        DoubleExpression endX, DoubleExpression endY){
+        
+        Line linha = new Line(0,0,0,0);
+        
+        linha.startXProperty().bind(startX);
+        linha.endXProperty().bind(endX);
+        
+        linha.startYProperty().bind(startY);
+        linha.endYProperty().bind(endY);
+        
+        return linha;
+        
+    }
+    
+    public static Text attachText(
+            String label, 
+            DoubleExpression value, 
+            DoubleExpression textGap,
+            Line linha){
+        Text lmsg = new Text();
+        lmsg.textProperty().bind(Bindings.concat(label,": ",value));
+        lmsg.layoutXProperty().bind(linha.startXProperty().add(textGap));
+        lmsg.layoutYProperty().bind(linha.startYProperty().add(textGap));
+        return lmsg;
+
+    }
     
 }
