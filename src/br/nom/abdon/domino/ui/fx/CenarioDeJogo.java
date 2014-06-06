@@ -34,6 +34,8 @@ import javafx.util.Duration;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import java.util.Random;
+import javafx.scene.shape.Line;
 
 /**
  *
@@ -156,18 +158,43 @@ public class CenarioDeJogo extends Group{
         
         super.getChildren().add(panePedras);
         
+        Random r = new Random();
         //coloca uma pedra no meio
-        PedraFx pedra1 = new PedraFx(Pedra.DUQUE_QUADRA);
+//        PedraFx pedra1 = new PedraFx(r.nextBoolean() ? Pedra.CARROCA_DE_PIO : Pedra.CARROCA_DE_DUQUE);
+        PedraFx pedra1 = new PedraFx(Pedra.DUQUE_QUINA);
         pedra1.widthProperty().bind(this.bndLarguraDasPedras);
         colocaNoMeio(pedra1);
         super.getChildren().add(pedra1);
-        pedra1.setDirecao(Direcao.PRA_ESQUERDA);
+        pedra1.setDirecao(Direcao.PRA_BAIXO);
         
         //coloca uma numa ponta
-        PedraFx pedra2 = new PedraFx(Pedra.PIO_DUQUE);
+        PedraFx pedra2 = new PedraFx(Pedra.QUINA_SENA);
         pedra2.widthProperty().bind(this.bndLarguraDasPedras);
         posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
         super.getChildren().add(pedra2);
+
+        Text msg = new Text();
+        msg.textProperty().bind(Bindings.concat("Rotate: ",pedra2.rotateProperty()));
+        posicionaNaMesa(msg, 10, 30, Direcao.PRA_BAIXO);
+        this.getChildren().add(msg);        
+        Text msg2 = new Text();
+        msg2.textProperty().bind(Bindings.concat("InnerRotate: ",pedra2.innerRotateProperty()));
+        posicionaNaMesa(msg2, 10, 33, Direcao.PRA_BAIXO);
+        this.getChildren().add(msg2);        
+
+
+        apontaProAlvo(pedra1);
+        apontaProAlvo(pedra2);
+        
+        pedra2.setOnMouseClicked(
+           x -> {
+               pedra2.setRotate((pedra2.getRotate()+90)%360);
+//               msg.setText(pedra2.rotateProperty().toString());
+               
+           }
+        );
+        
+        
         
         Text emCima = new Text("Em Cima");
         posicionaNaMesa(emCima, 10, 90, Direcao.PRA_BAIXO);
@@ -215,6 +242,16 @@ public class CenarioDeJogo extends Group{
             }
         );
         
+        Text encaixa = new Text("Encaixa");
+        encaixa.layoutXProperty().bind(direita.layoutXProperty().add(bndLarguraDaMesa.divide(8)));
+        encaixa.layoutYProperty().bind(emCima.layoutYProperty());
+        this.getChildren().add(encaixa);        
+        encaixa.setOnMouseClicked(
+            evt -> { 
+                pedra1.encaixa(pedra2);
+//                pedra2.posiciona(Direcao.PRA_CIMA,pedra1.layoutXProperty(),pedra1.layoutYProperty().subtract(bndAlturaDasPedras));
+            }
+        );
         
 //        adicionaPedras();
         
@@ -428,4 +465,33 @@ public class CenarioDeJogo extends Group{
 
     }
 
+    private void apontaProAlvo(Node node){
+        Line linhah = new Line(0,0,0,0);
+        linhah.startXProperty().bind(mesa.layoutXProperty());
+        linhah.endXProperty().bind(mesa.layoutXProperty().add(mesa.widthProperty()));
+        
+        linhah.startYProperty().bind(node.layoutYProperty());
+        linhah.endYProperty().bind(node.layoutYProperty());
+
+        Line linhav = new Line(0,0,0,0);
+        linhav.startYProperty().bind(mesa.layoutYProperty());
+        linhav.endYProperty().bind(mesa.layoutYProperty().add(mesa.heightProperty()));
+        
+        linhav.startXProperty().bind(node.layoutXProperty());
+        linhav.endXProperty().bind(node.layoutXProperty());
+
+        Text lxmsg = new Text();
+        lxmsg.textProperty().bind(Bindings.concat("Layout x: ",node.layoutXProperty()));
+        lxmsg.layoutXProperty().bind(linhav.startXProperty().add(bndLarguraDaMesa.divide(40)));
+        lxmsg.layoutYProperty().bind(linhav.startYProperty().add(bndLarguraDaMesa.divide(40)));
+
+        Text lymsg = new Text();
+        lymsg.textProperty().bind(Bindings.concat("Layout y: ",node.layoutYProperty()));
+        lymsg.layoutXProperty().bind(linhah.startXProperty().add(bndLarguraDaMesa.divide(40)));
+        lymsg.layoutYProperty().bind(linhah.startYProperty().add(bndLarguraDaMesa.divide(40)));
+        
+        this.getChildren().addAll(linhah,linhav,lxmsg,lymsg);        
+        
+    }
+    
 }
