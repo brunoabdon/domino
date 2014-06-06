@@ -169,17 +169,6 @@ public class PedraFx extends Group {
         this.layoutXProperty().bind(layoutX);
         this.layoutYProperty().bind(layoutY);
     }
-    
-    
-    public void posicionaEmCima(PedraFx pedra){
-        if(this.direcao.ehVertical()){
-            pedra.posiciona(Direcao.PRA_CIMA,this.layoutXProperty(),this.layoutYProperty().subtract(this.heightProperty));
-        } else {
-            pedra.posiciona(Direcao.PRA_CIMA,this.layoutXProperty(),this.layoutYProperty().subtract(this.heightProperty.multiply(3).divide(4)));
-        }
-        
-    }
-    
     public void encaixa(PedraFx pedraFx){
         if(direcaoFileira == null){
             direcaoFileira = this.direcao.ehVertical()
@@ -191,9 +180,8 @@ public class PedraFx extends Group {
                 : Direcao.PRA_ESQUERDA;
         }
         
-        this.direcaoFileira = Direcao.PRA_BAIXO;
+        this.direcaoFileira = Direcao.PRA_DIREITA;
 
-        
         
         if(this.getPedra().isCarroca()){
             encaixaNaCarroca(pedraFx);
@@ -248,22 +236,14 @@ public class PedraFx extends Group {
                         ? Direcao.PRA_BAIXO
                         : Direcao.PRA_CIMA;
             }
-            
         }
-        
-        pedraFx.layoutXProperty().bind(layouyX);
-        pedraFx.layoutYProperty().bind(layouyY);
-        pedraFx.setDirecao(direcaoPedraFx);
-    }
-
-    private void encaixaCarroca(PedraFx pedraFx) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        pedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
 
     private void encaixaNormal(PedraFx pedraFx) {
         final ObservableDoubleValue layouyX;
         final ObservableDoubleValue layouyY;
-        Direcao direcaoPedraFx = null;
+        final Direcao direcaoPedraFx;
 
         if(this.direcaoFileira.ehHorizontal()){
             layouyY = this.layoutYProperty();
@@ -297,7 +277,6 @@ public class PedraFx extends Group {
                             ? Direcao.PRA_DIREITA
                             : Direcao.PRA_ESQUERDA; 
                 }
-
             }
             
         } else { //this.direcaoFileira.ehVertical()
@@ -331,9 +310,31 @@ public class PedraFx extends Group {
                 }
             }
         }
-        pedraFx.layoutXProperty().bind(layouyX);
-        pedraFx.layoutYProperty().bind(layouyY);
-        pedraFx.setDirecao(direcaoPedraFx);
+        pedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
+    }
+    
+    private void encaixaCarroca(PedraFx pedraFx) {
+        final ObservableDoubleValue layouyX;
+        final ObservableDoubleValue layouyY;
+        final Direcao direcaoPedraFx;
 
+        if(direcaoFileira.ehHorizontal()){
+            layouyY = this.layoutYProperty();
+            direcaoPedraFx = Direcao.PRA_BAIXO;
+            if(direcaoFileira == Direcao.PRA_ESQUERDA){
+                layouyX = this.layoutXProperty().subtract(this.widthProperty.multiply(1.5));
+            } else {
+                layouyX = this.layoutXProperty().add(this.heightProperty.multiply(0.75));
+            }
+        } else { //direcaoFileira.ehVertical()
+            layouyX = this.layoutXProperty();
+            direcaoPedraFx = Direcao.PRA_ESQUERDA;
+            if(direcaoFileira == Direcao.PRA_CIMA){
+                layouyY = this.layoutYProperty().subtract(this.widthProperty.multiply(1.5));
+            } else {
+                layouyY = this.layoutYProperty().add(this.heightProperty.multiply(0.75));
+            }
+        }
+        pedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
 }
