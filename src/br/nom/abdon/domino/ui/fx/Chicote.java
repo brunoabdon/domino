@@ -6,6 +6,10 @@
 
 package br.nom.abdon.domino.ui.fx;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.DoubleExpression;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.value.ObservableDoubleValue;
 
 /**
@@ -26,8 +30,8 @@ class Chicote {
         Direcao direcaoPedra = primeiraPedraFx.getPedra().isCarroca()
             ? Direcao.PRA_BAIXO
             : Direcao.PRA_ESQUERDA;
-        
-        primeiraPedraFx.posiciona(direcaoPedra,layoutX,layoutY);
+
+        primeiraPedraFx.posiciona(direcaoPedra, layoutX,layoutY);
 
         return new Chicote[] {
             new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA),

@@ -7,7 +7,6 @@
 package br.nom.abdon.domino.ui.fx;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,10 +21,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 import br.nom.abdon.domino.Jogada;
@@ -39,29 +35,20 @@ import br.nom.abdon.domino.Pedra;
  */
 public class CenarioDeJogo extends Group{
 
-    private final static double PROPORCAO_ALTURA_LARGURA_MESA = 1;
-    private final static double PROPORCAO_MESA_REGIAO = 0.95;
-    public static final int PROPORCAO_MESA_PEDRA = 20;
-    
-    private Rectangle mesa;
-    private EnumMap<Pedra,PedraFx> pedras;
+    private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
+    private static final double PROPORCAO_MESA_REGIAO = 0.95;
+    private static final double PROPORCAO_MESA_PEDRA = 20;
 
     private final DoubleBinding bndLarguraDasPedras;
-
     private final DoubleProperty bndLarguraDaMesa;
-    
     private final DoubleBinding bndUmPorCentoLarguraDaMesa;
     private final DoubleBinding bndUmPorCentoAlturaDaMesa;
-
     private final DoubleExpression xMeioDaTela;
     private final DoubleExpression yMeioDaTela;
 
+    private final Rectangle mesa;
     
-    private final HBox paneMao1, paneMao3;
-    private final VBox paneMao2, paneMao4;
-    
-    private final Pane[] maosPanes;
-    
+    private final EnumMap<Pedra,PedraFx> pedras;
     private Chicote chicoteEsquerda;
     private Chicote chicoteDireita;
     
@@ -76,7 +63,7 @@ public class CenarioDeJogo extends Group{
         this.mesa = UtilsFx.retanguloProporcaoFixa(PROPORCAO_ALTURA_LARGURA_MESA);
         this.mesa.setId("mesa");
         
-        bndLarguraDaMesa = mesa.widthProperty();
+        this.bndLarguraDaMesa = mesa.widthProperty();
         
         this.bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
         
@@ -100,38 +87,11 @@ public class CenarioDeJogo extends Group{
         
         
         super.getChildren().add(mesa);
-        
-        
-        this.paneMao1 = new HBox();
-        this.paneMao2 = new VBox();
-        this.paneMao4 = new VBox();
-        this.paneMao3 = new HBox();
 
-        final DoubleBinding bndEspacinho = bndLarguraDasPedras.divide(10);
-        
-        this.paneMao1.spacingProperty().bind(bndEspacinho);
-        this.paneMao2.spacingProperty().bind(bndEspacinho);
-        this.paneMao3.spacingProperty().bind(bndEspacinho);
-        this.paneMao4.spacingProperty().bind(bndEspacinho);
-        
-        this.maosPanes = new Pane[]{this.paneMao1,this.paneMao2,this.paneMao3,this.paneMao4};
-        
-        posicionaNaMesa(this.paneMao1,20,80,Direcao.PRA_BAIXO);
-        this.getChildren().add(this.paneMao1);
-        
-        posicionaNaMesa(this.paneMao2,80,20,Direcao.PRA_DIREITA);
-        this.getChildren().add(this.paneMao2);
-        
-        posicionaNaMesa(this.paneMao3,20,20,Direcao.PRA_BAIXO);
-        this.getChildren().add(this.paneMao3);
-        
-        posicionaNaMesa(this.paneMao4,80,80,Direcao.PRA_DIREITA);
-        this.getChildren().add(this.paneMao4);
-        
         final DoubleExpression metadeDaMesa = bndLarguraDaMesa.divide(2);
 
-        this.xMeioDaTela = mesa.layoutXProperty().add(metadeDaMesa);
-        this.yMeioDaTela = mesa.layoutYProperty().add(metadeDaMesa);
+        this.xMeioDaTela = mesa.layoutXProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras.divide(2));
+        this.yMeioDaTela = mesa.layoutYProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras);
         
         pedras = new EnumMap<>(Pedra.class);
         Arrays.asList(Pedra.values()).forEach((Pedra p) -> {
@@ -140,17 +100,6 @@ public class CenarioDeJogo extends Group{
             pfx.widthProperty().bind(this.bndLarguraDasPedras);
             super.getChildren().add(pfx);
         });
-        
-//        Random r = new Random();
-        //coloca uma pedra no meio
-//        PedraFx pedra1 = new PedraFx(r.nextBoolean() ? Pedra.CARROCA_DE_PIO : Pedra.CARROCA_DE_DUQUE);
-//        PedraFx pedra1 = pedras.get(Pedra.DUQUE_QUINA);
-//        pedra1.posiciona(Direcao.PRA_BAIXO, xMeioDaTela, yMeioDaTela);
-//        
-//        //coloca uma numa ponta
-//        PedraFx pedra2 = pedras.get(Pedra.QUINA_SENA);
-//        posicionaNaMesa(pedra2, 90, 50, Direcao.PRA_BAIXO);
-        
         
         List<Jogada> jogo = new LinkedList<>();
         jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE));           //meio
@@ -191,31 +140,6 @@ public class CenarioDeJogo extends Group{
 
     }
     
-    private void entregaPedra(int jogador, PedraFx pedra){
-        this.maosPanes[jogador].getChildren().add(pedra);
-    }
-    
-    private final void adicionaPedras(){
-
-        this.pedras = new EnumMap(Pedra.class);
-        
-        List<Pedra> pedras = Arrays.asList(Pedra.values());
-        Collections.shuffle(pedras);
-        int i = 0;
-        int p = 0;
-        while (p<=27) {
-            final Pedra pedra = pedras.get(p);
-            PedraFx pedraFx = new PedraFx(pedra);
-            System.out.println("mao " + i + " -> " + pedra);
-            maosPanes[i].getChildren().add(pedraFx);
-            i=++i%4;
-            p++;
-            
-            this.pedras.put(pedra, pedraFx);
-            pedraFx.widthProperty().bind(this.bndLarguraDasPedras);
-        }
-    }
-        
     private void posicionaNaMesa(
             final Node node, 
             final double percentX, 
@@ -262,7 +186,4 @@ public class CenarioDeJogo extends Group{
     private boolean mesaTaVazia() {
         return this.chicoteEsquerda == null;
     }
-
-   
-    
 }
