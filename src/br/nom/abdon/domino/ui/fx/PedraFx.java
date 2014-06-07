@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -16,7 +15,9 @@ import javafx.scene.shape.Rectangle;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import java.util.EnumMap;
 import java.util.Random;
+import java.util.function.BiFunction;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -28,30 +29,41 @@ import javafx.util.Duration;
  */
 public class PedraFx extends Group {
 
-    private final DoubleProperty widthProperty;
-    private final ReadOnlyDoubleProperty heightProperty;
+//    private final DoubleProperty widthProperty;
+//    private final ReadOnlyDoubleProperty heightProperty;
     
     private final Pedra pedra;
     private Direcao direcao;
 
-    private final static Random randomizer = new Random();
+    private final Prototype prototype;
     
-    public PedraFx(Pedra pedra) {
+    private final static Random randomizer = new Random();
+
+    public static EnumMap<Pedra,PedraFx> produzJogoCompleto(DoubleBinding widthBinding){
+        
+        EnumMap<Pedra,PedraFx> mapaPedras = new EnumMap<>(Pedra.class);
+        for (Pedra pedra : Pedra.values()) {
+            PedraFx pfx = new PedraFx(pedra,new Prototype(widthBinding));
+            mapaPedras.put(pedra,pfx);
+        }
+        return mapaPedras;
+    }
+    
+    private PedraFx(Pedra pedra, Prototype prototype) {
         super();
         this.pedra = pedra;
         this.direcao = Direcao.PRA_BAIXO;
         
-        Rectangle retanguloPrincipal = fazRetangulo();
+        this.prototype = prototype;
         
-        this.widthProperty = retanguloPrincipal.widthProperty();
-        this.heightProperty = retanguloPrincipal.heightProperty();
-
+        Rectangle retanguloPrincipal = fazRetangulo();
+        retanguloPrincipal.widthProperty().bind(prototype.widthProperty);
         Line linhaDoMeio = fazLinhaDoMeio();
 
         Group pontinhosDeCima = fazPontinhos(pedra.getPrimeiroNumero());
         
         Group pontinhosDeBaixo = fazPontinhos(pedra.getSegundoNumero());
-        pontinhosDeBaixo.layoutYProperty().bind(this.heightProperty.divide(2));
+        pontinhosDeBaixo.layoutYProperty().bind(prototype.widthProperty);
         
         super.getChildren().addAll(retanguloPrincipal, 
                 linhaDoMeio, 
@@ -67,44 +79,36 @@ public class PedraFx extends Group {
     private Line fazLinhaDoMeio() {
         Line linhaDoMeio = new Line();
         final DoubleProperty propWidthLinha = linhaDoMeio.endXProperty();
-        propWidthLinha.bind(this.heightProperty.multiply(0.4));
+        propWidthLinha.bind(this.prototype.quartoQuintosDaLargura);
         linhaDoMeio.strokeWidthProperty().bind(propWidthLinha.divide(20));
-        linhaDoMeio.layoutXProperty().bind(this.heightProperty.divide(20));
-        linhaDoMeio.layoutYProperty().bind(this.heightProperty.divide(2));
+        linhaDoMeio.layoutXProperty().bind(this.prototype.umVigesimoDaAltura);
+        linhaDoMeio.layoutYProperty().bind(this.prototype.widthProperty);
         linhaDoMeio.getStyleClass().add("linhaDePedra");
         return linhaDoMeio;
     }
 
-    public DoubleProperty widthProperty(){
-        return this.widthProperty;
+    public DoubleExpression widthProperty(){
+        return this.prototype.widthProperty;
     }
 
-    public ReadOnlyDoubleProperty heightProperty(){
-        return this.heightProperty;
+    public DoubleExpression heightExpression(){
+        return this.prototype.heightExpression;
     }
 
     private Group fazPontinhos(final Numero numero) {
         
         final Group grupoDePontinhos = new Group();
         final ObservableList<Node> pontinhos = grupoDePontinhos.getChildren();
-        final DoubleBinding raio = this.heightProperty.divide(18);
 
         final BiConsumer<DoubleExpression, DoubleExpression> colocaPontinho = 
-            (x,y) -> {
-                    Circle pontinho = new Circle();
-                    pontinho.radiusProperty().bind(raio);
-                    pontinho.getStyleClass().add("pontinho");
-                    pontinho.layoutXProperty().bind(x);
-                    pontinho.layoutYProperty().bind(y);
-                    pontinhos.add(pontinho);
-                };
+                (x,y) -> pontinhos.add(prototype.colocaPontinho.apply(x,y));
         
-        final DoubleBinding esquerda, meio, direita;
-        final DoubleBinding primeiraLinha, linhaDoMeio, linhaDeBaixo;
+        final DoubleExpression esquerda, meio, direita;
+        final DoubleExpression primeiraLinha, linhaDoMeio, linhaDeBaixo;
 
-        esquerda = primeiraLinha = this.heightProperty.multiply(1d/2d * 1d/5d);
-        meio = linhaDoMeio = this.heightProperty.multiply(1d/2d * 1d/2d); 
-        direita = linhaDeBaixo = this.heightProperty.multiply(1d/2d * 4d/5d);
+        esquerda = primeiraLinha = this.prototype.umQuintoDaLargura;
+        meio = linhaDoMeio = this.prototype.metadeDaLargura; 
+        direita = linhaDeBaixo = this.prototype.quartoQuintosDaLargura;
 
         final int numeroDePontos = numero.getNumeroDePontos();
         
@@ -192,4 +196,43 @@ public class PedraFx extends Group {
         );
         animation.play();
     }
+    
+    
+    static class Prototype {
+        
+        
+        final DoubleBinding widthProperty;
+        final DoubleExpression heightExpression;
+        final DoubleExpression quartoQuintosDaLargura;
+        final DoubleExpression umVigesimoDaAltura;
+        final DoubleExpression nonaParteDaLargura;
+        final DoubleExpression umQuintoDaLargura;
+        final DoubleExpression metadeDaLargura;
+        
+        final BiFunction<DoubleExpression, DoubleExpression, Circle> colocaPontinho =
+            (x,y) -> {
+                    Circle pontinho = new Circle();
+                    pontinho.radiusProperty().bind(this.nonaParteDaLargura);
+                    pontinho.getStyleClass().add("pontinho");
+                    pontinho.layoutXProperty().bind(x);
+                    pontinho.layoutYProperty().bind(y);
+                    return pontinho;
+                };
+        
+        
+        public Prototype(DoubleBinding widthProperty) {
+            this.widthProperty = widthProperty;
+            this.heightExpression = widthProperty.multiply(2);
+            this.quartoQuintosDaLargura = widthProperty.multiply(0.8);
+            this.umVigesimoDaAltura = widthProperty.divide(10);
+            this.nonaParteDaLargura =  widthProperty.divide(9);
+            
+            this.umQuintoDaLargura = this.widthProperty.multiply(1d/5d);
+            this.metadeDaLargura = this.widthProperty.divide(2);
+        }
+    }
 }
+    
+    
+    
+    

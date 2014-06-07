@@ -65,7 +65,7 @@ class Chicote {
         final Direcao direcaoPedraFx;
         
         if(this.direcaoFileira.ehHorizontal()){
-            layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty().multiply(1/4));
+            layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(1/4));
             if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
                 
                 layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.widthProperty().multiply(1.5));
@@ -84,17 +84,17 @@ class Chicote {
                 
             }
         } else { // this.novaPedraFx.getDirecao().ehHorizontal()
-            layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightProperty().multiply(1/4));
+            layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression().multiply(1/4));
             if(this.direcaoFileira == Direcao.PRA_CIMA){
                 
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightProperty().multiply(0.75));
+                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression().multiply(0.75));
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
                         ? Direcao.PRA_CIMA
                         : Direcao.PRA_BAIXO;
             } else { //direcaoFileira == Direcao.PRA_BAIXO
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty().multiply(0.75));
+                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(0.75));
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
@@ -116,7 +116,7 @@ class Chicote {
             layouyY = this.pedraFx.layoutYProperty();
             
             if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
-                layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.heightProperty());
+                layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.heightExpression());
                 
                 if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
                     //segundo numero exposto;
@@ -131,7 +131,7 @@ class Chicote {
                 }
                 
             } else { //this.direcaoFileira == Direcao.PRA_DIREITA
-                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightProperty());
+                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression());
 
                 if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
                     //primeiro numero exposto;
@@ -151,7 +151,7 @@ class Chicote {
             layouyX = this.pedraFx.layoutXProperty();
             
             if(this.direcaoFileira == Direcao.PRA_CIMA){
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightProperty());
+                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression());
                 if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
                     //segundo numero exposto;
                     direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero() 
@@ -164,7 +164,7 @@ class Chicote {
                             : Direcao.PRA_BAIXO; 
                 }
             } else {//this.direcaoFileira == Direcao.PRA_BAIXO
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty());
+                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression());
                 if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
                     //primeiro numero exposto;
                     direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
@@ -199,9 +199,9 @@ class Chicote {
             layouyX = this.pedraFx.layoutXProperty();
             direcaoPedraFx = Direcao.PRA_ESQUERDA;
             if(this.direcaoFileira == Direcao.PRA_BAIXO){
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightProperty().multiply(3/4));
+                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression().multiply(3/4));
             } else {
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty().multiply(1.5));
+                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(1.5));
             }
         }
         

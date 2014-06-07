@@ -93,13 +93,8 @@ public class CenarioDeJogo extends Group{
         this.xMeioDaTela = mesa.layoutXProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras.divide(2));
         this.yMeioDaTela = mesa.layoutYProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras);
         
-        pedras = new EnumMap<>(Pedra.class);
-        Arrays.asList(Pedra.values()).forEach((Pedra p) -> {
-            PedraFx pfx = new PedraFx(p);
-            pedras.put(p,pfx);
-            pfx.widthProperty().bind(this.bndLarguraDasPedras);
-            super.getChildren().add(pfx);
-        });
+        pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
+        this.getChildren().addAll(pedras.values());
         
         List<Jogada> jogo = new LinkedList<>();
         jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE));           //meio

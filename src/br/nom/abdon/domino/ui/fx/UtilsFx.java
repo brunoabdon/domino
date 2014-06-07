@@ -39,27 +39,7 @@ public class UtilsFx {
         return rectangle;
         
     }
-    
-    public static final void posiciona(
-            Rectangle mesa, 
-            PedraFx pedra, 
-            double xPercent, double yPercent){
-        
-        posiciona(mesa, pedra, pedra.widthProperty(), pedra.heightProperty(), xPercent,yPercent);
-    }
 
-    
-    
-    public static final void posiciona(
-            Rectangle referencia, 
-            Node node, 
-            ReadOnlyDoubleProperty nodeWidhtProp,
-            ReadOnlyDoubleProperty nodeHeightProp,
-            double xPercent, double yPercent){
-
-
-    }
-    
     public static void centraliza(Region externo, Rectangle interno) {
         centraliza(
                 externo.widthProperty(),
