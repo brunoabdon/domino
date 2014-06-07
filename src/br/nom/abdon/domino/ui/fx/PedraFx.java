@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import java.util.Random;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -30,15 +31,16 @@ public class PedraFx extends Group {
     private final DoubleProperty widthProperty;
     private final ReadOnlyDoubleProperty heightProperty;
     
-    private final Group grupoTudo;
-        
     private final Pedra pedra;
     private Direcao direcao;
+
+    private final static Random randomizer = new Random();
     
     public PedraFx(Pedra pedra) {
         super();
         this.pedra = pedra;
         this.direcao = Direcao.PRA_BAIXO;
+        
         Rectangle retanguloPrincipal = fazRetangulo();
         
         this.widthProperty = retanguloPrincipal.widthProperty();
@@ -51,22 +53,11 @@ public class PedraFx extends Group {
         Group pontinhosDeBaixo = fazPontinhos(pedra.getSegundoNumero());
         pontinhosDeBaixo.layoutYProperty().bind(this.heightProperty.divide(2));
         
-//        this.grupoTudo = new Group(
-//                retanguloPrincipal, 
-//                linhaDoMeio, 
-//                pontinhosDeCima, 
-//                pontinhosDeBaixo);
-        
-        
-//        super.getChildren().add(grupoTudo);
-        
         super.getChildren().addAll(retanguloPrincipal, 
                 linhaDoMeio, 
                 pontinhosDeCima, 
                 pontinhosDeBaixo)
         ;
-        
-        this.grupoTudo = this;
         
         this.setId(pedra.name());        
         this.getStyleClass().add("pedra");
@@ -151,7 +142,7 @@ public class PedraFx extends Group {
     
     public void setDirecao(Direcao direcao){
         this.direcao = direcao;
-        this.grupoTudo.setRotate(direcao.getGraus()); //criar um bind depois...
+        this.setRotate(direcao.getGraus()); //criar um bind depois...
     }
 
     public Pedra getPedra() {
@@ -162,10 +153,6 @@ public class PedraFx extends Group {
         return this.direcao;
     }
 
-    public DoubleProperty innerRotateProperty(){
-        return this.grupoTudo.rotateProperty();
-    }
-    
     public void posiciona(
             Direcao direcao, 
             ObservableDoubleValue layoutX, 
@@ -184,10 +171,13 @@ public class PedraFx extends Group {
         TranslateTransition translation = new TranslateTransition(tempo);
         translation.setByX(byX);
         translation.setToY(byY);
-
         
         RotateTransition rotation = new RotateTransition(tempo);
-        rotation.setByAngle(direcao.getGraus());
+        double graus = direcao.getGraus();
+        if(randomizer.nextBoolean()){
+            graus -= 360;
+        }
+        rotation.setByAngle(graus);
         
         ParallelTransition animation = new ParallelTransition(translation,rotation);
         animation.setNode(this);
@@ -201,6 +191,5 @@ public class PedraFx extends Group {
                 }
         );
         animation.play();
-        
     }
 }
