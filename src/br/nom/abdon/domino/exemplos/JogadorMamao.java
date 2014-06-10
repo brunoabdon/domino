@@ -22,13 +22,14 @@ public class JogadorMamao implements Jogador {
 
     private List<Pedra> mao;
 
-    boolean perguntouSeEuQueriaJogar = false;
+    boolean perguntouSeEuQueriaJogar;
 
     @Override
     public void recebeMao(Pedra[] mao) {
             //guardar como uma List
             this.mao = new ArrayList<>(6);
             Collections.addAll(this.mao, mao);
+            perguntouSeEuQueriaJogar = false;
     }
 
     @Override
