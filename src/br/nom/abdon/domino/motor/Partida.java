@@ -76,6 +76,9 @@ class Partida {
                 throw new BugDeJogadorException(
                         "Qual é a jogada? Nenhuma?", jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
+                
+                this.eventListener.jogadorTocou(nomeJogadorDaVez);
+                
                 //tocou mesmo?
                 boolean tinhaPedraPraJogar = 
                     mesa.taVazia()
@@ -90,8 +93,6 @@ class Partida {
                 }
 
                 trancou = ++numeroDeToquesSeguidos == 4;
-
-                this.eventListener.jogadorTocou(nomeJogadorDaVez);
 
             } else {
                 //se livrando logo do objeto Jogada, que veio do jogador.
