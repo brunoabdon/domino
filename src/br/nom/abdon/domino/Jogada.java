@@ -48,7 +48,11 @@ public final class Jogada {
         this.lado = lado;
     }
 
-    private Jogada() {}
+    /**
+     * Constrói uma jogada vazia, ainda inválida. Deve ter ao menos a {@link 
+     * #setPedra(br.nom.abdon.domino.Pedra) Pedra setada} antes de ser usada.
+     */
+    public Jogada() {}
 
     public Pedra getPedra() {
         return pedra;
