@@ -19,14 +19,17 @@ class Chicote {
     private PedraFx pedraFx;
     private Direcao direcaoFileira;
 
-    private final DoubleExpression larguraMesa; //ela é quadrada. ponto.
+//    private final DoubleExpression larguraMesa; //ela é quadrada. ponto.
+    private final DoubleExpression endXMesa;
+    private final DoubleExpression endYMesa;
     
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,
             DoubleExpression larguraMesa,
             DoubleExpression offsetXMesa,
             DoubleExpression offsetYMesa){
-
+                
+        
         final DoubleExpression larguraPedras = primeiraPedraFx.widthProperty();
         final DoubleBinding metadeDaMesa = larguraMesa.divide(2);
         
@@ -42,8 +45,8 @@ class Chicote {
         primeiraPedraFx.posiciona(direcaoPedra, xMeioDaMesa,yMeioDaMesa);
 
         return new Chicote[] {
-            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, larguraMesa),
-            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, larguraMesa),
+            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, larguraMesa.add(offsetXMesa), larguraMesa.add(offsetYMesa)),
+            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, larguraMesa.add(offsetXMesa), larguraMesa.add(offsetYMesa))
             
         };
     }
@@ -51,11 +54,13 @@ class Chicote {
     public Chicote(
             PedraFx primeiraPedra, 
             Direcao direcaoFileira, 
-            DoubleExpression larguraDaMesa) {
+            final DoubleExpression endXMesa,
+            final DoubleExpression endYMesa) {
         
         this.pedraFx = primeiraPedra;
         this.direcaoFileira = direcaoFileira;
-        this.larguraMesa = larguraDaMesa;
+        this.endXMesa = endXMesa;
+        this.endYMesa = endYMesa;
     }
     
     public void encaixa(PedraFx novaPedraFx){
@@ -226,11 +231,37 @@ class Chicote {
     }
 
     private boolean naoCabe() {
+        boolean naoCabe;
+        if(direcaoFileira == Direcao.PRA_DIREITA){
+            final double maxX = this.pedraFx.boundsInParentProperty().get().getMaxX();
+//            naoCabe = maxX + this.larguraMesa.getValue();
+            System.out.println("cabe? ");
+            System.out.println("max x = " + maxX);
+            System.out.println("fim da mesa  = " + endXMesa.get());
+            System.out.println("nao sei se cabe");
+            
+        }
+        
         return false;
     }
 
     private void fazCurva() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.direcaoFileira = 
+                
+                direcaoFileira == 
+                
+                Direcao.PRA_ESQUERDA ? Direcao.PRA_CIMA    
+		
+                : direcaoFileira == 
+                
+                Direcao.PRA_CIMA ? Direcao.PRA_DIREITA 
+                
+                : direcaoFileira == 
+                
+                Direcao.PRA_DIREITA ?  Direcao.PRA_BAIXO   
+		
+                : Direcao.PRA_ESQUERDA;
+                
     }
 
     
