@@ -99,6 +99,8 @@ class Partida {
                 final Lado lado = jogada.getLado();
                 pedra = jogada.getPedra();
 
+                this.eventListener.jogadorJogou(cadeira,lado,pedra);
+                
                 validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
 
                 maoDoJogadorDaVez.remove(pedra);
@@ -108,8 +110,6 @@ class Partida {
                 numeroDeToquesSeguidos = 0;
 
                 alguemBateu = maoDoJogadorDaVez.isEmpty();
-
-                this.eventListener.jogadorJogou(cadeira,lado,pedra);
             }
 
             vez = avanca(vez);
