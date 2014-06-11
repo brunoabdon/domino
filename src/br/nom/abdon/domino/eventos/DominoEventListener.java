@@ -52,12 +52,12 @@ public interface DominoEventListener {
      * nao {@link Jogada#TOQUE tocou}). (Se ele tiver batido, além desse evento, 
      * também ocorrerá {@link #jogadorBateu(String, Vitoria)}
      * 
-     * @param nomeDoJogador quem jogo
+     * @param jogador quem jogou (identificado pelo número da cadeira)
      * @param lado onde jogou (pode ter sido nulo)
      * @param pedra o que jogou
      */
     public default void jogadorJogou(
-            String nomeDoJogador, 
+            int jogador, 
             Lado lado, 
             Pedra pedra){
 
@@ -65,9 +65,9 @@ public interface DominoEventListener {
 
     /**
      * Um {@link Jogador} {@link Jogada#TOQUE tocou})
-     * @param nomeDoJogador quem foi
+     * @param jogador  quem foi (identificado pelo número da cadeira)
      */
-    public default void jogadorTocou(String nomeDoJogador){
+    public default void jogadorTocou(int jogador){
 
     }
 
@@ -76,18 +76,19 @@ public interface DominoEventListener {
      * porque um dos {@link Jogador}es tinha 5 {@link Pedra#isCarroca() 
      * Carroças} na mão. (Ninguém marca ponto quando isso acontece).
      * 
-     * @param nomeDoJogador O jogador que tinha cinco pedras na mão.
+     * @param jogador  O jogador (identificado pelo número da cadeira) que tinha 
+     * cinco pedras na mão.
      */
-    public default void partidaVoltou(String nomeDoJogador){
+    public default void partidaVoltou(int jogador){
         
     }
     
     /**
      * Um {@link Jogador} bateu e a partida acabou. O jogo ainda pode continuar.
-     * @param quemFoi Quem bateu 
+     * @param quemFoi Quem bateu (identificado pelo número da cadeira)
      * @param tipoDeVitoria Como foi a batida.
      */
-    public default void jogadorBateu(String quemFoi, Vitoria tipoDeVitoria){
+    public default void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria){
 
     }
 

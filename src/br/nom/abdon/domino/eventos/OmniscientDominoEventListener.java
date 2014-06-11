@@ -18,13 +18,14 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * Avisa que, no início de uma partida, um derterminado {@link Jogador}
      * recebeu dadas {@link Pedra}s.
      * 
-     * @param quemFoi O nome do jogador em questão.
+     * @param quemFoi O jogador em questão (identificado pelo número da 
+     * cadeira).
      * 
      * @param pedras Uma coleção <em>não modificável</em> das 6 pedras que o 
      * jogador recebeu.
      */
     public default void jogadorRecebeuPedras(
-            final String quemFoi, Collection<Pedra> pedras){
+            final int quemFoi, Collection<Pedra> pedras){
     }
     
     /**

@@ -17,8 +17,7 @@ import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
  */
 public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
-    private String nomeDoJogador1, nomeDoJogador2;
-    private String nomeDoJogador3, nomeDoJogador4; 
+    private String[] nomeDosJogadores; 
 
     private final PrintStream printStream;
 
@@ -47,8 +46,8 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogadorRecebeuPedras(String quemFoi, Collection<Pedra> pedras) {
-        this.printStream.println("Mão de " + quemFoi + ":");
+    public void jogadorRecebeuPedras(int quemFoi, Collection<Pedra> pedras) {
+        this.printStream.println("Mão de " + nomeDosJogadores[quemFoi-1] + ":");
         pedras.stream().forEach(
                 (pedra) -> printStream.println(formataPedra(pedra, 20)));
 
@@ -69,9 +68,11 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override 
-    public void jogadorJogou(String nomeDoJogador, Lado lado, Pedra pedra) {
+    public void jogadorJogou(int jogador, Lado lado, Pedra pedra) {
 
-        StringBuilder sb = new StringBuilder(nomeDoJogador).append(":");
+        StringBuilder sb = 
+                new StringBuilder(nomeDosJogadores[jogador-1])
+                .append(":");
         sb.append(formataPedra(pedra, baseDoPaddingDePedra-sb.length()));
 
         if(lado != null){
@@ -87,11 +88,12 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogadorTocou(String nomeDoJogador){
-            this.printStream.print(nomeDoJogador + ":");
-            int leftPad = baseDoPaddingDeTocToc-nomeDoJogador.length();
-            String strToc = String.format("%1$" + leftPad + "s","\"toc toc\"");
-            this.printStream.println(strToc);
+    public void jogadorTocou(int jogador){
+        String nomeDoJogador = nomeDosJogadores[jogador-1];
+        this.printStream.print(nomeDoJogador + ":");
+        int leftPad = baseDoPaddingDeTocToc-nomeDoJogador.length();
+        String strToc = String.format("%1$" + leftPad + "s","\"toc toc\"");
+        this.printStream.println(strToc);
     }
 
     @Override
@@ -102,10 +104,12 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             this.printStream.println("++++++++++++++++++++++++++++++++");    
             this.printStream.println("Comecou o jogo");
 
-            this.nomeDoJogador1 = nomeDoJogador1;
-            this.nomeDoJogador2 = nomeDoJogador2;
-            this.nomeDoJogador3 = nomeDoJogador3;
-            this.nomeDoJogador4 = nomeDoJogador4;
+            this.nomeDosJogadores = 
+                new String[]{
+                    nomeDoJogador1,
+                    nomeDoJogador2,
+                    nomeDoJogador3,
+                    nomeDoJogador4};
 
             imprimePlacar(0,0);
 
@@ -122,13 +126,15 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     private void imprimePlacar(int placarDupla1, int placarDupla2) {
         this.printStream.println(
-                nomeDoJogador1 + " e " + nomeDoJogador3 
+                nomeDosJogadores[0] + " e " + nomeDosJogadores[2]
                 + " " + placarDupla1 + " x " + placarDupla2 + " " 
-                + nomeDoJogador2 + " e " + nomeDoJogador4);
+                + nomeDosJogadores[1] + " e " + nomeDosJogadores[3]);
     }
 
     @Override
-    public void jogadorBateu(String nomeDoJogador, Vitoria tipoDeVitoria) {
+    public void jogadorBateu(int jogador, Vitoria tipoDeVitoria) {
+        String nomeDoJogador = nomeDosJogadores[jogador-1];
+        
         if(tipoDeVitoria == Vitoria.CONTAGEM_DE_PONTOS){
             this.printStream.print(
                     "\nTravou. " + nomeDoJogador + " ganhou pela contagem.");
@@ -152,9 +158,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
     
     @Override
-    public void partidaVoltou(String nomeDoJogador) {
+    public void partidaVoltou(int jogador) {
         this.printStream.println("Não vai ter partida! "
-                + nomeDoJogador 
+                + nomeDosJogadores[jogador-1] 
                 + " tem 5 carroças na mão."
                 + "\nVoltem as pedras...");   
     }
