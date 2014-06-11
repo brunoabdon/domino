@@ -105,7 +105,10 @@ class Partida {
 
                 maoDoJogadorDaVez.remove(pedra);
 
-                this.mesa.coloca(pedra, lado);
+                boolean colocou = this.mesa.coloca(pedra, lado);
+                if(!colocou){
+                    throw new PedraBebaException(jogadorDaVez, pedra);
+                }
 
                 numeroDeToquesSeguidos = 0;
 

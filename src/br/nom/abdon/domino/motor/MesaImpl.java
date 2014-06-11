@@ -55,11 +55,16 @@ class MesaImpl implements Mesa{
      * 
      * @param pedra A pedra que é pra colocar
      * @param lado Onde botar ela.
-     * @throws PedraBebaException Se não puder colocar essa pedra nesse lugar.
+     * @return <code>true</code> se a pedra foi realmente colocada, ou 
+     * <code>false</code> caso fosse uma pedra bêba.
      */
-    void coloca(final Pedra pedra, Lado lado) throws PedraBebaException{
+    boolean coloca(final Pedra pedra, Lado lado) {
 
+        boolean podeColocar;
+        
         if(taVazia()){
+            podeColocar = true;
+            
             this.listaDePedras.addFirst(pedra);
             this.numeroEsquerda = pedra.getPrimeiroNumero();
             this.numeroDireita = pedra.getSegundoNumero();
@@ -70,18 +75,19 @@ class MesaImpl implements Mesa{
                     ? Lado.ESQUERDO
                     : lado;
 
-            if(!podeJogar(pedra, ladoQueVaiColocar)){
-                    throw new PedraBebaException(pedra);
-            }
-
-            if(ladoQueVaiColocar == Lado.ESQUERDO){
-                    listaDePedras.addFirst(pedra);
-                    numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
-            } else {
-                    listaDePedras.addLast(pedra);
-                    numeroDireita = novaCabeca(numeroDireita, pedra);
+            podeColocar = podeJogar(pedra, ladoQueVaiColocar);
+            
+            if(podeColocar){
+                if(ladoQueVaiColocar == Lado.ESQUERDO){
+                        listaDePedras.addFirst(pedra);
+                        numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
+                } else {
+                        listaDePedras.addLast(pedra);
+                        numeroDireita = novaCabeca(numeroDireita, pedra);
+                }
             }
         }
+        return podeColocar;
     }
 
     private Numero novaCabeca(final Numero cabecaAtual, final Pedra pedraQueFoiJogada){
