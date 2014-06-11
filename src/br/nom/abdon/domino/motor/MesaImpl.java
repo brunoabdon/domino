@@ -44,7 +44,7 @@ class MesaImpl implements Mesa{
 
     @Override
     public int quantasPedrasOJogadoresTem(int qualJogador) {
-        if(qualJogador < 1 || qualJogador >4 ) 
+        if(qualJogador < 1 || qualJogador > 4 ) 
             throw new IllegalArgumentException("Dominó se joga com 4.");
         return this.maos[qualJogador-1].size();
     }

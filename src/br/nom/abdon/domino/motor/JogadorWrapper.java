@@ -7,7 +7,6 @@ import br.nom.abdon.domino.Pedra;
 
 public final class JogadorWrapper implements Jogador {
 
-    
     private final String nome;
     private int cadeira;
 
@@ -24,7 +23,7 @@ public final class JogadorWrapper implements Jogador {
 
     @Override
     public void recebeMao(Pedra[] pedras) {
-            wrapped.recebeMao(pedras);
+        wrapped.recebeMao(pedras);
     }
 
     @Override
@@ -56,12 +55,11 @@ public final class JogadorWrapper implements Jogador {
     }
 
     public Jogador getWrapped() {
-            return wrapped;
+        return wrapped;
     }
 
     @Override
     public String toString() {
-            return this.getNome() + " [" + wrapped.getClass() + "]";
+        return this.getNome() + " [" + wrapped.getClass() + "]";
     }
-
 }
