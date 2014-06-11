@@ -66,7 +66,7 @@ class Partida {
         while(!(alguemBateu || trancou)){
 
             jogadorDaVez = jogadorDaVez(vez);
-            final String nomeJogadorDaVez = jogadorDaVez.getNome();
+            final int cadeira = jogadorDaVez.getCadeira();
 
             Collection<Pedra> maoDoJogadorDaVez = maos[vez];
 
@@ -77,7 +77,7 @@ class Partida {
                         "Qual é a jogada? Nenhuma?", jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
                 
-                this.eventListener.jogadorTocou(nomeJogadorDaVez);
+                this.eventListener.jogadorTocou(cadeira);
                 
                 //tocou mesmo?
                 boolean tinhaPedraPraJogar = 
@@ -109,7 +109,7 @@ class Partida {
 
                 alguemBateu = maoDoJogadorDaVez.isEmpty();
 
-                this.eventListener.jogadorJogou(nomeJogadorDaVez,lado,pedra);
+                this.eventListener.jogadorJogou(cadeira,lado,pedra);
             }
 
             vez = avanca(vez);
@@ -247,7 +247,7 @@ class Partida {
         jogador.recebeMao(mao.toArray(new Pedra[6]));
         
         this.eventListener.jogadorRecebeuPedras(
-                jogador.getNome(),
+                jogador.getCadeira(),
                 Collections.unmodifiableCollection(mao));
     }
 
@@ -294,7 +294,7 @@ class Partida {
                     final Pedra pedra = primeiraJogada.getPedra();
 
                     this.eventListener.jogadorJogou(
-                            jogadorQueComeca.getNome(),
+                            jogadorQueComeca.getCadeira(),
                             null,
                             pedra);
                     
@@ -341,7 +341,7 @@ class Partida {
                 final JogadorWrapper jogador = jogadorDaVez(i);
                 if(quantasNaoCarrocas == 1){
                     //partida voltou! 5 carrocas na mao!
-                    this.eventListener.partidaVoltou(jogador.getNome());
+                    this.eventListener.partidaVoltou(jogador.getCadeira());
                     resultado = new ResultadoPartidaVolta(jogador);
 
                 } else if (quantasNaoCarrocas == 0){
@@ -366,7 +366,7 @@ class Partida {
     private ResultadoPartida batida(
             JogadorWrapper vencedor, Vitoria tipoDeBatida) {
         
-        this.eventListener.jogadorBateu(vencedor.getNome(),tipoDeBatida);
+        this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }
 }
