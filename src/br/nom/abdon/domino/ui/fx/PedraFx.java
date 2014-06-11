@@ -1,8 +1,13 @@
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.EnumMap;
+import java.util.Random;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
-import javafx.beans.binding.DoubleBinding;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ObservableDoubleValue;
@@ -12,16 +17,10 @@ import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
-import java.util.EnumMap;
-import java.util.Random;
-import java.util.function.BiFunction;
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
-import javafx.util.Duration;
 
 /**
  *
@@ -39,11 +38,13 @@ public class PedraFx extends Group {
     
     private final static Random randomizer = new Random();
 
-    public static EnumMap<Pedra,PedraFx> produzJogoCompleto(DoubleBinding widthBinding){
+    public static EnumMap<Pedra,PedraFx> produzJogoCompleto(DoubleExpression widthBinding){
+        
+        final Prototype prototype = new Prototype(widthBinding);
         
         EnumMap<Pedra,PedraFx> mapaPedras = new EnumMap<>(Pedra.class);
         for (Pedra pedra : Pedra.values()) {
-            PedraFx pfx = new PedraFx(pedra,new Prototype(widthBinding));
+            PedraFx pfx = new PedraFx(pedra, prototype);
             mapaPedras.put(pedra,pfx);
         }
         return mapaPedras;
@@ -68,8 +69,7 @@ public class PedraFx extends Group {
         super.getChildren().addAll(retanguloPrincipal, 
                 linhaDoMeio, 
                 pontinhosDeCima, 
-                pontinhosDeBaixo)
-        ;
+                pontinhosDeBaixo);
         
         this.setId(pedra.name());        
         this.getStyleClass().add("pedra");
@@ -200,8 +200,7 @@ public class PedraFx extends Group {
     
     static class Prototype {
         
-        
-        final DoubleBinding widthProperty;
+        final DoubleExpression widthProperty;
         final DoubleExpression heightExpression;
         final DoubleExpression quartoQuintosDaLargura;
         final DoubleExpression umVigesimoDaAltura;
@@ -220,7 +219,7 @@ public class PedraFx extends Group {
                 };
         
         
-        public Prototype(DoubleBinding widthProperty) {
+        public Prototype(DoubleExpression widthProperty) {
             this.widthProperty = widthProperty;
             this.heightExpression = widthProperty.multiply(2);
             this.quartoQuintosDaLargura = widthProperty.multiply(0.8);

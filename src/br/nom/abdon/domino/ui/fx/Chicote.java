@@ -6,10 +6,8 @@
 
 package br.nom.abdon.domino.ui.fx;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
-import javafx.beans.binding.NumberBinding;
 import javafx.beans.value.ObservableDoubleValue;
 
 /**
@@ -21,31 +19,50 @@ class Chicote {
     private PedraFx pedraFx;
     private Direcao direcaoFileira;
 
+    private final DoubleExpression larguraMesa; //ela é quadrada. ponto.
     
     public static Chicote[] inicia(
-            PedraFx primeiraPedraFx, 
-            ObservableDoubleValue layoutX, 
-            ObservableDoubleValue layoutY){
+            PedraFx primeiraPedraFx,
+            DoubleExpression larguraMesa,
+            DoubleExpression offsetXMesa,
+            DoubleExpression offsetYMesa){
+
+        final DoubleExpression larguraPedras = primeiraPedraFx.widthProperty();
+        final DoubleBinding metadeDaMesa = larguraMesa.divide(2);
+        
+        ObservableDoubleValue xMeioDaMesa = 
+                offsetXMesa.add(metadeDaMesa).subtract(larguraPedras.divide(2));
+        ObservableDoubleValue yMeioDaMesa = 
+                offsetYMesa.add(metadeDaMesa).subtract(larguraPedras);
         
         Direcao direcaoPedra = primeiraPedraFx.getPedra().isCarroca()
             ? Direcao.PRA_BAIXO
             : Direcao.PRA_ESQUERDA;
 
-        primeiraPedraFx.posiciona(direcaoPedra, layoutX,layoutY);
+        primeiraPedraFx.posiciona(direcaoPedra, xMeioDaMesa,yMeioDaMesa);
 
         return new Chicote[] {
-            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA),
-            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA),
+            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, larguraMesa),
+            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, larguraMesa),
             
         };
     }
     
-    public Chicote(PedraFx primeiraPedra, Direcao direcaoFileira) {
+    public Chicote(
+            PedraFx primeiraPedra, 
+            Direcao direcaoFileira, 
+            DoubleExpression larguraDaMesa) {
+        
         this.pedraFx = primeiraPedra;
         this.direcaoFileira = direcaoFileira;
+        this.larguraMesa = larguraDaMesa;
     }
     
     public void encaixa(PedraFx novaPedraFx){
+        
+        if(naoCabe()){
+            fazCurva();
+        }
         
         if(this.pedraFx.getPedra().isCarroca()){
             encaixaNaCarroca(novaPedraFx);
@@ -206,6 +223,14 @@ class Chicote {
         }
         
         novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
+    }
+
+    private boolean naoCabe() {
+        return false;
+    }
+
+    private void fazCurva() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

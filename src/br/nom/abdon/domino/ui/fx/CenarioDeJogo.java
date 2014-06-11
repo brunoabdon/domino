@@ -1,19 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.nom.abdon.domino.ui.fx;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -22,7 +14,6 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.Node;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Lado;
@@ -39,12 +30,8 @@ public class CenarioDeJogo extends Group{
     private static final double PROPORCAO_MESA_REGIAO = 0.95;
     private static final double PROPORCAO_MESA_PEDRA = 20;
 
-    private final DoubleBinding bndLarguraDasPedras;
-    private final DoubleProperty bndLarguraDaMesa;
-    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
-    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
-    private final DoubleExpression xMeioDaTela;
-    private final DoubleExpression yMeioDaTela;
+//    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
+//    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
 
     private final Rectangle mesa;
     
@@ -55,7 +42,6 @@ public class CenarioDeJogo extends Group{
     public CenarioDeJogo() {
         this(PROPORCAO_MESA_REGIAO);
     }
-
     
     public CenarioDeJogo(double proporcao) {
         super();
@@ -63,12 +49,12 @@ public class CenarioDeJogo extends Group{
         this.mesa = UtilsFx.retanguloProporcaoFixa(PROPORCAO_ALTURA_LARGURA_MESA);
         this.mesa.setId("mesa");
         
-        this.bndLarguraDaMesa = mesa.widthProperty();
+        final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
         
-        this.bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
+        final DoubleExpression bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
         
-        this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
-        this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
+//        this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
+//        this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
 
         this.parentProperty().addListener((ChangeListener<Parent>)
             (parentProp, oldparent, newParent) -> {
@@ -88,11 +74,6 @@ public class CenarioDeJogo extends Group{
         
         super.getChildren().add(mesa);
 
-        final DoubleExpression metadeDaMesa = bndLarguraDaMesa.divide(2);
-
-        this.xMeioDaTela = mesa.layoutXProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras.divide(2));
-        this.yMeioDaTela = mesa.layoutYProperty().add(metadeDaMesa).subtract(bndLarguraDasPedras);
-        
         pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
         this.getChildren().addAll(pedras.values());
         
@@ -120,42 +101,28 @@ public class CenarioDeJogo extends Group{
                     jogaPedra(jogada.getPedra(), jogada.getLado());
                 }
         );
-        
-        
-//        Text msg = new Text();
-//        msg.textProperty().bind(Bindings.concat("Rotate: ",pedra2.rotateProperty()));
-//        posicionaNaMesa(msg, 10, 30, Direcao.PRA_BAIXO);
-//        this.getChildren().add(msg);        
-//        Text msg2 = new Text();
-//        msg2.textProperty().bind(Bindings.concat("InnerRotate: ",pedra2.innerRotateProperty()));
-//        posicionaNaMesa(msg2, 10, 33, Direcao.PRA_BAIXO);
-//        this.getChildren().add(msg2);        
-
-//        UtilsFx.apontaProAlvo(pedra1,mesa,this.getChildren());
-//        UtilsFx.apontaProAlvo(pedra2,mesa,this.getChildren());
-
     }
     
-    private void posicionaNaMesa(
-            final Node node, 
-            final double percentX, 
-            final double percentY,
-            Direcao d) {
-        
-        node.layoutXProperty().unbind();
-        node.layoutYProperty().unbind();
-        
-        node.setRotate(d.getGraus());
-        
-        DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(percentX);
-        DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(percentY);
-        
-        final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
-        final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
-        
-        node.layoutXProperty().bind(xNaTela);
-        node.layoutYProperty().bind(yNaTela);
-    }
+//    private void posicionaNaMesa(
+//            final Node node, 
+//            final double percentX, 
+//            final double percentY,
+//            Direcao d) {
+//        
+//        node.layoutXProperty().unbind();
+//        node.layoutYProperty().unbind();
+//        
+//        node.setRotate(d.getGraus());
+//        
+//        DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(percentX);
+//        DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(percentY);
+//        
+//        final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
+//        final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
+//        
+//        node.layoutXProperty().bind(xNaTela);
+//        node.layoutYProperty().bind(yNaTela);
+//    }
     
     
     public void jogaPedra(Pedra pedra, Lado lado){    
@@ -165,7 +132,11 @@ public class CenarioDeJogo extends Group{
         if(mesaTaVazia()){
 
             Chicote[] chicotes = 
-                Chicote.inicia(pedraFx, xMeioDaTela, yMeioDaTela);
+                Chicote.inicia(pedraFx, 
+                        this.mesa.widthProperty(), 
+                        this.mesa.layoutXProperty(),
+                        this.mesa.layoutYProperty());
+                        
 
             this.chicoteEsquerda = chicotes[0];
             this.chicoteDireita = chicotes[1];
