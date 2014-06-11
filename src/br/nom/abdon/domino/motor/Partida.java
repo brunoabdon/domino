@@ -24,7 +24,7 @@ class Partida {
 
     private final OmniscientDominoEventListener eventListener;
 
-    public Partida(
+    Partida(
         Dupla dupla1, Dupla dupla2, 
         OmniscientDominoEventListener eventListener) {
 
@@ -55,6 +55,7 @@ class Partida {
         boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
 
         int vez;
+        
         if(ehPrimeiraRodada){
             vez = primeiraJogada();
         } else {
@@ -66,6 +67,7 @@ class Partida {
         while(!(alguemBateu || trancou)){
 
             jogadorDaVez = jogadorDaVez(vez);
+            
             final int cadeira = jogadorDaVez.getCadeira();
 
             Collection<Pedra> maoDoJogadorDaVez = maos[vez];
@@ -105,8 +107,8 @@ class Partida {
 
                 maoDoJogadorDaVez.remove(pedra);
 
-                boolean colocou = this.mesa.coloca(pedra, lado);
-                if(!colocou){
+                boolean colocouMesmo = this.mesa.coloca(pedra, lado);
+                if(!colocouMesmo){
                     throw new PedraBebaException(jogadorDaVez, pedra);
                 }
 
