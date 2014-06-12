@@ -18,11 +18,8 @@ class Chicote {
 
     private PedraFx pedraFx;
     private Direcao direcaoFileira;
+    private final PrototipoMesa prototipoMesa;
 
-//    private final DoubleExpression larguraMesa; //ela é quadrada. ponto.
-    private final DoubleExpression endXMesa;
-    private final DoubleExpression endYMesa;
-    
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,
             DoubleExpression larguraMesa,
@@ -44,23 +41,23 @@ class Chicote {
 
         primeiraPedraFx.posiciona(direcaoPedra, xMeioDaMesa,yMeioDaMesa);
 
+        PrototipoMesa prototipoMesa = new PrototipoMesa(larguraMesa, offsetXMesa, offsetYMesa);
+        
         return new Chicote[] {
-            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, larguraMesa.add(offsetXMesa), larguraMesa.add(offsetYMesa)),
-            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, larguraMesa.add(offsetXMesa), larguraMesa.add(offsetYMesa))
+            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, prototipoMesa),
+            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, prototipoMesa)
             
         };
     }
     
     public Chicote(
-            PedraFx primeiraPedra, 
-            Direcao direcaoFileira, 
-            final DoubleExpression endXMesa,
-            final DoubleExpression endYMesa) {
+            final PedraFx primeiraPedra, 
+            final Direcao direcaoFileira, 
+            final PrototipoMesa prototipoMesa) {
         
         this.pedraFx = primeiraPedra;
         this.direcaoFileira = direcaoFileira;
-        this.endXMesa = endXMesa;
-        this.endYMesa = endYMesa;
+        this.prototipoMesa = prototipoMesa;
     }
     
     public void encaixa(PedraFx novaPedraFx){
@@ -232,14 +229,26 @@ class Chicote {
 
     private boolean naoCabe() {
         boolean naoCabe;
+        
+        final double espacoSeguranca = this.pedraFx.widthProperty().get() * 3;
+        
         if(direcaoFileira == Direcao.PRA_DIREITA){
-            final double maxX = this.pedraFx.boundsInParentProperty().get().getMaxX();
-//            naoCabe = maxX + this.larguraMesa.getValue();
-            System.out.println("cabe? ");
-            System.out.println("max x = " + maxX);
-            System.out.println("fim da mesa  = " + endXMesa.get());
-            System.out.println("nao sei se cabe");
+            final double chicoteMaxX = this.pedraFx.boundsInParentProperty().get().getMaxX();
+            final double mesaMaxX = prototipoMesa.fimXMesa.get();
             
+            naoCabe = chicoteMaxX + espacoSeguranca > mesaMaxX;
+            
+        } else if (direcaoFileira == Direcao.PRA_ESQUERDA){
+
+            final double chicoteMinX = this.pedraFx.boundsInParentProperty().get().getMinX();
+            final double mesaMinX = prototipoMesa.iniXMesa.get();
+            
+            naoCabe = chicoteMinX - espacoSeguranca < mesaMinX;
+            
+            System.out.println("min x = " + chicoteMinX);
+            System.out.println("ini da mesa  = " + mesaMinX);
+            System.out.println("cabe? cabe " + (naoCabe?"não":"sim"));
+
         }
         
         return false;
@@ -262,6 +271,30 @@ class Chicote {
 		
                 : Direcao.PRA_ESQUERDA;
                 
+    }
+    
+    
+    static class PrototipoMesa{
+    
+        final DoubleExpression larguraMesa; //ela é quadrada. ponto.
+        final DoubleExpression iniXMesa;
+        final DoubleExpression iniYMesa;
+        final DoubleExpression fimXMesa;
+        final DoubleExpression fimYMesa;
+
+        public PrototipoMesa(
+                DoubleExpression larguraMesa,
+                DoubleExpression offsetXMesa,
+                DoubleExpression offsetYMesa) {
+            
+            this.larguraMesa = larguraMesa;
+            this.iniXMesa = offsetXMesa;
+            this.iniYMesa = offsetYMesa;
+            this.fimXMesa = offsetXMesa.add(larguraMesa);
+            this.fimYMesa = offsetYMesa.add(larguraMesa);
+        }
+
+        
     }
 
     
