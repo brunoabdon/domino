@@ -1,13 +1,8 @@
 package br.nom.abdon.domino.motor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Jogador;
@@ -18,26 +13,23 @@ import br.nom.abdon.domino.eventos.OmniscientDominoEventListener;
 
 class Partida {
 
-    private final Dupla dupla1, dupla2;
     private final MesaImpl mesa;
-    
 
     private final OmniscientDominoEventListener eventListener;
 
     Partida(
-        Dupla dupla1, Dupla dupla2, 
+        MesaImpl mesa,
         OmniscientDominoEventListener eventListener) {
 
-        this.dupla1 = dupla1;
-        this.dupla2 = dupla2;
-        
+        this.mesa = mesa;
         this.eventListener = eventListener;
-        this.mesa = embaralhaEdistribui();
     }
 
     protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
         throws BugDeJogadorException{
 
+        mesa.embaralhaEdistribui();
+        
         ResultadoPartida resultadoPartida = verificaMorteSubita();
         if(resultadoPartida != null){
             //retorno subito!
@@ -62,17 +54,14 @@ class Partida {
             vez = decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
         }
 
-        final Collection<Pedra>[] maos = mesa.getMaos();
-
         while(!(alguemBateu || trancou)){
 
-            jogadorDaVez = jogadorDaVez(vez);
-            
+            jogadorDaVez = this.mesa.jogadorDaVez(vez);
             final int cadeira = jogadorDaVez.getCadeira();
 
-            Collection<Pedra> maoDoJogadorDaVez = maos[vez];
+            final Collection<Pedra> maoDoJogadorDaVez = jogadorDaVez.getMao();
 
-            Jogada jogada = jogadorDaVez.joga(mesa);
+            Jogada jogada = jogadorDaVez.joga();
 
             if(jogada == null){
                 throw new BugDeJogadorException(
@@ -162,13 +151,16 @@ class Partida {
 
         final ResultadoPartida resultado;
 
-        final Collection<Pedra>[] maos = mesa.getMaos();
-        final Integer pontos[] = new Integer[4];
+        final Dupla dupla1 = mesa.getDupla1();
+        final Dupla dupla2 = mesa.getDupla2();
 
-        for (int i = 0; i < maos.length; i++) {
-            pontos[i] = maos[i].stream().collect(
-                    Collectors.summingInt(p -> p.getNumeroDePontos()));
-        }
+        final Integer pontos[] = new Integer[]{
+            dupla1.getJogador1().getNumeroDePontosNaMao(),
+            dupla2.getJogador1().getNumeroDePontosNaMao(),
+            dupla1.getJogador2().getNumeroDePontosNaMao(),
+            dupla2.getJogador2().getNumeroDePontosNaMao(),
+        };
+
         
         final BiFunction<Integer,Integer, Integer> menor = 
                 menorNoArray.apply(pontos);
@@ -182,7 +174,7 @@ class Partida {
         } else {
             final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
             final JogadorWrapper jogadorComMenosPontosNaMao = 
-                    jogadorDaVez(melhorIdx);
+                    this.mesa.jogadorDaVez(melhorIdx);
             
             resultado = batida(
                     jogadorComMenosPontosNaMao,
@@ -217,51 +209,11 @@ class Partida {
         }
     }
 
-    private MesaImpl embaralhaEdistribui() {
-        //embaralha
-        List<Pedra> pedras = Arrays.asList(Pedra.values());
-        Collections.shuffle(pedras);
-
-        //distribui
-        final Collection<Pedra>[] maos = new Collection[4];
-        //mao dos 4 jogadores
-        for (int i = 0, idx = 0; i < 4; i++) {
-
-            Collection<Pedra> mao = pedras.subList(idx, idx+=6); //imutavel
-            maos[i] = new ArrayList<>(mao);
-            
-            entregaPedras(jogadorDaVez(i), mao);
-        }
-        //dorme
-        this.eventListener.dormeDefinido(pedras.subList(24, 28)); //imutavel
-
-        //criando e retornando a mesa zerada.
-        return new MesaImpl(maos);
-    }
-
-    /**
-     * Entrega uma coleçao de {@link Pedra}s a um {@link Jogador} e anuncia o
-     * evento correspondente.
-     * 
-     * @param jogador O jogador que vai receber as pedras.
-     * @param mao As pedras que o jogador vai receber.
-     */
-    private void entregaPedras(
-            final JogadorWrapper jogador, final Collection<Pedra> mao) {
-
-        jogador.recebeMao(mao.toArray(new Pedra[6]));
-        
-        this.eventListener.jogadorRecebeuPedras(
-                jogador.getCadeira(),
-                Collections.unmodifiableCollection(mao));
-    }
-
-
     private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) 
             throws BugDeJogadorException {
             
         final int quemDaDuplaComeca = duplaQueComeca.quemComeca();
-        return duplaQueComeca == dupla1 
+        return duplaQueComeca == mesa.getDupla1()
                 ? quemDaDuplaComeca * 2 
                 : ((quemDaDuplaComeca * 2) + 1);    
     }
@@ -285,44 +237,40 @@ class Partida {
 
         int vez = -1;
 
-        final Collection<Pedra>[] maos = mesa.getMaos();
         loopProcurarMaiorCarroca: 
         for (int i = 6; i >= 2; i--) {
             final Pedra carroca = Pedra.carrocas[i];
-            for (int j = 0; j < 4; j++) {
-                if(maos[j].contains(carroca)){
-                    vez = j;
-                    final JogadorWrapper jogadorQueComeca = jogadorDaVez(vez);
+            for (vez = 0; vez < 4 ; vez++) {
 
-                    final Jogada primeiraJogada = jogadorQueComeca.joga(mesa);
+                JogadorWrapper jogador = mesa.jogadorDaVez(vez);
+                
+                final Collection<Pedra> mao = jogador.getMao();
+                if(mao.contains(carroca)){
+
+                    final Jogada primeiraJogada = jogador.joga();
 
                     final Pedra pedra = primeiraJogada.getPedra();
+                    final Lado lado = primeiraJogada.getLado();
 
                     this.eventListener.jogadorJogou(
-                            jogadorQueComeca.getCadeira(),
-                            null,
+                            jogador.getCadeira(), lado,
                             pedra);
                     
                     //agora erre, meu velho
                     if(pedra != carroca){
                         throw new BugDeJogadorException(
                             "Errou a saída, meu velho. Erra pra ser " + carroca,
-                            jogadorQueComeca);
+                            jogador);
                     }
                     //limpeza
-                    maos[j].remove(pedra);
-                    this.mesa.coloca(pedra,primeiraJogada.getLado());
+                    mao.remove(pedra);
+                    this.mesa.coloca(pedra,lado);
 
                     break loopProcurarMaiorCarroca;
                 }
             }
         }
         return avanca(vez);
-    }
-
-    private JogadorWrapper jogadorDaVez(int vez) {
-            final Dupla dupla = (vez%2)==0?dupla1:dupla2;
-            return vez<2?dupla.getJogador1():dupla.getJogador2();
     }
 
     private int avanca(int vez){
@@ -333,17 +281,16 @@ class Partida {
         
         ResultadoPartida resultado = null;
         
-        final Collection<Pedra>[] maos = mesa.getMaos();
-        for (int i = 0; i < maos.length; i++) {
+        final Collection<JogadorWrapper>jogadores = mesa.getJogadores();
+        for (JogadorWrapper jogador : jogadores) {
             int quantasNaoCarrocas = 0;
-            for (Pedra pedra : maos[i]) {
+            for (Pedra pedra : jogador.getMao()) {
                 if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
                     break;
                 }
             }
             
             if(quantasNaoCarrocas <= 1){
-                final JogadorWrapper jogador = jogadorDaVez(i);
                 if(quantasNaoCarrocas == 1){
                     //partida voltou! 5 carrocas na mao!
                     this.eventListener.partidaVoltou(jogador.getCadeira());
@@ -370,7 +317,6 @@ class Partida {
      */
     private ResultadoPartida batida(
             JogadorWrapper vencedor, Vitoria tipoDeBatida) {
-        
         this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }

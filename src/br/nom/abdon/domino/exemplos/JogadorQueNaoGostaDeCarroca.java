@@ -52,16 +52,15 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * Joga a maior carroça que puder jogar. Se não tiver carroça que dê pra 
      * jogar, joga como {@link JogadorMamao mamão} memso.
      * 
-     * @param mesa A mesa do jogo agora.
      * @return Uma {@link Pedra}, de preferência carroça.
      */
     @Override
-    public Jogada joga(Mesa mesa) {
+    public Jogada joga() {
         Jogada jogada;
 
         if (quantasCarrocasEuTenho == 0) {
             //nem tenho carroça mais. simplificando e jogando feito mamão.
-            jogada = super.joga(mesa);
+            jogada = super.joga();
         } else if (mesa.taVazia()) {
             //tenho carroca e é jogada inicial.... jogo a maior.
             jogada = fazJogadaDeMaiorCarroca();
@@ -76,7 +75,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
             if (jogada == null) {
                 //As carroças que eu tenho não cabem na mesa. Vou jogar como 
                 //mamão mesmo.
-                jogada = super.joga(mesa);
+                jogada = super.joga();
             }
         }
         //seja o que Deus quiser.

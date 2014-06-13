@@ -17,12 +17,15 @@ public interface Jogador {
      * Esta numeração é consistente com a usada em {@link 
      * Mesa#quantasPedrasOJogadoresTem(int)}.
      * 
+     * @param mesa A mesa do jogo do dominó, de onde se poderá descobrir, na 
+     * hora de {@link #joga() jogar}, que {@link Pedra}s estão dispostas, qual o
+     * {@link Numero} aparece em cada {@link Lado} e quantas pedras cada 
+     * {@link Jogador} tem na mão.
+     * 
      * @param cadeiraQueSentou O número da cadeira em que o jogador se sentou 
      * (entre 1 e 4).
      */
-    public default void sentaNaMesa(int cadeiraQueSentou){
-
-    }
+    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou);
 
     /**
      * O jogador recebe sua mão 6 {@link Pedra}s no início de cada partida.
@@ -49,10 +52,9 @@ public interface Jogador {
      * 
      * Pedra-beba cancela o jogo imediatamente.
      *  
-     * @param mesa A mesa no estado atual.
      * @return A {@link Jogada} que o jogador decidiu fazer.
      */
-    public Jogada joga(Mesa mesa);
+    public Jogada joga();
 
     /**
      * Usado na primeira rodada de uma partida onde a dupla desse {@link

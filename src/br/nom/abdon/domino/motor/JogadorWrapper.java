@@ -1,5 +1,9 @@
 package br.nom.abdon.domino.motor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Mesa;
@@ -9,6 +13,7 @@ public final class JogadorWrapper implements Jogador {
 
     private final String nome;
     private int cadeira;
+    private Collection<Pedra> mao;
 
     private final Jogador wrapped;
 
@@ -23,12 +28,13 @@ public final class JogadorWrapper implements Jogador {
 
     @Override
     public void recebeMao(Pedra[] pedras) {
+        this.mao = new ArrayList<>(Arrays.asList(pedras));
         wrapped.recebeMao(pedras);
     }
 
     @Override
-    public Jogada joga(Mesa mesa) {
-        return wrapped.joga(mesa);
+    public Jogada joga() {
+        return wrapped.joga();
     }
 
     @Override
@@ -37,21 +43,25 @@ public final class JogadorWrapper implements Jogador {
     }
 
     @Override
-    public void sentaNaMesa(int cadeiraQueSentou) {
+    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
         this.cadeira = cadeiraQueSentou;
-        wrapped.sentaNaMesa(cadeiraQueSentou);
+        wrapped.sentaNaMesa(mesa, cadeiraQueSentou);
     }
 
-    public String getNome() {
+    String getNome() {
         return nome;
     }
 
-    public int getCadeira() {
+    int getCadeira() {
         return cadeira;
     }
-
-    public void setCadeira(int cadeira) {
-        this.cadeira = cadeira;
+    
+    Collection<Pedra> getMao(){
+        return this.mao;
+    }
+    
+    int getNumeroDePontosNaMao(){
+        return this.mao.stream().mapToInt(p -> p.getNumeroDePontos()).sum();
     }
 
     public Jogador getWrapped() {

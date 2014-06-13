@@ -32,8 +32,8 @@ class Dupla {
             this.pontos += pontos;
     }
 
-    boolean contem(Jogador jogador){
-            return this.jogador1 == jogador || this.jogador2 == jogador;
+    boolean contem(JogadorWrapper jogador){
+        return this.jogador1 == jogador || this.jogador2 == jogador;
     }
 
     /**

@@ -20,9 +20,16 @@ import br.nom.abdon.domino.Pedra;
  */
 public class JogadorMamao implements Jogador {
 
-    private List<Pedra> mao;
+
+    protected Mesa mesa;
+    protected List<Pedra> mao;
 
     boolean perguntouSeEuQueriaJogar;
+
+    @Override
+    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
+        this.mesa = mesa;
+    }
 
     @Override
     public void recebeMao(Pedra[] mao) {
@@ -33,7 +40,7 @@ public class JogadorMamao implements Jogador {
     }
 
     @Override
-    public Jogada joga(Mesa mesa) {
+    public Jogada joga() {
         Jogada jogada;
 
         Pedra pedraPraJogar = null;

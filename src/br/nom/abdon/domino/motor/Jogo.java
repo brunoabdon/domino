@@ -7,7 +7,7 @@ import br.nom.abdon.domino.eventos.DominoEventListener;
 
 public class Jogo {
 
-    private final Dupla dupla1, dupla2;
+    private final MesaImpl mesa;
     private final DominoEventBroadcaster eventBroadcaster;
 
     public Jogo(
@@ -22,23 +22,29 @@ public class Jogo {
             || jogador2dupla2 == null) 
             throw new IllegalArgumentException("W.O.!!!");
 
-        this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
-        this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
-
-        this.eventBroadcaster = configuraEventListners(dupla1, dupla2);
+        this.eventBroadcaster = configuraEventListners(
+                jogador1dupla1, 
+                jogador1dupla2, 
+                jogador2dupla1, 
+                jogador2dupla2);
+        
+        this.mesa = new MesaImpl(
+                jogador1dupla1, 
+                jogador1dupla2, 
+                jogador2dupla1, 
+                jogador2dupla2, 
+                eventBroadcaster);
     }
 
     public void jogar(){
+        
+        Dupla dupla1 = mesa.getDupla1();
+        Dupla dupla2 = mesa.getDupla2();
         
         final JogadorWrapper primeiroJogadorDaPrimeiraDupla = dupla1.getJogador1();
         final JogadorWrapper primeiroJogadorDaSegundaDupla = dupla2.getJogador1();
         final JogadorWrapper segundoJogadorDaPrimeiraDupla = dupla1.getJogador2();
         final JogadorWrapper segundoJogadorDaSegundaDupla = dupla2.getJogador2();
-
-        primeiroJogadorDaPrimeiraDupla.sentaNaMesa(1);
-        primeiroJogadorDaSegundaDupla.sentaNaMesa(2);
-        segundoJogadorDaPrimeiraDupla.sentaNaMesa(3);
-        segundoJogadorDaSegundaDupla.sentaNaMesa(4);
 
         eventBroadcaster.jogoComecou(
             primeiroJogadorDaPrimeiraDupla.getNome(), 
@@ -46,37 +52,36 @@ public class Jogo {
             segundoJogadorDaPrimeiraDupla.getNome(), 
             segundoJogadorDaSegundaDupla.getNome());
 
-
         try {
             Dupla ultimaDuplaQueVenceu = null;
             int multiplicadorDobrada = 1;
             while(!alguemVenceu()){
-                this.eventBroadcaster.partidaComecou(
-                        dupla1.getPontos(), 
-                        dupla2.getPontos(), 
-                        multiplicadorDobrada != 1);
 
-                Partida partida = 
-                        new Partida(dupla1, dupla2, this.eventBroadcaster);
+                this.eventBroadcaster.partidaComecou(
+                    mesa.getDupla1().getPontos(), 
+                    mesa.getDupla2().getPontos(), 
+                    multiplicadorDobrada != 1);
+                
+                Partida partida = new Partida(this.mesa, this.eventBroadcaster);
 
                 ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
                 if(resultado == ResultadoPartida.EMPATE){
-                        multiplicadorDobrada *=2;
+                    multiplicadorDobrada *=2;
                 } else if(resultado instanceof Batida){
-                        Batida batida = (Batida) resultado;
-                        
-                        ultimaDuplaQueVenceu = getDuplaVencedora(batida);
-                        
-                        atualizaPlacar(
-                                ultimaDuplaQueVenceu,
-                                batida.getTipoDeVitoria(),
-                                multiplicadorDobrada);
-                        
-                        multiplicadorDobrada = 1;
+                    Batida batida = (Batida) resultado;
+
+                    ultimaDuplaQueVenceu = getDuplaVencedora(batida);
+
+                    atualizaPlacar(
+                        ultimaDuplaQueVenceu,
+                        batida.getTipoDeVitoria(),
+                        multiplicadorDobrada);
+
+                    multiplicadorDobrada = 1;
                 }
             }
 
-            this.eventBroadcaster.jogoAcabou(dupla1.getPontos(), dupla2.getPontos());
+            this.eventBroadcaster.jogoAcabou(mesa.getDupla1().getPontos(), mesa.getDupla2().getPontos());
 
         } catch (BugDeJogadorException e) {
                 System.err.println("Jogador " + e.getJogadorBuguento() + " fez merda.");
@@ -88,14 +93,20 @@ public class Jogo {
         }
     }
 
-    private DominoEventBroadcaster configuraEventListners(final Dupla dupla1, final Dupla dupla2) {
-            final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
+    private DominoEventBroadcaster configuraEventListners(
+        JogadorWrapper jogador1dupla1, 
+        JogadorWrapper jogador1dupla2, 
+        JogadorWrapper jogador2dupla1, 
+        JogadorWrapper jogador2dupla2) {
+            
+        final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
 
-            jogadorAtento(broadcaster, dupla1.getJogador1());
-            jogadorAtento(broadcaster, dupla1.getJogador2());
-            jogadorAtento(broadcaster, dupla2.getJogador1());
-            jogadorAtento(broadcaster, dupla2.getJogador2());
-            return broadcaster;
+        jogadorAtento(broadcaster, jogador1dupla1);
+        jogadorAtento(broadcaster, jogador2dupla1);
+        jogadorAtento(broadcaster, jogador1dupla2);
+        jogadorAtento(broadcaster, jogador2dupla2);
+        
+        return broadcaster;
 
     }
 
@@ -109,7 +120,7 @@ public class Jogo {
     }
 
     private Dupla getDuplaVencedora(final Batida resultado) {
-        return dupla1.contem(resultado.getVencedor())?dupla1:dupla2;
+        return this.mesa.getDuplaDoJogador(resultado.getVencedor());
     }
 
     private void atualizaPlacar(
@@ -124,7 +135,7 @@ public class Jogo {
     }
 
     private boolean alguemVenceu() {
-            return dupla1.venceu() || dupla2.venceu();
+            return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
     }
 
     public void addEventListener(final DominoEventListener eventListener) {
