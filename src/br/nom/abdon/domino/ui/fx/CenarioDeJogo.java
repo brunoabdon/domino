@@ -90,8 +90,8 @@ public class CenarioDeJogo extends Group{
         jogo.add(new Jogada(Pedra.LIMPO_SENA,Lado.ESQUERDO)); //na carroca, esquerdo, invente
         jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO)); //na carroca, direito, inverte
         jogo.add(new Jogada(Pedra.QUINA_SENA,Lado.DIREITO)); //na carroca, direito, inverte
-        jogo.add(new Jogada(Pedra.DUQUE_SENA,Lado.DIREITO)); //na carroca, direito, inverte
-        jogo.add(new Jogada(Pedra.LIMPO_DUQUE,Lado.DIREITO)); //na carroca, direito, inverte
+        jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.DIREITO)); //na carroca, direito, inverte
+        jogo.add(new Jogada(Pedra.LIMPO_TERNO,Lado.DIREITO)); //na carroca, direito, inverte
 
 
         final Iterator<Jogada> iterator = jogo.iterator();
