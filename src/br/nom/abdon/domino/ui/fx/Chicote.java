@@ -50,7 +50,7 @@ class Chicote {
         };
     }
     
-    public Chicote(
+    private Chicote(
             final PedraFx primeiraPedra, 
             final Direcao direcaoFileira, 
             final PrototipoMesa prototipoMesa) {
