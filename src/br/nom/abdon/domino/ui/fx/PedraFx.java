@@ -170,7 +170,7 @@ public class PedraFx extends Group {
         
         final double somaDoQuadradoDosCatetos = Math.pow(byX, 2) + Math.pow(byY, 2);
         final double hipotenusa = Math.sqrt(somaDoQuadradoDosCatetos);
-        final Duration tempo = Duration.seconds(pixelsPorSegundo / hipotenusa);
+        final Duration tempo = Duration.seconds(hipotenusa / pixelsPorSegundo);
 
         TranslateTransition translation = new TranslateTransition(tempo);
         translation.setByX(byX);
