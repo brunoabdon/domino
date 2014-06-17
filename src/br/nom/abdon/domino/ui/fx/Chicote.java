@@ -10,6 +10,9 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.value.ObservableDoubleValue;
 
+import br.nom.abdon.domino.Numero;
+
+
 /**
  *
  * @author bruno
@@ -62,14 +65,13 @@ class Chicote {
     
     public void encaixa(PedraFx novaPedraFx){
         
-        if(naoCabe()){
-            fazCurva();
-        }
-        
         if(this.pedraFx.getPedra().isCarroca()){
             encaixaNaCarroca(novaPedraFx);
         } else if(novaPedraFx.getPedra().isCarroca()){
             encaixaCarroca(novaPedraFx);
+        } else if(naoCabe()){
+//            encaixaFazendoCurva(novaPedraFx);
+            throw new UnsupportedOperationException("tá cheio");
         } else {
             encaixaNormal(novaPedraFx);
         }
@@ -131,39 +133,27 @@ class Chicote {
         final ObservableDoubleValue layouyY;
         final Direcao direcaoPedraFx;
 
+        boolean expoePrimeiroNumero = this.pedraFx.getDirecao() != this.direcaoFileira;
+        
+        final Numero numeroExposto = 
+            expoePrimeiroNumero 
+                ? this.pedraFx.getPedra().getPrimeiroNumero()
+                : this.pedraFx.getPedra().getSegundoNumero();
+        
+        boolean vaiEncaixarPeloPrimeiroNumero =  novaPedraFx.getPedra().getPrimeiroNumero() == numeroExposto;
+
+        boolean inverte = !vaiEncaixarPeloPrimeiroNumero;
+
+        direcaoPedraFx = inverte? direcaoFileira.inverver() : direcaoFileira;
+
         if(this.direcaoFileira.ehHorizontal()){
             layouyY = this.pedraFx.layoutYProperty();
             
             if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
                 layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.heightExpression());
                 
-                if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
-                    //segundo numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero() 
-                            ? Direcao.PRA_ESQUERDA
-                            : Direcao.PRA_DIREITA; 
-                } else {
-                    //primeiro numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero() 
-                            ? Direcao.PRA_ESQUERDA
-                            : Direcao.PRA_DIREITA; 
-                }
-                
             } else { //this.direcaoFileira == Direcao.PRA_DIREITA
                 layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression());
-
-                if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
-                    //primeiro numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
-                            ? Direcao.PRA_DIREITA
-                            : Direcao.PRA_ESQUERDA; 
-                } else {
-                    //segundo numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
-                            ? Direcao.PRA_DIREITA
-                            : Direcao.PRA_ESQUERDA; 
-                }
-
             }
             
         } else { //this.direcaoFileira.ehVertical()
@@ -171,35 +161,90 @@ class Chicote {
             
             if(this.direcaoFileira == Direcao.PRA_CIMA){
                 layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression());
-                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
-                    //segundo numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero() 
-                            ? Direcao.PRA_CIMA
-                            : Direcao.PRA_BAIXO; 
-                } else {
-                    //primeiro numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero() 
-                            ? Direcao.PRA_CIMA
-                            : Direcao.PRA_BAIXO; 
-                }
             } else {//this.direcaoFileira == Direcao.PRA_BAIXO
                 layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression());
-                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
-                    //primeiro numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
-                            ? Direcao.PRA_BAIXO
-                            : Direcao.PRA_CIMA; 
-                } else {
-                    //primeiro numero exposto;
-                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
-                            ? Direcao.PRA_BAIXO
-                            : Direcao.PRA_CIMA; 
-                }
             }
         }
         
         novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
+    
+//    private void encaixaFazendoCurva(PedraFx novaPedraFx) {
+//        final ObservableDoubleValue layouyX;
+//        final ObservableDoubleValue layouyY;
+//        final Direcao direcaoPedraFx;
+//
+//        if(this.direcaoFileira.ehHorizontal()){
+//            
+//            if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
+//                layouyX = this.pedraFx.layoutXProperty();
+//                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.widthProperty());
+//
+//                final Numero primeiroNumeroDaPedraDoChicote = novaPedraFx.getPedra().getPrimeiroNumero();
+//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
+//                    
+//                    direcaoPedraFx = primeiroNumeroDaPedraDoChicote == this.pedraFx.getPedra().getSegundoNumero() 
+//                            ? Direcao.PRA_CIMA
+//                            : Direcao.PRA_BAIXO; 
+//                } else {
+//                    direcaoPedraFx = primeiroNumeroDaPedraDoChicote == this.pedraFx.getPedra().getPrimeiroNumero() 
+//                            ? Direcao.PRA_CIMA
+//                            : Direcao.PRA_BAIXO; 
+//                }
+//                
+//            } else { //this.direcaoFileira == Direcao.PRA_DIREITA
+//                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression());
+//
+//                if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
+//                    //primeiro numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
+//                            ? Direcao.PRA_DIREITA
+//                            : Direcao.PRA_ESQUERDA; 
+//                } else {
+//                    //segundo numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
+//                            ? Direcao.PRA_DIREITA
+//                            : Direcao.PRA_ESQUERDA; 
+//                }
+//
+//            }
+//            
+//        } else { //this.direcaoFileira.ehVertical()
+//            layouyX = this.pedraFx.layoutXProperty();
+//            
+//            if(this.direcaoFileira == Direcao.PRA_CIMA){
+//                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression());
+//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
+//                    //segundo numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero() 
+//                            ? Direcao.PRA_CIMA
+//                            : Direcao.PRA_BAIXO; 
+//                } else {
+//                    //primeiro numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero() 
+//                            ? Direcao.PRA_CIMA
+//                            : Direcao.PRA_BAIXO; 
+//                }
+//            } else {//this.direcaoFileira == Direcao.PRA_BAIXO
+//                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression());
+//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
+//                    //primeiro numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
+//                            ? Direcao.PRA_BAIXO
+//                            : Direcao.PRA_CIMA; 
+//                } else {
+//                    //primeiro numero exposto;
+//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
+//                            ? Direcao.PRA_BAIXO
+//                            : Direcao.PRA_CIMA; 
+//                }
+//            }
+//        }
+//        
+//        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
+//    }
+
+    
     
     private void encaixaCarroca(PedraFx novaPedraFx) {
         final ObservableDoubleValue layouyX;
