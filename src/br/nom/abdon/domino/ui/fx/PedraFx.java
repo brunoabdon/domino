@@ -162,7 +162,7 @@ public class PedraFx extends Group {
             ObservableDoubleValue layoutX, 
             ObservableDoubleValue layoutY){
         
-        final double pixelsPorSegundo = 400;
+        final double pixelsPorSegundo = 1000;
         
         
         final double byX = this.layoutXProperty().subtract(layoutX).multiply(-1).get();
