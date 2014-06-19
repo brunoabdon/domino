@@ -85,11 +85,7 @@ class Chicote {
     
     public void encaixa(PedraFx novaPedraFx){
         
-        if(this.pedraFx.getPedra().isCarroca()){
-            encaixaNormal(novaPedraFx);
-        } else if(novaPedraFx.getPedra().isCarroca()){
-            encaixaCarroca(novaPedraFx);
-        } else if(naoCabe()){
+        if(naoCabe()){
 //            encaixaFazendoCurva(novaPedraFx);
             throw new UnsupportedOperationException("tá cheio");
         } else {
@@ -101,20 +97,30 @@ class Chicote {
     private void encaixaNormal(PedraFx novaPedraFx) {
         
         final Pedra pedra = this.pedraFx.getPedra();
+        final Pedra novaPedra = novaPedraFx.getPedra();
+ 
         final boolean eraCarroca = pedra.isCarroca();
+        final boolean ehCarroca = novaPedra.isCarroca();
         
-        final Numero numeroExposto = 
-            this.pedraFx.getDirecao() != this.direcaoFileira || eraCarroca
-                ? pedra.getPrimeiroNumero()
-                : pedra.getSegundoNumero();
+        final Direcao direcaoPedraFx;
+        if(ehCarroca){
+            direcaoPedraFx = this.direcaoFileira.ehHorizontal()
+                ? Direcao.PRA_BAIXO
+                : Direcao.PRA_ESQUERDA;            
+        } else {
+            final Numero numeroExposto = 
+                this.pedraFx.getDirecao() != this.direcaoFileira || eraCarroca
+                    ? pedra.getPrimeiroNumero()
+                    : pedra.getSegundoNumero();
 
-        final Direcao direcaoPedraFx = 
-                novaPedraFx.getPedra().getPrimeiroNumero() == numeroExposto
-                ? direcaoFileira 
-                : direcaoFileira.inverver();
-
+            direcaoPedraFx = 
+                    novaPedra.getPrimeiroNumero() == numeroExposto
+                    ? direcaoFileira 
+                    : direcaoFileira.inverver();
+       }
+ 
         final DoubleExpression distancia = 
-            eraCarroca
+            eraCarroca || ehCarroca
                 ? this.prototipoPedra.ladoEMeio
                 : this.prototipoPedra.altura;
         
@@ -229,15 +235,6 @@ class Chicote {
 //        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
 //    }
     
-    private void encaixaCarroca(PedraFx novaPedraFx) {
-
-        final Direcao direcaoPedraFx = this.direcaoFileira.ehHorizontal()
-                ? Direcao.PRA_BAIXO
-                : Direcao.PRA_ESQUERDA;
-
-        posiciona(novaPedraFx, direcaoPedraFx, this.prototipoPedra.ladoEMeio);
-    }
-
     private boolean naoCabe() {
         boolean naoCabe;
         
