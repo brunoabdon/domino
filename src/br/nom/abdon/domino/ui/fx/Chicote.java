@@ -25,17 +25,17 @@ class Chicote {
     private final PrototipoMesa prototipoMesa;
     private final PrototipoPedra prototipoPedra;
 
-    private final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+    private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
         adicionaDistancia = 
             (prop,distancia) -> {return prop.add(distancia);
         };
     
-    private final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+    private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
         subtraiDistancia = 
             (prop,distancia) -> {return prop.subtract(distancia);
         };
     
-    private final static BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+    private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
             identidade = (prop,ignoreme) -> {return prop;};
     
     public static Chicote[] inicia(
@@ -43,7 +43,6 @@ class Chicote {
             DoubleExpression larguraMesa,
             DoubleExpression offsetXMesa,
             DoubleExpression offsetYMesa){
-                
         
         final DoubleExpression larguraPedras = primeiraPedraFx.widthProperty();
         final DoubleExpression metadeDaMesa = larguraMesa.divide(2);
@@ -87,7 +86,7 @@ class Chicote {
     public void encaixa(PedraFx novaPedraFx){
         
         if(this.pedraFx.getPedra().isCarroca()){
-            encaixaNaCarroca(novaPedraFx);
+            encaixaNormal(novaPedraFx);
         } else if(novaPedraFx.getPedra().isCarroca()){
             encaixaCarroca(novaPedraFx);
         } else if(naoCabe()){
@@ -97,73 +96,31 @@ class Chicote {
             encaixaNormal(novaPedraFx);
         }
         this.pedraFx = novaPedraFx;
-        
-    }
-
-    private void encaixaNaCarroca(PedraFx novaPedraFx) {
-        
-        final DoubleExpression layouyX;
-        final DoubleExpression layouyY;
-        final Direcao direcaoPedraFx;
-        
-        if(this.direcaoFileira.ehHorizontal()){
-            layouyY = this.pedraFx.layoutYProperty();
-            if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
-                layouyX = this.pedraFx.layoutXProperty().subtract(this.prototipoPedra.ladoEMeio);
-                
-                direcaoPedraFx = 
-                    this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
-                        ? Direcao.PRA_ESQUERDA
-                        : Direcao.PRA_DIREITA;
-            } else { //direcaoFileira == Direcao.PRA_DIREITA
-                layouyX = this.pedraFx.layoutXProperty().add(this.prototipoPedra.ladoEMeio);
-                
-                direcaoPedraFx = 
-                    this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
-                        ? Direcao.PRA_DIREITA
-                        : Direcao.PRA_ESQUERDA;
-                
-            }
-        } else { // this.novaPedraFx.getDirecao().ehVertical()
-            layouyX = this.pedraFx.layoutXProperty();
-            if(this.direcaoFileira == Direcao.PRA_CIMA){
-                
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightProperty().multiply(0.75));
-                
-                direcaoPedraFx = 
-                    this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
-                        ? Direcao.PRA_CIMA
-                        : Direcao.PRA_BAIXO;
-            } else { //direcaoFileira == Direcao.PRA_BAIXO
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty().multiply(0.75));
-                
-                direcaoPedraFx = 
-                    this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
-                        ? Direcao.PRA_BAIXO
-                        : Direcao.PRA_CIMA;
-            }
-        }
-        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
 
     private void encaixaNormal(PedraFx novaPedraFx) {
-
+        
         final Pedra pedra = this.pedraFx.getPedra();
+        final boolean eraCarroca = pedra.isCarroca();
         
         final Numero numeroExposto = 
-            this.pedraFx.getDirecao() != this.direcaoFileira
+            this.pedraFx.getDirecao() != this.direcaoFileira || eraCarroca
                 ? pedra.getPrimeiroNumero()
                 : pedra.getSegundoNumero();
-        
+
         final Direcao direcaoPedraFx = 
                 novaPedraFx.getPedra().getPrimeiroNumero() == numeroExposto
                 ? direcaoFileira 
                 : direcaoFileira.inverver();
 
-        posiciona(novaPedraFx, direcaoPedraFx, this.prototipoPedra.altura);
+        final DoubleExpression distancia = 
+            eraCarroca
+                ? this.prototipoPedra.ladoEMeio
+                : this.prototipoPedra.altura;
         
+        posiciona(novaPedraFx, direcaoPedraFx, distancia);
     }
-    
+
     private void posiciona(PedraFx novaPedraFx, Direcao direcaoPedraFx, DoubleExpression distancia) {
 
         final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacao = 

@@ -28,7 +28,7 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
     private static final double PROPORCAO_MESA_REGIAO = 0.95;
-    private static final double PROPORCAO_MESA_PEDRA = 20;
+    private static final double PROPORCAO_MESA_PEDRA = 25;
 
 //    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
 //    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
