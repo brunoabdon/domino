@@ -91,8 +91,8 @@ public class PedraFx extends Group {
         return this.prototype.widthProperty;
     }
 
-    public DoubleExpression heightExpression(){
-        return this.prototype.heightExpression;
+    public DoubleExpression heightProperty(){
+        return this.prototype.heightProperty;
     }
 
     private Group fazPontinhos(final Numero numero) {
@@ -201,7 +201,7 @@ public class PedraFx extends Group {
     static class Prototype {
         
         final DoubleExpression widthProperty;
-        final DoubleExpression heightExpression;
+        final DoubleExpression heightProperty;
         final DoubleExpression quartoQuintosDaLargura;
         final DoubleExpression umVigesimoDaAltura;
         final DoubleExpression nonaParteDaLargura;
@@ -221,7 +221,7 @@ public class PedraFx extends Group {
         
         public Prototype(DoubleExpression widthProperty) {
             this.widthProperty = widthProperty;
-            this.heightExpression = widthProperty.multiply(2);
+            this.heightProperty = widthProperty.multiply(2);
             this.quartoQuintosDaLargura = widthProperty.multiply(0.8);
             this.umVigesimoDaAltura = widthProperty.divide(10);
             this.nonaParteDaLargura =  widthProperty.divide(9);

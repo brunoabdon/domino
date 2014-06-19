@@ -6,12 +6,12 @@
 
 package br.nom.abdon.domino.ui.fx;
 
-import java.util.function.Function;
 
 import javafx.beans.binding.DoubleExpression;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import java.util.function.BiFunction;
 
 
 /**
@@ -23,20 +23,20 @@ class Chicote {
     private PedraFx pedraFx;
     private Direcao direcaoFileira;
     private final PrototipoMesa prototipoMesa;
+    private final PrototipoPedra prototipoPedra;
 
-    private final Function<DoubleExpression, DoubleExpression> 
-            adicionaDistancia = 
-                prop -> {return prop.add(this.pedraFx.heightExpression());
-            };
+    private final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+        adicionaDistancia = 
+            (prop,distancia) -> {return prop.add(distancia);
+        };
     
-    private final Function<DoubleExpression, DoubleExpression> 
-            subtraiDistancia = 
-                prop -> {return prop.subtract(this.pedraFx.heightExpression());
-            };
+    private final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+        subtraiDistancia = 
+            (prop,distancia) -> {return prop.subtract(distancia);
+        };
     
-    private final static Function<DoubleExpression, DoubleExpression> 
-            identidade = prop -> {return prop;};
-    
+    private final static BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+            identidade = (prop,ignoreme) -> {return prop;};
     
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,
@@ -53,29 +53,35 @@ class Chicote {
         DoubleExpression yMeioDaMesa = 
                 offsetYMesa.add(metadeDaMesa).subtract(larguraPedras);
         
-        Direcao direcaoPedra = primeiraPedraFx.getPedra().isCarroca()
+        Direcao direcaoPedra = !primeiraPedraFx.getPedra().isCarroca()
             ? Direcao.PRA_BAIXO
             : Direcao.PRA_ESQUERDA;
 
         primeiraPedraFx.posiciona(direcaoPedra, xMeioDaMesa,yMeioDaMesa);
 
-        PrototipoMesa prototipoMesa = new PrototipoMesa(larguraMesa, offsetXMesa, offsetYMesa);
+        PrototipoMesa prototipoMesa = 
+                new PrototipoMesa(larguraMesa, offsetXMesa, offsetYMesa);
+
+        PrototipoPedra prototipoPedra = 
+                new PrototipoPedra(primeiraPedraFx.heightProperty());
         
         return new Chicote[] {
-            new Chicote(primeiraPedraFx, Direcao.PRA_ESQUERDA, prototipoMesa),
-            new Chicote(primeiraPedraFx, Direcao.PRA_DIREITA, prototipoMesa)
+            new Chicote(Direcao.PRA_CIMA, primeiraPedraFx, prototipoMesa, prototipoPedra),
+            new Chicote(Direcao.PRA_BAIXO, primeiraPedraFx, prototipoMesa, prototipoPedra)
             
         };
     }
     
     private Chicote(
-            final PedraFx primeiraPedra, 
             final Direcao direcaoFileira, 
-            final PrototipoMesa prototipoMesa) {
+            final PedraFx primeiraPedra, 
+            final PrototipoMesa prototipoMesa,
+            final PrototipoPedra prototipoPedra) {
         
         this.pedraFx = primeiraPedra;
         this.direcaoFileira = direcaoFileira;
         this.prototipoMesa = prototipoMesa;
+        this.prototipoPedra = prototipoPedra;
     }
     
     public void encaixa(PedraFx novaPedraFx){
@@ -101,17 +107,16 @@ class Chicote {
         final Direcao direcaoPedraFx;
         
         if(this.direcaoFileira.ehHorizontal()){
-            layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(1/4));
+            layouyY = this.pedraFx.layoutYProperty();
             if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
-                
-                layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.widthProperty().multiply(1.5));
+                layouyX = this.pedraFx.layoutXProperty().subtract(this.prototipoPedra.ladoEMeio);
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
                         ? Direcao.PRA_ESQUERDA
                         : Direcao.PRA_DIREITA;
             } else { //direcaoFileira == Direcao.PRA_DIREITA
-                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.widthProperty().multiply(1.5));
+                layouyX = this.pedraFx.layoutXProperty().add(this.prototipoPedra.ladoEMeio);
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
@@ -119,27 +124,25 @@ class Chicote {
                         : Direcao.PRA_ESQUERDA;
                 
             }
-        } else { // this.novaPedraFx.getDirecao().ehHorizontal()
-            layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression().multiply(1/4));
+        } else { // this.novaPedraFx.getDirecao().ehVertical()
+            layouyX = this.pedraFx.layoutXProperty();
             if(this.direcaoFileira == Direcao.PRA_CIMA){
                 
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression().multiply(0.75));
+                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightProperty().multiply(0.75));
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
                         ? Direcao.PRA_CIMA
                         : Direcao.PRA_BAIXO;
             } else { //direcaoFileira == Direcao.PRA_BAIXO
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(0.75));
+                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightProperty().multiply(0.75));
                 
                 direcaoPedraFx = 
                     this.pedraFx.getPedra().getPrimeiroNumero() == novaPedraFx.getPedra().getPrimeiroNumero()
                         ? Direcao.PRA_BAIXO
                         : Direcao.PRA_CIMA;
             }
-            
         }
-        
         novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
 
@@ -157,14 +160,20 @@ class Chicote {
                 ? direcaoFileira 
                 : direcaoFileira.inverver();
 
-        final Function<DoubleExpression, DoubleExpression> operacao = 
+        posiciona(novaPedraFx, direcaoPedraFx, this.prototipoPedra.altura);
+        
+    }
+    
+    private void posiciona(PedraFx novaPedraFx, Direcao direcaoPedraFx, DoubleExpression distancia) {
+
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacao = 
             this.direcaoFileira == Direcao.PRA_BAIXO 
             || this.direcaoFileira == Direcao.PRA_DIREITA
                 ? adicionaDistancia
                 : subtraiDistancia;
 
-        final Function<DoubleExpression, DoubleExpression> operacaoX;
-        final Function<DoubleExpression, DoubleExpression> operacaoY;
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacaoX;
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacaoY;
 
         if(this.direcaoFileira.ehHorizontal()){
             operacaoX = operacao;
@@ -175,13 +184,17 @@ class Chicote {
         }
         
         final DoubleExpression layouyX = 
-                operacaoX.apply(this.pedraFx.layoutXProperty());
+                operacaoX.apply(this.pedraFx.layoutXProperty(),distancia);
         
         final DoubleExpression layouyY = 
-                operacaoY.apply(this.pedraFx.layoutYProperty());
+                operacaoY.apply(this.pedraFx.layoutYProperty(),distancia);
             
         novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
     }
+
+        
+        
+        
     
     
 //    private void encaixaFazendoCurva(PedraFx novaPedraFx) {
@@ -258,33 +271,14 @@ class Chicote {
 //        
 //        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
 //    }
-
-    
     
     private void encaixaCarroca(PedraFx novaPedraFx) {
-        final DoubleExpression layouyX;
-        final DoubleExpression layouyY;
-        final Direcao direcaoPedraFx;
-        
-        if(this.direcaoFileira.ehHorizontal()){
-            layouyY = this.pedraFx.layoutYProperty();
-            direcaoPedraFx = Direcao.PRA_BAIXO;
-            if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
-                layouyX = this.pedraFx.layoutXProperty().subtract(this.pedraFx.widthProperty().multiply(1.5));
-            } else {
-                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.widthProperty().multiply(1.5));
-            }
-        } else {
-            layouyX = this.pedraFx.layoutXProperty();
-            direcaoPedraFx = Direcao.PRA_ESQUERDA;
-            if(this.direcaoFileira == Direcao.PRA_BAIXO){
-                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression().multiply(3/4));
-            } else {
-                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression().multiply(1.5));
-            }
-        }
-        
-        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
+
+        final Direcao direcaoPedraFx = this.direcaoFileira.ehHorizontal()
+                ? Direcao.PRA_BAIXO
+                : Direcao.PRA_ESQUERDA;
+
+        posiciona(novaPedraFx, direcaoPedraFx, this.prototipoPedra.ladoEMeio);
     }
 
     private boolean naoCabe() {
@@ -332,8 +326,7 @@ class Chicote {
                 : Direcao.PRA_ESQUERDA;
                 
     }
-    
-    
+        
     static class PrototipoMesa{
     
         final DoubleExpression larguraMesa; //ela é quadrada. ponto.
@@ -353,9 +346,28 @@ class Chicote {
             this.fimXMesa = offsetXMesa.add(larguraMesa);
             this.fimYMesa = offsetYMesa.add(larguraMesa);
         }
-
-        
     }
 
+    static class PrototipoPedra{
+    
+        final DoubleExpression altura;
+        final DoubleExpression largura;
+        final DoubleExpression ladoDoQuadrado;
+        final DoubleExpression ladoEMeio;
+
+        public PrototipoPedra(
+                DoubleExpression alturaPedra) {
+            
+            this.altura = alturaPedra;
+            this.largura = alturaPedra.divide(2);
+            this.ladoDoQuadrado = largura;
+            this.ladoEMeio = this.ladoDoQuadrado.multiply(1.5);
+            
+            System.out.println("altura:  " + alturaPedra.get());
+            System.out.println("altura/4: " + alturaPedra.divide(4d).get());
+            System.out.println("altura * 1/4: " + alturaPedra.multiply(1/4).get());
+            
+        }
+    }
     
 }
