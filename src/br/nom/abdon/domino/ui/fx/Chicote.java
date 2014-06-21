@@ -7,11 +7,17 @@
 package br.nom.abdon.domino.ui.fx;
 
 
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
 import javafx.beans.binding.DoubleExpression;
+import javafx.geometry.Bounds;
+import sun.security.pkcs11.wrapper.Functions;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
-import java.util.function.BiFunction;
+import static br.nom.abdon.domino.ui.fx.Direcao.PRA_BAIXO;
+import static br.nom.abdon.domino.ui.fx.Direcao.PRA_DIREITA;
 
 
 /**
@@ -27,16 +33,20 @@ class Chicote {
 
     private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
         adicionaDistancia = 
-            (prop,distancia) -> {return prop.add(distancia);
+            (prop,distancia) -> {
+                return prop.add(distancia);
         };
     
     private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
         subtraiDistancia = 
-            (prop,distancia) -> {return prop.subtract(distancia);
+            (prop,distancia) -> {
+                return prop.subtract(distancia);
         };
     
     private static final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
-            identidade = (prop,ignoreme) -> {return prop;};
+        identidade = (prop,ignoreme) -> {
+            return prop;
+        };
     
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,
@@ -54,7 +64,7 @@ class Chicote {
         
         Direcao direcaoPedra = !primeiraPedraFx.getPedra().isCarroca()
             ? Direcao.PRA_BAIXO
-            : Direcao.PRA_ESQUERDA;
+            : Direcao.PRA_DIREITA;
 
         primeiraPedraFx.posiciona(direcaoPedra, xMeioDaMesa,yMeioDaMesa);
 
@@ -86,8 +96,7 @@ class Chicote {
     public void encaixa(PedraFx novaPedraFx){
         
         if(naoCabe()){
-//            encaixaFazendoCurva(novaPedraFx);
-            throw new UnsupportedOperationException("tá cheio");
+            encaixaFazendoCurva(novaPedraFx);
         } else {
             encaixaNormal(novaPedraFx);
         }
@@ -102,14 +111,19 @@ class Chicote {
         final boolean eraCarroca = pedra.isCarroca();
         final boolean ehCarroca = novaPedra.isCarroca();
         
+        final Direcao direcaoPedraChicote = this.pedraFx.getDirecao();
+
+        final boolean fileiraTaNaHorizontal = 
+                this.direcaoFileira.ehHorizontal();
+        
         final Direcao direcaoPedraFx;
         if(ehCarroca){
-            direcaoPedraFx = this.direcaoFileira.ehHorizontal()
+            direcaoPedraFx = fileiraTaNaHorizontal
                 ? Direcao.PRA_BAIXO
                 : Direcao.PRA_ESQUERDA;            
         } else {
             final Numero numeroExposto = 
-                this.pedraFx.getDirecao() != this.direcaoFileira || eraCarroca
+                eraCarroca || direcaoPedraChicote != this.direcaoFileira
                     ? pedra.getPrimeiroNumero()
                     : pedra.getSegundoNumero();
 
@@ -117,10 +131,11 @@ class Chicote {
                     novaPedra.getPrimeiroNumero() == numeroExposto
                     ? direcaoFileira 
                     : direcaoFileira.inverver();
-       }
+        }
  
         final DoubleExpression distancia = 
-            eraCarroca || ehCarroca
+            direcaoPedraChicote.ehHorizontal() != fileiraTaNaHorizontal
+            || ehCarroca 
                 ? this.prototipoPedra.ladoEMeio
                 : this.prototipoPedra.altura;
         
@@ -146,139 +161,134 @@ class Chicote {
             operacaoY = operacao;
         }
         
-        final DoubleExpression layouyX = 
-                operacaoX.apply(this.pedraFx.layoutXProperty(),distancia);
+        final DoubleExpression meioX = 
+                operacaoX.apply(this.pedraFx.xMeioProperty(),distancia);
         
-        final DoubleExpression layouyY = 
-                operacaoY.apply(this.pedraFx.layoutYProperty(),distancia);
+        final DoubleExpression meioY = 
+                operacaoY.apply(this.pedraFx.yMeioProperty(),distancia);
             
-        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
+        novaPedraFx.posiciona(direcaoPedraFx, meioX, meioY);
     }
 
-        
-        
-        
+   
     
-    
-//    private void encaixaFazendoCurva(PedraFx novaPedraFx) {
-//        final DoubleExpression layouyX;
-//        final DoubleExpression layouyY;
-//        final Direcao direcaoPedraFx;
-//
-//        if(this.direcaoFileira.ehHorizontal()){
-//            
-//            if(this.direcaoFileira == Direcao.PRA_ESQUERDA){
-//                layouyX = this.pedraFx.layoutXProperty();
-//                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.widthProperty());
-//
-//                final Numero primeiroNumeroDaPedraDoChicote = novaPedraFx.getPedra().getPrimeiroNumero();
-//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
-//                    
-//                    direcaoPedraFx = primeiroNumeroDaPedraDoChicote == this.pedraFx.getPedra().getSegundoNumero() 
-//                            ? Direcao.PRA_CIMA
-//                            : Direcao.PRA_BAIXO; 
-//                } else {
-//                    direcaoPedraFx = primeiroNumeroDaPedraDoChicote == this.pedraFx.getPedra().getPrimeiroNumero() 
-//                            ? Direcao.PRA_CIMA
-//                            : Direcao.PRA_BAIXO; 
-//                }
-//                
-//            } else { //this.direcaoFileira == Direcao.PRA_DIREITA
-//                layouyX = this.pedraFx.layoutXProperty().add(this.pedraFx.heightExpression());
-//
-//                if(this.pedraFx.getDirecao() == Direcao.PRA_ESQUERDA){
-//                    //primeiro numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
-//                            ? Direcao.PRA_DIREITA
-//                            : Direcao.PRA_ESQUERDA; 
-//                } else {
-//                    //segundo numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
-//                            ? Direcao.PRA_DIREITA
-//                            : Direcao.PRA_ESQUERDA; 
-//                }
-//
-//            }
-//            
-//        } else { //this.direcaoFileira.ehVertical()
-//            layouyX = this.pedraFx.layoutXProperty();
-//            
-//            if(this.direcaoFileira == Direcao.PRA_CIMA){
-//                layouyY = this.pedraFx.layoutYProperty().subtract(this.pedraFx.heightExpression());
-//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
-//                    //segundo numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero() 
-//                            ? Direcao.PRA_CIMA
-//                            : Direcao.PRA_BAIXO; 
-//                } else {
-//                    //primeiro numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero() 
-//                            ? Direcao.PRA_CIMA
-//                            : Direcao.PRA_BAIXO; 
-//                }
-//            } else {//this.direcaoFileira == Direcao.PRA_BAIXO
-//                layouyY = this.pedraFx.layoutYProperty().add(this.pedraFx.heightExpression());
-//                if(this.pedraFx.getDirecao() == Direcao.PRA_CIMA){
-//                    //primeiro numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getPrimeiroNumero()
-//                            ? Direcao.PRA_BAIXO
-//                            : Direcao.PRA_CIMA; 
-//                } else {
-//                    //primeiro numero exposto;
-//                    direcaoPedraFx = novaPedraFx.getPedra().getPrimeiroNumero() == this.pedraFx.getPedra().getSegundoNumero()
-//                            ? Direcao.PRA_BAIXO
-//                            : Direcao.PRA_CIMA; 
-//                }
-//            }
-//        }
-//        
-//        novaPedraFx.posiciona(direcaoPedraFx, layouyX, layouyY);
-//    }
+    private void encaixaFazendoCurva(PedraFx novaPedraFx) {
+        final Direcao direcaoPedraFx;
+
+        final Pedra pedra = this.pedraFx.getPedra();
+        final Pedra novaPedra = novaPedraFx.getPedra();
+        final Direcao proximaDirecaoFileira = fazCurva(this.direcaoFileira);
+        
+        final Numero numeroExposto = 
+            this.pedraFx.getDirecao() != this.direcaoFileira
+                ? pedra.getPrimeiroNumero()
+                : pedra.getSegundoNumero();
+        
+        System.out.println("numeroExposto " + numeroExposto);
+
+        direcaoPedraFx = 
+            novaPedra.getPrimeiroNumero() == numeroExposto
+            ? proximaDirecaoFileira.ehHorizontal()
+                ? proximaDirecaoFileira
+                : proximaDirecaoFileira.inverver()
+            : proximaDirecaoFileira.ehHorizontal()
+                ? proximaDirecaoFileira
+                : proximaDirecaoFileira.inverver();
+        
+        final DoubleExpression distanciaX = proximaDirecaoFileira.ehHorizontal()
+                ? this.prototipoPedra.ladoEMeio
+                : this.prototipoPedra.ladoEMeio;
+                    
+        final DoubleExpression distanciaY = 
+            this.direcaoFileira == Direcao.PRA_DIREITA 
+            || this.direcaoFileira == Direcao.PRA_BAIXO
+                ? this.prototipoPedra.medataDaLargura
+                : this.prototipoPedra.largura;
+
+                
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacao;
+
+        operacao = 
+            direcaoFileira == Direcao.PRA_DIREITA
+            || proximaDirecaoFileira == Direcao.PRA_BAIXO
+                ? subtraiDistancia
+                : adicionaDistancia;
+        
+        final DoubleExpression meioX = 
+                operacao.apply(this.pedraFx.xMeioProperty(),distanciaX);
+        
+        final DoubleExpression meioY = 
+                operacao.apply(this.pedraFx.yMeioProperty(),distanciaY);
+        
+        
+        novaPedraFx.posiciona(direcaoPedraFx, meioX, meioY);
+        this.direcaoFileira = proximaDirecaoFileira;
+        
+    }
     
     private boolean naoCabe() {
         boolean naoCabe;
         
-        final double espacoSeguranca = this.pedraFx.widthProperty().get() * 3;
+        final boolean carrocaNoChicote = //carroca pra fins praticos.
+                this.pedraFx.getDirecao().ehHorizontal() 
+                != this.direcaoFileira.ehHorizontal();
+        
+        final int qtosQuadradosCabem = carrocaNoChicote ? 3 : 2;
+        
+        final double espacoSeguranca = 
+                prototipoPedra.largura.get() * qtosQuadradosCabem;
+
+        System.out.println("espacoSeguranca " + espacoSeguranca);
+        
+        final double dimencaoPraMedir;
+        final double mesaMax;
+        
+        final Bounds bounds = this.pedraFx.boundsInParentProperty().get();
+
+        
+        Predicate<Double> temEspaco;
         
         if(direcaoFileira == Direcao.PRA_DIREITA){
-            final double chicoteMaxX = this.pedraFx.boundsInParentProperty().get().getMaxX();
-            final double mesaMaxX = prototipoMesa.fimXMesa.get();
+            dimencaoPraMedir = bounds.getMaxX();
+            mesaMax = prototipoMesa.fimXMesa.get();
+            temEspaco = (espaco) -> dimencaoPraMedir + espaco < mesaMax;
             
-            naoCabe = chicoteMaxX + espacoSeguranca > mesaMaxX;
-            
-        } else if (direcaoFileira == Direcao.PRA_ESQUERDA){
+        } else if(direcaoFileira == Direcao.PRA_ESQUERDA){
+            dimencaoPraMedir = bounds.getMinX();
+            mesaMax = prototipoMesa.iniXMesa.get();
+            temEspaco = (espaco) -> dimencaoPraMedir - espaco > mesaMax;
+        } else if(direcaoFileira == Direcao.PRA_BAIXO){
+            dimencaoPraMedir = bounds.getMaxY();
+            mesaMax = prototipoMesa.fimYMesa.get();
+            temEspaco = (espaco) -> dimencaoPraMedir + espaco < mesaMax;
+        } else {// if(direcaoFileira == Direcao.PRA_CIMA){
+            dimencaoPraMedir = bounds.getMinY();
+            mesaMax = prototipoMesa.iniYMesa.get();
+            temEspaco = (espaco) -> dimencaoPraMedir - espaco > mesaMax;
+        }    
 
-            final double chicoteMinX = this.pedraFx.boundsInParentProperty().get().getMinX();
-            final double mesaMinX = prototipoMesa.iniXMesa.get();
-            
-            naoCabe = chicoteMinX - espacoSeguranca < mesaMinX;
-            
-            System.out.println("min x = " + chicoteMinX);
-            System.out.println("ini da mesa  = " + mesaMinX);
-            System.out.println("cabe? cabe " + (naoCabe?"não":"sim"));
-
-        }
         
-        return false;
+        naoCabe = !temEspaco.test(espacoSeguranca);
+
+        System.out.println("dimencaoPraMedir = " + dimencaoPraMedir);
+        System.out.println("fim da mesa  = " + mesaMax);
+        System.out.println("cabe? cabe " + (naoCabe?"não":"sim"));
+            
+        return naoCabe;
     }
 
-    private void fazCurva() {
-        this.direcaoFileira = 
-                
-                direcaoFileira == 
-                
-                Direcao.PRA_ESQUERDA ? Direcao.PRA_CIMA    
-		
-                : direcaoFileira == 
-                
-                Direcao.PRA_CIMA ? Direcao.PRA_DIREITA 
-                
-                : direcaoFileira == 
-                
-                Direcao.PRA_DIREITA ?  Direcao.PRA_BAIXO   
-		
-                : Direcao.PRA_ESQUERDA;
-                
+    public static Direcao fazCurva(Direcao direcao) {
+        Direcao direcaoCurva;
+
+        switch(direcao){
+                case PRA_BAIXO:    direcaoCurva = Direcao.PRA_ESQUERDA; break;
+                case PRA_ESQUERDA: direcaoCurva = Direcao.PRA_CIMA; break;
+                case PRA_CIMA:     direcaoCurva = Direcao.PRA_DIREITA; break;
+                case PRA_DIREITA:  direcaoCurva = Direcao.PRA_BAIXO; break;
+                default: throw new IllegalStateException();
+        }
+
+        return direcaoCurva;
     }
         
     static class PrototipoMesa{
@@ -306,21 +316,16 @@ class Chicote {
     
         final DoubleExpression altura;
         final DoubleExpression largura;
-        final DoubleExpression ladoDoQuadrado;
         final DoubleExpression ladoEMeio;
+        final DoubleExpression medataDaLargura;
 
         public PrototipoPedra(
                 DoubleExpression alturaPedra) {
             
             this.altura = alturaPedra;
             this.largura = alturaPedra.divide(2);
-            this.ladoDoQuadrado = largura;
-            this.ladoEMeio = this.ladoDoQuadrado.multiply(1.5);
-            
-            System.out.println("altura:  " + alturaPedra.get());
-            System.out.println("altura/4: " + alturaPedra.divide(4d).get());
-            System.out.println("altura * 1/4: " + alturaPedra.multiply(1/4).get());
-            
+            this.ladoEMeio = this.largura.multiply(1.5);
+            this.medataDaLargura = alturaPedra.divide(4);
         }
     }
     

@@ -9,11 +9,14 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Lado;
@@ -28,7 +31,7 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
     private static final double PROPORCAO_MESA_REGIAO = 0.95;
-    private static final double PROPORCAO_MESA_PEDRA = 25;
+    private static final double PROPORCAO_MESA_PEDRA = 20;
 
 //    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
 //    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
@@ -77,6 +80,29 @@ public class CenarioDeJogo extends Group{
         pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
         this.getChildren().addAll(pedras.values());
         
+        final SimpleDoubleProperty zero = new SimpleDoubleProperty(0d);
+        for (PedraFx pedraFx : pedras.values()) {
+            Line linhax = UtilsFx.bindedLine(
+                    pedraFx.xMeioProperty(),
+                    zero,
+                    pedraFx.xMeioProperty(),
+                    mesa.layoutYProperty().add(mesa.heightProperty()));
+            Text tx = UtilsFx.attachText("x", pedraFx.xMeioProperty(),pedraFx.widthProperty(),linhax );
+            
+
+            Line linhay = UtilsFx.bindedLine(
+                    zero, 
+                    pedraFx.yMeioProperty(),
+                    mesa.layoutXProperty().add(mesa.widthProperty()),
+                    pedraFx.yMeioProperty());
+            this.getChildren().add(linhay);
+
+            
+            this.getChildren().addAll(linhax,tx);
+        }
+        
+        
+        
         List<Jogada> jogo = new LinkedList<>();
         jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE));           //meio
         jogo.add(new Jogada(Pedra.DUQUE_TERNO,Lado.ESQUERDO));   //normal, esquero, nao inverte
@@ -93,10 +119,7 @@ public class CenarioDeJogo extends Group{
         jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.DIREITO)); //na carroca, direito, inverte
         jogo.add(new Jogada(Pedra.LIMPO_TERNO,Lado.DIREITO)); //na carroca, direito, inverte
 
-
         final Iterator<Jogada> iterator = jogo.iterator();
-        
-        
         mesa.setOnMouseClicked(
                 e -> {
                     Jogada jogada = iterator.next();

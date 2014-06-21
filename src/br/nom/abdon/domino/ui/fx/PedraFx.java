@@ -5,11 +5,19 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -32,8 +40,12 @@ public class PedraFx extends Group {
 //    private final ReadOnlyDoubleProperty heightProperty;
     
     private final Pedra pedra;
-    private Direcao direcao;
+    private final ObjectProperty<Direcao> direcao;
+    private final DoubleProperty xMeio, yMeio;
 
+    
+    final DoubleBinding rotationDirecaoBinding;
+    
     private final Prototype prototype;
     
     private final static Random randomizer = new Random();
@@ -53,9 +65,22 @@ public class PedraFx extends Group {
     private PedraFx(Pedra pedra, Prototype prototype) {
         super();
         this.pedra = pedra;
-        this.direcao = Direcao.PRA_BAIXO;
+        this.direcao = new  SimpleObjectProperty<>(Direcao.PRA_BAIXO);
+        
+        this.rotationDirecaoBinding = Bindings.createDoubleBinding(
+                () -> {
+                    return direcao.getValue().getGraus();
+                }, this.direcao);
+
+        this.rotateProperty().bind(rotationDirecaoBinding);
         
         this.prototype = prototype;
+        
+        this.xMeio = new SimpleDoubleProperty(0);
+        this.yMeio = new SimpleDoubleProperty(0);
+        
+        this.layoutXProperty().bind(makeLayoutBinding(xMeio, true));
+        this.layoutYProperty().bind(makeLayoutBinding(yMeio, false));
         
         Rectangle retanguloPrincipal = fazRetangulo();
         retanguloPrincipal.widthProperty().bind(prototype.widthProperty);
@@ -93,6 +118,14 @@ public class PedraFx extends Group {
 
     public DoubleExpression heightProperty(){
         return this.prototype.heightProperty;
+    }
+    
+    public ReadOnlyDoubleProperty xMeioProperty(){
+        return xMeio;
+    }
+    
+    public ReadOnlyDoubleProperty yMeioProperty(){
+        return yMeio;
     }
 
     private Group fazPontinhos(final Numero numero) {
@@ -145,8 +178,7 @@ public class PedraFx extends Group {
     }
     
     public void setDirecao(Direcao direcao){
-        this.direcao = direcao;
-        this.setRotate(direcao.getGraus()); //criar um bind depois...
+        this.direcao.set(direcao);
     }
 
     public Pedra getPedra() {
@@ -154,27 +186,33 @@ public class PedraFx extends Group {
     }
 
     public Direcao getDirecao() {
-        return this.direcao;
+        return this.direcao.getValue();
     }
 
     public void posiciona(
             Direcao direcao, 
-            ObservableDoubleValue layoutX, 
-            ObservableDoubleValue layoutY){
+            ObservableDoubleValue xMeio, 
+            ObservableDoubleValue yMeio){
         
-        final double pixelsPorSegundo = 1000;
+        final double pixelsPorSegundo = 1800;
         
-        
-        final double byX = this.layoutXProperty().subtract(layoutX).multiply(-1).get();
-        final double byY = this.layoutYProperty().subtract(layoutY).multiply(-1).get();
+        final double byX = this.xMeio.subtract(xMeio).multiply(-1).get();
+        final double byY = this.yMeio.subtract(yMeio).multiply(-1).get();
         
         final double somaDoQuadradoDosCatetos = Math.pow(byX, 2) + Math.pow(byY, 2);
         final double hipotenusa = Math.sqrt(somaDoQuadradoDosCatetos);
         final Duration tempo = Duration.seconds(hipotenusa / pixelsPorSegundo);
-
-        TranslateTransition translation = new TranslateTransition(tempo);
-        translation.setByX(byX);
-        translation.setToY(byY);
+        
+        this.rotateProperty().unbind();
+        this.xMeio.unbind();
+        this.yMeio.unbind();
+        
+        this.setDirecao(direcao);
+        
+        KeyValue kvx = new KeyValue(this.xMeio,xMeio.getValue());
+        KeyValue kvy = new KeyValue(this.yMeio,yMeio.getValue());
+        KeyFrame kf = new KeyFrame(tempo,kvx,kvy);
+        Timeline timeline = new Timeline(kf);
         
         RotateTransition rotation = new RotateTransition(tempo);
         double graus = direcao.getGraus();
@@ -183,20 +221,33 @@ public class PedraFx extends Group {
         }
         rotation.setByAngle(graus);
         
-        ParallelTransition animation = new ParallelTransition(translation,rotation);
+        ParallelTransition animation = new ParallelTransition(timeline,rotation);
         animation.setNode(this);
         animation.setOnFinished(
                 x -> {
-                    this.setTranslateX(0);
-                    this.setTranslateY(0);
-                    this.setDirecao(direcao);
-                    this.layoutXProperty().bind(layoutX);
-                    this.layoutYProperty().bind(layoutY);
+                    this.xMeio.bind(xMeio);
+                    this.yMeio.bind(yMeio);
+                    this.rotateProperty().bind(rotationDirecaoBinding);
                 }
         );
         animation.play();
     }
     
+    private DoubleBinding makeLayoutBinding(
+            final ObservableDoubleValue coordenada,
+            final boolean coordenadaEhHorizontal){
+        
+        return Bindings.createDoubleBinding(
+            () ->  {
+                final double gap = 
+                    coordenadaEhHorizontal
+                        ? this.prototype.metadeDaLargura.getValue()
+                        : this.prototype.metadeDaAltura.getValue();
+                    
+                return coordenada.get() - gap;
+            }, coordenada, this.direcao, this.prototype.widthProperty); 
+        
+    }
     
     static class Prototype {
         
@@ -207,6 +258,7 @@ public class PedraFx extends Group {
         final DoubleExpression nonaParteDaLargura;
         final DoubleExpression umQuintoDaLargura;
         final DoubleExpression metadeDaLargura;
+        final DoubleExpression metadeDaAltura;
         
         final BiFunction<DoubleExpression, DoubleExpression, Circle> colocaPontinho =
             (x,y) -> {
@@ -228,6 +280,7 @@ public class PedraFx extends Group {
             
             this.umQuintoDaLargura = this.widthProperty.multiply(1d/5d);
             this.metadeDaLargura = this.widthProperty.divide(2);
+            this.metadeDaAltura = widthProperty;
         }
     }
 }
