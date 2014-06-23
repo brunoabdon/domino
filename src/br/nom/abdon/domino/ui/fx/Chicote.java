@@ -192,46 +192,52 @@ class Chicote {
                 ? proximaDirecaoFileira
                 : proximaDirecaoFileira.inverver();
         
-        final DoubleExpression distanciaX = proximaDirecaoFileira.ehHorizontal()
+        final DoubleExpression distanciaX = direcaoFileira.ehHorizontal()
                 ? this.prototipoPedra.ladoEMeio
-                : this.prototipoPedra.ladoEMeio;
+                : this.prototipoPedra.medataDaLargura;
                     
-        final DoubleExpression distanciaY = 
-            this.direcaoFileira == Direcao.PRA_DIREITA 
-            || this.direcaoFileira == Direcao.PRA_BAIXO
-                ? this.prototipoPedra.medataDaLargura
-                : this.prototipoPedra.largura;
+        final DoubleExpression distanciaY = direcaoFileira.ehVertical()
+                ? this.prototipoPedra.ladoEMeio
+                : this.prototipoPedra.medataDaLargura;
 
                 
-        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> operacao;
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+            operacaoX = 
+                direcaoFileira == Direcao.PRA_DIREITA
+                || direcaoFileira == Direcao.PRA_CIMA
+                    ? adicionaDistancia
+                    : subtraiDistancia;
 
-        operacao = 
-            direcaoFileira == Direcao.PRA_DIREITA
-            || proximaDirecaoFileira == Direcao.PRA_BAIXO
-                ? subtraiDistancia
-                : adicionaDistancia;
+        final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
+            operacaoY = 
+                direcaoFileira == Direcao.PRA_DIREITA
+                || direcaoFileira == Direcao.PRA_BAIXO
+                    ? adicionaDistancia
+                    : subtraiDistancia;
         
         final DoubleExpression meioX = 
-                operacao.apply(this.pedraFx.xMeioProperty(),distanciaX);
+                operacaoX.apply(this.pedraFx.xMeioProperty(),distanciaX);
         
         final DoubleExpression meioY = 
-                operacao.apply(this.pedraFx.yMeioProperty(),distanciaY);
+                operacaoY.apply(this.pedraFx.yMeioProperty(),distanciaY);
         
         
         novaPedraFx.posiciona(direcaoPedraFx, meioX, meioY);
         this.direcaoFileira = proximaDirecaoFileira;
-        
     }
     
     private boolean cabe(Pedra pedra) {
         boolean cabe;
         
-        final int qtosQuadradosDevemCaber = pedra.isCarroca() ? 3 : 2;
+        System.out.println("\ncabe " + pedra + "?");
+        
+        final int qtosQuadradosDevemCaber = 3;
         
         final double espacoSeguranca = 
                 prototipoPedra.largura.get() * qtosQuadradosDevemCaber;
 
-        System.out.println("espacoSeguranca " + espacoSeguranca);
+        System.out.println("Tem que ter espaço pra " + qtosQuadradosDevemCaber 
+                + " quadrados (" + espacoSeguranca + " pixels).");
         
         final double dimencaoPraMedir;
         final double mesaMax;
@@ -263,8 +269,8 @@ class Chicote {
         
         cabe = temEspaco.test(espacoSeguranca);
 
-        System.out.println("dimencaoPraMedir = " + dimencaoPraMedir);
-        System.out.println("fim da mesa  = " + mesaMax);
+        System.out.println("O chicote tá indo até o pixel " + dimencaoPraMedir);
+        System.out.println("A mesa vai até o pixel " + mesaMax);
         System.out.println("cabe? cabe " + (cabe?"sim":"não"));
             
         return cabe;

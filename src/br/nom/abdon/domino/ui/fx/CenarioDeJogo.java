@@ -81,44 +81,55 @@ public class CenarioDeJogo extends Group{
         this.getChildren().addAll(pedras.values());
         
         final SimpleDoubleProperty zero = new SimpleDoubleProperty(0d);
-        for (PedraFx pedraFx : pedras.values()) {
-            Line linhax = UtilsFx.bindedLine(
-                    pedraFx.xMeioProperty(),
-                    zero,
-                    pedraFx.xMeioProperty(),
-                    mesa.layoutYProperty().add(mesa.heightProperty()));
-            Text tx = UtilsFx.attachText("x", pedraFx.xMeioProperty(),pedraFx.widthProperty(),linhax );
-            
-
-            Line linhay = UtilsFx.bindedLine(
-                    zero, 
-                    pedraFx.yMeioProperty(),
-                    mesa.layoutXProperty().add(mesa.widthProperty()),
-                    pedraFx.yMeioProperty());
-            this.getChildren().add(linhay);
-
-            
-            this.getChildren().addAll(linhax,tx);
-        }
+//        pedras.values().parallelStream().forEach((pedraFx) -> {
+//            Line linhax = UtilsFx.bindedLine(
+//                    pedraFx.xMeioProperty(),
+//                    zero,
+//                    pedraFx.xMeioProperty(),
+//                    mesa.layoutYProperty().add(mesa.heightProperty()));
+//            Text tx = UtilsFx.attachText("x", pedraFx.xMeioProperty(),pedraFx.widthProperty(),linhax );
+//            
+//
+//            Line linhay = UtilsFx.bindedLine(
+//                    zero, 
+//                    pedraFx.yMeioProperty(),
+//                    mesa.layoutXProperty().add(mesa.widthProperty()),
+//                    pedraFx.yMeioProperty());
+//            this.getChildren().add(linhay);
+//            
+//            
+//            this.getChildren().addAll(linhax,tx);
+//        });
         
         
         
         List<Jogada> jogo = new LinkedList<>();
-        jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE));           //meio
-        jogo.add(new Jogada(Pedra.DUQUE_TERNO,Lado.ESQUERDO));   //normal, esquero, nao inverte
-        jogo.add(new Jogada(Pedra.PIO_TERNO,Lado.ESQUERDO));   //normal, esquerdo, inverte
-        jogo.add(new Jogada(Pedra.DUQUE_QUINA,Lado.DIREITO));   //normal, direito, nao inverte
-        jogo.add(new Jogada(Pedra.CARROCA_DE_PIO,Lado.ESQUERDO)); //carroca,  esquerdo
-        jogo.add(new Jogada(Pedra.QUADRA_QUINA,Lado.DIREITO));   //normal, direito, inverte
-        jogo.add(new Jogada(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO)); //carroca,  direito
-        jogo.add(new Jogada(Pedra.PIO_SENA,Lado.ESQUERDO)); //na carroca, esquerdo, inverte
-        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.ESQUERDO)); //carroca, esquerdo (repetido)
-        jogo.add(new Jogada(Pedra.LIMPO_SENA,Lado.ESQUERDO)); //na carroca, esquerdo, invente
-        jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO)); //na carroca, direito, inverte
-        jogo.add(new Jogada(Pedra.QUINA_SENA,Lado.DIREITO)); //na carroca, direito, inverte
-        jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.DIREITO)); //na carroca, direito, inverte
-        jogo.add(new Jogada(Pedra.LIMPO_TERNO,Lado.DIREITO)); //na carroca, direito, inverte
+        jogo.add(new Jogada(Pedra.TERNO_QUADRA));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.LIMPO_TERNO,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.LIMPO_PIO,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_PIO,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.PIO_DUQUE,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.DUQUE_QUINA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.PIO_QUADRA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.PIO_TERNO,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.DUQUE_TERNO,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.QUADRA_QUINA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.LIMPO_QUADRA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.DUQUE_QUADRA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.LIMPO_QUINA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.QUINA_SENA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.TERNO_SENA,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_TERNO,Lado.ESQUERDO));
+        jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.ESQUERDO));
+        
 
+        
+        
+        
+        
         final Iterator<Jogada> iterator = jogo.iterator();
         mesa.setOnMouseClicked(
                 e -> {
