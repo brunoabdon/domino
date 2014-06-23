@@ -73,7 +73,6 @@ class Chicote {
         return new Chicote[] {
             new Chicote(Direcao.PRA_CIMA, primeiraPedraFx, prototipoMesa, prototipoPedra),
             new Chicote(Direcao.PRA_BAIXO, primeiraPedraFx, prototipoMesa, prototipoPedra)
-            
         };
     }
     
@@ -223,7 +222,7 @@ class Chicote {
         
         System.out.println("\ncabe " + pedra + "?");
         
-        final int qtosQuadradosDevemCaber = 3;
+        final int qtosQuadradosDevemCaber = pedra.isCarroca()? 4 : 3;
         
         final double espacoSeguranca = 
                 prototipoPedra.largura.get() * qtosQuadradosDevemCaber;

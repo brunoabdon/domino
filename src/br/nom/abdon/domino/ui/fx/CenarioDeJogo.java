@@ -14,9 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 
 import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Lado;
@@ -31,7 +29,7 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
     private static final double PROPORCAO_MESA_REGIAO = 0.95;
-    private static final double PROPORCAO_MESA_PEDRA = 15;
+    private static final double PROPORCAO_MESA_PEDRA = 20;
 
 //    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
 //    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
