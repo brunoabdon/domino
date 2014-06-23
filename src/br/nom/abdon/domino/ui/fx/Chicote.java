@@ -92,10 +92,10 @@ class Chicote {
     
     public void encaixa(PedraFx novaPedraFx){
         
-        if(naoCabe()){
-            encaixaFazendoCurva(novaPedraFx);
-        } else {
+        if(cabe(novaPedraFx.getPedra())){
             encaixaNormal(novaPedraFx);
+        } else {
+            encaixaFazendoCurva(novaPedraFx);
         }
         this.pedraFx = novaPedraFx;
     }
@@ -223,17 +223,13 @@ class Chicote {
         
     }
     
-    private boolean naoCabe() {
-        boolean naoCabe;
+    private boolean cabe(Pedra pedra) {
+        boolean cabe;
         
-        final boolean carrocaNoChicote = //carroca pra fins praticos.
-                this.pedraFx.getDirecao().ehHorizontal() 
-                != this.direcaoFileira.ehHorizontal();
-        
-        final int qtosQuadradosCabem = carrocaNoChicote ? 3 : 2;
+        final int qtosQuadradosDevemCaber = pedra.isCarroca() ? 3 : 2;
         
         final double espacoSeguranca = 
-                prototipoPedra.largura.get() * qtosQuadradosCabem;
+                prototipoPedra.largura.get() * qtosQuadradosDevemCaber;
 
         System.out.println("espacoSeguranca " + espacoSeguranca);
         
@@ -265,13 +261,13 @@ class Chicote {
         }    
 
         
-        naoCabe = !temEspaco.test(espacoSeguranca);
+        cabe = temEspaco.test(espacoSeguranca);
 
         System.out.println("dimencaoPraMedir = " + dimencaoPraMedir);
         System.out.println("fim da mesa  = " + mesaMax);
-        System.out.println("cabe? cabe " + (naoCabe?"não":"sim"));
+        System.out.println("cabe? cabe " + (cabe?"sim":"não"));
             
-        return naoCabe;
+        return cabe;
     }
 
     public static Direcao fazCurva(Direcao direcao) {
