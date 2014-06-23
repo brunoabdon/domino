@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 
 import javafx.beans.binding.DoubleExpression;
 import javafx.geometry.Bounds;
-import sun.security.pkcs11.wrapper.Functions;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
@@ -57,10 +56,8 @@ class Chicote {
         final DoubleExpression larguraPedras = primeiraPedraFx.widthProperty();
         final DoubleExpression metadeDaMesa = larguraMesa.divide(2);
         
-        DoubleExpression xMeioDaMesa = 
-                offsetXMesa.add(metadeDaMesa).subtract(larguraPedras.divide(2));
-        DoubleExpression yMeioDaMesa = 
-                offsetYMesa.add(metadeDaMesa).subtract(larguraPedras);
+        DoubleExpression xMeioDaMesa = offsetXMesa.add(metadeDaMesa);
+        DoubleExpression yMeioDaMesa = offsetYMesa.add(metadeDaMesa);
         
         Direcao direcaoPedra = !primeiraPedraFx.getPedra().isCarroca()
             ? Direcao.PRA_BAIXO
