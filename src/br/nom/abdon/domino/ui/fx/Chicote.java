@@ -53,7 +53,6 @@ class Chicote {
             DoubleExpression offsetXMesa,
             DoubleExpression offsetYMesa){
         
-        final DoubleExpression larguraPedras = primeiraPedraFx.widthProperty();
         final DoubleExpression metadeDaMesa = larguraMesa.divide(2);
         
         DoubleExpression xMeioDaMesa = offsetXMesa.add(metadeDaMesa);
@@ -170,8 +169,6 @@ class Chicote {
    
     
     private void encaixaFazendoCurva(PedraFx novaPedraFx) {
-        final Direcao direcaoPedraFx;
-
         final Pedra pedra = this.pedraFx.getPedra();
         final Pedra novaPedra = novaPedraFx.getPedra();
         final Direcao proximaDirecaoFileira = fazCurva(this.direcaoFileira);
@@ -182,15 +179,11 @@ class Chicote {
                 : pedra.getSegundoNumero();
         
         System.out.println("numeroExposto " + numeroExposto);
-
-        direcaoPedraFx = 
-            novaPedra.getPrimeiroNumero() == numeroExposto
-            ? proximaDirecaoFileira.ehHorizontal()
-                ? proximaDirecaoFileira
-                : proximaDirecaoFileira.inverver()
-            : proximaDirecaoFileira.ehHorizontal()
-                ? proximaDirecaoFileira
-                : proximaDirecaoFileira.inverver();
+        
+        final Direcao direcaoPedraFx = 
+            novaPedra.getSegundoNumero() == numeroExposto
+                ? proximaDirecaoFileira.inverver() 
+                : proximaDirecaoFileira;
         
         final DoubleExpression distanciaX = direcaoFileira.ehHorizontal()
                 ? this.prototipoPedra.ladoEMeio
@@ -199,7 +192,6 @@ class Chicote {
         final DoubleExpression distanciaY = direcaoFileira.ehVertical()
                 ? this.prototipoPedra.ladoEMeio
                 : this.prototipoPedra.medataDaLargura;
-
                 
         final BiFunction<DoubleExpression, DoubleExpression, DoubleExpression> 
             operacaoX = 

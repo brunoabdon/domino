@@ -31,7 +31,7 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
     private static final double PROPORCAO_MESA_REGIAO = 0.95;
-    private static final double PROPORCAO_MESA_PEDRA = 20;
+    private static final double PROPORCAO_MESA_PEDRA = 15;
 
 //    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
 //    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
@@ -101,8 +101,6 @@ public class CenarioDeJogo extends Group{
 //            this.getChildren().addAll(linhax,tx);
 //        });
         
-        
-        
         List<Jogada> jogo = new LinkedList<>();
         jogo.add(new Jogada(Pedra.TERNO_QUADRA));
         jogo.add(new Jogada(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO));
@@ -124,11 +122,6 @@ public class CenarioDeJogo extends Group{
         jogo.add(new Jogada(Pedra.CARROCA_DE_TERNO,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.ESQUERDO));
-        
-
-        
-        
-        
         
         final Iterator<Jogada> iterator = jogo.iterator();
         mesa.setOnMouseClicked(
@@ -173,7 +166,6 @@ public class CenarioDeJogo extends Group{
                         this.mesa.layoutXProperty(),
                         this.mesa.layoutYProperty());
                         
-
             this.chicoteEsquerda = chicotes[0];
             this.chicoteDireita = chicotes[1];
             
