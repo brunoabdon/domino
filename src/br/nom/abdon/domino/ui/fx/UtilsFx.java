@@ -8,14 +8,14 @@ package br.nom.abdon.domino.ui.fx;
 
 
 import java.util.Collection;
+
 import javafx.animation.TranslateTransition;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.value.ObservableDoubleValue;
+import javafx.beans.property.Property;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
@@ -168,5 +168,9 @@ public class UtilsFx {
         return lmsg;
 
     }
-    
+ 
+    public static <X> void rebind(Property<X> prop, ObservableValue<X> value){
+        prop.unbind();
+        prop.bind(value);
+    }
 }

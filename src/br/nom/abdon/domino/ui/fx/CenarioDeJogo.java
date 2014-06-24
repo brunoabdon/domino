@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleExpression;
@@ -11,7 +12,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableDoubleValue;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
@@ -31,8 +35,11 @@ public class CenarioDeJogo extends Group{
     private static final double PROPORCAO_MESA_REGIAO = 0.75;
     private static final double PROPORCAO_MESA_PEDRA = 20;
 
-//    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
-//    private final DoubleBinding bndUmPorCentoAlturaDaMesa;
+    
+    private final static Random r = new Random();
+
+    private final ObservableDoubleValue bndUmPorCentoLarguraDaMesa;
+    private final ObservableDoubleValue bndUmPorCentoAlturaDaMesa;
 
     private final Rectangle mesa;
     
@@ -54,8 +61,8 @@ public class CenarioDeJogo extends Group{
         
         final DoubleExpression bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
         
-//        this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
-//        this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
+        this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
+        this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
 
         this.parentProperty().addListener((ChangeListener<Parent>)
             (parentProp, oldparent, newParent) -> {
@@ -76,7 +83,6 @@ public class CenarioDeJogo extends Group{
         super.getChildren().add(mesa);
 
         pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
-        this.getChildren().addAll(pedras.values());
         
         final SimpleDoubleProperty zero = new SimpleDoubleProperty(0d);
 //        pedras.values().parallelStream().forEach((pedraFx) -> {
@@ -130,27 +136,54 @@ public class CenarioDeJogo extends Group{
         );
     }
     
-//    private void posicionaNaMesa(
-//            final Node node, 
-//            final double percentX, 
-//            final double percentY,
-//            Direcao d) {
-//        
-//        node.layoutXProperty().unbind();
-//        node.layoutYProperty().unbind();
-//        
-//        node.setRotate(d.getGraus());
-//        
-//        DoubleExpression xNaMesa = bndUmPorCentoLarguraDaMesa.multiply(percentX);
-//        DoubleExpression yNaMesa = bndUmPorCentoAlturaDaMesa.multiply(percentY);
-//        
-//        final DoubleBinding xNaTela = mesa.layoutXProperty().add(xNaMesa);
-//        final DoubleBinding yNaTela = mesa.layoutYProperty().add(yNaMesa);
-//        
-//        node.layoutXProperty().bind(xNaTela);
-//        node.layoutYProperty().bind(yNaTela);
-//    }
+    public void adicionaPedras(){
+
+        final ObservableList<Node> children = this.getChildren();
+
+        pedras.values().stream().forEach(
+          pedra -> {
+              posicionaNaMesa(
+                  pedra, 
+                  coordenadaAleatoria(), 
+                  coordenadaAleatoria(),
+                  direcaoAleatoria());
+              
+              children.add(pedra);
+          });
+    }
     
+    private static double coordenadaAleatoria(){
+        return r.nextDouble()*100d;
+    }
+    
+    private static Direcao direcaoAleatoria(){
+        int i = r.nextInt(4);
+        
+        return i == 0 ? Direcao.PRA_BAIXO
+             : i == 1 ? Direcao.PRA_CIMA
+             : i == 2 ? Direcao.PRA_ESQUERDA
+             : Direcao.PRA_DIREITA;
+    }
+    
+    private void posicionaNaMesa(
+            final PedraFx pedraFx, 
+            final double percentX, 
+            final double percentY,
+            final Direcao direcao) {
+        
+        final ObservableDoubleValue xNaMesa = 
+                Bindings.multiply(bndUmPorCentoLarguraDaMesa, percentX);
+
+        final ObservableDoubleValue yNaMesa = 
+                Bindings.multiply(bndUmPorCentoAlturaDaMesa, percentY);
+
+        final ObservableDoubleValue xNaTela = 
+                mesa.layoutXProperty().add(xNaMesa);
+        final ObservableDoubleValue yNaTela = 
+                mesa.layoutYProperty().add(yNaMesa);
+
+        pedraFx.posiciona(direcao,xNaTela,yNaTela);
+    }
     
     public void jogaPedra(Pedra pedra, Lado lado){    
         

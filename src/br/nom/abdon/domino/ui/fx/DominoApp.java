@@ -8,6 +8,8 @@ package br.nom.abdon.domino.ui.fx;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -22,8 +24,10 @@ public class DominoApp extends Application {
 
         primaryStage.setTitle("Domino");
         Pane root = new Pane();
+        
+        final CenarioDeJogo cenarioDeJogo = new CenarioDeJogo();
 
-        root.getChildren().add(new CenarioDeJogo());
+        root.getChildren().add(cenarioDeJogo);
 
         Scene scene = new Scene(root, 800, 600);
         setCss(scene,"domino.css");
@@ -31,6 +35,7 @@ public class DominoApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        cenarioDeJogo.adicionaPedras();
     }
 
     private void setCss(Scene scene, String resource) {
@@ -38,6 +43,24 @@ public class DominoApp extends Application {
         scene.getStylesheets().add(css);
     }
 
+    private MenuBar fazMenu(){
+        MenuBar menuBar = new MenuBar();
+ 
+        // --- Menu File
+        Menu menuFile = new Menu("File");
+ 
+        // --- Menu Edit
+        Menu menuEdit = new Menu("Edit");
+ 
+        // --- Menu View
+        Menu menuView = new Menu("View");
+ 
+        menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
+ 
+ 
+        return menuBar;
+    }
+    
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
