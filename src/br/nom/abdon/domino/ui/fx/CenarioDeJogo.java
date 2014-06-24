@@ -1,16 +1,12 @@
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.Collection;
 import java.util.EnumMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableList;
@@ -19,8 +15,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import br.nom.abdon.domino.Jogada;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 
@@ -34,18 +31,22 @@ public class CenarioDeJogo extends Group{
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 0.7;
     private static final double PROPORCAO_MESA_REGIAO = 0.75;
     private static final double PROPORCAO_MESA_PEDRA = 20;
+    private static final Random r = new Random();
 
+    private final Rectangle mesa;
+
+    private Chicote chicoteEsquerda;
+    private Chicote chicoteDireita;
     
-    private final static Random r = new Random();
-
+    private final EnumMap<Pedra,PedraFx> pedras;
+    
+    private final Text labelJogador1, labelJogador2; 
+    private final Text labelJogador3, labelJogador4; 
+    
     private final ObservableDoubleValue bndUmPorCentoLarguraDaMesa;
     private final ObservableDoubleValue bndUmPorCentoAlturaDaMesa;
 
-    private final Rectangle mesa;
     
-    private final EnumMap<Pedra,PedraFx> pedras;
-    private Chicote chicoteEsquerda;
-    private Chicote chicoteDireita;
     
     public CenarioDeJogo() {
         this(PROPORCAO_MESA_REGIAO);
@@ -59,81 +60,45 @@ public class CenarioDeJogo extends Group{
         
         final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
         
-        final DoubleExpression bndLarguraDasPedras = bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
+        final DoubleExpression bndLarguraDasPedras = 
+                bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
         
         this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
         this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
-
+        
+        final double proporcaoAltura = proporcao/PROPORCAO_ALTURA_LARGURA_MESA;
+        
         this.parentProperty().addListener((ChangeListener<Parent>)
             (parentProp, oldparent, newParent) -> {
                 Region parent = (Region) newParent;
-                final ReadOnlyDoubleProperty bndLarguraJanela = parent.widthProperty();
-                final ReadOnlyDoubleProperty bndAlturaJanela = parent.heightProperty();
-
+                final ObservableDoubleValue bndLarguraJanela = parent.widthProperty();
+                final ObservableDoubleValue bndAlturaJanela = parent.heightProperty();
+                
                 bndLarguraDaMesa.bind(
-                        Bindings.min(
-                                bndLarguraJanela.multiply(proporcao),
-                                bndAlturaJanela.multiply(proporcao/PROPORCAO_ALTURA_LARGURA_MESA)));
-
+                    Bindings.min(
+                        Bindings.multiply(bndLarguraJanela,proporcao),
+                        Bindings.multiply(bndAlturaJanela, proporcaoAltura)));
+                    
                 UtilsFx.centraliza(parent,mesa);
-            } 
+            }
         );
-        
         
         super.getChildren().add(mesa);
 
         pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
         
-        final SimpleDoubleProperty zero = new SimpleDoubleProperty(0d);
-//        pedras.values().parallelStream().forEach((pedraFx) -> {
-//            Line linhax = UtilsFx.bindedLine(
-//                    pedraFx.xMeioProperty(),
-//                    zero,
-//                    pedraFx.xMeioProperty(),
-//                    mesa.layoutYProperty().add(mesa.heightProperty()));
-//            Text tx = UtilsFx.attachText("x", pedraFx.xMeioProperty(),pedraFx.widthProperty(),linhax );
-//            
-//
-//            Line linhay = UtilsFx.bindedLine(
-//                    zero, 
-//                    pedraFx.yMeioProperty(),
-//                    mesa.layoutXProperty().add(mesa.widthProperty()),
-//                    pedraFx.yMeioProperty());
-//            this.getChildren().add(linhay);
-//            
-//            
-//            this.getChildren().addAll(linhax,tx);
-//        });
-        
-        List<Jogada> jogo = new LinkedList<>();
-        jogo.add(new Jogada(Pedra.TERNO_QUADRA));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_QUADRA,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.LIMPO_TERNO,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.LIMPO_PIO,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_PIO,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.PIO_DUQUE,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.DUQUE_QUINA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.PIO_QUADRA,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.PIO_TERNO,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.DUQUE_TERNO,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.QUADRA_QUINA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_DUQUE,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.LIMPO_QUADRA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.DUQUE_QUADRA,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.LIMPO_QUINA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.QUINA_SENA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.TERNO_SENA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_TERNO,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO));
-        jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.ESQUERDO));
-        
-        final Iterator<Jogada> iterator = jogo.iterator();
-        mesa.setOnMouseClicked(
-                e -> {
-                    Jogada jogada = iterator.next();
-                    jogaPedra(jogada.getPedra(), jogada.getLado());
-                }
-        );
+        this.labelJogador1 = makeLabel(50, -10);
+        this.labelJogador2 = makeLabel( -10,50);
+        this.labelJogador3 = makeLabel(50,110);
+        this.labelJogador4 = makeLabel(110,50);
+    }
+    
+    private Text makeLabel(double x, double y){
+        Text label = new Text();
+        label.setFont(Font.font("Sans-Serif", 10));
+        posicionaNaMesa(label, x, y);
+        this.getChildren().add(label);
+        return label;
     }
     
     public void adicionaPedras(){
@@ -164,6 +129,19 @@ public class CenarioDeJogo extends Group{
              : i == 2 ? Direcao.PRA_ESQUERDA
              : Direcao.PRA_DIREITA;
     }
+
+    private void posicionaNaMesa(
+            final Node node, 
+            final double percentX, 
+            final double percentY) {
+        
+        final ObservableDoubleValue xNaTela = xAbs(percentX);
+        final ObservableDoubleValue yNaTela = yAbs(percentY);
+        
+        UtilsFx.rebind(node.layoutXProperty(), xNaTela);
+        UtilsFx.rebind(node.layoutYProperty(), yNaTela);
+
+    }
     
     private void posicionaNaMesa(
             final PedraFx pedraFx, 
@@ -171,19 +149,34 @@ public class CenarioDeJogo extends Group{
             final double percentY,
             final Direcao direcao) {
         
-        final ObservableDoubleValue xNaMesa = 
-                Bindings.multiply(bndUmPorCentoLarguraDaMesa, percentX);
-
-        final ObservableDoubleValue yNaMesa = 
-                Bindings.multiply(bndUmPorCentoAlturaDaMesa, percentY);
-
-        final ObservableDoubleValue xNaTela = 
-                mesa.layoutXProperty().add(xNaMesa);
-        final ObservableDoubleValue yNaTela = 
-                mesa.layoutYProperty().add(yNaMesa);
+        final ObservableDoubleValue xNaTela = xAbs(percentX);
+        final ObservableDoubleValue yNaTela = yAbs(percentY);
 
         pedraFx.posiciona(direcao,xNaTela,yNaTela);
     }
+    
+    private ObservableDoubleValue xAbs(double percent){
+        return abs(mesa.layoutXProperty(),
+                bndUmPorCentoLarguraDaMesa,
+                percent);
+    }
+    private ObservableDoubleValue yAbs(double percent){
+        return abs(mesa.layoutYProperty(),
+                bndUmPorCentoAlturaDaMesa,
+                percent);
+    }
+    
+    private ObservableDoubleValue abs(
+        ObservableDoubleValue referenceOffset,
+        ObservableDoubleValue referencePerc,
+        double percent){
+
+        return
+            DoubleExpression.doubleExpression(referencePerc)
+                .multiply(percent)
+                .add(referenceOffset);
+    }
+
     
     public void jogaPedra(Pedra pedra, Lado lado){    
         
@@ -212,4 +205,20 @@ public class CenarioDeJogo extends Group{
     private boolean mesaTaVazia() {
         return this.chicoteEsquerda == null;
     }
+    
+    public void sentaJogadores(
+            String nomeJogador1,String nomeJogador2, 
+            String nomeJogador3, String nomeJogador4){
+        
+        labelJogador1.setText(nomeJogador1);
+        labelJogador2.setText(nomeJogador2);
+        labelJogador3.setText(nomeJogador3);
+        labelJogador4.setText(nomeJogador4);
+    }
+    
+    public void entregaPedras(int cadeiraDoJogador, Collection<Pedra> pedras){
+        
+    }
+    
+    
 }
