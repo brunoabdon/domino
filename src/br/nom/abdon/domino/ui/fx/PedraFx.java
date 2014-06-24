@@ -15,7 +15,6 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableDoubleValue;
@@ -36,15 +35,11 @@ import br.nom.abdon.domino.Pedra;
  */
 public class PedraFx extends Group {
 
-//    private final DoubleProperty widthProperty;
-//    private final ReadOnlyDoubleProperty heightProperty;
-    
     private final Pedra pedra;
     private final ObjectProperty<Direcao> direcao;
     private final DoubleProperty xMeio, yMeio;
 
-    
-    final DoubleBinding rotationDirecaoBinding;
+    private final DoubleBinding rotationDirecaoBinding;
     
     private final Prototype prototype;
     
@@ -112,19 +107,19 @@ public class PedraFx extends Group {
         return linhaDoMeio;
     }
 
-    public DoubleExpression widthProperty(){
+    public ObservableDoubleValue widthProperty(){
         return this.prototype.widthProperty;
     }
 
-    public DoubleExpression heightProperty(){
+    public ObservableDoubleValue heightProperty(){
         return this.prototype.heightProperty;
     }
     
-    public ReadOnlyDoubleProperty xMeioProperty(){
+    public ObservableDoubleValue xMeioProperty(){
         return xMeio;
     }
     
-    public ReadOnlyDoubleProperty yMeioProperty(){
+    public ObservableDoubleValue yMeioProperty(){
         return yMeio;
     }
 

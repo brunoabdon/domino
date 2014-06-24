@@ -27,8 +27,8 @@ import br.nom.abdon.domino.Pedra;
  */
 public class CenarioDeJogo extends Group{
 
-    private static final double PROPORCAO_ALTURA_LARGURA_MESA = 1;
-    private static final double PROPORCAO_MESA_REGIAO = 0.95;
+    private static final double PROPORCAO_ALTURA_LARGURA_MESA = 0.7;
+    private static final double PROPORCAO_MESA_REGIAO = 0.75;
     private static final double PROPORCAO_MESA_PEDRA = 20;
 
 //    private final DoubleBinding bndUmPorCentoLarguraDaMesa;
@@ -157,9 +157,9 @@ public class CenarioDeJogo extends Group{
         PedraFx pedraFx = pedras.get(pedra);
 
         if(mesaTaVazia()){
-
             Chicote[] chicotes = 
                 Chicote.inicia(pedraFx, 
+                        this.mesa.heightProperty(),
                         this.mesa.widthProperty(), 
                         this.mesa.layoutXProperty(),
                         this.mesa.layoutYProperty());
