@@ -7,8 +7,10 @@ import javafx.beans.value.ObservableDoubleValue;
  * @author Bruno
  */
 class ReferenciaDimensoes{
-        private static final double PROPORCAO_MESA_PEDRA = 16;
+        private static final double PROPORCAO_MESA_PEDRA = 12;
 
+        final ObservableDoubleValue larguraMesa;
+        final ObservableDoubleValue alturaMesa;
         final ObservableDoubleValue iniXMesa;
         final ObservableDoubleValue iniYMesa;
         final ObservableDoubleValue fimXMesa;
@@ -44,6 +46,9 @@ class ReferenciaDimensoes{
             final DoubleExpression expAlturaMesa = 
                 DoubleExpression.doubleExpression(alturaMesa);
             
+            this.alturaMesa = alturaMesa;
+            this.larguraMesa = larguraMesa;
+            
             this.iniXMesa = offsetXMesa;
             this.iniYMesa = offsetYMesa;
             this.fimXMesa = expLarguraMesa.add(offsetXMesa);
@@ -69,8 +74,7 @@ class ReferenciaDimensoes{
             final ObservableDoubleValue espacoDoMeioPraPontaDaMao = 
                 DoubleExpression.doubleExpression(
                     distanciaEntrePedrasNaMao)
-                    .multiply(2.5)
-                    .add(medataDaLarguraDePedra);
+                    .multiply(2.5);
             
             this.xInicialMaoImpar = 
                 DoubleExpression.doubleExpression(xMeioDaMesa)

@@ -7,17 +7,16 @@ import java.util.function.Function;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleExpression;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
@@ -33,9 +32,6 @@ public class CenarioDeJogo extends Group{
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 0.7;
     private static final double PROPORCAO_MESA_REGIAO = 0.75;
 
-    private static final double ESPACO_ENTRE_PREDRAS_NA_MA0 = 1; /* % */
-    private static final double ESPACO_ENTRE_PREDRAS_E_PAREDE = 3; /* % */
-    
     private static final Random r = new Random();
 
     private final Rectangle mesa;
@@ -45,8 +41,8 @@ public class CenarioDeJogo extends Group{
     
     private final EnumMap<Pedra,PedraFx> pedras;
     
-    private final Text labelJogador1, labelJogador2; 
-    private final Text labelJogador3, labelJogador4; 
+    private final Label labelJogador1, labelJogador2; 
+    private final Label labelJogador3, labelJogador4; 
     
     private final ReferenciaDimensoes referenciaDimensoes;
 
@@ -54,10 +50,8 @@ public class CenarioDeJogo extends Group{
         adicionaEspacinho;
             
     private final Function<ObservableDoubleValue,ObservableDoubleValue>
-        ignoraEspacinho;
+        ignoraEspacinho = (val) -> { return val; };
             
-    
-    
     public CenarioDeJogo() {
         this(PROPORCAO_MESA_REGIAO);
     }
@@ -68,22 +62,19 @@ public class CenarioDeJogo extends Group{
         this.mesa = UtilsFx.retanguloProporcaoFixa(PROPORCAO_ALTURA_LARGURA_MESA);
         this.mesa.setId("mesa");
 
-        final DoubleProperty bndLarguraDaMesa = this.mesa.widthProperty();
-        
         this.referenciaDimensoes = 
             new ReferenciaDimensoes(
                 this.mesa.heightProperty(),
-                bndLarguraDaMesa,
+                this.mesa.widthProperty(),
                 this.mesa.layoutXProperty(),
                 this.mesa.layoutYProperty());
         
         this.adicionaEspacinho = 
             (val) -> { 
                 return adicionaDistancia
-                        .apply(val,referenciaDimensoes.distanciaEntrePedrasNaMao);
+                    .apply(val,referenciaDimensoes.distanciaEntrePedrasNaMao);
         };
-        this.ignoraEspacinho =  (val) -> { return val; };
-        
+
         final double proporcaoAltura = proporcao/PROPORCAO_ALTURA_LARGURA_MESA;
         
         this.parentProperty().addListener((ChangeListener<Parent>)
@@ -92,7 +83,7 @@ public class CenarioDeJogo extends Group{
                 final ObservableDoubleValue bndLarguraJanela = parent.widthProperty();
                 final ObservableDoubleValue bndAlturaJanela = parent.heightProperty();
                 
-                bndLarguraDaMesa.bind(
+                mesa.widthProperty().bind(
                     Bindings.min(
                         Bindings.multiply(bndLarguraJanela,proporcao),
                         Bindings.multiply(bndAlturaJanela, proporcaoAltura)));
@@ -105,17 +96,19 @@ public class CenarioDeJogo extends Group{
 
         pedras = PedraFx.produzJogoCompleto(referenciaDimensoes.larguraPedra);
         
-        this.labelJogador1 = makeLabel(50, -10);
-        this.labelJogador2 = makeLabel( -10,50);
-        this.labelJogador3 = makeLabel(50,110);
-        this.labelJogador4 = makeLabel(110,50);
-    }
-    
-    private Text makeLabel(double x, double y){
-        Text label = new Text();
+        this.labelJogador1 = makeLabel(referenciaDimensoes.xMeioDaMesa, referenciaDimensoes.yMaoBaixo);
+        this.labelJogador2 = makeLabel(referenciaDimensoes.xMaoEsq,referenciaDimensoes.yInicialMaoPar);
+        this.labelJogador3 = makeLabel(referenciaDimensoes.xMeioDaMesa,referenciaDimensoes.yMaoCima);
+        this.labelJogador4 = makeLabel(referenciaDimensoes.xMaoDir,referenciaDimensoes.yInicialMaoPar);
+    } 
+   
+    private Label makeLabel(ObservableDoubleValue x, ObservableDoubleValue y){
+        Label label = new Label();
         label.setFont(Font.font("Sans-Serif", 10));
+
         posicionaNaMesa(label, x, y);
         this.getChildren().add(label);
+
         return label;
     }
     
@@ -158,6 +151,30 @@ public class CenarioDeJogo extends Group{
         UtilsFx.rebind(node.layoutYProperty(), yNaTela);
 
     }
+
+    private void posicionaNaMesa(
+            final Label label, 
+            final double percentX, 
+            final double percentY) {
+        
+        final ObservableDoubleValue xNaTela = xAbs(percentX);
+        final ObservableDoubleValue yNaTela = yAbs(percentY);
+
+        posicionaNaMesa(label, xNaTela, yNaTela);
+        
+    }
+
+    private void posicionaNaMesa(
+            final Label label, 
+            final ObservableDoubleValue xNaTela, 
+            final ObservableDoubleValue yNaTela) {
+
+        ObservableDoubleValue x = label.widthProperty().divide(-2).add(xNaTela);
+        ObservableDoubleValue y = label.heightProperty().divide(-2).add(yNaTela);
+
+        UtilsFx.rebind(label.layoutXProperty(), x);
+        UtilsFx.rebind(label.layoutYProperty(), y);
+    }
     
     private void posicionaNaMesa(
             final PedraFx pedraFx, 
@@ -197,7 +214,6 @@ public class CenarioDeJogo extends Group{
     public void jogaPedra(Pedra pedra, Lado lado){    
         
         PedraFx pedraFx = pedras.get(pedra);
-
         if(mesaTaVazia()){
             Chicote[] chicotes = Chicote.inicia(pedraFx, referenciaDimensoes);
                         
@@ -231,7 +247,6 @@ public class CenarioDeJogo extends Group{
         
         boolean ehPar = cadeiraDoJogador % 2 == 0;
         
-        
         final Direcao direcaoPedras; 
         ObservableDoubleValue x, y;
         
@@ -239,7 +254,9 @@ public class CenarioDeJogo extends Group{
         
         if(ehPar){
             y = referenciaDimensoes.yInicialMaoPar;
-            x = cadeiraDoJogador == 2 ? referenciaDimensoes.xMaoDir : referenciaDimensoes.xMaoEsq;
+            x = cadeiraDoJogador == 2 
+                ? referenciaDimensoes.xMaoDir 
+                : referenciaDimensoes.xMaoEsq;
             
             opX = ignoraEspacinho;
             opY = adicionaEspacinho;
@@ -247,23 +264,26 @@ public class CenarioDeJogo extends Group{
             direcaoPedras = Direcao.PRA_DIREITA;
         } else {
             x = referenciaDimensoes.xInicialMaoImpar;
-            y = cadeiraDoJogador == 1 ? referenciaDimensoes.yMaoBaixo : referenciaDimensoes.yMaoCima;
+            y = cadeiraDoJogador == 1 
+                ? referenciaDimensoes.yMaoBaixo 
+                : referenciaDimensoes.yMaoCima;
 
             opX = adicionaEspacinho;
             opY = ignoraEspacinho;
             
             direcaoPedras = Direcao.PRA_BAIXO;
         }
-            
-
+        
         for (Pedra pedra : mao) {
-            PedraFx pedraFx = pedras.get(pedra);
+            final PedraFx pedraFx = pedras.get(pedra);
             pedraFx.posiciona(direcaoPedras, x, y);
             x = opX.apply(x);
             y = opY.apply(y);
         }
-        
     }
     
+    public void arrumaODorme(final Collection<Pedra> pedras){
+        
+    }
     
 }

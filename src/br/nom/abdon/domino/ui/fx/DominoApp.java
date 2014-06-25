@@ -68,13 +68,13 @@ public class DominoApp extends Application {
         jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.CARROCA_DE_QUINA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.PIO_QUINA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.LIMPO_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.CARROCA_DE_LIMPO,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.PIO_SENA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.LIMPO_DUQUE,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.DUQUE_SENA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.DIREITO));
         
         final Iterator<Jogada> iterator = jogo.iterator();
         cenarioDeJogo.setOnMouseClicked(
@@ -93,7 +93,6 @@ public class DominoApp extends Application {
                             cenarioDeJogo.entregaPedras(i, mao);
                         }
 
-                        
                         cenarioDeJogo.setOnMouseClicked(
                             e3 -> {
                                 if(iterator.hasNext()){
@@ -106,9 +105,6 @@ public class DominoApp extends Application {
                 );
             }
         );
-
-        
-        
     }
 
     private void setCss(Scene scene, String resource) {

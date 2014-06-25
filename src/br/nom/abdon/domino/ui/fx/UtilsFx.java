@@ -159,8 +159,8 @@ public class UtilsFx {
     }
 
     public static Line bindedLine(
-        DoubleExpression startX, DoubleExpression startY, 
-        DoubleExpression endX, DoubleExpression endY){
+        ObservableDoubleValue startX, ObservableDoubleValue startY, 
+        ObservableDoubleValue endX, ObservableDoubleValue endY){
         
         Line linha = new Line(0,0,0,0);
         
