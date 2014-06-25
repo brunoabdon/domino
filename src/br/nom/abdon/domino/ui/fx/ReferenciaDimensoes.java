@@ -83,18 +83,18 @@ class ReferenciaDimensoes{
             this.xMaoEsq = 
                 DoubleExpression
                     .doubleExpression(iniXMesa)
-                    .add(espacoPraParede);
+                    .subtract(espacoPraParede);
             this.xMaoDir = 
                 DoubleExpression
                     .doubleExpression(fimXMesa)
-                    .subtract(espacoPraParede);
+                    .add(espacoPraParede);
             this.yMaoCima = 
                 DoubleExpression
                     .doubleExpression(iniYMesa)
-                    .add(espacoPraParede);
+                    .subtract(espacoPraParede);
             this.yMaoBaixo = 
                 DoubleExpression
                     .doubleExpression(fimYMesa)
-                    .subtract(espacoPraParede);
+                    .add(espacoPraParede);
         }
     }
