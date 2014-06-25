@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package br.nom.abdon.domino.ui.fx;
 
 
@@ -47,20 +41,9 @@ class Chicote {
     
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,
-            DoubleExpression alturaMesa,
-            DoubleExpression larguraMesa,
-            DoubleExpression offsetXMesa,
-            DoubleExpression offsetYMesa){
+            ReferenciaDimensoes referenciaDimensoes){
         
         boolean ehHorizontal = true; //randomizar
-
-        final ReferenciaDimensoes referenciaDimensoes = 
-            new ReferenciaDimensoes(
-                    alturaMesa,
-                    larguraMesa, 
-                    offsetXMesa, 
-                    offsetYMesa,
-                    primeiraPedraFx.heightProperty());
 
         encaixaPrimeiraPedra(
                 primeiraPedraFx, 
@@ -300,48 +283,4 @@ class Chicote {
     }
 }
 
-class ReferenciaDimensoes{
-        final ObservableDoubleValue iniXMesa;
-        final ObservableDoubleValue iniYMesa;
-        final ObservableDoubleValue fimXMesa;
-        final ObservableDoubleValue fimYMesa;
-        final ObservableDoubleValue xMeioDaMesa;
-        final ObservableDoubleValue yMeioDaMesa;
-
-        final ObservableDoubleValue alturaPedra;
-        final ObservableDoubleValue larguraPedra;
-        final ObservableDoubleValue umLadoEMeioDePedra;
-        final ObservableDoubleValue medataDaLarguraDePedra;
-
-        
-        public ReferenciaDimensoes(
-                ObservableDoubleValue alturaMesa,
-                ObservableDoubleValue larguraMesa,
-                ObservableDoubleValue offsetXMesa,
-                ObservableDoubleValue offsetYMesa,
-                ObservableDoubleValue alturaPedra) {
-
-            final DoubleExpression expLarguraMesa = 
-                DoubleExpression.doubleExpression(larguraMesa);
-
-            final DoubleExpression expAlturaMesa = 
-                DoubleExpression.doubleExpression(alturaMesa);
-            
-            this.iniXMesa = offsetXMesa;
-            this.iniYMesa = offsetYMesa;
-            this.fimXMesa = expLarguraMesa.add(offsetXMesa);
-            this.fimYMesa = expAlturaMesa.add(offsetYMesa);
-            
-            this.xMeioDaMesa = expLarguraMesa.divide(2).add(iniXMesa);
-            this.yMeioDaMesa = expAlturaMesa.divide(2).add(iniYMesa);
-            
-            final DoubleExpression expAlturaPedra = 
-                DoubleExpression.doubleExpression(alturaPedra);
-            
-            this.alturaPedra = alturaPedra;
-            this.larguraPedra = expAlturaPedra.divide(2);
-            this.umLadoEMeioDePedra = expAlturaPedra.multiply(0.75);
-            this.medataDaLarguraDePedra = expAlturaPedra.divide(4);
-        }
-    }
 

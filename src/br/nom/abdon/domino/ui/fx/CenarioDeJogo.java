@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -30,7 +31,11 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 0.7;
     private static final double PROPORCAO_MESA_REGIAO = 0.75;
-    private static final double PROPORCAO_MESA_PEDRA = 20;
+    private static final double PROPORCAO_MESA_PEDRA = 16;
+
+    private static final double ESPACO_ENTRE_PREDRAS_NA_MA0 = 1; /* % */
+    private static final double ESPACO_ENTRE_PREDRAS_E_PAREDE = 3; /* % */
+    
     private static final Random r = new Random();
 
     private final Rectangle mesa;
@@ -43,8 +48,7 @@ public class CenarioDeJogo extends Group{
     private final Text labelJogador1, labelJogador2; 
     private final Text labelJogador3, labelJogador4; 
     
-    private final ObservableDoubleValue bndUmPorCentoLarguraDaMesa;
-    private final ObservableDoubleValue bndUmPorCentoAlturaDaMesa;
+    private final ReferenciaDimensoes referenciaDimensoes;
 
     
     
@@ -57,14 +61,17 @@ public class CenarioDeJogo extends Group{
         
         this.mesa = UtilsFx.retanguloProporcaoFixa(PROPORCAO_ALTURA_LARGURA_MESA);
         this.mesa.setId("mesa");
+
+        final DoubleProperty bndLarguraDaMesa = this.mesa.widthProperty();
         
-        final DoubleProperty bndLarguraDaMesa = mesa.widthProperty();
+        this.referenciaDimensoes = 
+            new ReferenciaDimensoes(
+                this.mesa.heightProperty(),
+                bndLarguraDaMesa,
+                this.mesa.layoutXProperty(),
+                this.mesa.layoutYProperty(),
+                bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA));
         
-        final DoubleExpression bndLarguraDasPedras = 
-                bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA);
-        
-        this.bndUmPorCentoLarguraDaMesa = bndLarguraDaMesa.divide(100d);
-        this.bndUmPorCentoAlturaDaMesa = mesa.heightProperty().divide(100d);     
         
         final double proporcaoAltura = proporcao/PROPORCAO_ALTURA_LARGURA_MESA;
         
@@ -85,7 +92,7 @@ public class CenarioDeJogo extends Group{
         
         super.getChildren().add(mesa);
 
-        pedras = PedraFx.produzJogoCompleto(bndLarguraDasPedras);
+        pedras = PedraFx.produzJogoCompleto(referenciaDimensoes.larguraPedra);
         
         this.labelJogador1 = makeLabel(50, -10);
         this.labelJogador2 = makeLabel( -10,50);
@@ -102,19 +109,17 @@ public class CenarioDeJogo extends Group{
     }
     
     public void adicionaPedras(){
-
+        
         final ObservableList<Node> children = this.getChildren();
-
         pedras.values().stream().forEach(
-          pedra -> {
-              posicionaNaMesa(
-                  pedra, 
-                  coordenadaAleatoria(), 
-                  coordenadaAleatoria(),
-                  direcaoAleatoria());
-              
-              children.add(pedra);
-          });
+            pedra -> {
+                posicionaNaMesa(pedra, 
+                    coordenadaAleatoria(), 
+                    coordenadaAleatoria(),
+                    direcaoAleatoria());
+                children.add(pedra);
+            }
+        );
     }
     
     private static double coordenadaAleatoria(){
@@ -157,12 +162,12 @@ public class CenarioDeJogo extends Group{
     
     private ObservableDoubleValue xAbs(double percent){
         return abs(mesa.layoutXProperty(),
-                bndUmPorCentoLarguraDaMesa,
+                referenciaDimensoes.umPorCentoDaLarguraDaMesa,
                 percent);
     }
     private ObservableDoubleValue yAbs(double percent){
         return abs(mesa.layoutYProperty(),
-                bndUmPorCentoAlturaDaMesa,
+                referenciaDimensoes.umPorCentoDaAlturaDaMesa,
                 percent);
     }
     
@@ -183,12 +188,7 @@ public class CenarioDeJogo extends Group{
         PedraFx pedraFx = pedras.get(pedra);
 
         if(mesaTaVazia()){
-            Chicote[] chicotes = 
-                Chicote.inicia(pedraFx, 
-                        this.mesa.heightProperty(),
-                        this.mesa.widthProperty(), 
-                        this.mesa.layoutXProperty(),
-                        this.mesa.layoutYProperty());
+            Chicote[] chicotes = Chicote.inicia(pedraFx, referenciaDimensoes);
                         
             this.chicoteEsquerda = chicotes[0];
             this.chicoteDireita = chicotes[1];
@@ -216,7 +216,29 @@ public class CenarioDeJogo extends Group{
         labelJogador4.setText(nomeJogador4);
     }
     
-    public void entregaPedras(int cadeiraDoJogador, Collection<Pedra> pedras){
+    public void entregaPedras(int cadeiraDoJogador, Collection<Pedra> mao){
+        final Direcao direcaoPedras = 
+            cadeiraDoJogador == 1 || cadeiraDoJogador == 3
+            ? Direcao.PRA_BAIXO
+            : Direcao.PRA_DIREITA;
+        
+        final DoubleBinding espacoEntrePedrasNaMao = DoubleExpression.doubleExpression(referenciaDimensoes.larguraPedra).divide(4).multiply(2);
+        
+        DoubleExpression x = 
+            DoubleExpression.doubleExpression(referenciaDimensoes.xMeioDaMesa)
+            .subtract(DoubleExpression.doubleExpression(referenciaDimensoes.larguraPedra).multiply(3))
+            .subtract(espacoEntrePedrasNaMao);
+
+        final ObservableDoubleValue y = 
+            DoubleExpression.doubleExpression(referenciaDimensoes.fimYMesa)
+            .subtract(DoubleExpression.doubleExpression(referenciaDimensoes.alturaPedra).multiply(1.1d));
+        
+        for (Pedra pedra : mao) {
+            PedraFx pedraFx = pedras.get(pedra);
+            pedraFx.posiciona(direcaoPedras, x, y);
+            x = x.add(referenciaDimensoes.larguraPedra)
+                .add(espacoEntrePedrasNaMao);
+        }
         
     }
     

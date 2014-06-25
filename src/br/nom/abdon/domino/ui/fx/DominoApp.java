@@ -6,9 +6,11 @@
 
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -75,18 +77,29 @@ public class DominoApp extends Application {
         final Iterator<Jogada> iterator = jogo.iterator();
         cenarioDeJogo.setOnMouseClicked(
             e -> {
-                    cenarioDeJogo.adicionaPedras();
-                    cenarioDeJogo.sentaJogadores("Bruno", "Ronaldo", "Igor", "Eudes");
-                    cenarioDeJogo.setOnMouseClicked(
-                       e2 -> {
-                           if(iterator.hasNext()){
-                            Jogada jogada = iterator.next();
-                            cenarioDeJogo.jogaPedra(jogada.getPedra(), jogada.getLado());
-                           }
-                       }
-                    );
-                    
-                    
+                cenarioDeJogo.adicionaPedras();
+                cenarioDeJogo.sentaJogadores("Bruno", "Ronaldo", "Igor", "Eudes");
+                cenarioDeJogo.setOnMouseClicked(
+                    e2 -> {
+                        Collection<Pedra> mao = new LinkedList<>();
+                        mao.add(Pedra.PIO_SENA);
+                        mao.add(Pedra.PIO_QUINA);
+                        mao.add(Pedra.QUADRA_QUINA);
+                        mao.add(Pedra.TERNO_QUADRA);
+                        mao.add(Pedra.LIMPO_DUQUE);
+                        mao.add(Pedra.CARROCA_DE_DUQUE);
+                            
+                        cenarioDeJogo.entregaPedras(1, mao);
+                        cenarioDeJogo.setOnMouseClicked(
+                            e3 -> {
+                                if(iterator.hasNext()){
+                                    Jogada jogada = iterator.next();
+                                    cenarioDeJogo.jogaPedra(jogada.getPedra(), jogada.getLado());
+                                } 
+                            }
+                        );
+                    }
+                );
             }
         );
 

@@ -45,7 +45,8 @@ public class PedraFx extends Group {
     
     private final static Random randomizer = new Random();
 
-    public static EnumMap<Pedra,PedraFx> produzJogoCompleto(DoubleExpression widthBinding){
+    public static EnumMap<Pedra,PedraFx> produzJogoCompleto(
+            ObservableDoubleValue widthBinding){
         
         final Prototype prototype = new Prototype(widthBinding);
         
@@ -98,9 +99,8 @@ public class PedraFx extends Group {
 
     private Line fazLinhaDoMeio() {
         Line linhaDoMeio = new Line();
-        final DoubleProperty propWidthLinha = linhaDoMeio.endXProperty();
-        propWidthLinha.bind(this.prototype.quartoQuintosDaLargura);
-        linhaDoMeio.strokeWidthProperty().bind(propWidthLinha.divide(20));
+        linhaDoMeio.endXProperty().bind(this.prototype.tamanhoDaLinha);
+        linhaDoMeio.strokeWidthProperty().bind(this.prototype.grossuraDaLinha);
         linhaDoMeio.layoutXProperty().bind(this.prototype.umVigesimoDaAltura);
         linhaDoMeio.layoutYProperty().bind(this.prototype.widthProperty);
         linhaDoMeio.getStyleClass().add("linhaDePedra");
@@ -128,11 +128,11 @@ public class PedraFx extends Group {
         final Group grupoDePontinhos = new Group();
         final ObservableList<Node> pontinhos = grupoDePontinhos.getChildren();
 
-        final BiConsumer<DoubleExpression, DoubleExpression> colocaPontinho = 
+        final BiConsumer<ObservableDoubleValue, ObservableDoubleValue> colocaPontinho = 
                 (x,y) -> pontinhos.add(prototype.colocaPontinho.apply(x,y));
         
-        final DoubleExpression esquerda, meio, direita;
-        final DoubleExpression primeiraLinha, linhaDoMeio, linhaDeBaixo;
+        final ObservableDoubleValue esquerda, meio, direita;
+        final ObservableDoubleValue primeiraLinha, linhaDoMeio, linhaDeBaixo;
 
         esquerda = primeiraLinha = this.prototype.umQuintoDaLargura;
         meio = linhaDoMeio = this.prototype.metadeDaLargura; 
@@ -164,11 +164,8 @@ public class PedraFx extends Group {
 
     private Rectangle fazRetangulo() {
         final Rectangle retangulo = UtilsFx.retanguloProporcaoFixa(1, 2); 
-        final DoubleProperty propAltura = retangulo.heightProperty();
-        
-        final DoubleProperty propriedadeTamArco = retangulo.arcHeightProperty();
-        propriedadeTamArco.bind(propAltura.divide(8));
-        retangulo.arcWidthProperty().bind(propriedadeTamArco);
+        retangulo.arcHeightProperty().bind(this.prototype.arcoDoRetangulo);
+        retangulo.arcWidthProperty().bind(this.prototype.arcoDoRetangulo);
         return retangulo;
     }
     
@@ -236,8 +233,8 @@ public class PedraFx extends Group {
             () ->  {
                 final double gap = 
                     coordenadaEhHorizontal
-                        ? this.prototype.metadeDaLargura.getValue()
-                        : this.prototype.metadeDaAltura.getValue();
+                        ? this.prototype.metadeDaLargura.get()
+                        : this.prototype.metadeDaAltura.get();
                     
                 return coordenada.get() - gap;
             }, coordenada, this.direcao, this.prototype.widthProperty); 
@@ -246,16 +243,20 @@ public class PedraFx extends Group {
     
     static class Prototype {
         
-        final DoubleExpression widthProperty;
-        final DoubleExpression heightProperty;
-        final DoubleExpression quartoQuintosDaLargura;
-        final DoubleExpression umVigesimoDaAltura;
-        final DoubleExpression nonaParteDaLargura;
-        final DoubleExpression umQuintoDaLargura;
-        final DoubleExpression metadeDaLargura;
-        final DoubleExpression metadeDaAltura;
+        final ObservableDoubleValue widthProperty;
+        final ObservableDoubleValue heightProperty;
+        final ObservableDoubleValue quartoQuintosDaLargura;
+        final ObservableDoubleValue umVigesimoDaAltura;
+        final ObservableDoubleValue nonaParteDaLargura;
+        final ObservableDoubleValue umQuintoDaLargura;
+        final ObservableDoubleValue metadeDaLargura;
+        final ObservableDoubleValue metadeDaAltura;
+        final ObservableDoubleValue tamanhoDaLinha;
+        final ObservableDoubleValue grossuraDaLinha;
+        final ObservableDoubleValue arcoDoRetangulo;
         
-        final BiFunction<DoubleExpression, DoubleExpression, Circle> colocaPontinho =
+        final BiFunction<ObservableDoubleValue, ObservableDoubleValue, Circle> 
+            colocaPontinho =
             (x,y) -> {
                     Circle pontinho = new Circle();
                     pontinho.radiusProperty().bind(this.nonaParteDaLargura);
@@ -266,20 +267,26 @@ public class PedraFx extends Group {
                 };
         
         
-        public Prototype(DoubleExpression widthProperty) {
-            this.widthProperty = widthProperty;
-            this.heightProperty = widthProperty.multiply(2);
-            this.quartoQuintosDaLargura = widthProperty.multiply(0.8);
-            this.umVigesimoDaAltura = widthProperty.divide(10);
-            this.nonaParteDaLargura =  widthProperty.divide(9);
+        public Prototype(ObservableDoubleValue larguraPedra) {
             
-            this.umQuintoDaLargura = this.widthProperty.multiply(1d/5d);
-            this.metadeDaLargura = this.widthProperty.divide(2);
+            final DoubleExpression expLargura = 
+                DoubleExpression.doubleExpression(larguraPedra);
+            
+            this.widthProperty = larguraPedra;
+            this.heightProperty = expLargura.multiply(2);
+            this.quartoQuintosDaLargura = expLargura.multiply(0.8);
+            this.umVigesimoDaAltura = expLargura.divide(10);
+            this.nonaParteDaLargura =  expLargura.divide(9);
+            
+            this.umQuintoDaLargura = expLargura.multiply(1d/5d);
+            this.metadeDaLargura = expLargura.divide(2);
             this.metadeDaAltura = widthProperty;
+            
+            this.tamanhoDaLinha = quartoQuintosDaLargura;
+            this.grossuraDaLinha = 
+                DoubleExpression.doubleExpression(tamanhoDaLinha).divide(20);
+            
+            this.arcoDoRetangulo = expLargura.divide(4);
         }
     }
 }
-    
-    
-    
-    
