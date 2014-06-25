@@ -3,9 +3,9 @@ package br.nom.abdon.domino.ui.fx;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Random;
+import java.util.function.Function;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
+import static br.nom.abdon.domino.ui.fx.UtilsFx.adicionaDistancia;
 
 
 /**
@@ -31,7 +32,6 @@ public class CenarioDeJogo extends Group{
 
     private static final double PROPORCAO_ALTURA_LARGURA_MESA = 0.7;
     private static final double PROPORCAO_MESA_REGIAO = 0.75;
-    private static final double PROPORCAO_MESA_PEDRA = 16;
 
     private static final double ESPACO_ENTRE_PREDRAS_NA_MA0 = 1; /* % */
     private static final double ESPACO_ENTRE_PREDRAS_E_PAREDE = 3; /* % */
@@ -50,6 +50,12 @@ public class CenarioDeJogo extends Group{
     
     private final ReferenciaDimensoes referenciaDimensoes;
 
+    private final Function<ObservableDoubleValue,ObservableDoubleValue>
+        adicionaEspacinho;
+            
+    private final Function<ObservableDoubleValue,ObservableDoubleValue>
+        ignoraEspacinho;
+            
     
     
     public CenarioDeJogo() {
@@ -69,9 +75,14 @@ public class CenarioDeJogo extends Group{
                 this.mesa.heightProperty(),
                 bndLarguraDaMesa,
                 this.mesa.layoutXProperty(),
-                this.mesa.layoutYProperty(),
-                bndLarguraDaMesa.divide(PROPORCAO_MESA_PEDRA));
+                this.mesa.layoutYProperty());
         
+        this.adicionaEspacinho = 
+            (val) -> { 
+                return adicionaDistancia
+                        .apply(val,referenciaDimensoes.distanciaEntrePedrasNaMao);
+        };
+        this.ignoraEspacinho =  (val) -> { return val; };
         
         final double proporcaoAltura = proporcao/PROPORCAO_ALTURA_LARGURA_MESA;
         
@@ -217,27 +228,39 @@ public class CenarioDeJogo extends Group{
     }
     
     public void entregaPedras(int cadeiraDoJogador, Collection<Pedra> mao){
-        final Direcao direcaoPedras = 
-            cadeiraDoJogador == 1 || cadeiraDoJogador == 3
-            ? Direcao.PRA_BAIXO
-            : Direcao.PRA_DIREITA;
         
-        final DoubleBinding espacoEntrePedrasNaMao = DoubleExpression.doubleExpression(referenciaDimensoes.larguraPedra).divide(4).multiply(2);
+        boolean ehPar = cadeiraDoJogador % 2 == 0;
         
-        DoubleExpression x = 
-            DoubleExpression.doubleExpression(referenciaDimensoes.xMeioDaMesa)
-            .subtract(DoubleExpression.doubleExpression(referenciaDimensoes.larguraPedra).multiply(3))
-            .subtract(espacoEntrePedrasNaMao);
+        
+        final Direcao direcaoPedras; 
+        ObservableDoubleValue x, y;
+        
+        final Function<ObservableDoubleValue, ObservableDoubleValue> opX, opY;
+        
+        if(ehPar){
+            y = referenciaDimensoes.yInicialMaoPar;
+            x = cadeiraDoJogador == 2 ? referenciaDimensoes.xMaoDir : referenciaDimensoes.xMaoEsq;
+            
+            opX = ignoraEspacinho;
+            opY = adicionaEspacinho;
+            
+            direcaoPedras = Direcao.PRA_DIREITA;
+        } else {
+            x = referenciaDimensoes.xInicialMaoImpar;
+            y = cadeiraDoJogador == 1 ? referenciaDimensoes.yMaoBaixo : referenciaDimensoes.yMaoCima;
 
-        final ObservableDoubleValue y = 
-            DoubleExpression.doubleExpression(referenciaDimensoes.fimYMesa)
-            .subtract(DoubleExpression.doubleExpression(referenciaDimensoes.alturaPedra).multiply(1.1d));
-        
+            opX = adicionaEspacinho;
+            opY = ignoraEspacinho;
+            
+            direcaoPedras = Direcao.PRA_BAIXO;
+        }
+            
+
         for (Pedra pedra : mao) {
             PedraFx pedraFx = pedras.get(pedra);
             pedraFx.posiciona(direcaoPedras, x, y);
-            x = x.add(referenciaDimensoes.larguraPedra)
-                .add(espacoEntrePedrasNaMao);
+            x = opX.apply(x);
+            y = opY.apply(y);
         }
         
     }

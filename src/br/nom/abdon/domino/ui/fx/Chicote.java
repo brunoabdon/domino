@@ -4,12 +4,15 @@ package br.nom.abdon.domino.ui.fx;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
-import javafx.beans.binding.DoubleExpression;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.geometry.Bounds;
 
 import br.nom.abdon.domino.Numero;
 import br.nom.abdon.domino.Pedra;
+import static br.nom.abdon.domino.ui.fx.UtilsFx.adicionaDistancia;
+import static br.nom.abdon.domino.ui.fx.UtilsFx.ignoraDistancia;
+import static br.nom.abdon.domino.ui.fx.UtilsFx.subtraiDistancia;
+
 
 /**
  *
@@ -22,22 +25,6 @@ class Chicote {
 
     private final ReferenciaDimensoes referenciaDeDimensoes;
 
-    private static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
-        adicionaDistancia = 
-            (prop,distancia) -> {
-                return DoubleExpression.doubleExpression(prop).add(distancia);
-        };
-    
-    private static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
-        subtraiDistancia = 
-            (prop,distancia) -> {
-                return DoubleExpression.doubleExpression(prop).subtract(distancia);
-        };
-    
-    private static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
-        ignoraDistancia = (prop,distancia) -> {
-            return prop;
-        };
     
     public static Chicote[] inicia(
             PedraFx primeiraPedraFx,

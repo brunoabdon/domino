@@ -6,7 +6,9 @@
 
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,15 +83,17 @@ public class DominoApp extends Application {
                 cenarioDeJogo.sentaJogadores("Bruno", "Ronaldo", "Igor", "Eudes");
                 cenarioDeJogo.setOnMouseClicked(
                     e2 -> {
-                        Collection<Pedra> mao = new LinkedList<>();
-                        mao.add(Pedra.PIO_SENA);
-                        mao.add(Pedra.PIO_QUINA);
-                        mao.add(Pedra.QUADRA_QUINA);
-                        mao.add(Pedra.TERNO_QUADRA);
-                        mao.add(Pedra.LIMPO_DUQUE);
-                        mao.add(Pedra.CARROCA_DE_DUQUE);
-                            
-                        cenarioDeJogo.entregaPedras(1, mao);
+                        
+                        final List<Pedra> pedras = Arrays.asList(Pedra.values());
+                        Collections.shuffle(pedras);
+
+                        //distribui as maos dos 4 jogadores
+                        for (int i = 0, idx = 0; i < 4; i++) {
+                            final Collection<Pedra> mao = pedras.subList(idx, idx+=6); //imutavel
+                            cenarioDeJogo.entregaPedras(i, mao);
+                        }
+
+                        
                         cenarioDeJogo.setOnMouseClicked(
                             e3 -> {
                                 if(iterator.hasNext()){
