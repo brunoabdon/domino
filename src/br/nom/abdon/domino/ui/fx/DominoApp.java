@@ -6,6 +6,9 @@
 
 package br.nom.abdon.domino.ui.fx;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,34 +68,43 @@ public class DominoApp extends Application {
         jogo.add(new Jogada(Pedra.QUADRA_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.TERNO_QUINA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.CARROCA_DE_QUINA,Lado.ESQUERDO));
-        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.PIO_QUINA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.LIMPO_SENA,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.CARROCA_DE_LIMPO,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.PIO_SENA,Lado.ESQUERDO));
         jogo.add(new Jogada(Pedra.LIMPO_DUQUE,Lado.DIREITO));
         jogo.add(new Jogada(Pedra.DUQUE_SENA,Lado.DIREITO));
+        jogo.add(new Jogada(Pedra.CARROCA_DE_SENA,Lado.DIREITO));
         
         final Iterator<Jogada> iterator = jogo.iterator();
         cenarioDeJogo.setOnMouseClicked(
             e -> {
-                    cenarioDeJogo.adicionaPedras();
-                    cenarioDeJogo.sentaJogadores("Bruno", "Ronaldo", "Igor", "Eudes");
-                    cenarioDeJogo.setOnMouseClicked(
-                       e2 -> {
-                           if(iterator.hasNext()){
-                            Jogada jogada = iterator.next();
-                            cenarioDeJogo.jogaPedra(jogada.getPedra(), jogada.getLado());
-                           }
-                       }
-                    );
-                    
-                    
+                cenarioDeJogo.adicionaPedras();
+                cenarioDeJogo.sentaJogadores("Bruno", "Ronaldo", "Igor", "Eudes");
+                cenarioDeJogo.setOnMouseClicked(
+                    e2 -> {
+                        
+                        final List<Pedra> pedras = Arrays.asList(Pedra.values());
+                        Collections.shuffle(pedras);
+
+                        //distribui as maos dos 4 jogadores
+                        for (int i = 0, idx = 0; i < 4; i++) {
+                            final Collection<Pedra> mao = pedras.subList(idx, idx+=6); //imutavel
+                            cenarioDeJogo.entregaPedras(i, mao);
+                        }
+
+                        cenarioDeJogo.setOnMouseClicked(
+                            e3 -> {
+                                if(iterator.hasNext()){
+                                    Jogada jogada = iterator.next();
+                                    cenarioDeJogo.jogaPedra(jogada.getPedra(), jogada.getLado());
+                                } 
+                            }
+                        );
+                    }
+                );
             }
         );
-
-        
-        
     }
 
     private void setCss(Scene scene, String resource) {

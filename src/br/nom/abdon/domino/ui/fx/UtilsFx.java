@@ -8,6 +8,7 @@ package br.nom.abdon.domino.ui.fx;
 
 
 import java.util.Collection;
+import java.util.function.BiFunction;
 
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -15,6 +16,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
@@ -29,6 +31,23 @@ import javafx.scene.text.Text;
  */
 public class UtilsFx {
 
+    public static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
+        adicionaDistancia = 
+            (prop,distancia) -> {
+                return DoubleExpression.doubleExpression(prop).add(distancia);
+        };
+    
+    public static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
+        subtraiDistancia = 
+            (prop,distancia) -> {
+                return DoubleExpression.doubleExpression(prop).subtract(distancia);
+        };
+    
+    public static final BiFunction<ObservableDoubleValue, ObservableDoubleValue, ObservableDoubleValue> 
+        ignoraDistancia = (prop,distancia) -> {
+            return prop;
+        };
+
     public static final Rectangle retanguloProporcaoFixa(double proporcaoAlturaLargura){
         return retanguloProporcaoFixa(1,proporcaoAlturaLargura);
     }
@@ -37,7 +56,6 @@ public class UtilsFx {
         Rectangle rectangle = new Rectangle(largura,largura*proporcaoAlturaLargura);
         rectangle.heightProperty().bind(rectangle.widthProperty().multiply(proporcaoAlturaLargura));
         return rectangle;
-        
     }
 
     public static void centraliza(Region externo, Rectangle interno) {
@@ -53,12 +71,12 @@ public class UtilsFx {
     
     public static void centraliza(Region externo, Region interno) {
         centraliza(
-                externo.widthProperty(),
-                externo.heightProperty(),
-                interno.widthProperty(),
-                interno.heightProperty(),
-                interno.layoutXProperty(),
-                interno.layoutYProperty()
+            externo.widthProperty(),
+            externo.heightProperty(),
+            interno.widthProperty(),
+            interno.heightProperty(),
+            interno.layoutXProperty(),
+            interno.layoutYProperty()
         );
     }
     
@@ -99,12 +117,12 @@ public class UtilsFx {
             Collection<Node> children){
 
         UtilsFx.apontaProAlvo(
-                node,
-                parent.layoutXProperty(), 
-                parent.layoutYProperty(), 
-                parent.widthProperty(),
-                parent.heightProperty(), 
-                children);
+            node,
+            parent.layoutXProperty(), 
+            parent.layoutYProperty(), 
+            parent.widthProperty(),
+            parent.heightProperty(), 
+            children);
     }
 
     
@@ -117,16 +135,16 @@ public class UtilsFx {
             Collection<Node> children){
         
         Line linhah = bindedLine(
-                parentLayoutX,
-                node.layoutYProperty(),
-                parentLayoutX.add(parentWidth),
-                node.layoutYProperty());
+            parentLayoutX,
+            node.layoutYProperty(),
+            parentLayoutX.add(parentWidth),
+            node.layoutYProperty());
 
         Line linhav = bindedLine(
-                node.layoutXProperty(),
-                parentLayoutY,
-                node.layoutXProperty(),
-                parentLayoutY.add(parentHeight));
+            node.layoutXProperty(),
+            parentLayoutY,
+            node.layoutXProperty(),
+            parentLayoutY.add(parentHeight));
                 
         final DoubleExpression textGap = parentWidth.divide(40);
         
@@ -141,8 +159,8 @@ public class UtilsFx {
     }
 
     public static Line bindedLine(
-        DoubleExpression startX, DoubleExpression startY, 
-        DoubleExpression endX, DoubleExpression endY){
+        ObservableDoubleValue startX, ObservableDoubleValue startY, 
+        ObservableDoubleValue endX, ObservableDoubleValue endY){
         
         Line linha = new Line(0,0,0,0);
         
