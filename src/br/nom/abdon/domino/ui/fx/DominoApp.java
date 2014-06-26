@@ -9,6 +9,7 @@ package br.nom.abdon.domino.ui.fx;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
