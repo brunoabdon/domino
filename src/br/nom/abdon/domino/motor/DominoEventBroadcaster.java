@@ -130,6 +130,17 @@ class DominoEventBroadcaster implements
     }
 
     @Override
+    public void decididoQuemComeca(
+            int jogador, boolean consentimentoMutuo) {
+        broadCastEvent(eventListeners,
+            (eventListener) -> {
+                eventListener.decididoQuemComeca(
+                    jogador, consentimentoMutuo);
+            }
+        );
+    }
+
+    @Override
     public void jogoComecou(
             String nomeDoJogador1, String nomeDoJogador2, 
             String nomeDoJogador3, String nomeDoJogador4) {

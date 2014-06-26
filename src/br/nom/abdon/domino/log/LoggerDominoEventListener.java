@@ -44,12 +44,37 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         imprimePlacar(pontosDupla1,pontosDupla2);
         imprimeUmaBarrinha();	
     }
+    
+    @Override
+    public void decididoQuemComeca(int jogador, boolean consentimentoMutuo){
+        int companheiro = jogador + (jogador < 3 ? 2 : -2);
+        
+        String nomeJogadorQueComecou = nomeDosJogadores[jogador-1];
+        String nomeCompanheiro = nomeDosJogadores[companheiro-1];
+        this.printStream.print("-");	
+        this.printStream.print(nomeCompanheiro);
+        this.printStream.println(": Quer começar?");
+        this.printStream.print("-");	
+        this.printStream.print(nomeJogadorQueComecou);
+        this.printStream.print(": Quero.\n-");
+        this.printStream.print(nomeCompanheiro);
+        
+        if(consentimentoMutuo){
+            this.printStream.println(": Vai la.");
+        } else {
+            this.printStream.print(": Eu tambem.\n[");
+            this.printStream.print(nomeJogadorQueComecou);
+            this.printStream.println(" escolhido aleatoriamente]");
+        }
+        imprimeUmaBarrinha();
+    }
+
 
     @Override
     public void jogadorRecebeuPedras(int quemFoi, Collection<Pedra> pedras) {
         this.printStream.println("Mão de " + nomeDosJogadores[quemFoi-1] + ":");
         pedras.stream().forEach(
-                (pedra) -> printStream.println(formataPedra(pedra, 20)));
+            (pedra) -> printStream.println(formataPedra(pedra, 20)));
 
         contadorRecebimentoDePedra++;
         if(contadorRecebimentoDePedra == 4){
@@ -84,7 +109,6 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         }
 
         this.printStream.println(sb);
-
     }
 
     @Override

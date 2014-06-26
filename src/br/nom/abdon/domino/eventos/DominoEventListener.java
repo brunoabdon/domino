@@ -48,6 +48,27 @@ public interface DominoEventListener {
     }
 
     /**
+     * Foi definido, por consentimento ou aleatoriamente, que {@link Jogador} da
+     * dupla que ganhou a partida anterior vai começar a partida.
+     * 
+     * A decisão é todmada {@link Jogador#vontadeDeComecar() peguntando-se a 
+     * cada jogador da dupla o quanto ele quer começar a partida}. Quando um dos
+     * dois "quer" mais que o outro, diz-se que a decisão foi tomada por 
+     * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer 
+     * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve
+     * consentimento mútuo na decisão.
+     * 
+     * @param jogador O jogador (identificado pelo número da cadeira que sentou)
+     * que vai começar a partida.
+     * @param consentimentoMutuo Diz se a decisão foi tomanda por consentimento
+     * mútuo, ou se o jogador teve que ser escolhido aleatoriamente.
+     */
+    public default void decididoQuemComeca(
+        int jogador, boolean consentimentoMutuo){
+        
+    }
+    
+    /**
      * Um determinado {@link Jogador} {@link Jogada jogou} uma {@link Pedra} (e 
      * nao {@link Jogada#TOQUE tocou}). (Se ele tiver batido, além desse evento, 
      * também ocorrerá {@link #jogadorBateu(String, Vitoria)}

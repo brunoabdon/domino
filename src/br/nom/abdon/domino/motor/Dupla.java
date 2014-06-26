@@ -37,8 +37,8 @@ class Dupla {
     }
 
     /**
-     * Retorna 0 se o Jogador1 for começar 
-     * ou 1 se o Jogador 2 for começar;
+     * Retorna um número negativo se o Jogador1 for começar, positivo se o 
+     * Jogador 2 for começar, ou zero caso empatem na vontade.
      * 
      * @return O que eu acabei de dizer;
      * @throws BugDeJogadorException Se algum jogador se enrolar até pra dizer 
@@ -50,9 +50,7 @@ class Dupla {
 
             int vontadeDo2 = jogador2.vontadeDeComecar();
             validaVontade(vontadeDo2,jogador2);
-
-            //se empatar, dane-se. comeca qualquer um. vai o 2.
-            return vontadeDo1 > vontadeDo2 ? 0 : 1; 
+            return vontadeDo1 - vontadeDo2; 
     }
 
     private void validaVontade(int vontade, Jogador jogador) 

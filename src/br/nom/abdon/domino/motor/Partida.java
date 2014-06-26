@@ -1,6 +1,7 @@
 package br.nom.abdon.domino.motor;
 
 import java.util.Collection;
+import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -16,17 +17,19 @@ class Partida {
     private final MesaImpl mesa;
 
     private final OmniscientDominoEventListener eventListener;
+    
+    private static final Random r = new Random();
 
     Partida(
-        MesaImpl mesa,
-        OmniscientDominoEventListener eventListener) {
+        final MesaImpl mesa,
+        final OmniscientDominoEventListener eventListener) {
 
         this.mesa = mesa;
         this.eventListener = eventListener;
     }
 
     protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
-        throws BugDeJogadorException{
+            throws BugDeJogadorException{
 
         mesa.embaralhaEdistribui();
         
@@ -213,9 +216,23 @@ class Partida {
             throws BugDeJogadorException {
             
         final int quemDaDuplaComeca = duplaQueComeca.quemComeca();
-        return duplaQueComeca == mesa.getDupla1()
-                ? quemDaDuplaComeca * 2 
-                : ((quemDaDuplaComeca * 2) + 1);    
+        
+        final boolean houveConsenso = quemDaDuplaComeca != 0;
+
+        final boolean comecaOJogador1 = 
+            houveConsenso ? quemDaDuplaComeca < 0: r.nextBoolean();
+        
+        final JogadorWrapper jogadorQueComeca = 
+            comecaOJogador1 ? 
+                duplaQueComeca.getJogador1():
+                duplaQueComeca.getJogador2();
+        
+        final int cadeiraDoJogadorQueComeca = jogadorQueComeca.getCadeira();
+        
+        this.eventListener.decididoQuemComeca(
+            cadeiraDoJogadorQueComeca, houveConsenso);
+        
+        return cadeiraDoJogadorQueComeca-1; //vez
     }
 
     /**
@@ -223,10 +240,8 @@ class Partida {
      * Jogador} que tiver a maior {@link Pedra#isCarroca() carroça} na mão.
      * 
      * O jogador será definido e será 
-     * {@link Jogador#joga(br.nom.abdon.domino.Mesa) chamado a jogar}. Sua 
-     * {@link Jogada} será validada, devendo ser obrigatoriamente a maior
-     * carroça.
-     * 
+     * {@link Jogador#joga() chamado a jogar}. Sua {@link Jogada} será validada,
+     * devendo ser obrigatoriamente a maior carroça.
      * 
      * @return A vez do próximo jogador a jogar.
      * 
