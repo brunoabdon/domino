@@ -8,6 +8,7 @@ import javafx.concurrent.Task;
 
 import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
+import br.nom.abdon.domino.exemplos.JogadorMamao;
 import br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca;
 import br.nom.abdon.domino.motor.JogadorWrapper;
 import br.nom.abdon.domino.motor.Jogo;
@@ -31,13 +32,13 @@ public class JogosTask extends Task<Void> implements DominoEventListener{
     
     @Override
     protected Void call() throws Exception {
-        JogadorWrapper j1 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Bruno");
-        JogadorWrapper j2 = new JogadorWrapper(new JogadorMaxMao(), "Ronaldo");
-        JogadorWrapper j3 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Igor");
-        JogadorWrapper j4 = new JogadorWrapper(new JogadorMaxMao(), "Eudes");
+        final JogadorWrapper j1 = new JogadorWrapper(new JogadorMaxMao(), "Bruno");
+        final JogadorWrapper j2 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Ronaldo");
+        final JogadorWrapper j3 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Igor");
+        final JogadorWrapper j4 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Eudes");
 
         for (long i = 0; i < 90000000; i++) {
-            Jogo jogo = new Jogo(j1, j2, j3, j4);
+            final Jogo jogo = new Jogo(j1, j2, j3, j4);
             jogo.addEventListener(this);
             jogo.jogar();
             if(i%100==0) Thread.sleep(10);
@@ -52,8 +53,8 @@ public class JogosTask extends Task<Void> implements DominoEventListener{
     }
 
     @Override
-    public void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria) {
-        IntegerProperty placar = 
+    public void jogadorBateu(final int quemFoi, final Vitoria tipoDeVitoria) {
+        final IntegerProperty placar = 
             (quemFoi == 1 || quemFoi == 3)
             ? vitoriasDupla1
             : vitoriasDupla2;
@@ -62,12 +63,8 @@ public class JogosTask extends Task<Void> implements DominoEventListener{
     }
  
  
-    public void incrementaPlacar(IntegerProperty prop) {
+    public void incrementaPlacar(final IntegerProperty prop) {
         Platform.runLater(() ->  prop.set(prop.get()+1));
     }
-
-    
-    
-    
     
 }

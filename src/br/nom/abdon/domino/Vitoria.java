@@ -24,6 +24,6 @@ public enum Vitoria {
      * @return Quantos pontos vale a vitória.
      */
     public int getPontos(){
-            return this.pontos;
+        return this.pontos;
     }
 }

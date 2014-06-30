@@ -117,9 +117,9 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         if (jogada == null) {
             
             Lado ladoDepreciado = 
-                    ladoPreferencial == Lado.ESQUERDO 
-                        ? Lado.DIREITO 
-                        : Lado.ESQUERDO;
+                ladoPreferencial == Lado.ESQUERDO 
+                    ? Lado.DIREITO 
+                    : Lado.ESQUERDO;
             
             jogada = pegaJogadaDeCarroca(mesa, ladoDepreciado);
         }
