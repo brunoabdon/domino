@@ -81,15 +81,17 @@ public class Jogo {
                 }
             }
 
-            this.eventBroadcaster.jogoAcabou(mesa.getDupla1().getPontos(), mesa.getDupla2().getPontos());
+            this.eventBroadcaster.jogoAcabou(
+                mesa.getDupla1().getPontos(), 
+                mesa.getDupla2().getPontos());
 
         } catch (BugDeJogadorException e) {
-                System.err.println("Jogador " + e.getJogadorBuguento() + " fez merda.");
-                Pedra pedra = e.getPedra();
-                if(pedra  != null){
-                        System.err.println(pedra);
-                }
-                e.printStackTrace();
+            System.err.println("Jogador " + e.getJogadorBuguento() + " fez merda.");
+            Pedra pedra = e.getPedra();
+            if(pedra != null){
+                System.err.println(pedra);
+            }
+            e.printStackTrace(System.err);
         }
     }
 
@@ -115,7 +117,8 @@ public class Jogo {
             final Jogador jogador) {
 
         if(jogador instanceof DominoEventListener){
-            eventBroadcaster.addEventListener((DominoEventListener)jogador,false);
+            eventBroadcaster
+                .addEventListener((DominoEventListener)jogador,false);
         }
     }
 
@@ -124,14 +127,14 @@ public class Jogo {
     }
 
     private void atualizaPlacar(
-        final Dupla duplaDoVencdor, 
+        final Dupla duplaDoVencedor, 
         final Vitoria tipoDeBatida, 
         final int multiplicadorDobrada) {
         
         final int pontosDaPartida = 
-                tipoDeBatida.getPontos() * multiplicadorDobrada;
+            tipoDeBatida.getPontos() * multiplicadorDobrada;
         
-        duplaDoVencdor.adicionaPontos(pontosDaPartida);
+        duplaDoVencedor.adicionaPontos(pontosDaPartida);
     }
 
     private boolean alguemVenceu() {
@@ -139,6 +142,6 @@ public class Jogo {
     }
 
     public void addEventListener(final DominoEventListener eventListener) {
-            this.eventBroadcaster.addEventListener(eventListener,true);
+        this.eventBroadcaster.addEventListener(eventListener,true);
     }
 }
