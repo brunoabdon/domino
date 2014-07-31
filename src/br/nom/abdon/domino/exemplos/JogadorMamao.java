@@ -102,7 +102,7 @@ public class JogadorMamao implements Jogador {
             mao.remove(pedraPraJogar);
             //criando a jogada: a pedra que escolhi e a cabeça em que vou 
             //colocar ela.
-            jogada = new Jogada(pedraPraJogar,ladoDeJogar);
+            jogada = Jogada.joga(pedraPraJogar,ladoDeJogar);
         }
         //retornando a jogada
         return jogada; 

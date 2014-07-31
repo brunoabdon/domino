@@ -185,7 +185,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      */
     private Jogada fazJogadaCarroca(final int indexNoArrayDeCarrocas) {
         Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
-        return new Jogada(carroca);
+        return Jogada.joga(carroca);
     }
 
     /**
@@ -201,7 +201,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
             final int indexNoArrayDeCarrocas, final Lado ladoPraJogar) {
         
         Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
-        return new Jogada(carroca, ladoPraJogar);
+        return Jogada.joga(carroca, ladoPraJogar);
     }
 
     /**

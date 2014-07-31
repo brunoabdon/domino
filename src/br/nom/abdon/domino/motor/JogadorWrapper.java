@@ -64,7 +64,7 @@ public final class JogadorWrapper implements Jogador {
         return this.mao.stream().mapToInt(p -> p.getNumeroDePontos()).sum();
     }
 
-    public Jogador getWrapped() {
+    Jogador getWrapped() {
         return wrapped;
     }
 
