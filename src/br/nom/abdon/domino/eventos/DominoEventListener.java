@@ -1,7 +1,5 @@
 package br.nom.abdon.domino.eventos;
 
-import br.nom.abdon.domino.Jogada;
-import br.nom.abdon.domino.Jogador;
 import br.nom.abdon.domino.Lado;
 import br.nom.abdon.domino.Pedra;
 import br.nom.abdon.domino.Vitoria;
@@ -9,8 +7,8 @@ import br.nom.abdon.domino.Vitoria;
 /**
  * Interface para receber eventos publicos do que acontece durante o jogo.
  * 
- * {@link Jogador}es que implementarem esta interface serao automaticamente 
- * registrados para serem avisados dos eventos.
+ * {@link br.nom.abdon.domino.Jogador}es que implementarem esta interface serao 
+ * automaticamente registrados para serem avisados dos eventos.
  * 
  * @author bruno
  *
@@ -48,15 +46,16 @@ public interface DominoEventListener {
     }
 
     /**
-     * Foi definido, por consentimento ou aleatoriamente, que {@link Jogador} da
-     * dupla que ganhou a partida anterior vai começar a partida.
+     * Foi definido, por consentimento ou aleatoriamente, que {@link 
+     * br.nom.abdon.domino.Jogador} da dupla que ganhou a partida anterior vai 
+     * começar a partida.
      * 
-     * A decisão é todmada {@link Jogador#vontadeDeComecar() peguntando-se a 
-     * cada jogador da dupla o quanto ele quer começar a partida}. Quando um dos
-     * dois "quer" mais que o outro, diz-se que a decisão foi tomada por 
-     * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer 
-     * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve
-     * consentimento mútuo na decisão.
+     * A decisão é tomada {@link br.nom.abdon.domino.Jogador#vontadeDeComecar()
+     * peguntando-se acada jogador da dupla o quanto ele quer começar a partida}
+     * . Quando um dos dois "quer" mais que o outro, diz-se que a decisão foi 
+     * tomada por consentimento mútuo. Quando os dois "empatam" sobre quem mais 
+     * quer começar, um dos dois é escolhido aleatoriamente, e é dito que não 
+     * houve consentimento mútuo na decisão.
      * 
      * @param jogador O jogador (identificado pelo número da cadeira que sentou)
      * que vai começar a partida.
@@ -69,9 +68,10 @@ public interface DominoEventListener {
     }
     
     /**
-     * Um determinado {@link Jogador} {@link Jogada jogou} uma {@link Pedra} (e 
-     * nao {@link Jogada#TOQUE tocou}). (Se ele tiver batido, além desse evento, 
-     * também ocorrerá {@link #jogadorBateu(int, Vitoria)}
+     * Um determinado {@link br.nom.abdon.domino.Jogador} {@link 
+     * br.nom.abdon.domino.Jogada jogou} uma {@link Pedra} (e nao 
+     * {@link br.nom.abdon.domino.Jogada#TOQUE tocou}). (Se ele tiver batido, 
+     * além desse evento, também ocorrerá {@link #jogadorBateu(String, Vitoria)}
      * 
      * @param jogador quem jogou (identificado pelo número da cadeira)
      * @param lado onde jogou (pode ter sido nulo)
@@ -85,8 +85,10 @@ public interface DominoEventListener {
     }
 
     /**
-     * Um {@link Jogador} {@link Jogada#TOQUE tocou})
-     * @param jogador  quem foi (identificado pelo número da cadeira)
+     * Um {@link br.nom.abdon.domino.Jogador} 
+     * {@link br.nom.abdon.domino.Jogada#TOQUE tocou}).
+     * 
+     * @param jogador Quem foi (identificado pelo número da cadeira)
      */
     public default void jogadorTocou(int jogador){
 
@@ -94,8 +96,9 @@ public interface DominoEventListener {
 
     /**
      * A partida voltou logo depois de serem distribuidas as {@link Pedra}s 
-     * porque um dos {@link Jogador}es tinha 5 {@link Pedra#isCarroca() 
-     * Carroças} na mão. (Ninguém marca ponto quando isso acontece).
+     * porque um dos {@link br.nom.abdon.domino.Jogador}es tinha 5 {@link 
+     * Pedra#isCarroca() Carroças} na mão. (Ninguém marca ponto quando isso 
+     * acontece).
      * 
      * @param jogador  O jogador (identificado pelo número da cadeira) que tinha 
      * cinco pedras na mão.
@@ -105,7 +108,9 @@ public interface DominoEventListener {
     }
     
     /**
-     * Um {@link Jogador} bateu e a partida acabou. O jogo ainda pode continuar.
+     * Um {@link br.nom.abdon.domino.Jogador} bateu e a partida acabou. O jogo 
+     * ainda pode continuar.
+     * 
      * @param quemFoi Quem bateu (identificado pelo número da cadeira)
      * @param tipoDeVitoria Como foi a batida.
      */
