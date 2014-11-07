@@ -71,7 +71,7 @@ public interface DominoEventListener {
     /**
      * Um determinado {@link Jogador} {@link Jogada jogou} uma {@link Pedra} (e 
      * nao {@link Jogada#TOQUE tocou}). (Se ele tiver batido, além desse evento, 
-     * também ocorrerá {@link #jogadorBateu(String, Vitoria)}
+     * também ocorrerá {@link #jogadorBateu(int, Vitoria)}
      * 
      * @param jogador quem jogou (identificado pelo número da cadeira)
      * @param lado onde jogou (pode ter sido nulo)
