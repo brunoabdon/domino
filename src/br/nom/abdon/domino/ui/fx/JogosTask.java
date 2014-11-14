@@ -1,17 +1,15 @@
 package br.nom.abdon.domino.ui.fx;
 
-import br.nom.abdon.jogadores.JogadorMaxMao;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
-
-import br.nom.abdon.domino.Vitoria;
 import br.nom.abdon.domino.eventos.DominoEventListener;
 import br.nom.abdon.domino.exemplos.JogadorMamao;
 import br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca;
 import br.nom.abdon.domino.motor.JogadorWrapper;
 import br.nom.abdon.domino.motor.Jogo;
+import br.nom.abdon.domino.Vitoria;
 
 /**
  *
@@ -32,7 +30,7 @@ public class JogosTask extends Task<Void> implements DominoEventListener{
     
     @Override
     protected Void call() throws Exception {
-        final JogadorWrapper j1 = new JogadorWrapper(new JogadorMaxMao(), "Bruno");
+        final JogadorWrapper j1 = new JogadorWrapper(new JogadorMamao(), "Bruno");
         final JogadorWrapper j2 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Ronaldo");
         final JogadorWrapper j3 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Igor");
         final JogadorWrapper j4 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Eudes");
