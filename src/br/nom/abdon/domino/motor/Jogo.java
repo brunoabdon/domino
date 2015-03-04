@@ -38,19 +38,11 @@ public class Jogo {
 
     public void jogar(){
         
-        Dupla dupla1 = mesa.getDupla1();
-        Dupla dupla2 = mesa.getDupla2();
+        final Dupla dupla1 = mesa.getDupla1();
+        final Dupla dupla2 = mesa.getDupla2();
         
-        final JogadorWrapper primeiroJogadorDaPrimeiraDupla = dupla1.getJogador1();
-        final JogadorWrapper primeiroJogadorDaSegundaDupla = dupla2.getJogador1();
-        final JogadorWrapper segundoJogadorDaPrimeiraDupla = dupla1.getJogador2();
-        final JogadorWrapper segundoJogadorDaSegundaDupla = dupla2.getJogador2();
-
-        eventBroadcaster.jogoComecou(
-            primeiroJogadorDaPrimeiraDupla.getNome(), 
-            primeiroJogadorDaSegundaDupla.getNome(), 
-            segundoJogadorDaPrimeiraDupla.getNome(), 
-            segundoJogadorDaSegundaDupla.getNome());
+        //lancando o evento...
+        this.avisaQueJogoComecou(dupla1, dupla2);
 
         try {
             Dupla ultimaDuplaQueVenceu = null;
@@ -58,17 +50,18 @@ public class Jogo {
             while(!alguemVenceu()){
 
                 this.eventBroadcaster.partidaComecou(
-                    mesa.getDupla1().getPontos(), 
-                    mesa.getDupla2().getPontos(), 
+                    dupla1.getPontos(), 
+                    dupla2.getPontos(), 
                     multiplicadorDobrada != 1);
                 
-                Partida partida = new Partida(this.mesa, this.eventBroadcaster);
+                final Partida partida = 
+                    new Partida(this.mesa, this.eventBroadcaster);
 
                 ResultadoPartida resultado = partida.jogar(ultimaDuplaQueVenceu);
                 if(resultado == ResultadoPartida.EMPATE){
                     multiplicadorDobrada *=2;
                 } else if(resultado instanceof Batida){
-                    Batida batida = (Batida) resultado;
+                    final Batida batida = (Batida) resultado;
 
                     ultimaDuplaQueVenceu = getDuplaVencedora(batida);
 
@@ -82,12 +75,12 @@ public class Jogo {
             }
 
             this.eventBroadcaster.jogoAcabou(
-                mesa.getDupla1().getPontos(), 
-                mesa.getDupla2().getPontos());
+                dupla1.getPontos(), 
+                dupla2.getPontos());
 
         } catch (BugDeJogadorException e) {
-            System.err.println("Jogador " + e.getJogadorBuguento() + " fez merda.");
-            Pedra pedra = e.getPedra();
+            System.err.println("Tá Fazendo merda, " + e.getJogadorBuguento());
+            final Pedra pedra = e.getPedra();
             if(pedra != null){
                 System.err.println(pedra);
             }
@@ -95,11 +88,25 @@ public class Jogo {
         }
     }
 
+    private void avisaQueJogoComecou(final Dupla dupla1, final Dupla dupla2) {
+        
+        final JogadorWrapper primeiroJogadorDaDupla1 = dupla1.getJogador1();
+        final JogadorWrapper primeiroJogadorDaDupla2 = dupla2.getJogador1();
+        final JogadorWrapper segundoJogadorDaDupla1 = dupla1.getJogador2();
+        final JogadorWrapper segundoJogadorDaDupla2 = dupla2.getJogador2();
+        
+        eventBroadcaster.jogoComecou(
+            primeiroJogadorDaDupla1.getNome(),
+            primeiroJogadorDaDupla2.getNome(),
+            segundoJogadorDaDupla1.getNome(),
+            segundoJogadorDaDupla2.getNome());
+    }
+
     private DominoEventBroadcaster configuraEventListners(
-        JogadorWrapper jogador1dupla1, 
-        JogadorWrapper jogador1dupla2, 
-        JogadorWrapper jogador2dupla1, 
-        JogadorWrapper jogador2dupla2) {
+        final JogadorWrapper jogador1dupla1, 
+        final JogadorWrapper jogador1dupla2, 
+        final JogadorWrapper jogador2dupla1, 
+        final JogadorWrapper jogador2dupla2) {
             
         final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
 
@@ -114,8 +121,9 @@ public class Jogo {
 
     private void jogadorAtento(
             final DominoEventBroadcaster eventBroadcaster,
-            final Jogador jogador) {
+            final JogadorWrapper jogadorWrapper) {
 
+        Jogador jogador = jogadorWrapper.getWrapped();
         if(jogador instanceof DominoEventListener){
             eventBroadcaster
                 .addEventListener((DominoEventListener)jogador,false);
@@ -138,7 +146,7 @@ public class Jogo {
     }
 
     private boolean alguemVenceu() {
-            return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
+        return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
     }
 
     public void addEventListener(final DominoEventListener eventListener) {

@@ -20,6 +20,9 @@ class Partida {
     
     private static final Random r = new Random();
 
+    private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
+        menorNoArray = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
+    
     Partida(
         final MesaImpl mesa,
         final OmniscientDominoEventListener eventListener) {
@@ -29,7 +32,7 @@ class Partida {
     }
 
     protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
-            throws BugDeJogadorException{
+        throws BugDeJogadorException{
 
         mesa.embaralhaEdistribui();
         
@@ -64,17 +67,17 @@ class Partida {
 
             final Collection<Pedra> maoDoJogadorDaVez = jogadorDaVez.getMao();
 
-            Jogada jogada = jogadorDaVez.joga();
+            final Jogada jogada = jogadorDaVez.joga();
 
             if(jogada == null){
                 throw new BugDeJogadorException(
-                        "Qual é a jogada? Nenhuma?", jogadorDaVez);
+                    "Qual é a jogada? Nenhuma?", jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
                 
                 this.eventListener.jogadorTocou(cadeira);
                 
                 //tocou mesmo?
-                boolean tinhaPedraPraJogar = 
+                final boolean tinhaPedraPraJogar = 
                     mesa.taVazia()
                     || maoDoJogadorDaVez.stream().anyMatch(
                         pedraNaMao -> 
@@ -89,13 +92,17 @@ class Partida {
                 trancou = ++numeroDeToquesSeguidos == 4;
 
             } else {
-                //se livrando logo do objeto Jogada, que veio do jogador.
                 final Lado lado = jogada.getLado();
                 pedra = jogada.getPedra();
 
                 this.eventListener.jogadorJogou(cadeira,lado,pedra);
                 
-                validaJogada(jogadorDaVez,maoDoJogadorDaVez,pedra,lado);
+                //o jogador tinha mesmo essa pedra, ou tirou do bolso?
+                if(!maoDoJogadorDaVez.contains(pedra)){
+                    throw new BugDeJogadorException(
+                        "Jogando pedra que não tinha!", 
+                        jogadorDaVez, pedra);
+                }
 
                 maoDoJogadorDaVez.remove(pedra);
 
@@ -124,25 +131,24 @@ class Partida {
 
     private Vitoria veOTipoDaBatida(Pedra pedra) {
 
-            Vitoria tipoDaBatida;
-            boolean carroca = pedra.isCarroca();
-            boolean laELo = mesa.getNumeroEsquerda() == mesa.getNumeroDireita();
+        final Vitoria tipoDaBatida;
+        
+        final boolean carroca = pedra.isCarroca();
+        final boolean laELo = 
+            mesa.getNumeroEsquerda() == mesa.getNumeroDireita();
 
-            if(carroca && laELo){
-                    tipoDaBatida = Vitoria.CRUZADA;
-            } else if(laELo){
-                    tipoDaBatida = Vitoria.LA_E_LO;
-            } else if (carroca) {
-                    tipoDaBatida = Vitoria.CARROCA;
-            } else {
-                    tipoDaBatida = Vitoria.BATIDA_SIMPLES;
-            }
-            return tipoDaBatida;
+        if(carroca && laELo){
+            tipoDaBatida = Vitoria.CRUZADA;
+        } else if(laELo){
+            tipoDaBatida = Vitoria.LA_E_LO;
+        } else if (carroca) {
+            tipoDaBatida = Vitoria.CARROCA;
+        } else {
+            tipoDaBatida = Vitoria.BATIDA_SIMPLES;
+        }
+        return tipoDaBatida;
     }
 
-    private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
-            menorNoArray = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
-    
     /**
      * Conta quantos pontos cada jogador tem na mão, definindo quem ganha numa
      * mesa travada. Lança o evento correspondete os resultado, que pode ser 
@@ -163,53 +169,27 @@ class Partida {
             dupla1.getJogador2().getNumeroDePontosNaMao(),
             dupla2.getJogador2().getNumeroDePontosNaMao(),
         };
-
         
         final BiFunction<Integer,Integer, Integer> menor = 
-                menorNoArray.apply(pontos);
+            menorNoArray.apply(pontos);
         
         final int melhorIdxDupla1 = menor.apply(0,2);
         final int melhorIdxDupla2 = menor.apply(1,3);
         
-        if(pontos[melhorIdxDupla1] == pontos[melhorIdxDupla2]){
+        if(pontos[melhorIdxDupla1].equals(pontos[melhorIdxDupla2])){
             resultado = ResultadoPartida.EMPATE;
             eventListener.partidaEmpatou();
         } else {
             final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
             final JogadorWrapper jogadorComMenosPontosNaMao = 
-                    this.mesa.jogadorDaVez(melhorIdx);
+                this.mesa.jogadorDaVez(melhorIdx);
             
             resultado = batida(
-                    jogadorComMenosPontosNaMao,
-                    Vitoria.CONTAGEM_DE_PONTOS);
+                jogadorComMenosPontosNaMao,
+                Vitoria.CONTAGEM_DE_PONTOS);
         }
         
         return resultado;
-    }
-
-    private void validaJogada(
-        Jogador jogadorQueJogou, 
-        Collection<Pedra> maoDoJogadorQueJogou, 
-        Pedra pedra, Lado lado) throws BugDeJogadorException {
-        
-        if(pedra == null){
-            throw new BugDeJogadorException("Cadê a pedra?", jogadorQueJogou);
-        }
-
-        if(lado == null 
-            && !mesa.taVazia() 
-            && mesa.getNumeroEsquerda() != mesa.getNumeroDireita()){
-
-            throw new BugDeJogadorException(
-                "De que lado é pra botar essa pedra?", 
-                jogadorQueJogou);
-        }
-
-        if(!maoDoJogadorQueJogou.contains(pedra)){
-            throw new BugDeJogadorException(
-                "Jogando pedra que não tinha! ", 
-                jogadorQueJogou, pedra);
-        }
     }
 
     private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) 
@@ -263,7 +243,12 @@ class Partida {
                 if(mao.contains(carroca)){
 
                     final Jogada primeiraJogada = jogador.joga();
-
+                    
+                    if(primeiraJogada == null){
+                        throw new BugDeJogadorException(
+                            "Vai jogar não?", jogador);
+                    }
+                    
                     final Pedra pedra = primeiraJogada.getPedra();
                     final Lado lado = primeiraJogada.getLado();
 
@@ -289,7 +274,7 @@ class Partida {
     }
 
     private int avanca(int vez){
-            return (vez+1)%4;
+        return (vez+1)%4;
     }
 
     private ResultadoPartida verificaMorteSubita() {

@@ -25,7 +25,7 @@ public final class Jogada {
     /**
      * A jogada singleton que um {@link Jogador} deve retornar quando vai tocar.
      */
-    public static final Jogada TOQUE = new Jogada();
+    public static final Jogada TOQUE = new Jogada(null,null);
 
     /**
      * Um cache com todas as 56 jogadas possiveis criadas.
@@ -47,7 +47,7 @@ public final class Jogada {
      * @param f A função que determina qual o valor de cada chave
      * @param t A classe do Enum 
      * @param values os valores do enum que devem aparecer no EnumMap
-     * @return 
+     * @return Um EnumMap que replica uma Function.
      */
     private static <T,E extends Enum<E>> EnumMap<E,T> funcToMap(
         Function<E,T> f, Class<E> t) {
@@ -57,32 +57,13 @@ public final class Jogada {
                         Collectors.toMap(
                             Function.identity(), 
                             f, 
-                            (x,y)->x, 
+                            (x,y)-> x, 
                             ()-> new EnumMap<>(t)));
-}
-    
-    
-    
-    /**
-     * A jogada de uma determinada {@link Pedra}, em qualquer lado da 
-     * {@link Mesa}. Um lado será escolhido de maneira opaca.
-     *
-     * @param pedra a pedra que se quer jogar.
-     * @return Uma jogada da pedra dada de um dos lado da mesa.
-     */
-    public static final Jogada joga(Pedra pedra) {
-        return joga(pedra, Lado.ESQUERDO);
     }
 
     /**
-     * A retorna a jogada de uma determinada {@link Pedra} em um determinado 
+     * A retorna a Jogada de uma determinada {@link Pedra} em um determinado 
      * {@link Lado} da {@link Mesa}.
-     * 
-     * Se a {@link Pedra} ou o {@link Lado} forem nulos, retorna uma jogada nula
-     * silenciosamente (que provavelmente vai dar problema pro Jogador depois).
-     * 
-     * Se for muito importante realizar uma jogada onde não importa o Lado, use 
-     * o método {@link #joga(br.nom.abdon.domino.Pedra)} deve ser usado.
      * 
      * Para tocar, o singleton {@link #TOQUE} deve ser usado.
      * 
@@ -92,30 +73,26 @@ public final class Jogada {
      * @return Uma jogada da pedra em questão do lado informado, ou 
      * <code>null</code>, caso um dos parametros seja nulo.
      * 
+     * @throws IllegalArgumentException Se a {@link Pedra} ou o {@link Lado} 
+     * for <code>null</code>.
      */
-    public static Jogada joga(Pedra pedra, Lado lado) {
-        return jogadas.get(lado).get(pedra);
+    public static Jogada jogada(final Pedra pedra, final Lado lado) {
+        if(pedra == null || lado == null) 
+            throw new IllegalArgumentException(
+                "Nem a Pedra nem o Lado podem ser nulos numa jogada");
+            
+        return  jogadas.get(lado).get(pedra);
     }
-    
+
     /**
      * Constroi uma jogada normal.
      *
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.
      */
-    private Jogada(Pedra pedra, Lado lado) {
+    private Jogada(final Pedra pedra, final Lado lado) {
         this.pedra = pedra;
         this.lado = lado;
-    }
-
-    /**
-     * Usado apenas pra contruir o singleton do {@link #TOQUE}, que é uma Logada
-     * sem pedra nem lado.
-     * 
-     */
-    private Jogada() {
-        this.pedra = null;
-        this.lado = null;
     }
 
     public Pedra getPedra() {
@@ -130,6 +107,6 @@ public final class Jogada {
     public String toString() {
         return this == TOQUE ? ""
                 + "toc toc" 
-                : (this.pedra.toString() + "(" + this.lado + ")");
+                : (this.pedra + "(" + this.lado + ")");
     }
 }

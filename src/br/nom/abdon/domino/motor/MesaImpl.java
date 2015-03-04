@@ -45,9 +45,9 @@ class MesaImpl implements Mesa{
         this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
         
         this.jogadores = 
-                Arrays.asList(
-                        jogador1dupla1, jogador2dupla1, 
-                        jogador2dupla1, jogador2dupla2);
+            Arrays.asList(
+                jogador1dupla1, jogador2dupla1, 
+                jogador2dupla1, jogador2dupla2);
         
         this.eventListener = eventListener;
         
@@ -120,7 +120,7 @@ class MesaImpl implements Mesa{
      * @return <code>true</code> se a pedra foi realmente colocada, ou 
      * <code>false</code> caso fosse uma pedra bêba.
      */
-    boolean coloca(final Pedra pedra, Lado lado) {
+    boolean coloca(final Pedra pedra, final Lado lado) {
 
         final boolean podeColocar;
         
@@ -130,17 +130,13 @@ class MesaImpl implements Mesa{
             this.listaDePedras.addFirst(pedra);
             this.numeroEsquerda = pedra.getPrimeiroNumero();
             this.numeroDireita = pedra.getSegundoNumero();
+        
         } else {
 
-            final Lado ladoQueVaiColocar = 
-                lado == null && (numeroEsquerda == numeroDireita)
-                    ? Lado.ESQUERDO
-                    : lado;
-
-            podeColocar = podeJogar(pedra, ladoQueVaiColocar);
+            podeColocar = podeJogar(pedra, lado);
             
             if(podeColocar){
-                if(ladoQueVaiColocar == Lado.ESQUERDO){
+                if(lado == Lado.ESQUERDO){
                         listaDePedras.addFirst(pedra);
                         numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
                 } else {
@@ -152,12 +148,16 @@ class MesaImpl implements Mesa{
         return podeColocar;
     }
 
-    private Numero novaCabeca(final Numero cabecaAtual, final Pedra pedraQueFoiJogada){
-            Numero primeiroNumeroDaPedra = pedraQueFoiJogada.getPrimeiroNumero();
+    private Numero novaCabeca(
+            final Numero cabecaAtual, 
+            final Pedra pedraQueFoiJogada){
+        
+        final Numero primeiroNumeroDaPedra = 
+            pedraQueFoiJogada.getPrimeiroNumero();
 
-            return primeiroNumeroDaPedra == cabecaAtual 
-                    ? pedraQueFoiJogada.getSegundoNumero() 
-                    : primeiroNumeroDaPedra;
+        return primeiroNumeroDaPedra == cabecaAtual 
+            ? pedraQueFoiJogada.getSegundoNumero() 
+            : primeiroNumeroDaPedra;
     }
 
     JogadorWrapper jogadorDaVez(int vez) {
@@ -183,31 +183,31 @@ class MesaImpl implements Mesa{
 
     @Override
     public Numero getNumeroEsquerda() {
-            return numeroEsquerda;
+        return numeroEsquerda;
     }
     @Override
     public Numero getNumeroDireita() {
-            return numeroDireita;
+        return numeroDireita;
     }
 
     @Override
     public Iterator<Pedra> iteratorEsquedaPraDireita() {
-            return new IteratorReadOnly<>(listaDePedras.iterator());
+        return new IteratorReadOnly<>(listaDePedras.iterator());
     }
 
     @Override
     public Iterator<Pedra> iteratorDireitaPraEsquerda() {
-            return new IteratorReadOnly<>(listaDePedras.descendingIterator());
+        return new IteratorReadOnly<>(listaDePedras.descendingIterator());
     }
 
     @Override
     public int quantasPecas(){
-            return this.listaDePedras.size();
+        return this.listaDePedras.size();
     }
 
     @Override
     public Pedra[] toArray(){
-            return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
+        return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
     }
 
     @Override

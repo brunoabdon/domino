@@ -65,6 +65,8 @@ public class JogadorMamao implements Jogador {
                 */
                 pedraPraJogar = mao.get(0); 
             }
+            //o lado, tanto faz. tá vazia a mesa mesmo.
+            ladoDeJogar = Lado.ESQUERDO;
         } else {
             //a mesa nao tah vazia. o jogo tah rolando. tenho que jogar uma peca
             //que se encaixe ou no lado esquerdo ou no direito dos dominos.
@@ -102,7 +104,7 @@ public class JogadorMamao implements Jogador {
             mao.remove(pedraPraJogar);
             //criando a jogada: a pedra que escolhi e a cabeça em que vou 
             //colocar ela.
-            jogada = Jogada.joga(pedraPraJogar,ladoDeJogar);
+            jogada = Jogada.jogada(pedraPraJogar,ladoDeJogar);
         }
         //retornando a jogada
         return jogada; 
@@ -140,4 +142,4 @@ public class JogadorMamao implements Jogador {
         //vai 5 mesmo
         return 5;
     }
-}
+    }

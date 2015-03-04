@@ -94,8 +94,8 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      */
     private Lado pegaLadoComMaiorNumero(Mesa mesa) {
         return mesa.getNumeroEsquerda().compareTo(mesa.getNumeroDireita()) > 0 
-                ? Lado.ESQUERDO 
-                : Lado.DIREITO;
+            ? Lado.ESQUERDO 
+            : Lado.DIREITO;
     }
 
     /**
@@ -160,19 +160,16 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         final Jogada jogada;
 
         final Numero numeroDaCabeca
-                = ladoPraJogar == Lado.ESQUERDO
-                ? mesa.getNumeroEsquerda()
-                : mesa.getNumeroDireita();
+            = ladoPraJogar == Lado.ESQUERDO
+            ? mesa.getNumeroEsquerda()
+            : mesa.getNumeroDireita();
 
         final int indexNoArrayDeCarrocas = numeroDaCabeca.getNumeroDePontos();
         final Pedra carroca = carrocas[indexNoArrayDeCarrocas];
 
-        if (carroca != null) {
-            jogada = fazJogadaCarroca(indexNoArrayDeCarrocas, ladoPraJogar);
-        } else {
-            jogada = null;
-        }
-        return jogada;
+        return carroca == null
+            ? null
+            : fazJogadaCarroca(indexNoArrayDeCarrocas, ladoPraJogar);
     }
 
     /**
@@ -185,7 +182,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      */
     private Jogada fazJogadaCarroca(final int indexNoArrayDeCarrocas) {
         Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
-        return Jogada.joga(carroca);
+        return Jogada.jogada(carroca,Lado.ESQUERDO);
     }
 
     /**
@@ -201,7 +198,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
             final int indexNoArrayDeCarrocas, final Lado ladoPraJogar) {
         
         Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
-        return Jogada.joga(carroca, ladoPraJogar);
+        return Jogada.jogada(carroca, ladoPraJogar);
     }
 
     /**

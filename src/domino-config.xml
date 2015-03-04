@@ -2,8 +2,12 @@
 <domino>
 
   <duplas>
-     <dupla1 jogador1="Amanda" jogador2="Julio"/>
-     <dupla2 jogador1="Eudes" jogador2="Ronaldo"/>
+<!--
+     <dupla1 jogador1="Debora" jogador2="Jorge"/>
+     <dupla2 jogador1="Amanda" jogador2="Julio"/>
+-->
+     <dupla1 jogador1="Amanda" jogador2="Ronaldo"/>
+     <dupla2 jogador1="Berg" jogador2="Mauricio"/>
   </duplas>
 
 
@@ -16,7 +20,13 @@
   <jogador nome="Bruno" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
   <jogador nome="Eudes" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
   <jogador nome="Igor" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
+  <jogador nome="Ana" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
+  <jogador nome="Carla" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
   <jogador nome="Julio" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Debora" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Jorge" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
   <jogador nome="Ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Mauricio" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Berg" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
 
 </domino>
