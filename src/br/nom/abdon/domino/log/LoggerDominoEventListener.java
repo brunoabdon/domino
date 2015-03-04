@@ -103,9 +103,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         if(lado != null){
             int padLado = baseDoPaddingDeLado - sb.length();
             sb.append(
-                    String.format(
-                            "%1$" + padLado + "s",
-                            "(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
+                String.format(
+                    "%1$" + padLado + "s",
+                    "(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
         }
 
         this.printStream.println(sb);
