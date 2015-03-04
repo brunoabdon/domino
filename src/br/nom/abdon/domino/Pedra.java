@@ -136,12 +136,11 @@ public enum Pedra {
      * @return se a predra é ou não carroça.
      */
     public boolean isCarroca(){
-            return this.primeiroNumero == this.segundoNumero;
+        return this.primeiroNumero == this.segundoNumero;
     }
 
     @Override
     public String toString() {
             return "[" + primeiroNumero + "|" + segundoNumero + "]";
     }
-
 }
