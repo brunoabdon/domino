@@ -259,7 +259,10 @@ public class PedraFx extends Group {
             colocaPontinho =
             (x,y) -> {
                     Circle pontinho = new Circle();
-                    pontinho.radiusProperty().bind(this.nonaParteDaLargura);
+                    /**
+                        @TODO CORRIGIR: FUNCIONAVA E COMECOU A DAR ERRO DE COMPILACAO
+                    */
+
                     pontinho.getStyleClass().add("pontinho");
                     pontinho.layoutXProperty().bind(x);
                     pontinho.layoutYProperty().bind(y);
