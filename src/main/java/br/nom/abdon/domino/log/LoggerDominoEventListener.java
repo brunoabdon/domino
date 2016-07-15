@@ -38,7 +38,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     @Override 
     public void partidaComecou(
             int pontosDupla1, int pontosDupla2, boolean ehDobrada) {
-        
+
         this.printStream.println("======================================");	
         this.printStream.println("Começando partida\n");
         imprimePlacar(pontosDupla1,pontosDupla2);
@@ -198,19 +198,18 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         int min = placarDupla1 < placarDupla2 ? placarDupla1 : placarDupla2;
 
         if(min == 0){
-            this.printStream.println("   ====================================");
-            this.printStream.println("   ====================================");
-            this.printStream.println("   ========      BUXUDINHA!!!    ======");
-            this.printStream.println("   ====================================");
-            this.printStream.println("   ========      BUXUDINHA!!!    ======");
-            this.printStream.println("   ====================================");
-            this.printStream.println("   ========      BUXUDINHA!!!    ======");
-            this.printStream.println("   ====================================");
-            this.printStream.println("   ====================================");
+            imprimeUmaBarrona();
+            for (int i = 0; i < 3; i++) {
+                imprimeUmaBarrona();
+                this.printStream.println("   ========      BUXUDINHA!!!    ======");
+            }
+            for (int i = 0; i < 2; i++) {
+                imprimeUmaBarrona();
+            }
         } else if (min == 1){
-            this.printStream.println("   ===================================");
+            imprimeUmaBarrona();
             this.printStream.println("   =======      INCHADINHA!    =======");
-            this.printStream.println("   ===================================");
+            imprimeUmaBarrona();
         }
     }
 
@@ -224,6 +223,10 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     
     private void imprimeUmaBarrinha() {
         this.printStream.println("=================");
+    }
+
+    private void imprimeUmaBarrona() {
+        this.printStream.println("   ===================================");
     }
 
 }
