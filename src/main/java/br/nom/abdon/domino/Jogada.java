@@ -30,7 +30,7 @@ public final class Jogada {
     /**
      * Um cache com todas as 56 jogadas possiveis criadas.
      */
-    private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> jogadas = 
+    private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> JOGADAS = 
         funcToMap (
             lado->funcToMap(
                 pedra-> {return new Jogada(pedra,lado);}, 
@@ -81,7 +81,7 @@ public final class Jogada {
             throw new IllegalArgumentException(
                 "Nem a Pedra nem o Lado podem ser nulos numa jogada");
             
-        return  jogadas.get(lado).get(pedra);
+        return  JOGADAS.get(lado).get(pedra);
     }
 
     /**
@@ -105,8 +105,8 @@ public final class Jogada {
 
     @Override
     public String toString() {
-        return this == TOQUE ? ""
-                + "toc toc" 
+        return this == TOQUE ? 
+                "toc toc" 
                 : (this.pedra + "(" + this.lado + ")");
     }
 }
