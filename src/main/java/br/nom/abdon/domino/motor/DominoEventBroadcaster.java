@@ -24,12 +24,14 @@ class DominoEventBroadcaster implements
     private final Map<Integer, Consumer<DominoEventListener>> cachedToques;
     private final Map<Integer,Map<Optional<Lado>,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
     
-    private static final Function<Integer, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> jogadaPorUmJogador =
+    private static final Function<Integer, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> JOGADA_POR_UM_JOGADOR =
         (num) -> {return (l) -> (p) -> (el) -> {el.jogadorJogou(num, l, p);};};
 
-    private static final Optional<Lado> optionalEsquerda = Optional.ofNullable(Lado.ESQUERDO);
-    private static final Optional<Lado> optionalDireita = Optional.ofNullable(Lado.DIREITO);
-    private static final Optional<Lado> optionalLadoNenhum = Optional.empty();
+    private static final Optional<Lado> OPTIONAL_ESQ = 
+        Optional.ofNullable(Lado.ESQUERDO);
+    private static final Optional<Lado> OPTIONAL_DIR =  
+        Optional.ofNullable(Lado.DIREITO);
+    private static final Optional<Lado> OPTIONAL_LADO_NENHUM = Optional.empty();
 
     public DominoEventBroadcaster() {
         this.eventListeners = new LinkedList<>();
@@ -37,7 +39,6 @@ class DominoEventBroadcaster implements
         
         this.cachedJogadasNoLado = new HashMap<>(4);
         this.cachedToques = new HashMap<>(4);
-
     }
 
     public void addEventListener(
@@ -59,38 +60,41 @@ class DominoEventBroadcaster implements
 
     @Override
     public void jogoAcabou(int placarDupla1, int placarDupla2) {
-        broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.jogoAcabou(placarDupla1, placarDupla2);
-                }
+        broadCastEvent(
+            eventListeners,
+            (eventListener) -> {
+                eventListener.jogoAcabou(placarDupla1, placarDupla2);
+            }
         );
     }
 
     @Override
     public void partidaEmpatou() {
-        broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.partidaEmpatou();
-                }
+        broadCastEvent(
+            eventListeners,
+            (eventListener) -> {
+                eventListener.partidaEmpatou();
+            }
         );
     }
 
     @Override
     public void partidaVoltou(int jogador) {
-        broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.partidaVoltou(jogador);
-                }
+        broadCastEvent(
+            eventListeners,
+            (eventListener) -> {
+                eventListener.partidaVoltou(jogador);
+            }
         );
     }
-
     
     @Override
     public void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria) {
-        broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.jogadorBateu(quemFoi, tipoDeVitoria);
-                }
+        broadCastEvent(
+            eventListeners,
+            (eventListener) -> {
+                eventListener.jogadorBateu(quemFoi, tipoDeVitoria);
+            }
         );
     }
 
@@ -108,24 +112,28 @@ class DominoEventBroadcaster implements
             jodadaDoJogadorDaqueleLado.apply(pedra);
 
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
-                
     }
 
-    private Optional<Lado> optional(Lado lado) {
+    private Optional<Lado> optional(final Lado lado) {
         return lado == Lado.ESQUERDO 
-                ? optionalEsquerda : lado == Lado.DIREITO 
-                ? optionalDireita
-                : optionalLadoNenhum;
+                ? OPTIONAL_ESQ : lado == Lado.DIREITO 
+                ? OPTIONAL_DIR
+                : OPTIONAL_LADO_NENHUM;
     }
                 
     @Override
     public void partidaComecou(
-            int placarDupla1, int placarDupla2, boolean ehDobrada) {
+            final int placarDupla1, 
+            final int placarDupla2, 
+            final boolean ehDobrada) {
         broadCastEvent(eventListeners,
-                (eventListener) -> {
-                    eventListener.partidaComecou(
-                            placarDupla1, placarDupla2, ehDobrada);
-                }
+            (eventListener) -> {
+                eventListener
+                    .partidaComecou(
+                        placarDupla1, 
+                        placarDupla2, 
+                        ehDobrada);
+            }
         );
     }
 
@@ -161,7 +169,7 @@ class DominoEventBroadcaster implements
 
     private void montaCacheJogadasDoJogador(final int jogador) {
         final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado = new HashMap<>(3);
-        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor = jogadaPorUmJogador.apply(jogador);
+        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor = JOGADA_POR_UM_JOGADOR.apply(jogador);
         fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.ESQUERDO);
         fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.DIREITO);
         fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, null);

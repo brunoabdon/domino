@@ -18,10 +18,10 @@ class Partida {
 
     private final OmniscientDominoEventListener eventListener;
     
-    private static final Random r = new Random();
+    private static final Random RAND = new Random();
 
     private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
-        menorNoArray = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
+        MENOR_NO_ARRAY = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
     
     Partida(
         final MesaImpl mesa,
@@ -31,7 +31,7 @@ class Partida {
         this.eventListener = eventListener;
     }
 
-    protected ResultadoPartida jogar(Dupla duplaQueGanhouApartidaAnterior) 
+    protected ResultadoPartida jogar(final Dupla duplaQueGanhouApartidaAnterior) 
         throws BugDeJogadorException{
 
         mesa.embaralhaEdistribui();
@@ -129,7 +129,7 @@ class Partida {
         return resultadoPartida;
     }
 
-    private Vitoria veOTipoDaBatida(Pedra pedra) {
+    private Vitoria veOTipoDaBatida(final Pedra pedra) {
 
         final Vitoria tipoDaBatida;
         
@@ -151,8 +151,9 @@ class Partida {
 
     /**
      * Conta quantos pontos cada jogador tem na mão, definindo quem ganha numa
-     * mesa travada. Lança o evento correspondete os resultado, que pode ser 
+     * mesa travada. Lança o evento correspondente ao resultado, que pode ser 
      * avisar sobre um empate ou sobre uma vitória por pontos.
+     * 
      * @return O resultado da partida, que vai ser ou um empate ou uma vitória
      * por pontos (pelo Jogador que tiver menos pontos).
      */
@@ -171,7 +172,7 @@ class Partida {
         };
         
         final BiFunction<Integer,Integer, Integer> menor = 
-            menorNoArray.apply(pontos);
+            MENOR_NO_ARRAY.apply(pontos);
         
         final int melhorIdxDupla1 = menor.apply(0,2);
         final int melhorIdxDupla2 = menor.apply(1,3);
@@ -192,7 +193,7 @@ class Partida {
         return resultado;
     }
 
-    private int decideDeQuemDosDoisVaiComecar(Dupla duplaQueComeca) 
+    private int decideDeQuemDosDoisVaiComecar(final Dupla duplaQueComeca) 
             throws BugDeJogadorException {
             
         final int quemDaDuplaComeca = duplaQueComeca.quemComeca();
@@ -200,7 +201,7 @@ class Partida {
         final boolean houveConsenso = quemDaDuplaComeca != 0;
 
         final boolean comecaOJogador1 = 
-            houveConsenso ? quemDaDuplaComeca < 0: r.nextBoolean();
+            houveConsenso ? quemDaDuplaComeca < 0: RAND.nextBoolean();
         
         final JogadorWrapper jogadorQueComeca = 
             comecaOJogador1 ? 
@@ -237,7 +238,7 @@ class Partida {
             final Pedra carroca = Pedra.carrocas[i];
             for (vez = 0; vez < 4 ; vez++) {
 
-                JogadorWrapper jogador = mesa.jogadorDaVez(vez);
+                final JogadorWrapper jogador = mesa.jogadorDaVez(vez);
                 
                 final Collection<Pedra> mao = jogador.getMao();
                 if(mao.contains(carroca)){
@@ -253,9 +254,10 @@ class Partida {
                     final Lado lado = primeiraJogada.getLado();
 
                     this.eventListener.jogadorJogou(
-                            jogador.getCadeira(), lado,
-                            pedra);
-                    
+                        jogador.getCadeira(), 
+                        lado, 
+                        pedra);
+
                     //agora erre, meu velho
                     if(pedra != carroca){
                         throw new BugDeJogadorException(
