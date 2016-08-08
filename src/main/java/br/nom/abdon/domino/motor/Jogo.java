@@ -11,10 +11,10 @@ public class Jogo {
     private final DominoEventBroadcaster eventBroadcaster;
 
     public Jogo(
-        JogadorWrapper jogador1dupla1, 
-        JogadorWrapper jogador1dupla2, 
-        JogadorWrapper jogador2dupla1, 
-        JogadorWrapper jogador2dupla2) {
+        final JogadorWrapper jogador1dupla1, 
+        final JogadorWrapper jogador1dupla2, 
+        final JogadorWrapper jogador2dupla1, 
+        final JogadorWrapper jogador2dupla2) {
             
         if(jogador1dupla1 == null 
             || jogador2dupla1 == null 
@@ -123,7 +123,7 @@ public class Jogo {
             final DominoEventBroadcaster eventBroadcaster,
             final JogadorWrapper jogadorWrapper) {
 
-        Jogador jogador = jogadorWrapper.getWrapped();
+        final Jogador jogador = jogadorWrapper.getWrapped();
         if(jogador instanceof DominoEventListener){
             eventBroadcaster
                 .addEventListener((DominoEventListener)jogador,false);

@@ -63,6 +63,7 @@ class Partida {
         while(!(alguemBateu || trancou)){
 
             jogadorDaVez = this.mesa.jogadorDaVez(vez);
+
             final int cadeira = jogadorDaVez.getCadeira();
 
             final Collection<Pedra> maoDoJogadorDaVez = jogadorDaVez.getMao();
@@ -122,7 +123,7 @@ class Partida {
         if(trancou){
             resultadoPartida = contaPontos();
         } else {
-            Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
+            final Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
             resultadoPartida = batida(jogadorDaVez,tipoDaBatida);
         }
 
@@ -318,7 +319,7 @@ class Partida {
      * @return Um {@link ResultadoPartida} equivalente a essa vitória.
      */
     private ResultadoPartida batida(
-            JogadorWrapper vencedor, Vitoria tipoDeBatida) {
+            final JogadorWrapper vencedor, final Vitoria tipoDeBatida) {
         this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }

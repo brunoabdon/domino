@@ -25,18 +25,23 @@ public class ContadorDeJogadas implements DominoEventListener{
     }
 
     @Override
-    public void partidaComecou(int placarDupla1, int placarDupla2, boolean ehDobrada) {
+    public void partidaComecou(
+            final int placarDupla1, 
+            final int placarDupla2, 
+            final boolean ehDobrada) {
         this.ehPrimeiraPartida = placarDupla1 == 0 && placarDupla2 == 0;
     }
-    
-    
+     
     @Override
-    public void jogadorTocou(int jogador) {
+    public void jogadorTocou(final int jogador) {
         this.toques++;
     }
 
     @Override
-    public void jogadorJogou(int jogador, Lado lado, Pedra pedra) {
+    public void jogadorJogou(
+            final int jogador, 
+            final Lado lado, 
+            final Pedra pedra) {
         if(!ehPrimeiraPartida){
             this.jogadas.merge(pedra,1,Integer::sum);
             totalJogadas++;
@@ -46,9 +51,9 @@ public class ContadorDeJogadas implements DominoEventListener{
     public void imprimeResultado() {
         System.out.printf("Toques: %10d\n",toques);
         
-        SortedSet<String> list = new TreeSet<>(Comparator.reverseOrder());
+        final SortedSet<String> list = new TreeSet<>(Comparator.reverseOrder());
         
-        for (Pedra pedra : Pedra.values()) {
+        for (final Pedra pedra : Pedra.values()) {
             final Integer numJogadas = jogadas.get(pedra);
             final float percent = (numJogadas/(float)totalJogadas)*100f;
             
@@ -62,10 +67,4 @@ public class ContadorDeJogadas implements DominoEventListener{
         
         list.stream().forEach(System.out::println);
     }
-    
-    
-
-    
-    
-    
 }

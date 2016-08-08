@@ -6,7 +6,7 @@ package br.nom.abdon.domino.motor;
  */
 class ResultadoPartidaVolta extends ResultadoPartida{
 
-    ResultadoPartidaVolta(JogadorWrapper jogadorComCincoCarroca) {
+    ResultadoPartidaVolta(final JogadorWrapper jogadorComCincoCarroca) {
         super(jogadorComCincoCarroca);
     }
     

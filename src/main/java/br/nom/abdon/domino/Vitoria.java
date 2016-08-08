@@ -14,7 +14,7 @@ public enum Vitoria {
 
     private final int pontos;
 
-    private Vitoria(int pontos) {
+    private Vitoria(final int pontos) {
         this.pontos = pontos;
     }
 

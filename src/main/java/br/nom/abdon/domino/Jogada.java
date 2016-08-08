@@ -50,7 +50,7 @@ public final class Jogada {
      * @return Um EnumMap que replica uma Function.
      */
     private static <T,E extends Enum<E>> EnumMap<E,T> funcToMap(
-        Function<E,T> f, Class<E> t) {
+        final Function<E,T> f, final Class<E> t) {
         
             return Stream.of(t.getEnumConstants())
                    .collect(

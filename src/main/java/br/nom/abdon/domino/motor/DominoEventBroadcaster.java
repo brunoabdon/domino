@@ -42,24 +42,27 @@ class DominoEventBroadcaster implements
     }
 
     public void addEventListener(
-            DominoEventListener eventListener, boolean permiteAcessoTotal) {
+            final DominoEventListener eventListener, 
+            final boolean permiteAcessoTotal) {
         this.eventListeners.add(eventListener);
         
         if(permiteAcessoTotal 
-                && eventListener instanceof OmniscientDominoEventListener){
-            OmniscientDominoEventListener omniscientEventListener = 
+            && eventListener instanceof OmniscientDominoEventListener){
+            
+            final OmniscientDominoEventListener omniscientEventListener = 
                     (OmniscientDominoEventListener) eventListener;
             this.omniscientEventListeners.add(omniscientEventListener);
         } 
     }
 
     private <E> void broadCastEvent(
-            Collection<E> listeners, Consumer<? super E> c) {
+            final Collection<E> listeners, 
+            final Consumer<? super E> c) {
         listeners.parallelStream().forEach(c);
     }
 
     @Override
-    public void jogoAcabou(int placarDupla1, int placarDupla2) {
+    public void jogoAcabou(final int placarDupla1, final int placarDupla2) {
         broadCastEvent(
             eventListeners,
             (eventListener) -> {
@@ -79,7 +82,7 @@ class DominoEventBroadcaster implements
     }
 
     @Override
-    public void partidaVoltou(int jogador) {
+    public void partidaVoltou(final int jogador) {
         broadCastEvent(
             eventListeners,
             (eventListener) -> {
@@ -89,7 +92,7 @@ class DominoEventBroadcaster implements
     }
     
     @Override
-    public void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria) {
+    public void jogadorBateu(final int quemFoi, final Vitoria tipoDeVitoria) {
         broadCastEvent(
             eventListeners,
             (eventListener) -> {
@@ -99,26 +102,32 @@ class DominoEventBroadcaster implements
     }
 
     @Override
-    public void jogadorTocou(int nomeDoJogador) {
-        broadCastEvent(eventListeners, cachedToques.get(nomeDoJogador));
+    public void jogadorTocou(final int quemFoi) {
+        broadCastEvent(eventListeners, cachedToques.get(quemFoi));
     }
 
     @Override
-    public void jogadorJogou(int jogador, Lado lado, Pedra pedra) {
-        final Function<Pedra, Consumer<DominoEventListener>> jodadaDoJogadorDaqueleLado =
+    public void jogadorJogou(
+            final int jogador, 
+            final Lado lado, 
+            final Pedra pedra) {
+        final Function<Pedra, Consumer<DominoEventListener>> 
+                jogadaDoJogadorDaqueleLado =
             this.cachedJogadasNoLado.get(jogador).get(optional(lado));
         
-        final Consumer<DominoEventListener> jogadaDessaPedraDesseLadoPorEsseJogador = 
-            jodadaDoJogadorDaqueleLado.apply(pedra);
+        final Consumer<DominoEventListener> 
+                jogadaDessaPedraDesseLadoPorEsseJogador = 
+            jogadaDoJogadorDaqueleLado.apply(pedra);
 
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
     }
 
     private Optional<Lado> optional(final Lado lado) {
         return lado == Lado.ESQUERDO 
-                ? OPTIONAL_ESQ : lado == Lado.DIREITO 
-                ? OPTIONAL_DIR
-                : OPTIONAL_LADO_NENHUM;
+                ? OPTIONAL_ESQ 
+                : lado == Lado.DIREITO 
+                    ? OPTIONAL_DIR
+                    : OPTIONAL_LADO_NENHUM;
     }
                 
     @Override
@@ -139,7 +148,7 @@ class DominoEventBroadcaster implements
 
     @Override
     public void decididoQuemComeca(
-            int jogador, boolean consentimentoMutuo) {
+            final int jogador, final boolean consentimentoMutuo) {
         broadCastEvent(eventListeners,
             (eventListener) -> {
                 eventListener.decididoQuemComeca(
@@ -150,14 +159,14 @@ class DominoEventBroadcaster implements
 
     @Override
     public void jogoComecou(
-            String nomeDoJogador1, String nomeDoJogador2, 
-            String nomeDoJogador3, String nomeDoJogador4) {
+        final String nomeDoJogador1, final String nomeDoJogador2, 
+        final String nomeDoJogador3, final String nomeDoJogador4) {
         
         broadCastEvent(eventListeners,
             (eventListener) -> {
                 eventListener.jogoComecou(
-                        nomeDoJogador1, nomeDoJogador2, 
-                        nomeDoJogador3, nomeDoJogador4);
+                    nomeDoJogador1, nomeDoJogador2, 
+                    nomeDoJogador3, nomeDoJogador4);
             }
         );
 
@@ -168,39 +177,64 @@ class DominoEventBroadcaster implements
     }
 
     private void montaCacheJogadasDoJogador(final int jogador) {
-        final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado = new HashMap<>(3);
-        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor = JOGADA_POR_UM_JOGADOR.apply(jogador);
-        fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.ESQUERDO);
-        fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, Lado.DIREITO);
-        fazCacheDaJogadaDoLado(jogadasDoJogadorDoLado, jogadaPorEsseJogdor, null);
-        this.cachedJogadasNoLado.put(jogador, jogadasDoJogadorDoLado);
+
+        final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> 
+            jogadasDoJogadorDoLado = new HashMap<>(3);
+
+        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
+            jogadaPorEsseJogador = JOGADA_POR_UM_JOGADOR.apply(jogador);
+
+        final Consumer<DominoEventListener> toqueDesseJogador = 
+            (eventListener) -> {eventListener.jogadorTocou(jogador);};
         
-        cachedToques.put(jogador, (eventListener) -> {eventListener.jogadorTocou(jogador);});
+        cacheJogadasDoLado(
+            jogadasDoJogadorDoLado, 
+            jogadaPorEsseJogador, 
+            Lado.ESQUERDO);
+        
+        cacheJogadasDoLado(
+            jogadasDoJogadorDoLado, 
+            jogadaPorEsseJogador,
+            Lado.DIREITO);
+
+        cacheJogadasDoLado(
+            jogadasDoJogadorDoLado, 
+            jogadaPorEsseJogador, 
+            null);
+        
+        this.cachedJogadasNoLado.put(jogador, jogadasDoJogadorDoLado);
+        this.cachedToques.put(jogador, toqueDesseJogador);
     }
 
-    private Function<Pedra, Consumer<DominoEventListener>> fazCacheDaJogadaDoLado(
+    private Function<Pedra, Consumer<DominoEventListener>> cacheJogadasDoLado(
             final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado, 
-            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogdor,
-            Lado lado) {
+            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogador,
+            final Lado lado) {
+        
         final Optional<Lado> talvezLado = optional(lado);
-        return jogadasDoJogadorDoLado.put(talvezLado,jogadaPorEsseJogdor.apply(lado));
+
+        final Function<Pedra, Consumer<DominoEventListener>> 
+            jogadaDesseJogadorDesseLado = 
+                jogadaPorEsseJogador.apply(lado);
+        return 
+            jogadasDoJogadorDoLado.put(talvezLado, jogadaDesseJogadorDesseLado);
     }
 
     @Override
     public void jogadorRecebeuPedras(int quemFoi, Collection<Pedra> pedras) {
         broadCastEvent(omniscientEventListeners,
-                (eventListener) -> {
-                    eventListener.jogadorRecebeuPedras(quemFoi, pedras);
-                }
+            (eventListener) -> {
+                eventListener.jogadorRecebeuPedras(quemFoi, pedras);
+            }
         );
     }
 
     @Override
     public void dormeDefinido(Collection<Pedra> pedras) {
         broadCastEvent(omniscientEventListeners,
-                (eventListener) -> {
-                    eventListener.dormeDefinido(pedras);
-                }
+            (eventListener) -> {
+                eventListener.dormeDefinido(pedras);
+            }
         );
     }
 }

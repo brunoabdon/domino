@@ -20,7 +20,6 @@ import br.nom.abdon.domino.Pedra;
  */
 public class JogadorMamao implements Jogador {
 
-
     protected Mesa mesa;
     protected List<Pedra> mao;
 
@@ -33,15 +32,15 @@ public class JogadorMamao implements Jogador {
 
     @Override
     public void recebeMao(Pedra[] mao) {
-            //guardar como uma List
-            this.mao = new ArrayList<>(6);
-            Collections.addAll(this.mao, mao);
-            perguntouSeEuQueriaJogar = false;
+        //guardar como uma List
+        this.mao = new ArrayList<>(6);
+        Collections.addAll(this.mao, mao);
+        perguntouSeEuQueriaJogar = false;
     }
 
     @Override
     public Jogada joga() {
-        Jogada jogada;
+        final Jogada jogada;
 
         Pedra pedraPraJogar = null;
         Lado ladoDeJogar = null;
@@ -72,11 +71,11 @@ public class JogadorMamao implements Jogador {
             //que se encaixe ou no lado esquerdo ou no direito dos dominos.
 
             //deixa eu ver quais sao os numeros
-            Numero numeroEsquerda = mesa.getNumeroEsquerda();
-            Numero numeroDireita = mesa.getNumeroDireita();
+            final Numero numeroEsquerda = mesa.getNumeroEsquerda();
+            final Numero numeroDireita = mesa.getNumeroDireita();
             //hum, otimo. agora deixa achar alguma pedra na minha mao
             //que tenha algum dessezs numeroos.
-            for (Pedra pedraDaMao : mao) {
+            for (final Pedra pedraDaMao : mao) {
                 if(pedraDaMao.temNumero(numeroEsquerda)){
                     //opa, achei uma. vai ser ela mesmo.
                     pedraPraJogar = pedraDaMao;
@@ -115,6 +114,7 @@ public class JogadorMamao implements Jogador {
      * tenho na mão. Tem que ser essa {@link Pedra} pra jogar quando 
      * sou o primeiro a jogar numa primeira partida.
      *  
+     * @TODO usar streams
      * @return Uma carroça.
      */
     private Pedra aMaiorCarroca() {
@@ -142,4 +142,4 @@ public class JogadorMamao implements Jogador {
         //vai 5 mesmo
         return 5;
     }
-    }
+}

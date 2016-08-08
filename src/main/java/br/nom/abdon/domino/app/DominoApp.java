@@ -6,19 +6,26 @@ import br.nom.abdon.domino.motor.Jogo;
 
 public class DominoApp {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         try {
-            DominoXmlConfigLoader configLoader = new DominoXmlConfigLoader();	
-            configLoader.carregaConfiguracoes();
+            final DominoXmlConfigLoader cfgLoader = new DominoXmlConfigLoader();	
+            cfgLoader.carregaConfiguracoes();
 
-            JogadorWrapper jogador1dupla1 = configLoader.getJogador1Dupla1(); 
-            JogadorWrapper jogador1dupla2 = configLoader.getJogador1Dupla2(); 
-            JogadorWrapper jogador2dupla1 = configLoader.getJogador2Dupla1(); 
-            JogadorWrapper jogador2dupla2 = configLoader.getJogador2Dupla2(); 
+            final JogadorWrapper jogador1dupla1 = cfgLoader.getJogador1Dupla1(); 
+            final JogadorWrapper jogador1dupla2 = cfgLoader.getJogador1Dupla2(); 
+            final JogadorWrapper jogador2dupla1 = cfgLoader.getJogador2Dupla1(); 
+            final JogadorWrapper jogador2dupla2 = cfgLoader.getJogador2Dupla2(); 
 
-            final LoggerDominoEventListener loggerDominoEventListener = new LoggerDominoEventListener();
-            final Jogo jogo = new Jogo(jogador1dupla1, jogador1dupla2, jogador2dupla1, jogador2dupla2);
+            final LoggerDominoEventListener loggerDominoEventListener = 
+                new LoggerDominoEventListener();
+            final Jogo jogo = 
+                new Jogo(
+                    jogador1dupla1, 
+                    jogador1dupla2, 
+                    jogador2dupla1, 
+                    jogador2dupla2);
+
             jogo.addEventListener(loggerDominoEventListener);
             jogo.jogar();
 

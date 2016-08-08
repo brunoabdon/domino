@@ -5,19 +5,20 @@ import br.nom.abdon.domino.Pedra;
 
 class PedraBebaException extends BugDeJogadorException {
 
-	private final Pedra pedraBeba;
-	
-	public PedraBebaException(Jogador jogadorSacana, Pedra pedraBeba) {
-		super("Jogou pedra beba!", jogadorSacana);
-		this.pedraBeba = pedraBeba;
-	}
+    private final Pedra pedraBeba;
 
-	public PedraBebaException(Pedra pedra) {
-		this(null,pedra);
-	}
+    public PedraBebaException(
+            final Jogador jogadorSacana, 
+            final Pedra pedraBeba) {
+        super("Jogou pedra beba!", jogadorSacana);
+        this.pedraBeba = pedraBeba;
+    }
 
-	public Pedra getPedraBeba() {
-		return pedraBeba;
-	}
+    public PedraBebaException(final Pedra pedraBeba) {
+            this(null,pedraBeba);
+    }
 
+    public Pedra getPedraBeba() {
+            return pedraBeba;
+    }
 }

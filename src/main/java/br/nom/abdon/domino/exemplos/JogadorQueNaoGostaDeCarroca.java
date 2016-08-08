@@ -33,10 +33,10 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
            vai jogar alguma entre elas sempre que eu não tiver carroça pra
            jogar.
          */
-        List<Pedra> naoCarrocas = new ArrayList<>();
+        final List<Pedra> naoCarrocas = new ArrayList<>();
         this.carrocas = new Pedra[7];
         quantasCarrocasEuTenho = 0;
-        for (Pedra pedra : mao) {
+        for (final Pedra pedra : mao) {
             if (pedra.isCarroca()) {
                 carrocas[pedra.getPrimeiroNumero().getNumeroDePontos()] = pedra;
                 quantasCarrocasEuTenho++; //manter esse contador pra ajudar.
@@ -69,7 +69,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
              dar preferência pra jogar o maior número primeiro. Se não tiver,
              jogo o menor. Se não tiver, então não tem como jogar carroça. 
              Jogo como mamão mesmo. */
-            Lado ladoComMaiorNumero = pegaLadoComMaiorNumero(mesa);
+            final Lado ladoComMaiorNumero = pegaLadoComMaiorNumero(mesa);
             jogada = fazJogadaDeAlgumaCarroca(mesa, ladoComMaiorNumero);
 
             if (jogada == null) {
@@ -92,7 +92,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @return O lado da mesa que tem o maior número (ou um lado qualquer se a
      * mesa estiver fechada.
      */
-    private Lado pegaLadoComMaiorNumero(Mesa mesa) {
+    private Lado pegaLadoComMaiorNumero(final Mesa mesa) {
         return mesa.getNumeroEsquerda().compareTo(mesa.getNumeroDireita()) > 0 
             ? Lado.ESQUERDO 
             : Lado.DIREITO;
@@ -111,7 +111,8 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * pra isso.
      */
     private Jogada fazJogadaDeAlgumaCarroca(
-            final Mesa mesa, final Lado ladoPreferencial) {
+            final Mesa mesa, 
+            final Lado ladoPreferencial) {
         
         Jogada jogada = pegaJogadaDeCarroca(mesa, ladoPreferencial);
         if (jogada == null) {
@@ -155,14 +156,13 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * tiver a carroça.
      */
     private Jogada pegaJogadaDeCarroca(
-            final Mesa mesa, final Lado ladoPraJogar) {
-
-        final Jogada jogada;
+            final Mesa mesa, 
+            final Lado ladoPraJogar) {
 
         final Numero numeroDaCabeca
             = ladoPraJogar == Lado.ESQUERDO
-            ? mesa.getNumeroEsquerda()
-            : mesa.getNumeroDireita();
+                ? mesa.getNumeroEsquerda()
+                : mesa.getNumeroDireita();
 
         final int indexNoArrayDeCarrocas = numeroDaCabeca.getNumeroDePontos();
         final Pedra carroca = carrocas[indexNoArrayDeCarrocas];
@@ -181,7 +181,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @return Uma jogada inical com aquela carroça.
      */
     private Jogada fazJogadaCarroca(final int indexNoArrayDeCarrocas) {
-        Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
+        final Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
         return Jogada.jogada(carroca,Lado.ESQUERDO);
     }
 
@@ -195,9 +195,10 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
      * @return Uma jogada inical com aquela carroça.
      */
     private Jogada fazJogadaCarroca(
-            final int indexNoArrayDeCarrocas, final Lado ladoPraJogar) {
+            final int indexNoArrayDeCarrocas, 
+            final Lado ladoPraJogar) {
         
-        Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
+        final Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
         return Jogada.jogada(carroca, ladoPraJogar);
     }
 

@@ -17,7 +17,7 @@ public final class JogadorWrapper implements Jogador {
 
     private final Jogador wrapped;
 
-    public JogadorWrapper(Jogador wrapped, String nome) {
+    public JogadorWrapper(final Jogador wrapped, final String nome) {
 
         if(nome == null) throw new IllegalArgumentException("João SemNome não joga.");
         if(wrapped == null) throw new IllegalArgumentException("bug");
@@ -27,7 +27,7 @@ public final class JogadorWrapper implements Jogador {
     }
 
     @Override
-    public void recebeMao(Pedra[] pedras) {
+    public void recebeMao(final Pedra[] pedras) {
         this.mao = new ArrayList<>(Arrays.asList(pedras));
         wrapped.recebeMao(pedras);
     }
@@ -43,7 +43,7 @@ public final class JogadorWrapper implements Jogador {
     }
 
     @Override
-    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
+    public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.cadeira = cadeiraQueSentou;
         wrapped.sentaNaMesa(mesa, cadeiraQueSentou);
     }

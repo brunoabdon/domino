@@ -10,7 +10,7 @@ class ResultadoPartida {
         this(null);
     }
 
-    protected ResultadoPartida(JogadorWrapper jogadorRelevante) {
+    protected ResultadoPartida(final JogadorWrapper jogadorRelevante) {
         this.jogadorRelevante = jogadorRelevante;
     }
 

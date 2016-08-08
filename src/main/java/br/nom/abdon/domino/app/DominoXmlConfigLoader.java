@@ -45,53 +45,52 @@ public class DominoXmlConfigLoader {
         return getJogador(configHandler.jogador2_dupla2);
     }
 
-    private Jogador carrega(Class<? extends Jogador> classeJogador) 
+    private Jogador carrega(final Class<? extends Jogador> classeJogador) 
             throws DominoAppException {
         
-        Jogador jogador;
+        final Jogador jogador;
         try {
                 jogador = classeJogador.newInstance();
         } catch (InstantiationException e) {
             throw new DominoAppException(
-                    "Jogador nem conseguiu ser inicializado: " + classeJogador);
+                e,"Jogador nem conseguiu ser inicializado: " + classeJogador);
         } catch (IllegalAccessException e) {
             throw new DominoAppException(
-                    "Jogador escodeu até o construtor: " + classeJogador);
+                e,"Jogador escodeu até o construtor: " + classeJogador);
         }
         return jogador;
     }
 
-
-    private JogadorWrapper getJogador(String nomeJogador) 
+    private JogadorWrapper getJogador(final String nomeJogador) 
             throws DominoAppException {
 
-            Class<? extends Jogador> klass  = pegaClasseJogador(nomeJogador);
-            Jogador jogador = carrega(klass);
+        final Class<? extends Jogador> klass  = pegaClasseJogador(nomeJogador);
+        final Jogador jogador = carrega(klass);
 
-            return new JogadorWrapper(jogador, nomeJogador);
+        return new JogadorWrapper(jogador, nomeJogador);
     }
 
+    private Class<? extends Jogador> pegaClasseJogador(
+            final String nomeJogador) throws DominoAppException {
 
-    private Class<? extends Jogador> pegaClasseJogador(String nomeJogador) 
-            throws DominoAppException {
+        final String jogadorClassName = 
+            configHandler.pegaClasseJogador(nomeJogador);
 
-        String jogadorClassName = configHandler.pegaClasseJogador(nomeJogador);
-
-        Class<? extends Jogador> klass;
+        final Class<? extends Jogador> klass;
         try {
             klass = Class.forName(jogadorClassName).asSubclass(Jogador.class);
         } catch (ClassNotFoundException e) {
             throw new DominoAppException(
-                "Classe do jogador não encontrada: " +  jogadorClassName);
+                e, "Classe do jogador não encontrada: " +  jogadorClassName);
         } catch (ClassCastException e) {
             throw new DominoAppException(
+                e,
                 "A classe " 
                 + jogadorClassName 
                 + " não implementa " 
                 + Jogador.class.getName());
         }
         return klass;
-
     }
 
     private static class ConfigHandler extends DefaultHandler2 {
@@ -114,32 +113,32 @@ public class DominoXmlConfigLoader {
 
         private void parseFile() throws DominoAppException {
             try {
-                File configFile = new File(CONFIG_XML);
+                final File configFile = new File(CONFIG_XML);
                 if(!configFile.exists()){
                     throw new DominoAppException( 
-                            "Arquivo de configuração não econtrado: " 
-                            + configFile.getAbsolutePath());
+                        "Arquivo de configuração não econtrado: " 
+                        + configFile.getAbsolutePath());
                 }
-                InputStream is = new FileInputStream(configFile);
+                final InputStream is = new FileInputStream(configFile);
                 SAXParserFactory
-                        .newInstance()
-                        .newSAXParser()
-                        .parse(is, this);
+                    .newInstance()
+                    .newSAXParser()
+                    .parse(is, this);
 
             } catch (ParserConfigurationException | SAXException e) {
                 throw new DominoAppException(e, "Erro na criação do parse xml");
             } catch (IOException e) {
-                throw new DominoAppException(e, 
-                        "Erro ao tentar ler arquivo de configuração");
+                throw new DominoAppException(
+                    e, "Erro ao tentar ler arquivo de configuração");
             }
         }
 
         @Override
         public void startElement(
-                String uri, 
-                String localName, 
-                String qName, 
-                Attributes attributes) throws SAXException {
+                final String uri, 
+                final String localName, 
+                final String qName, 
+                final Attributes attributes) throws SAXException {
 
             if(qName.equals(ELEMENT_DUPLA1)){
                 jogador1_dupla1 = attributes.getValue(ATT_JOGADOR1);
@@ -154,14 +153,14 @@ public class DominoXmlConfigLoader {
             }
         }
 
-        public String pegaClasseJogador(String nomeJogador) 
+        public String pegaClasseJogador(final String nomeJogador) 
                 throws DominoAppException {
             
-            String jogadorClassName = jogadores.get(nomeJogador);
+            final String jogadorClassName = jogadores.get(nomeJogador);
             if(jogadorClassName == null){
                 throw new DominoAppException(
-                        "Jogador desconhecido: " 
-                        +  nomeJogador);
+                    "Jogador desconhecido: " 
+                    +  nomeJogador);
             }
             return jogadorClassName;
         }

@@ -21,7 +21,6 @@ class BugDeJogadorException extends Exception {
         super(msg);
         this.jogadorBuguento = jogadorBuguento;
         this.pedra = pedra;
-
     }
 
     public Jogador getJogadorBuguento() {

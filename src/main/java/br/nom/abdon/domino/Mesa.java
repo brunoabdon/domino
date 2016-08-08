@@ -115,5 +115,5 @@ public interface Mesa extends Iterable<Pedra>{
      */
     public default boolean taVazia(){
         return this.quantasPecas() == 0;
-    };
+    }
 }

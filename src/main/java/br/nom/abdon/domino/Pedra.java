@@ -66,30 +66,31 @@ public enum Pedra {
      * {@link Numero#SENA sena})
      */
     public static final Pedra[] carrocas = 
-                    new Pedra[]{
-                            CARROCA_DE_LIMPO, 
-                            CARROCA_DE_PIO, 
-                            CARROCA_DE_DUQUE, 
-                            CARROCA_DE_TERNO, 
-                            CARROCA_DE_QUADRA, 
-                            CARROCA_DE_QUINA, 
-                            CARROCA_DE_SENA};
+        new Pedra[]{
+            CARROCA_DE_LIMPO, 
+            CARROCA_DE_PIO, 
+            CARROCA_DE_DUQUE, 
+            CARROCA_DE_TERNO, 
+            CARROCA_DE_QUADRA, 
+            CARROCA_DE_QUINA, 
+            CARROCA_DE_SENA
+    };
 
     private final Numero primeiroNumero;
     private final Numero segundoNumero;
 
     private final int numeroDePontos;
 
-    private Pedra(Numero primeiroNumero, Numero secundoNumero){
-            this.primeiroNumero = primeiroNumero;
-            this.segundoNumero = secundoNumero;
-            this.numeroDePontos = 
-                    primeiroNumero.getNumeroDePontos() 
-                    + segundoNumero.getNumeroDePontos();
+    private Pedra(final Numero primeiroNumero, final Numero secundoNumero){
+        this.primeiroNumero = primeiroNumero;
+        this.segundoNumero = secundoNumero;
+        this.numeroDePontos = 
+            primeiroNumero.getNumeroDePontos() 
+            + segundoNumero.getNumeroDePontos();
     }
 
-    private Pedra(Numero numeroDaCarroca){
-            this(numeroDaCarroca,numeroDaCarroca);
+    private Pedra(final Numero numeroDaCarroca){
+        this(numeroDaCarroca,numeroDaCarroca);
     }
 
     /**
@@ -98,7 +99,7 @@ public enum Pedra {
      * @return O menor número dessa pedra.
      */
     public Numero getPrimeiroNumero() {
-            return primeiroNumero;
+        return primeiroNumero;
     }
 
     /**
@@ -107,7 +108,7 @@ public enum Pedra {
      * @return O menor número dessa pedra.
      */
     public Numero getSegundoNumero() {
-            return segundoNumero;
+        return segundoNumero;
     }
 
     /**
@@ -116,7 +117,7 @@ public enum Pedra {
      * @return A soma dos dois números;
      */
     public int getNumeroDePontos() {
-            return this.numeroDePontos;
+        return this.numeroDePontos;
     }
 
     /**
@@ -127,7 +128,7 @@ public enum Pedra {
      * @return <code>true</code> só se um dos dois {@link Numero}s dessa pedra
      * for o dado como parâmetro.
      */
-    public boolean temNumero(Numero numero){
+    public boolean temNumero(final Numero numero){
             return numero == primeiroNumero || numero == segundoNumero; 
     }
 

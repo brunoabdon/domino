@@ -11,7 +11,7 @@ class Batida extends ResultadoPartida{
 
     private final Vitoria tipoDeVitoria;
 
-    public Batida(Vitoria tipoDeVitoria, JogadorWrapper vencedor) {
+    public Batida(final Vitoria tipoDeVitoria, final JogadorWrapper vencedor) {
         super(vencedor);
         this.tipoDeVitoria = tipoDeVitoria;
     }
@@ -23,5 +23,4 @@ class Batida extends ResultadoPartida{
     public Vitoria getTipoDeVitoria() {
             return tipoDeVitoria;
     }
-
 }

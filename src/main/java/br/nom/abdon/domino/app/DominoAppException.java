@@ -3,12 +3,11 @@ package br.nom.abdon.domino.app;
 
 public class DominoAppException extends Exception {
 
-	public DominoAppException(Exception e, String msg) {
+	public DominoAppException(final Exception e, final String msg) {
 		super(msg,e);
 	}
 
-	public DominoAppException(String msg) {
+	public DominoAppException(final String msg) {
 		super(msg);
 	}
-
 }

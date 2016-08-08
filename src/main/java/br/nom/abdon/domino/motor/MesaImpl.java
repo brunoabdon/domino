@@ -30,15 +30,15 @@ class MesaImpl implements Mesa{
     private final OmniscientDominoEventListener eventListener;
 
     //usado no toString()
-    private final static Collector<CharSequence, ?, String> joining = 
+    private final static Collector<CharSequence, ?, String> JOINING = 
         Collectors.joining("","{","}");
 
     MesaImpl(
-            final JogadorWrapper jogador1dupla1, 
-            final JogadorWrapper jogador1dupla2, 
-            final JogadorWrapper jogador2dupla1, 
-            final JogadorWrapper jogador2dupla2,
-            final OmniscientDominoEventListener eventListener) {
+        final JogadorWrapper jogador1dupla1, 
+        final JogadorWrapper jogador1dupla2, 
+        final JogadorWrapper jogador2dupla1, 
+        final JogadorWrapper jogador2dupla2,
+        final OmniscientDominoEventListener eventListener) {
 
         this.listaDePedras = new ArrayDeque<>(28-4);
         this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
@@ -88,23 +88,26 @@ class MesaImpl implements Mesa{
         jogador.recebeMao(mao.toArray(new Pedra[6]));
         
         this.eventListener.jogadorRecebeuPedras(
-                jogador.getCadeira(),
-                Collections.unmodifiableCollection(mao));
+            jogador.getCadeira(),
+            Collections.unmodifiableCollection(mao));
     }
     
     
     @Override
     public boolean taVazia(){
-            return this.listaDePedras.isEmpty();
+        return this.listaDePedras.isEmpty();
     }
 
     private boolean podeJogar(final Pedra pedra, final Lado lado){
-        Numero cabeca = lado == Lado.ESQUERDO ? numeroEsquerda : numeroDireita; 
+        final Numero cabeca = 
+            lado == Lado.ESQUERDO 
+                ? numeroEsquerda 
+                : numeroDireita; 
         return pedra.temNumero(cabeca);
     }
 
     @Override
-    public int quantasPedrasOJogadoresTem(int qualJogador) {
+    public int quantasPedrasOJogadoresTem(final int qualJogador) {
         if(qualJogador < 1 || qualJogador > 4 ) 
             throw new IllegalArgumentException("Dominó se joga com 4.");
         //jogador 1 joga na vez 0. jogadror 2, na vez 1...
@@ -137,11 +140,11 @@ class MesaImpl implements Mesa{
             
             if(podeColocar){
                 if(lado == Lado.ESQUERDO){
-                        listaDePedras.addFirst(pedra);
-                        numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
+                    listaDePedras.addFirst(pedra);
+                    numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
                 } else {
-                        listaDePedras.addLast(pedra);
-                        numeroDireita = novaCabeca(numeroDireita, pedra);
+                    listaDePedras.addLast(pedra);
+                    numeroDireita = novaCabeca(numeroDireita, pedra);
                 }
             }
         }
@@ -160,9 +163,9 @@ class MesaImpl implements Mesa{
             : primeiroNumeroDaPedra;
     }
 
-    JogadorWrapper jogadorDaVez(int vez) {
-        final Dupla dupla = (vez%2)==0?dupla1:dupla2;
-        return vez<2?dupla.getJogador1():dupla.getJogador2();
+    JogadorWrapper jogadorDaVez(final int vez) {
+        final Dupla dupla = (vez%2)==0 ? dupla1 : dupla2;
+        return vez<2 ? dupla.getJogador1() : dupla.getJogador2();
     }
     
     Dupla getDupla1(){
@@ -173,8 +176,8 @@ class MesaImpl implements Mesa{
         return this.dupla2;
     }
     
-    Dupla getDuplaDoJogador(JogadorWrapper jogador){
-        return dupla1.contem(jogador)?dupla1:dupla2;
+    Dupla getDuplaDoJogador(final JogadorWrapper jogador){
+        return dupla1.contem(jogador) ? dupla1 : dupla2;
     }
     
     List<JogadorWrapper> getJogadores(){
@@ -214,6 +217,6 @@ class MesaImpl implements Mesa{
     public String toString() {
         return listaDePedras.stream()
                 .map(Object::toString)
-                .collect(joining);
+                .collect(JOINING);
     }
 }

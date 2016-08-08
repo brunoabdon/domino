@@ -8,7 +8,7 @@ class Dupla {
     private final JogadorWrapper jogador1;
     private final JogadorWrapper jogador2;
 
-    Dupla(JogadorWrapper jogador1, JogadorWrapper jogador2) {
+    Dupla(final JogadorWrapper jogador1, final JogadorWrapper jogador2) {
         if(jogador1 == null || jogador2 == null) 
             throw new IllegalArgumentException("Só pode dupla de dois");
 
@@ -28,11 +28,11 @@ class Dupla {
             return pontos;
     }
 
-    void adicionaPontos(int pontos) {
+    void adicionaPontos(final int pontos) {
             this.pontos += pontos;
     }
 
-    boolean contem(JogadorWrapper jogador){
+    boolean contem(final JogadorWrapper jogador){
         return this.jogador1 == jogador || this.jogador2 == jogador;
     }
 
@@ -53,7 +53,7 @@ class Dupla {
             return vontadeDo1 - vontadeDo2; 
     }
 
-    private void validaVontade(int vontade, Jogador jogador) 
+    private void validaVontade(final int vontade, final Jogador jogador) 
             throws BugDeJogadorException {
         if(vontade < 0 || vontade > 10){
             throw new BugDeJogadorException(
