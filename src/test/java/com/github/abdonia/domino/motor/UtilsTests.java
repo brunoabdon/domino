@@ -31,6 +31,4 @@ public class UtilsTests {
     public static JogadorWrapper makeJogador(final String nome) {
         return new JogadorWrapper(new JogadorMamao(), nome);
     }
-
-    
 }
