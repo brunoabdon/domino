@@ -111,6 +111,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <mainClass>br.nom.abdon.domino.app.DominoApp</mainClass>
+        <mainClass>com.github.abdonia.domino.app.DominoApp</mainClass>
     </properties>
 </project>
