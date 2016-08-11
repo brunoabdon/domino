@@ -14,19 +14,21 @@ import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 class Partida {
 
+    private final RandomGoddess fortuna;
+
     private final MesaImpl mesa;
 
     private final OmniscientDominoEventListener eventListener;
     
-    private static final Random RAND = new Random();
-
     private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
         MENOR_NO_ARRAY = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
     
     Partida(
         final MesaImpl mesa,
+        final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
 
+        this.fortuna = fortuna;
         this.mesa = mesa;
         this.eventListener = eventListener;
     }
@@ -202,7 +204,7 @@ class Partida {
         final boolean houveConsenso = quemDaDuplaComeca != 0;
 
         final boolean comecaOJogador1 = 
-            houveConsenso ? quemDaDuplaComeca < 0: RAND.nextBoolean();
+            houveConsenso ? quemDaDuplaComeca < 0: fortuna.jogador1Comeca();
         
         final JogadorWrapper jogadorQueComeca = 
             comecaOJogador1 ? 

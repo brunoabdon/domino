@@ -30,6 +30,8 @@ class MesaImpl implements Mesa{
 
     private final OmniscientDominoEventListener eventListener;
 
+    private final RandomGoddess fortuna;
+    
     //usado no toString()
     private final static Collector<CharSequence, ?, String> JOINING = 
         Collectors.joining("","{","}");
@@ -39,6 +41,7 @@ class MesaImpl implements Mesa{
         final JogadorWrapper jogador1dupla2, 
         final JogadorWrapper jogador2dupla1, 
         final JogadorWrapper jogador2dupla2,
+        final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
 
         this.listaDePedras = new ArrayDeque<>(28-4);
@@ -51,11 +54,7 @@ class MesaImpl implements Mesa{
                 jogador2dupla1, jogador2dupla2);
         
         this.eventListener = eventListener;
-        
-        jogador1dupla1.sentaNaMesa(this, 1);
-        jogador1dupla2.sentaNaMesa(this, 2);
-        jogador2dupla1.sentaNaMesa(this, 3);
-        jogador2dupla2.sentaNaMesa(this, 4);
+        this.fortuna = fortuna; 
     }
 
     void embaralhaEdistribui() {
@@ -65,7 +64,7 @@ class MesaImpl implements Mesa{
         
         //embaralha...
         final List<Pedra> pedras = Arrays.asList(Pedra.values());
-        Collections.shuffle(pedras);
+        fortuna.embaralha(pedras);
 
         //distribui as maos dos 4 jogadores
         for (int i = 0, idx = 0; i < 4; i++) {
