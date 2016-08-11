@@ -7,8 +7,8 @@ import com.github.abdonia.domino.Vitoria;
 /**
  * Interface para receber eventos publicos do que acontece durante o jogo.
  * 
- * {@link com.github.abdonia.domino.Jogador}es que implementarem esta interface serao 
- * automaticamente registrados para serem avisados dos eventos.
+ * {@link com.github.abdonia.domino.Jogador}es que implementarem esta interface
+ * serao automaticamente registrados para serem avisados dos eventos.
  * 
  * @author bruno
  *
@@ -36,8 +36,9 @@ public interface DominoEventListener {
      *  
      * @param placarDupla1 Quantos pontos a dupla 1 tem.
      * @param placarDupla2 Quantos pontos a dupla 2 tem
-     * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por causa
-     * de um empate na partida anterior (por ser o caso de ser uma seqüência de empates)
+     * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por 
+     * causa de um empate na partida anterior (por ser o caso de ser uma 
+     * seqüência de empates)
      */
     public default void partidaComecou(
             int placarDupla1, 
@@ -81,7 +82,6 @@ public interface DominoEventListener {
             int jogador, 
             Lado lado, 
             Pedra pedra){
-
     }
 
     /**
@@ -133,6 +133,5 @@ public interface DominoEventListener {
      */
     public default void jogoAcabou(int placarDupla1, int placarDupla2){
 
-    }
-	
+    }	
 }
