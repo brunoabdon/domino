@@ -97,8 +97,6 @@ public class DuplaTest {
                 for (int j = 0; j < 10; j++) {
                     final Dupla dupla = makeDupla(i, j);
                     final int quemComeca = dupla.quemComeca();
-                    System.out.println(
-                        "j1? " + i + ", j2? " + j + ". Quem? " + quemComeca);
                     if(i == j) assertEquals(quemComeca, 0);
                     else if (i < j) assertTrue(quemComeca<0);
                     else if (i > j) assertTrue(quemComeca>0);
@@ -118,7 +116,6 @@ public class DuplaTest {
         System.out.println("venceu");
         final Dupla dupla = makeDupla();
         for (int i = 0; i < 12; i++) {
-            System.out.println("\t com " + i + " pontos.");
             assertEquals(dupla.venceu(),i>=6);
             dupla.adicionaPontos(1);
         }
