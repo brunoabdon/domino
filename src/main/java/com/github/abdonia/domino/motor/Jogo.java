@@ -43,10 +43,12 @@ public class Jogo {
      * mesa (duplas 0 e 2 contra 1 e 3), onde a aleatóriedade é gerada pelo
      * gerador randômico passado. 
      * 
-     * O gerador randômico será usado para embaralhar as pedras, de acordo com
-     * {@link Collections#shuffle(java.util.List, java.util.Random)}. Ele também
-     * será usado 
-     * 
+     * Aa {@link RandomGoddess#embaralha() lista embaralhada de pedras retornada 
+     * pelo gerador randômico} será distribuida entre os jogadores {@link 
+     * Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentados na 
+     * mesa}, onde o jogador na candeira <pre>x</pre> receberá as  pedras do 
+     * índices <pre>x*6</pre> até <pre>x*6 + 5</pre>. As pedras nos últimos 
+     * quatro indices vão para o dorme.
      * 
      * @param jogador1dupla1 O primeiro jogador da primeira dupla.
      * @param jogador1dupla2 O primeiro jogador da segunda dupla.

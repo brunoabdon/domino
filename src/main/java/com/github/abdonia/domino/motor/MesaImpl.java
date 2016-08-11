@@ -63,8 +63,7 @@ class MesaImpl implements Mesa{
         this.listaDePedras.clear();
         
         //embaralha...
-        final List<Pedra> pedras = Arrays.asList(Pedra.values());
-        fortuna.embaralha(pedras);
+        final List<Pedra> pedras = fortuna.embaralha();
 
         //distribui as maos dos 4 jogadores
         for (int i = 0, idx = 0; i < 4; i++) {

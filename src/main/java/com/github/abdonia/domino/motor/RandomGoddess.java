@@ -26,22 +26,17 @@ import java.util.List;
  * empate na {@link Jogador#vontadeDeComecar() vontade demonstrada para começar 
  * a jogar}.
  * 
- * @author Bruno Abdon <brunoabdon+github@gmail.com>
+ * @author Bruno Abdon
  */
 public interface RandomGoddess {
 
     /**
-     * Embaralha uma lista de {@link Pedra}s, mudando (ou não) a posição de cada
-     * pedra na lista de uma maneira aleatória ou pseudo-aleatória. A lista de
-     * 28 pedras será distribuida entre os jogadores {@link 
-     * Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) 
-     * sentados na mesa}, onde o jogador na candeira <pre>x</pre> receberá as 
-     * pedras do índices <pre>x*6</pre> até <pre>x*6 + 5</pre>. As pedras nos
-     * últimos quatro indices vão para o dorme.
+     * Retorna uma lista contentdo as 28 {@link Pedra}s do dominó numa ordem 
+     * qualquer.
+     * A lista resultante de 28 pedras 
      * 
-     * @param pedras a lista de {@link Pedra}s a ser embaralhada.
      */
-    public void embaralha(final List<Pedra> pedras);
+    public List<Pedra> embaralha();
     
     /**
      * Diz, (pseudo-)aleatóriamente se o primeiro jogador da dupla (e não o 
