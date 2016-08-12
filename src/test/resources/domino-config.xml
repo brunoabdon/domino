@@ -12,21 +12,21 @@
 
 
   
-  <jogador nome="mamao" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
+  <jogador nome="mamao" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
   
   
   <!-- substituir o nome das classes quando existirem -->
-  <jogador nome="Amanda" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Bruno" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
-  <jogador nome="Eudes" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Igor" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
-  <jogador nome="Ana" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
-  <jogador nome="Carla" classe="br.nom.abdon.jogadores.JogadorMaxMao"/>
-  <jogador nome="Julio" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Debora" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Jorge" classe="br.nom.abdon.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Ronaldo" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Mauricio" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Berg" classe="br.nom.abdon.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Amanda" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Bruno" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
+  <jogador nome="Eudes" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Igor" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
+  <jogador nome="Ana" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
+  <jogador nome="Carla" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
+  <jogador nome="Julio" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Debora" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Jorge" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Ronaldo" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Mauricio" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Berg" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
 
 </domino>
