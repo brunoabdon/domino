@@ -4,7 +4,6 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
-import java.util.Collections;
 import java.util.Random;
 
 public class Jogo {
