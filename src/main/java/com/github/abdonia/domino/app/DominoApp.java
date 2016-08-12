@@ -1,5 +1,6 @@
 package com.github.abdonia.domino.app;
 
+import com.github.abdonia.domino.log.RawLogger;
 import com.github.abdonia.domino.log.LoggerDominoEventListener;
 import com.github.abdonia.domino.motor.JogadorWrapper;
 import com.github.abdonia.domino.motor.Jogo;
@@ -27,6 +28,7 @@ public class DominoApp {
                     jogador2dupla2);
 
             jogo.addEventListener(loggerDominoEventListener);
+            jogo.addEventListener(new RawLogger());
             jogo.jogar();
 
         } catch (DominoAppException e) {
