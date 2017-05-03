@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domino>
+
+  <duplas>
+     <dupla1 jogador1="Bruno" jogador2="Amanda"/>
+     <dupla2 jogador1="Igor" jogador2="Ronaldo"/>
+  </duplas>
+  
+  <jogador nome="Amanda" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+  <jogador nome="Bruno" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+  <jogador nome="Igor" classe="com.github.abdonia.domino.exemplos.JogadorAlheio"/>
+  <jogador nome="Ronaldo" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+
+</domino>

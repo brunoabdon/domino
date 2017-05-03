@@ -3,8 +3,6 @@ package com.github.abdonia.domino.app;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,13 +18,12 @@ import com.github.abdonia.domino.motor.JogadorWrapper;
 
 public class DominoXmlConfigLoader {
 
-    private static final String CONFIG_XML = "domino-config.xml";
-
     private ConfigHandler configHandler;
 
-    public void carregaConfiguracoes() throws DominoAppException {
+    public void carregaConfiguracoes(final InputStream configInputStream) 
+            throws DominoAppException {
         configHandler = new ConfigHandler();
-        configHandler.parseFile();
+        configHandler.parseFile(configInputStream);
     }
 
     public JogadorWrapper getJogador1Dupla1() throws DominoAppException {
@@ -111,15 +108,8 @@ public class DominoXmlConfigLoader {
 
         Map<String, String> jogadores = new HashMap<>();
 
-        private void parseFile() throws DominoAppException {
+        private void parseFile(final InputStream is) throws DominoAppException {
             try {
-                final File configFile = new File(CONFIG_XML);
-                if(!configFile.exists()){
-                    throw new DominoAppException( 
-                        "Arquivo de configuração não econtrado: " 
-                        + configFile.getAbsolutePath());
-                }
-                final InputStream is = new FileInputStream(configFile);
                 SAXParserFactory
                     .newInstance()
                     .newSAXParser()
