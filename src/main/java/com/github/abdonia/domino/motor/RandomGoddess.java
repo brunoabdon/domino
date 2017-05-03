@@ -31,9 +31,11 @@ import java.util.List;
 public interface RandomGoddess {
 
     /**
-     * Retorna uma lista contentdo as 28 {@link Pedra}s do dominó numa ordem 
+     * Retorna uma lista contendo as 28 {@link Pedra}s do dominó numa ordem 
      * qualquer.
      * A lista resultante de 28 pedras 
+     * 
+     * @return Uma lista das 28 {@link Pedra}s.
      * 
      */
     public List<Pedra> embaralha();
