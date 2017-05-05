@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2017 Bruno Abdon
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.github.abdonia.domino.app;
 
 import java.io.Console;
@@ -23,7 +39,6 @@ public class DominoApp {
     private static final String DEFAULT_CONFIG_XML = "/domino-config-default.xml";
     private static final String MSG_BUNDLE = "DominoAppMsg";
 
-    
     public static void main(final String[] args) {
         
         try {
@@ -57,7 +72,6 @@ public class DominoApp {
 
         return DominoXmlConfigLoader
                 .carregaConfiguracoes(streamConfiguracao);
-
     }
 
     /**
@@ -108,14 +122,13 @@ public class DominoApp {
     private static void tentarExibirAvisoConfiguracaoDefault() {
         final Console console = System.console();
         if(console != null){
-            
             final ResourceBundle msgBundle =
                     ResourceBundle.getBundle(MSG_BUNDLE);
             final String msg =
                     MessageFormat.format(
                         msgBundle.getString("msg.defaultconfig"),
                         CONFIG_XML);
-            System.out.println(msg);
+            console.writer().println(msg);
             console.readLine();
         }
     }
