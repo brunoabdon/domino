@@ -1,15 +1,3 @@
-package com.github.abdonia.domino.log;
-
-
-import com.github.abdonia.domino.Lado;
-import com.github.abdonia.domino.Pedra;
-import com.github.abdonia.domino.Vitoria;
-import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import org.apache.commons.lang3.text.StrBuilder;
-
 /*
  * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
  *
@@ -26,6 +14,17 @@ import org.apache.commons.lang3.text.StrBuilder;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package com.github.abdonia.domino.log;
+
+
+import com.github.abdonia.domino.Lado;
+import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vitoria;
+import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import org.apache.commons.lang3.text.StrBuilder;
 
 /**
  *
@@ -194,6 +193,5 @@ public class RawLogger implements OmniscientDominoEventListener{
         for (Pedra pedra : pedras) {
             this.logPartidaAtual.ordemOriginalPedras[idx++] = pedra.ordinal();
         }
-    }
-    
+    }    
 }

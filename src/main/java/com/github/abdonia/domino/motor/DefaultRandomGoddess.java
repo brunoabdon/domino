@@ -17,7 +17,7 @@
 package com.github.abdonia.domino.motor;
 
 import com.github.abdonia.domino.Pedra;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
