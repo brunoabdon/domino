@@ -50,7 +50,25 @@ class DominoXmlConfigLoader {
     public static DominoConfig carregaConfiguracoes(
         final InputStream configInputStream) 
             throws DominoAppException {
-        return new ConfigHandler().parseFile(configInputStream);
+        
+        final ConfigHandler configHandler = new ConfigHandler();
+
+        try {
+            SAXParserFactory
+                .newInstance()
+                .newSAXParser()
+                .parse(configInputStream, 
+                        configHandler);
+
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new DominoAppException(e, "Erro na criação do parse xml");
+        } catch (IOException e) {
+            throw new DominoAppException(
+                e, "Erro ao tentar ler arquivo de configuração");
+        }
+        
+        return configHandler.dominoConfig;
+
     }
 
     /**
@@ -63,29 +81,12 @@ class DominoXmlConfigLoader {
         private static final String ATT_NOME = "nome";
         private static final String ATT_CLASSE = "classe";
 
-        private DominoConfig dominoConfig;
-
-        private int idxDupla, idxJogador;
+        private final DominoConfig dominoConfig;
+        private int idxJogador;
         
-        private DominoConfig parseFile(final InputStream is) 
-                throws DominoAppException {
+        public ConfigHandler(){
             this.dominoConfig = new DominoConfig();
-            this.idxDupla = this.idxJogador = 1;
-            
-            try {
-                SAXParserFactory
-                    .newInstance()
-                    .newSAXParser()
-                    .parse(is, this);
-
-            } catch (ParserConfigurationException | SAXException e) {
-                throw new DominoAppException(e, "Erro na criação do parse xml");
-            } catch (IOException e) {
-                throw new DominoAppException(
-                    e, "Erro ao tentar ler arquivo de configuração");
-            }
-            
-            return this.dominoConfig;
+            this.idxJogador = 0;
         }
 
         @Override
@@ -95,22 +96,18 @@ class DominoXmlConfigLoader {
                 final String qName, 
                 final Attributes attributes) throws SAXException {
 
+            final String classe = attributes.getValue(ATT_CLASSE);
+
             if(qName.equals(ELEMENT_JOGADOR)){
                 final String nome = attributes.getValue(ATT_NOME);
-                final String classe = attributes.getValue(ATT_CLASSE);
                 
                 dominoConfig.setNomeEClasse(
                     nome, 
                     classe, 
-                    idxDupla, 
-                    idxJogador);
-                
-                if(++idxJogador == 3) {
-                    idxJogador = 1;
-                    idxDupla = 2;
-                }
+                    (idxJogador>>1)+1, 
+                    (idxJogador++&1)+1);
+
             } else if(qName.equals(ELEMENT_EVENT_LISTENER)){
-                final String classe = attributes.getValue(ATT_CLASSE);
                 this.dominoConfig.addEventListener(classe);
             }
         }
