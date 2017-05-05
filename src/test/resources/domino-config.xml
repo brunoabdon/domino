@@ -1,32 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <domino>
-
   <duplas>
-<!--
-     <dupla1 jogador1="Debora" jogador2="Jorge"/>
-     <dupla2 jogador1="Amanda" jogador2="Julio"/>
--->
-     <dupla1 jogador1="Amanda" jogador2="Ronaldo"/>
-     <dupla2 jogador1="Berg" jogador2="Mauricio"/>
+     <dupla> 
+        <jogador nome="Amanda" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+        <jogador nome="Bruno" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
+     </dupla>
+     <dupla>
+        <jogador nome="Igor" classe="com.github.abdonia.domino.exemplos.JogadorAlheio"/>
+        <jogador nome="Ronaldo" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
+     </dupla>
   </duplas>
-
-
   
-  <jogador nome="mamao" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
-  
-  
-  <!-- substituir o nome das classes quando existirem -->
-  <jogador nome="Amanda" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Bruno" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
-  <jogador nome="Eudes" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Igor" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
-  <jogador nome="Ana" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
-  <jogador nome="Carla" classe="com.github.abdonia.jogadores.JogadorMaxMao"/>
-  <jogador nome="Julio" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Debora" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Jorge" classe="com.github.abdonia.domino.exemplos.JogadorMamao"/>
-  <jogador nome="Ronaldo" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Mauricio" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-  <jogador nome="Berg" classe="com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca"/>
-
+  <event-listeners>
+      <event-listener classe="com.github.abdonia.domino.log.LoggerDominoEventListener"/>
+      <!--event-listener classe="com.github.abdonia.domino.log.RawLogger"/-->
+  </event-listeners>
 </domino>
