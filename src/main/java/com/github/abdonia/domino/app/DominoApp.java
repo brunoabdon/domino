@@ -1,16 +1,19 @@
 package com.github.abdonia.domino.app;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.Console;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import static java.nio.file.StandardOpenOption.READ;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.github.abdonia.domino.log.RawLogger;
-import com.github.abdonia.domino.log.LoggerDominoEventListener;
+import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.motor.JogadorWrapper;
 import com.github.abdonia.domino.motor.Jogo;
 
@@ -23,26 +26,14 @@ public class DominoApp {
     
     public static void main(final String[] args) {
         
-        
         try {
-            final DominoXmlConfigLoader cfgLoader = loadConfig();
+            //carregando as configurações
+            final DominoConfig dominoConfig = carregaConfiguracao();
 
-            final JogadorWrapper jogador1dupla1 = cfgLoader.getJogador1Dupla1(); 
-            final JogadorWrapper jogador1dupla2 = cfgLoader.getJogador1Dupla2(); 
-            final JogadorWrapper jogador2dupla1 = cfgLoader.getJogador2Dupla1(); 
-            final JogadorWrapper jogador2dupla2 = cfgLoader.getJogador2Dupla2(); 
+            //criando o jogo com essas configurações
+            final Jogo jogo = criaJogo(dominoConfig);
 
-            final LoggerDominoEventListener loggerDominoEventListener = 
-                new LoggerDominoEventListener();
-            final Jogo jogo = 
-                new Jogo(
-                    jogador1dupla1, 
-                    jogador1dupla2, 
-                    jogador2dupla1, 
-                    jogador2dupla2);
-
-            jogo.addEventListener(loggerDominoEventListener);
-            //jogo.addEventListener(new RawLogger());
+            //jogando
             jogo.jogar();
 
         } catch (DominoAppException e) {
@@ -51,46 +42,154 @@ public class DominoApp {
             
     }
 
-    private static DominoXmlConfigLoader loadConfig() 
+    /**
+     * Carrega a {@link DominoConfig configuração do jogo} a ser usada, ou seja,
+     * quais {@link Jogador jogadores} irão participar, como  
+     * {@link DominoEventListener os eventos serão tratados}, etc..
+     * @return Uma {@link DominoConfig configuração de jogo de dominó}.
+     * @throws DominoAppException 
+     */
+    private static DominoConfig carregaConfiguracao() 
             throws DominoAppException {
 
-        final DominoXmlConfigLoader cfgLoader;
-        
-        final InputStream is;
-        final File configFile = new File(CONFIG_XML);
+        final InputStream streamConfiguracao = 
+                abreStreamDocumentoDeConfiguracao();
 
-        try {
-            if(configFile.exists()){
-                is = new FileInputStream(configFile);
-            } else {
-                final ResourceBundle msgBundle = 
-                        ResourceBundle.getBundle(MSG_BUNDLE);
-                
-                final String msg = 
-                    MessageFormat.format(
-                        msgBundle.getString("msg.defaultconfig"),
-                        configFile.getAbsolutePath());
-                
-                System.out.println(msg);
-                System.console().readLine();
+        return DominoXmlConfigLoader
+                .carregaConfiguracoes(streamConfiguracao);
 
-                is = DominoApp.class.getResourceAsStream(DEFAULT_CONFIG_XML);
-                assert is != null;
-            }
-            
-            cfgLoader = new DominoXmlConfigLoader();
-            cfgLoader.carregaConfiguracoes(is);
-        } catch (FileNotFoundException ex) {
-            throw new DominoAppException(ex, "Erro ao ler arquivo");
-        }
-        
-        return cfgLoader;
     }
 
-    
+    /**
+     * Retorna um {@link InputStream} de onde deverá ser lido o documento xml de 
+     * configuração do jogo. Tenta primeiro encontrar no diretório corrente o
+     * arquivo {@link #CONFIG_XML}. Caso não exista, vai usar um documento de 
+     * configuração default que existe no classpath em
+     * {@link #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console,
+     * uma mensagem podera ser exibida no caso da configuração default ser 
+     * usada.
+     * @return Um {@link InputStream} com o documento xml de configuração.
+     * 
+     * @throws DominoAppException Caso alguma falha aconteça ao tentar abrir o
+     * arquivo.
+     */
+    private static InputStream abreStreamDocumentoDeConfiguracao() 
+            throws DominoAppException {
+        
+        final InputStream streamConfiguracao;
+
+        try {
+            final Path configPath = 
+                FileSystems.getDefault().getPath(CONFIG_XML);
+            
+            if(Files.exists(configPath)){
+                streamConfiguracao = Files.newInputStream(configPath,READ);
+            } else {
+                tentarExibirAvisoConfiguracaoDefault();
+                streamConfiguracao = 
+                    DominoApp.class.getResourceAsStream(DEFAULT_CONFIG_XML);
+            }
+            
+        } catch (IOException ex) {
+            throw new DominoAppException(ex, "Erro ao ler arquivo");
+        }
+        return streamConfiguracao;
+    }
+
+    /**
+     * Caso a aplicação esteja rodando num console, exibe uma mensagem avisando
+     * que o jogo usará uma configuração default (por não ter encontrado nenhum
+     * arquivo de configuração). Após exibir a mensagem, o programa espera o 
+     * usuário apertar <code>ENTER</code> para prosseguir.
+     * 
+     * Se a aplicação não estiver rodando num console, nada acontece.
+     * 
+     */
+    private static void tentarExibirAvisoConfiguracaoDefault() {
+        final Console console = System.console();
+        if(console != null){
+            
+            final ResourceBundle msgBundle =
+                    ResourceBundle.getBundle(MSG_BUNDLE);
+            final String msg =
+                    MessageFormat.format(
+                        msgBundle.getString("msg.defaultconfig"),
+                        CONFIG_XML);
+            System.out.println(msg);
+            console.readLine();
+        }
+    }
+
+   /**
+    * Cria um {@link Jogo} de dominó a partir das configurações passadas.
+    * @param dominoConfig As configurações do jogo a ser criado.
+    * @return Um {@link Jogo} de dominó pronto pra ser jogado.
+    * @throws DominoAppException Caso não consiga instanciar alguma classe
+    * mencionada nas configurações.
+    */
+    private static Jogo criaJogo(
+            final DominoConfig dominoConfig) 
+                throws DominoAppException {
+        
+        //criando os jogadores
+        final JogadorWrapper jogador1dupla1 =
+                criaJogador(
+                    dominoConfig.getNomeJogador1Dupla1(),
+                    dominoConfig.getClasseJogador1Dupla1());
+        final JogadorWrapper jogador2dupla1 =
+                criaJogador(
+                    dominoConfig.getNomeJogador2Dupla1(),
+                    dominoConfig.getClasseJogador2Dupla1());
+        final JogadorWrapper jogador1dupla2 =
+                criaJogador(
+                    dominoConfig.getNomeJogador1Dupla2(),
+                    dominoConfig.getClasseJogador1Dupla2());
+        final JogadorWrapper jogador2dupla2 =
+                criaJogador(
+                    dominoConfig.getNomeJogador2Dupla2(),
+                    dominoConfig.getClasseJogador2Dupla2());
+        
+        //criando o jogo com os jogadores
+        final Jogo jogo =
+                new Jogo(
+                    jogador1dupla1,
+                    jogador1dupla2,
+                    jogador2dupla1,
+                    jogador2dupla2);
+        
+        //adicionando os eventListeners ao jogo
+        for(final String klass : dominoConfig.getEventListeners()){
+            final DominoEventListener eventListener =
+                DominoUtils.instancia(DominoEventListener.class, klass);
+            jogo.addEventListener(eventListener);
+        }
+        return jogo;
+    }
+
     private static void log(final Level l, final String msg, final Exception e){
         System.err.printf("%s: %s\n",msg, e.getMessage());
         Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
     }
-    
+
+    /**
+     * Cria um {@link JogadorWrapper jogador} dado seu nome e o nome de sua 
+     * classe.
+     * @param nomeJogador O nome do jogador.
+     * @param nomeClasse O nome completo da classe do jogador.
+     * @return Um {@link JogadorWrapper jogador} pronto pra jogar.
+     * @throws DominoAppException Caso não consiga instanciar o jogador.
+     */
+    private static JogadorWrapper criaJogador(
+            final String nomeJogador, 
+            final String nomeClasse) 
+                throws DominoAppException {
+
+        final Jogador jogador = 
+            DominoUtils
+                .instancia(
+                    Jogador.class, 
+                    nomeClasse);
+
+        return new JogadorWrapper(jogador, nomeJogador);
+    }
 }
