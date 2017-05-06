@@ -24,7 +24,6 @@ import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
-import com.github.abdonia.domino.app.DominoAppException;
 
 class JogadorWrapper implements Jogador {
 
