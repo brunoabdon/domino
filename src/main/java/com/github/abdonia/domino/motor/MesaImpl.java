@@ -22,7 +22,6 @@ import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
-import com.github.abdonia.domino.motor.util.IteratorReadOnly;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -234,4 +233,29 @@ class MesaImpl implements Mesa{
                 .map(Object::toString)
                 .collect(JOINING);
     }
+    
+    private class IteratorReadOnly<E> implements Iterator<E> {
+
+        private final Iterator<E> iterator;
+
+        public IteratorReadOnly(final Iterator<E> iterator) {
+            this.iterator = iterator;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public E next() {
+            return iterator.next();
+        }
+
+        @Override
+        public void remove() {
+            throw new IllegalStateException("nao pode remover nada daqui");
+        }
+}
+
 }
