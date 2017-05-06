@@ -236,9 +236,4 @@ public class Jogo {
     private boolean alguemVenceu() {
         return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
     }
-
-    public void addEventListener(final DominoEventListener eventListener) {
-        this.eventBroadcaster.addEventListener(eventListener,true);
-    }
-    
  }
