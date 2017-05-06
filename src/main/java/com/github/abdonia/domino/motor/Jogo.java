@@ -25,7 +25,6 @@ import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 
 
-import com.github.abdonia.domino.app.DominoConfig;
 
 public class Jogo {
 

@@ -16,6 +16,8 @@
  */
 package com.github.abdonia.domino.app;
 
+import com.github.abdonia.domino.motor.DominoConfig;
+
 import java.io.IOException;
 import java.io.InputStream;
 

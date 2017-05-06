@@ -1,10 +1,9 @@
 package com.github.abdonia.domino.ui.fx;
 
 import com.github.abdonia.domino.Vitoria;
-import com.github.abdonia.domino.app.DominoConfig;
+import com.github.abdonia.domino.motor.DominoConfig;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.exemplos.JogadorMamao;
-import com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca;
 import com.github.abdonia.domino.motor.Jogo;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
