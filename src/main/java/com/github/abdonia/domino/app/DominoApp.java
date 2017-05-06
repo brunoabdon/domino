@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.eventos.DominoEventListener;
-import com.github.abdonia.domino.motor.JogadorWrapper;
 import com.github.abdonia.domino.motor.Jogo;
 
 public class DominoApp {
@@ -46,7 +45,7 @@ public class DominoApp {
             final DominoConfig dominoConfig = carregaConfiguracao();
 
             //criando o jogo com essas configurações
-            final Jogo jogo = criaJogo(dominoConfig);
+            final Jogo jogo = new Jogo(dominoConfig);
 
             //jogando
             jogo.jogar();
@@ -133,76 +132,8 @@ public class DominoApp {
         }
     }
 
-   /**
-    * Cria um {@link Jogo} de dominó a partir das configurações passadas.
-    * @param dominoConfig As configurações do jogo a ser criado.
-    * @return Um {@link Jogo} de dominó pronto pra ser jogado.
-    * @throws DominoAppException Caso não consiga instanciar alguma classe
-    * mencionada nas configurações.
-    */
-    private static Jogo criaJogo(
-            final DominoConfig dominoConfig) 
-                throws DominoAppException {
-        
-        //criando os jogadores
-        final JogadorWrapper jogador1dupla1 =
-                criaJogador(
-                    dominoConfig.getNomeJogador1Dupla1(),
-                    dominoConfig.getClasseJogador1Dupla1());
-        final JogadorWrapper jogador2dupla1 =
-                criaJogador(
-                    dominoConfig.getNomeJogador2Dupla1(),
-                    dominoConfig.getClasseJogador2Dupla1());
-        final JogadorWrapper jogador1dupla2 =
-                criaJogador(
-                    dominoConfig.getNomeJogador1Dupla2(),
-                    dominoConfig.getClasseJogador1Dupla2());
-        final JogadorWrapper jogador2dupla2 =
-                criaJogador(
-                    dominoConfig.getNomeJogador2Dupla2(),
-                    dominoConfig.getClasseJogador2Dupla2());
-        
-        //criando o jogo com os jogadores
-        final Jogo jogo =
-                new Jogo(
-                    jogador1dupla1,
-                    jogador1dupla2,
-                    jogador2dupla1,
-                    jogador2dupla2);
-        
-        //adicionando os eventListeners ao jogo
-        for(final String klass : dominoConfig.getEventListeners()){
-            final DominoEventListener eventListener =
-                DominoUtils.instancia(DominoEventListener.class, klass);
-            jogo.addEventListener(eventListener);
-        }
-        return jogo;
-    }
-
     private static void log(final Level l, final String msg, final Exception e){
         System.err.printf("%s: %s\n",msg, e.getMessage());
         Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
-    }
-
-    /**
-     * Cria um {@link JogadorWrapper jogador} dado seu nome e o nome de sua 
-     * classe.
-     * @param nomeJogador O nome do jogador.
-     * @param nomeClasse O nome completo da classe do jogador.
-     * @return Um {@link JogadorWrapper jogador} pronto pra jogar.
-     * @throws DominoAppException Caso não consiga instanciar o jogador.
-     */
-    private static JogadorWrapper criaJogador(
-            final String nomeJogador, 
-            final String nomeClasse) 
-                throws DominoAppException {
-
-        final Jogador jogador = 
-            DominoUtils
-                .instancia(
-                    Jogador.class, 
-                    nomeClasse);
-
-        return new JogadorWrapper(jogador, nomeJogador);
     }
 }

@@ -24,8 +24,9 @@ import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.app.DominoAppException;
 
-public final class JogadorWrapper implements Jogador {
+class JogadorWrapper implements Jogador {
 
     private final String nome;
     private int cadeira;
@@ -33,7 +34,7 @@ public final class JogadorWrapper implements Jogador {
 
     private final Jogador wrapped;
 
-    public JogadorWrapper(final Jogador wrapped, final String nome) {
+    private JogadorWrapper(final Jogador wrapped, final String nome) {
 
         if(nome == null) throw new IllegalArgumentException("João SemNome não joga.");
         if(wrapped == null) throw new IllegalArgumentException("bug");
@@ -42,6 +43,28 @@ public final class JogadorWrapper implements Jogador {
         this.nome = nome;
     }
 
+    /**
+     * Cria um {@link JogadorWrapper jogador} dado seu nome e o nome de sua 
+     * classe.
+     * @param nomeJogador O nome do jogador.
+     * @param nomeClasse O nome completo da classe do jogador.
+     * @return Um {@link JogadorWrapper jogador} pronto pra jogar.
+     * @throws DominoAppException Caso não consiga instanciar o jogador.
+     */
+    static JogadorWrapper criaJogador(
+            final String nomeJogador, 
+            final String nomeClasse) {
+
+        final Jogador jogador = 
+            DominoUtils
+                .instancia(
+                    Jogador.class, 
+                    nomeClasse);
+
+        return new JogadorWrapper(jogador, nomeJogador);
+    }
+    
+    
     @Override
     public void recebeMao(final Pedra[] pedras) {
         this.mao = new ArrayList<>(Arrays.asList(pedras));

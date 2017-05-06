@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.abdonia.domino.app;
+package com.github.abdonia.domino.motor;
 
 /**
  *
@@ -24,8 +24,7 @@ class DominoUtils {
   
     public static <K> K instancia(
             final Class<K> superKlass, 
-            final String className) 
-                throws DominoAppException {
+            final String className) {
         
         final K instance;
 
@@ -36,21 +35,20 @@ class DominoUtils {
             instance = klass.newInstance();
 
         } catch (InstantiationException e) {
-            throw new DominoAppException(
-                e,"Não consegui inicializar: " + className);
+            throw new IllegalArgumentException(
+                "Não consegui inicializar: " + className, e);
         } catch (IllegalAccessException e) {
-            throw new DominoAppException(
-                e,"Preciso de um construtor: " + className);
+            throw new IllegalArgumentException(
+                "Preciso de um construtor: " + className, e);
         } catch (ClassNotFoundException e) {
-            throw new DominoAppException(
-                e, "Classe  não encontrada: " +  className);
+            throw new IllegalArgumentException(
+                "Classe  não encontrada: " +  className, e);
         } catch (ClassCastException e) {
-            throw new DominoAppException(
-                e,
+            throw new IllegalArgumentException(
                 "A classe " 
                 + className 
                 + " não implementa " 
-                + superKlass.getName());
+                + superKlass.getName(),e);
         }
         return instance;
     }

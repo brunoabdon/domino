@@ -24,11 +24,11 @@ import com.github.abdonia.domino.exemplos.JogadorMamao;
  */
 public class UtilsTests {
 
-    public static JogadorWrapper makeJogador() {
+    static JogadorWrapper makeJogador() {
         return makeJogador("bruno");
     }
 
-    public static JogadorWrapper makeJogador(final String nome) {
-        return new JogadorWrapper(new JogadorMamao(), nome);
+    static JogadorWrapper makeJogador(final String nome) {
+        return JogadorWrapper.criaJogador(nome,JogadorMamao.class.getName());
     }
 }

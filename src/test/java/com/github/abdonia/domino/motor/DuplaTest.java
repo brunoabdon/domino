@@ -86,29 +86,6 @@ public class DuplaTest {
     }
 
     /**
-     * Test of quemComeca method, of class Dupla.
-     */
-    @Test
-    public void testQuemComecaJogador1() {
-        System.out.println("quemComeca");
-
-        try {
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    final Dupla dupla = makeDupla(i, j);
-                    final int quemComeca = dupla.quemComeca();
-                    if(i == j) assertEquals(quemComeca, 0);
-                    else if (i < j) assertTrue(quemComeca<0);
-                    else if (i > j) assertTrue(quemComeca>0);
-                }
-            }            
-        } catch (BugDeJogadorException ex) {
-            fail("Unexpected BugDeJogadorException: " + ex.getMessage());
-        }
-
-    }
-
-    /**
      * Test of venceu method, of class Dupla.
      */
     @Test
@@ -135,31 +112,6 @@ public class DuplaTest {
     private Dupla makeDupla() {
         JogadorWrapper bruno = UtilsTests.makeJogador("bruno");
         JogadorWrapper igor = UtilsTests.makeJogador("igor");
-        return new Dupla(bruno,igor);
-    }
-
-    private JogadorWrapper makeJogador(
-            final String nome,
-            final int vontadeDeComecar){
-        return new JogadorWrapper(new Jogador() {
-            
-            @Override
-            public int vontadeDeComecar() {
-                return vontadeDeComecar;
-            }
-            
-            @Override public void sentaNaMesa(final Mesa mesa, final int cad) {}
-            @Override public void recebeMao(final Pedra[] pedras) {}
-            @Override public Jogada joga() {return Jogada.TOQUE;}
-        }, nome);
-    }
-
-    private Dupla makeDupla(
-            final int vontadeJogador1, 
-            final int vontadeJogador2) {
-        
-        final JogadorWrapper bruno = makeJogador("bruno", vontadeJogador1);
-        final JogadorWrapper igor = makeJogador("igor", vontadeJogador2);
         return new Dupla(bruno,igor);
     }
 }

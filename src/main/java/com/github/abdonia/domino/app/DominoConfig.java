@@ -19,6 +19,7 @@ package com.github.abdonia.domino.app;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * As configurações de um {@link com.github.abdonia.domino.motor.Jogo Jogo de 
  * dominó}, ou seja, quais jogadores vão participar (quais são seus nomes e suas
@@ -32,6 +33,8 @@ public class DominoConfig {
 
     private final String[] nomes = new String[4];
     private final String[] classes  = new String[4];
+
+    private String nomeRandomizadora;
 
     private List<String> eventListeners = new ArrayList<>();
 
@@ -112,15 +115,13 @@ public class DominoConfig {
             final int dupla, 
             final int jogador){
         
+        //nao tenho certeza se deveria validar nesse ponto....
         this.validaParametros(nome, classe, dupla, jogador);
         
         final int index = (dupla-1)*2 + (jogador-1);
         
         nomes[index] = nome;
         classes[index] = classe;
-
-        System.out.printf("[%d]: Jogador %d da dupla %d.\n", index, jogador, dupla);
-        
     }
 
     private void validaParametros(
@@ -158,4 +159,13 @@ public class DominoConfig {
     public void addEventListener(final String eventListener) {
         this.eventListeners.add(eventListener);
     }
+    
+    public String getNomeRandomizadora() {
+        return nomeRandomizadora;
+    }
+
+    public void setNomeRandomizadora(String nomeRandomizadora) {
+        this.nomeRandomizadora = nomeRandomizadora;
+    }
+    
 }

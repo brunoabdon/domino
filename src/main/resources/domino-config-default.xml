@@ -15,4 +15,6 @@
   <event-listeners>
       <event-listener classe="com.github.abdonia.domino.log.LoggerDominoEventListener"/>
   </event-listeners>
+  
+  <random-goddess>com.github.abdonia.domino.motor.DefaultRandomGoddess</random-goddess>
 </domino>

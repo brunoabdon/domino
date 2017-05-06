@@ -16,78 +16,66 @@
  */
 package com.github.abdonia.domino.motor;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
-import java.util.Random;
+
+
+import com.github.abdonia.domino.app.DominoConfig;
 
 public class Jogo {
 
     private final MesaImpl mesa;
     private final DominoEventBroadcaster eventBroadcaster;
     private final RandomGoddess fortuna;
-    
-    /**
-     * Cria um jogo de dominó com os jogadores passados sentados em ordem na 
-     * mesa (duplas 0 e 2 contra 1 e 3), onde a classe {@link Random} é usada
-     * pra gerar a aleatóriedade (embaralhar as pedreas e decidir quem da dupla 
-     * começa uma partida, se empatarem na {@link Jogador#vontadeDeComecar() 
-     * vontade demonstrada para começar a jogar}.
-     * 
-     * @param jogador1dupla1 O primeiro jogador da primeira dupla.
-     * @param jogador1dupla2 O primeiro jogador da segunda dupla.
-     * @param jogador2dupla1 O segundo jogador da primeira dupla.
-     * @param jogador2dupla2 O segundo jogador da segunda dupla.
-     */
-    public Jogo(
-        final JogadorWrapper jogador1dupla1, 
-        final JogadorWrapper jogador1dupla2, 
-        final JogadorWrapper jogador2dupla1, 
-        final JogadorWrapper jogador2dupla2) {
-            this(
-                jogador1dupla1, 
-                jogador1dupla2, 
-                jogador2dupla1, 
-                jogador2dupla2, 
-                new DefaultRandomGoddess());
-    }
+
+    private static final Function<String,DominoEventListener> EVT_LIST_INSTANC =
+        s-> DominoUtils.instancia(DominoEventListener.class, s);
     
     /**
      * Cria um jogo de dominó com os jogadores passados sentados em ordem na 
      * mesa (duplas 0 e 2 contra 1 e 3), onde a aleatóriedade é gerada pelo
      * gerador randômico passado. 
      * 
-     * Aa {@link RandomGoddess#embaralha() lista embaralhada de pedras retornada 
+     * A {@link RandomGoddess#embaralha() lista embaralhada de pedras retornada 
      * pelo gerador randômico} será distribuida entre os jogadores {@link 
      * Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentados na 
      * mesa}, onde o jogador na candeira <pre>x</pre> receberá as  pedras do 
      * índices <pre>x*6</pre> até <pre>x*6 + 5</pre>. As pedras nos últimos 
      * quatro indices vão para o dorme.
      * 
-     * @param jogador1dupla1 O primeiro jogador da primeira dupla.
-     * @param jogador1dupla2 O primeiro jogador da segunda dupla.
-     * @param jogador2dupla1 O segundo jogador da primeira dupla.
-     * @param jogador2dupla2 O segundo jogador da segunda dupla.
-     * @param fortuna O gerador de aleatóriedade a ser usado para
-     * embaralhar as cartas e para decidir quem na dupla deve começar uma 
-     * partida em caso de empate na {@link Jogador#vontadeDeComecar() vontade
-     * demonstrada para começar a jogar}.
+     * @param configuracao A configuração do jogo.
+     * 
      */
-    public Jogo(
-        final JogadorWrapper jogador1dupla1, 
-        final JogadorWrapper jogador1dupla2, 
-        final JogadorWrapper jogador2dupla1, 
-        final JogadorWrapper jogador2dupla2,
-        final RandomGoddess fortuna) {
-            
-        if(jogador1dupla1 == null 
-            || jogador2dupla1 == null 
-            || jogador1dupla2 == null 
-            || jogador2dupla2 == null) 
-            throw new IllegalArgumentException("W.O.!!!");
+    public Jogo(final DominoConfig configuracao){
 
-        this.fortuna = fortuna;
+        final JogadorWrapper jogador1dupla1 = 
+            JogadorWrapper
+                .criaJogador(
+                    configuracao.getNomeJogador1Dupla1(), 
+                    configuracao.getClasseJogador1Dupla1());
+        
+        final JogadorWrapper jogador1dupla2 = 
+            JogadorWrapper
+                .criaJogador(
+                    configuracao.getNomeJogador1Dupla2(), 
+                    configuracao.getClasseJogador1Dupla2());
+
+        final JogadorWrapper jogador2dupla1 = 
+            JogadorWrapper
+                .criaJogador(
+                    configuracao.getNomeJogador2Dupla1(), 
+                    configuracao.getClasseJogador2Dupla1()); 
+
+        final JogadorWrapper jogador2dupla2 = 
+            JogadorWrapper
+                .criaJogador(
+                    configuracao.getNomeJogador2Dupla2(), 
+                    configuracao.getClasseJogador2Dupla2());
         
         this.eventBroadcaster = 
             configuraEventListners(
@@ -95,6 +83,31 @@ public class Jogo {
                 jogador1dupla2, 
                 jogador2dupla1, 
                 jogador2dupla2);
+        
+        final Consumer<DominoEventListener> addLisntener = 
+            (eventListener) -> {
+                this.eventBroadcaster
+                    .addEventListener(
+                        eventListener,
+                        true);
+        };
+
+        //adicionando os eventListeners ao jogo
+        configuracao
+            .getEventListeners()
+            .stream()
+            .map(EVT_LIST_INSTANC)
+            .forEach(addLisntener);
+
+        final String nomeDeusaRandomizacao = 
+            configuracao.getNomeRandomizadora();
+        
+        this.fortuna = 
+            nomeDeusaRandomizacao == null 
+                ? new DefaultRandomGoddess()
+                : DominoUtils.instancia(
+                    RandomGoddess.class,
+                    nomeDeusaRandomizacao);
         
         this.mesa = 
             new MesaImpl(
@@ -228,4 +241,5 @@ public class Jogo {
     public void addEventListener(final DominoEventListener eventListener) {
         this.eventBroadcaster.addEventListener(eventListener,true);
     }
+    
  }

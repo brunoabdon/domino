@@ -1,10 +1,10 @@
 package com.github.abdonia.domino.ui.fx;
 
 import com.github.abdonia.domino.Vitoria;
+import com.github.abdonia.domino.app.DominoConfig;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.exemplos.JogadorMamao;
 import com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca;
-import com.github.abdonia.domino.motor.JogadorWrapper;
 import com.github.abdonia.domino.motor.Jogo;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -30,14 +30,16 @@ public class JogosTask extends Task<Void> implements DominoEventListener{
     
     @Override
     protected Void call() throws Exception {
-        final JogadorWrapper j1 = new JogadorWrapper(new JogadorMamao(), "Bruno");
-        final JogadorWrapper j2 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Ronaldo");
-        final JogadorWrapper j3 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Igor");
-        final JogadorWrapper j4 = new JogadorWrapper(new JogadorQueNaoGostaDeCarroca(), "Eudes");
-
+        final DominoConfig config = new DominoConfig();
+        config.setNomeEClasse("Bruno", JogadorMamao.class.getName(), 1, 1);
+        config.setNomeEClasse("Ronaldo", JogadorMamao.class.getName(), 2, 1);
+        config.setNomeEClasse("Igor", JogadorMamao.class.getName(), 1, 2);
+        config.setNomeEClasse("Eudes", JogadorMamao.class.getName(), 2, 2);
+        config.addEventListener(getClass().getName());
+        
+        
         for (long i = 0; i < 90000000; i++) {
-            final Jogo jogo = new Jogo(j1, j2, j3, j4);
-            jogo.addEventListener(this);
+            final Jogo jogo = new Jogo(config);
             jogo.jogar();
             if(i%100==0) Thread.sleep(10);
         }
