@@ -209,12 +209,12 @@ class MesaImpl implements Mesa{
 
     @Override
     public Iterator<Pedra> iteratorEsquedaPraDireita() {
-        return new IteratorReadOnly<>(listaDePedras.iterator());
+        return new ReadOnlyIterator<>(listaDePedras.iterator());
     }
 
     @Override
     public Iterator<Pedra> iteratorDireitaPraEsquerda() {
-        return new IteratorReadOnly<>(listaDePedras.descendingIterator());
+        return new ReadOnlyIterator<>(listaDePedras.descendingIterator());
     }
 
     @Override
@@ -234,28 +234,28 @@ class MesaImpl implements Mesa{
                 .collect(JOINING);
     }
     
-    private class IteratorReadOnly<E> implements Iterator<E> {
+    private class ReadOnlyIterator<E> implements Iterator<E> {
 
-        private final Iterator<E> iterator;
+    private final Iterator<E> iterator;
 
-        public IteratorReadOnly(final Iterator<E> iterator) {
-            this.iterator = iterator;
-        }
+    public ReadOnlyIterator(final Iterator<E> iterator) {
+        this.iterator = iterator;
+    }
 
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
+    @Override
+    public boolean hasNext() {
+        return iterator.hasNext();
+    }
 
-        @Override
-        public E next() {
-            return iterator.next();
-        }
+    @Override
+    public E next() {
+        return iterator.next();
+    }
 
-        @Override
-        public void remove() {
-            throw new IllegalStateException("nao pode remover nada daqui");
-        }
+    @Override
+    public void remove() {
+        throw new IllegalStateException("nao pode remover nada daqui");
+    }
 }
 
 }
