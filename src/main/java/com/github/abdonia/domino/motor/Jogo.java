@@ -16,6 +16,7 @@
  */
 package com.github.abdonia.domino.motor;
 
+import java.util.EventListener;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -23,8 +24,6 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
-
-
 
 public class Jogo {
 
@@ -36,16 +35,12 @@ public class Jogo {
         s-> DominoUtils.instancia(DominoEventListener.class, s);
     
     /**
-     * Cria um jogo de dominó com os jogadores passados sentados em ordem na 
-     * mesa (duplas 0 e 2 contra 1 e 3), onde a aleatóriedade é gerada pelo
-     * gerador randômico passado. 
-     * 
-     * A {@link RandomGoddess#embaralha() lista embaralhada de pedras retornada 
-     * pelo gerador randômico} será distribuida entre os jogadores {@link 
-     * Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentados na 
-     * mesa}, onde o jogador na candeira <pre>x</pre> receberá as  pedras do 
-     * índices <pre>x*6</pre> até <pre>x*6 + 5</pre>. As pedras nos últimos 
-     * quatro indices vão para o dorme.
+     * Cria um jogo de dominó de acordo com as configurações passadas:
+     * Os {@link Jogador}es e os {@link EventListener}ers informados no 
+     * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma 
+     * {@link DominoConfig#getNomeRandomizadora() geradora de aleatoriedade} for 
+     * informada, será instanciada. Se não os eventos aleatórios serão baseados
+     * em R{@link java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
      * 
@@ -123,6 +118,10 @@ public class Jogo {
         jogador2dupla2.sentaNaMesa(this.mesa, 4);
     }
 
+    /**
+     * Roda um jogo com os quatro jogadores, notificando o andamento aos 
+     * {@link EventListener}s passados no construtor.
+     */
     public void jogar(){
         
         final Dupla dupla1 = mesa.getDupla1();

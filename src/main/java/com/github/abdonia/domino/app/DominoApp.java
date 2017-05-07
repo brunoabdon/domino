@@ -40,6 +40,8 @@ public class DominoApp {
     private static final String DEFAULT_CONFIG_XML = "/domino-config-default.xml";
     private static final String MSG_BUNDLE = "DominoAppMsg";
 
+    private DominoApp(){}
+    
     public static void main(final String[] args) {
         
         try {
