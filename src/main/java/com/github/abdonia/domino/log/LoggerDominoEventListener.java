@@ -20,6 +20,7 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final int pontosDupla2, 
             final boolean ehDobrada) {
 
-        this.printStream.println("======================================");	
+        imprimeUmaBarrinha();
         this.printStream.println("Começando partida\n");
         imprimePlacar(pontosDupla1,pontosDupla2);
         imprimeUmaBarrinha();	
@@ -161,7 +162,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final String nomeDoJogador3, final String nomeDoJogador4){
 
             this.printStream.println("++++++++++++++++++++++++++++++++");    
-            this.printStream.println("Comecou o jogo");
+            this.printStream.println("Começou o jogo");
 
             this.nomeDosJogadores = 
                 new String[]{
@@ -213,7 +214,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     @Override
     public void partidaEmpatou(){
-        this.printStream.println("Empatou. A proxima vale dobrada.");   
+        this.printStream.println("Empatou. A próxima vale dobrada.");   
     }
     
     @Override
