@@ -21,6 +21,7 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +37,15 @@ public class RawLogger implements OmniscientDominoEventListener{
     
     private LogPartida logPartidaAtual;
 
+    private final PrintStream printStream;
+
+    public RawLogger(){
+        this(System.out);
+    }
+
+    public RawLogger(final PrintStream printStream){
+        this.printStream = printStream;
+    }    
     private CharSequence formatEnum(Enum e) {
         return
             new StringBuilder(e.getDeclaringClass().getSimpleName())
@@ -115,7 +125,7 @@ public class RawLogger implements OmniscientDominoEventListener{
                 sb.append(voltou()?"V":"B").append(" ").append(jogador);
             }  
 
-            System.out.println(sb.toString());
+            RawLogger.this.printStream.println(sb.toString());
         }
     }
     
@@ -151,7 +161,7 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     @Override
     public void jogoAcabou(int placarDupla1, int placarDupla2) {
-        System.out.println("RAW LOG: ");
+        this.printStream.println("RAW LOG: ");
         logPartidas.stream().forEach(
             (logPartida) -> {
                 logPartida.print();
