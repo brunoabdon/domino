@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author bamonteiro
+ * @author Bruno Abdon
  */
 public class ResultadoPartidaTest {
     

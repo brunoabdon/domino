@@ -31,16 +31,20 @@ import java.util.Iterator;
 public interface Mesa extends Iterable<Pedra>{
 
     /**
-     * O {@link Numero} da cabeça da esquerda.
+     * O {@link Numero} da cabeça da esquerda, ou <code>null</code> caso a mesa 
+     * {@link #taVazia() esteja vazia}.
      * 
-     * @return O número da cabeça da esquerda.
+     * @return O número da cabeça da esquerda, ou <code>null</code> caso a mesa 
+     * {@link #taVazia() esteja vazia}.
      */
     public Numero getNumeroEsquerda();
 
     /**
-     * O {@link Numero} da cabeça da direita.
+     * O {@link Numero} da cabeça da direita, ou <code>null</code> caso a mesa 
+     * {@link #taVazia() esteja vazia}.
      * 
-     * @return O número da cabeça da direita.
+     * @return O número da cabeça da direita, ou <code>null</code> caso a mesa 
+     * {@link #taVazia() esteja vazia}.
      */
     public Numero getNumeroDireita();
 
@@ -127,7 +131,7 @@ public interface Mesa extends Iterable<Pedra>{
      * Diz se a mesa está vazia (ou seja, deve-se jogar a primeira {@link Pedra
      * pedra} da partida);
      * 
-     * @return <code>true</code> so se nao tiver {@link Pedra} na mesa.
+     * @return <code>true</code> só se nao tiver {@link Pedra} na mesa.
      */
     public default boolean taVazia(){
         return this.quantasPecas() == 0;
