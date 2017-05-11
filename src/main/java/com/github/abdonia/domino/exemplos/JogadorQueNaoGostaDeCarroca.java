@@ -39,7 +39,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
     private int quantasCarrocasEuTenho;
 
     @Override
-    public void recebeMao(Pedra[] mao) {
+    public void recebeMao(final Pedra[] mao) {
         /* Separando as carroças das nao carroças. 
            As carroças eu mantenho no array carrocas, cada uma guardada no 
            indice de seu número (carroça de limpo no carrocas[0], carroça de 
@@ -51,7 +51,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
          */
         final List<Pedra> naoCarrocas = new ArrayList<>();
         this.carrocas = new Pedra[7];
-        quantasCarrocasEuTenho = 0;
+        this.quantasCarrocasEuTenho = 0;
         for (final Pedra pedra : mao) {
             if (pedra.isCarroca()) {
                 carrocas[pedra.getPrimeiroNumero().getNumeroDePontos()] = pedra;
@@ -74,7 +74,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
     public Jogada joga() {
         Jogada jogada;
 
-        if (quantasCarrocasEuTenho == 0) {
+        if (this.quantasCarrocasEuTenho == 0) {
             //nem tenho carroça mais. simplificando e jogando feito mamão.
             jogada = super.joga();
         } else if (mesa.taVazia()) {
@@ -133,7 +133,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         Jogada jogada = pegaJogadaDeCarroca(mesa, ladoPreferencial);
         if (jogada == null) {
             
-            Lado ladoDepreciado = 
+            final Lado ladoDepreciado = 
                 ladoPreferencial == Lado.ESQUERDO 
                     ? Lado.DIREITO 
                     : Lado.ESQUERDO;
@@ -152,7 +152,7 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         Jogada jogada = null;
         for (int i = 6; i >= 0; i--) {
             if (carrocas[i] != null) {
-                jogada = fazJogadaCarroca(i);
+                jogada = fazJogadaCarroca(i,Lado.ESQUERDO); //qualquer lado
                 break;
             }
         }
@@ -186,19 +186,6 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         return carroca == null
             ? null
             : fazJogadaCarroca(indexNoArrayDeCarrocas, ladoPraJogar);
-    }
-
-    /**
-     * Cria uma {@link Jogada} inicial (sem {@link Lado}) pra a carroça que tá 
-     * no dado indice do array de carroças, e tira a carroça do array, pra não
-     * usar mais ela. Diminui também o contador de quantas carroças eu tenho. 
-     * 
-     * @param indexNoArrayDeCarrocas O indice da carroça no array.
-     * @return Uma jogada inical com aquela carroça.
-     */
-    private Jogada fazJogadaCarroca(final int indexNoArrayDeCarrocas) {
-        final Pedra carroca = tiraCarrocaDoArray(indexNoArrayDeCarrocas);
-        return Jogada.jogada(carroca,Lado.ESQUERDO);
     }
 
     /**
