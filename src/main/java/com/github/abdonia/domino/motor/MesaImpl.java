@@ -236,26 +236,26 @@ class MesaImpl implements Mesa{
     
     private class ReadOnlyIterator<E> implements Iterator<E> {
 
-    private final Iterator<E> iterator;
+        private final Iterator<E> iterator;
 
-    public ReadOnlyIterator(final Iterator<E> iterator) {
-        this.iterator = iterator;
-    }
+        public ReadOnlyIterator(final Iterator<E> iterator) {
+            this.iterator = iterator;
+        }
 
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
 
-    @Override
-    public E next() {
-        return iterator.next();
-    }
+        @Override
+        public E next() {
+            return iterator.next();
+        }
 
-    @Override
-    public void remove() {
-        throw new IllegalStateException("nao pode remover nada daqui");
+        @Override
+        public void remove() {
+            throw new IllegalStateException("nao pode remover nada daqui");
+        }
     }
-}
 
 }

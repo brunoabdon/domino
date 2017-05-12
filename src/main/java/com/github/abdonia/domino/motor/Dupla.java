@@ -61,10 +61,10 @@ class Dupla {
      * se quer começar ou não.
      */
     int quemComeca() throws BugDeJogadorException {
-            int vontadeDo1 = jogador1.vontadeDeComecar();
+            final int vontadeDo1 = jogador1.vontadeDeComecar();
             validaVontade(vontadeDo1,jogador1);
 
-            int vontadeDo2 = jogador2.vontadeDeComecar();
+            final int vontadeDo2 = jogador2.vontadeDeComecar();
             validaVontade(vontadeDo2,jogador2);
             return vontadeDo1 - vontadeDo2; 
     }
