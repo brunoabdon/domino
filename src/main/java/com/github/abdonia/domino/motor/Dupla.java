@@ -34,18 +34,18 @@ class Dupla {
         this.pontos = 0;
     }
     public JogadorWrapper getJogador1() {
-            return jogador1;
+        return jogador1;
     }
     public JogadorWrapper getJogador2() {
-            return jogador2;
+        return jogador2;
     }
 
     public int getPontos() {
-            return pontos;
+        return pontos;
     }
 
     void adicionaPontos(final int pontos) {
-            this.pontos += pontos;
+        this.pontos += pontos;
     }
 
     boolean contem(final JogadorWrapper jogador){
@@ -84,6 +84,6 @@ class Dupla {
 
     @Override
     public String toString() {
-            return this.jogador1 + " e "  + this.jogador2 + ", " + this.pontos;
+        return this.jogador1 + " e "  + this.jogador2 + ", " + this.pontos;
     }
 }
