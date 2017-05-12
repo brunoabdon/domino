@@ -48,13 +48,13 @@ public class JogadorAlheio implements Jogador {
     private boolean perguntouSeEuQueriaJogar;
 
     @Override
-    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
+    public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.mesa = mesa;
     }
     
     @Override
-    public void recebeMao(final Pedra[] pedras) {
-        this.mao = new ArrayList<>(Arrays.asList(pedras));
+    public void recebeMao(final Pedra[] mao) {
+        this.mao = new ArrayList<>(Arrays.asList(mao));
         this.perguntouSeEuQueriaJogar = false;
     }
 
@@ -68,17 +68,21 @@ public class JogadorAlheio implements Jogador {
 
     private Jogada jogadaNormal() { 
         final Jogada jogada;
+        
         final Numero numeroEsquerda = mesa.getNumeroEsquerda();
         final Numero numeroDireita = mesa.getNumeroDireita();
+        
         final List<Pedra> jogaveis =
-                this.mao
-                    .stream()
-                    .filter(
-                        p -> p.temNumero(numeroEsquerda)
-                        || p.temNumero(numeroDireita))
-                    .collect(TO_LIST_COLLECTOR);
+            this.mao
+                .stream()
+                .filter(
+                    p -> p.temNumero(numeroEsquerda)
+                    || p.temNumero(numeroDireita))
+                .collect(TO_LIST_COLLECTOR);
+
         if(jogaveis.isEmpty()){
             jogada = Jogada.TOQUE;
+
         } else {
             final Pedra pedra = jogaveis.get(SORTE.nextInt(jogaveis.size()));
             
@@ -104,6 +108,7 @@ public class JogadorAlheio implements Jogador {
                 SORTE.nextBoolean()
                 ? Lado.ESQUERDO
                 : Lado.DIREITO;
+
         return joga(pedra,lado);
     }
 
