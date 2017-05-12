@@ -89,12 +89,7 @@ class DominoEventBroadcaster implements
 
     @Override
     public void partidaEmpatou() {
-        broadCastEvent(
-            eventListeners,
-            (eventListener) -> {
-                eventListener.partidaEmpatou();
-            }
-        );
+        broadCastEvent(eventListeners, DominoEventListener::partidaEmpatou);
     }
 
     @Override
