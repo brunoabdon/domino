@@ -10,6 +10,14 @@
     <description>Jogo de Dominó programável</description>    
     
     <url>https://github.com/brunoabdon/domino</url>
+
+    <developers>
+        <developer>
+            <name>Bruno Abdon</name>
+            <organization>Abdonia</organization>
+            <organizationUrl>https://github.com/abdonia</organizationUrl>
+        </developer>
+    </developers>    
     
     <licenses>
         <license>
@@ -22,6 +30,18 @@
         <name>Abdônia</name>
     </organization>
     
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype</id>
+            <name>Sonatype Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+           <id>sonatype</id>
+           <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+         </repository>        
+    </distributionManagement>
+        
     <build>
         <plugins>
             <plugin>
