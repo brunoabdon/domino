@@ -76,8 +76,8 @@ import com.github.abdonia.domino.motor.Jogo;
 public class DominoApp {
 
     private static final String CONFIG_XML = "domino-config.xml";
-    private static final String DEFAULT_CONFIG_XML = "/domino-config-default.xml";
-    private static final String MSG_BUNDLE = "DominoAppMsg";
+    private static final String DEFAULT_CONFIG_XML = "domino-config-default.xml";
+    private static final String MSG_BUNDLE = "com.github.abdonia.domino.app.DominoAppMsg";
 
     private DominoApp(){}
    
