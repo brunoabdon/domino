@@ -45,7 +45,7 @@ public class JogadorAlheio implements Jogador {
     private Mesa mesa;
     private List<Pedra> mao;
     
-    boolean perguntouSeEuQueriaJogar;
+    private boolean perguntouSeEuQueriaJogar;
 
     @Override
     public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
@@ -99,7 +99,7 @@ public class JogadorAlheio implements Jogador {
         final Pedra pedra =
                 perguntouSeEuQueriaJogar
                 ? this.mao.get(SORTE.nextInt(6))
-                : aMaiorCarroca();
+                : JogadorUtils.aMaiorCarroca(this.mao);
         final Lado lado =
                 SORTE.nextBoolean()
                 ? Lado.ESQUERDO
@@ -112,27 +112,6 @@ public class JogadorAlheio implements Jogador {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
         return SORTE.nextInt(11);
-    }
-
-    /**
-     * Retorna qual é a maior {@link Pedra#isCarroca() carroça} que eu 
-     * tenho na mão. Tem que ser essa {@link Pedra} pra jogar quando 
-     * sou o primeiro a jogar numa primeira partida.
-     *  
-     * @TODO usar streams
-     * @return Uma carroça.
-     */
-    private Pedra aMaiorCarroca() {
-        Pedra maiorCarroca = null;
-        for(Pedra pedra : mao) {
-            if(pedra.isCarroca()) {
-                if(maiorCarroca == null 
-                    || (pedra.compareTo(maiorCarroca) >= 1)){
-                    maiorCarroca = pedra;
-                }
-            }
-        }
-        return maiorCarroca;
     }
 
     private Jogada joga(final Pedra pedra, final Lado lado) {

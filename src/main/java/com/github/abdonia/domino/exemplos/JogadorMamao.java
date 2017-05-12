@@ -31,7 +31,7 @@ import com.github.abdonia.domino.Pedra;
  * {@link Jogador} mais simplório possível. Procura a primeira 
  * {@link Pedra} na mão que dá pra jogar na mesa e joga. 
  * 
- * @author bruno
+ * @author Bruno Abdon
  *
  */
 public class JogadorMamao implements Jogador {
@@ -39,19 +39,19 @@ public class JogadorMamao implements Jogador {
     protected Mesa mesa;
     protected List<Pedra> mao;
 
-    boolean perguntouSeEuQueriaJogar;
+    private boolean perguntouSeEuQueriaJogar;
 
     @Override
-    public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou) {
+    public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.mesa = mesa;
     }
 
     @Override
-    public void recebeMao(Pedra[] mao) {
+    public void recebeMao(final Pedra[] mao) {
         //guardar como uma List
         this.mao = new ArrayList<>(6);
         Collections.addAll(this.mao, mao);
-        perguntouSeEuQueriaJogar = false;
+        this.perguntouSeEuQueriaJogar = false;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class JogadorMamao implements Jogador {
                 ligou que o jogador que tem a maior carroça sou eu. Tenho que 
                 jogar ela, se não é roubo.
                 */
-                pedraPraJogar = aMaiorCarroca();
+                pedraPraJogar = JogadorUtils.aMaiorCarroca(this.mao);
             } else {
                 /* 
                 ah, eles perguntaram se eu queria ser o da dupla a comecar a 
@@ -83,19 +83,19 @@ public class JogadorMamao implements Jogador {
             //o lado, tanto faz. tá vazia a mesa mesmo.
             ladoDeJogar = Lado.ESQUERDO;
         } else {
-            //a mesa nao tah vazia. o jogo tah rolando. tenho que jogar uma peca
-            //que se encaixe ou no lado esquerdo ou no direito dos dominos.
+            //a mesa nao tá vazia. o jogo tá rolando. tenho que jogar uma peça
+            //que se encaixe ou no lado esquerdo ou no direito dos dominós.
 
             //deixa eu ver quais sao os numeros
             final Numero numeroEsquerda = mesa.getNumeroEsquerda();
             final Numero numeroDireita = mesa.getNumeroDireita();
-            //hum, otimo. agora deixa achar alguma pedra na minha mao
-            //que tenha algum dessezs numeroos.
+            //hum, ótimo. agora deixa achar alguma pedra na minha mão
+            //que tenha algum desses números.
             for (final Pedra pedraDaMao : mao) {
                 if(pedraDaMao.temNumero(numeroEsquerda)){
                     //opa, achei uma. vai ser ela mesmo.
                     pedraPraJogar = pedraDaMao;
-                    //jogar na esquerda, que foi o que eu vi que tenho o número.
+                    //na esquerda, que foi o lado que eu vi que tenho o número.
                     ladoDeJogar = Lado.ESQUERDO; 
                     //precisa nem procurar mais.
                     break;
@@ -111,7 +111,7 @@ public class JogadorMamao implements Jogador {
         }
 
         if(pedraPraJogar == null){ 
-            //lasquei-me. nao achei nenhuma. toc toc
+            //lasquei-me. não achei nenhuma. toc toc
             jogada = Jogada.TOQUE;
         } else {
             //pronto, vou tirar essa pedra da minha mão, pra não jogar duplicada 
@@ -123,27 +123,6 @@ public class JogadorMamao implements Jogador {
         }
         //retornando a jogada
         return jogada; 
-    }
-
-    /**
-     * Retorna qual é a maior {@link Pedra#isCarroca() carroça} que eu 
-     * tenho na mão. Tem que ser essa {@link Pedra} pra jogar quando 
-     * sou o primeiro a jogar numa primeira partida.
-     *  
-     * @TODO usar streams
-     * @return Uma carroça.
-     */
-    private Pedra aMaiorCarroca() {
-        Pedra maiorCarroca = null;
-        for(Pedra pedra : mao) {
-            if(pedra.isCarroca()) {
-                if(maiorCarroca == null 
-                    || (pedra.compareTo(maiorCarroca) >= 1)){
-                    maiorCarroca = pedra;
-                }
-            }
-        }
-        return maiorCarroca;
     }
 
     /**
