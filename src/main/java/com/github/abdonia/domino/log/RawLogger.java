@@ -21,14 +21,18 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.github.abdonia.domino.eventos.DominoEventListener;
 import org.apache.commons.lang3.text.StrBuilder;
 
 /**
- *
+ * Um {@link DominoEventListener} que loga o que aconteceu no jogo como uma 
+ * sequência de caractéres mais apropriada para máquinas (e não humanos) lerem.
  * @author Bruno Abdon
  */
 public class RawLogger implements OmniscientDominoEventListener{
@@ -39,13 +43,24 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     private final PrintStream printStream;
 
+    /**
+     * Cria uma instância que vai logar os {@link DominoEventListener eventos
+     * do jogo na {@link System#out saida padrão}.
+     */
     public RawLogger(){
         this(System.out);
     }
 
+    /**
+     * Cria uma instância que vai logar os {@link DominoEventListener eventos
+     * do jogo na stream passada como parâmetro.
+     * @param printStream uma stream onde devem ser logados os acontecimentos 
+     * do jogo.
+     */
     public RawLogger(final PrintStream printStream){
         this.printStream = printStream;
     }    
+
     private CharSequence formatEnum(Enum e) {
         return
             new StringBuilder(e.getDeclaringClass().getSimpleName())

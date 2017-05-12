@@ -17,15 +17,68 @@
 package com.github.abdonia.domino;
 
 /**
- * Os tipos de batida que dá pra se ganhar uma partida.
+ * As diferente maneiras que um {@link Jogador} pode ganhar uma partida 
+ * (uma rodada) de dominó.
  * @author bruno
  */
 public enum Vitoria {
+
+    /**
+     * A {@link Mesa mesa} foi trancada (isto é, todos os {@link Jogador 
+     * jogadores} {@link Jogada#TOQUE} tocaram seguidamente, nenhum tem uma 
+     * {@link Pedra pedra} jogável na mão) e ganhou aquele que 
+     * somava menos {@link Pedra#numeroDePontos pontos} nas pedras da mão. Essa
+     * vitória vale 1 ponto.
+     */
     CONTAGEM_DE_PONTOS(1), 
+
+    /**
+     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * pedra} (que {@link Pedra#isCarroca() não era uma carroça} em um dos 
+     * {@link Lado lados} da {@link Mesa mesa} (e depois o {@link 
+     * Mesa#getNumeroEsquerda() número de um lado da mesa} não ficou igual ao
+     * {@link  Mesa#getNumeroDireita() número do outro lado}. Essa
+     * vitória vale 1 ponto.
+     */
     BATIDA_SIMPLES(1), 
+
+    /**
+     * Caso raro: Se as seis {@link Pedra pedras} que o {@link Jogador jogador}  
+     * {@link Jogador#recebeMao(com.github.abdonia.domino.Pedra[]) receber} 
+     * {@link Pedra#isCarroca() forem todas carroça}, a partida termina 
+     * imediatamente com {@link Vitoria vitória} pra a dupla desse jogador. Essa
+     * vitória vale 1 ponto.
+     */
     SEIS_CARROCAS_NA_MAO(1), 
+
+    /**
+     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * pedra} que {@link Pedra#isCarroca() era uma carroça} em um dos 
+     * {@link Lado lados} da {@link Mesa mesa}, mas não poderia encaixara 
+     * carroça no outro lado, pois o {@link Numero número} lá era diferente. 
+     * Essa vitória vale 2 pontos.
+     */
     CARROCA(2), 
+
+    /**
+     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * pedra} que {@link Pedra#isCarroca() não era uma carroça} e que poderia se
+     * encaixar tanto {@link Mesa#getNumeroEsquerda() num lado da mesa} como 
+     * {@link Mesa#getNumeroDireita() no outro}.
+     * 
+     * Essa vitória vale 3 pontos.
+     */
     LA_E_LO(3), 
+
+    /**
+     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * pedra} que {@link Pedra#isCarroca() era uma carroça} e que poderia se
+     * encaixar tanto {@link Mesa#getNumeroEsquerda() num lado da mesa} como 
+     * {@link Mesa#getNumeroDireita() no outro} (pois eram o mesmo {@link Numero
+     * número}.
+     * 
+     * Essa vitória vale 4 pontos.
+     */
     CRUZADA(4);
 
     private final int pontos;

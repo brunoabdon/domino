@@ -16,6 +16,15 @@
  */
 package com.github.abdonia.domino;
 
+/**
+ * Identifica as duas "<em>pontas</em>" da fila de dominós na mesa, por 
+ * convenção como a "<em>ponta do lado esquerdo</em>" e a "<em>ponta do lado 
+ * direito</em>". É apenas uma convenção: Poderia ser "<em>ponta de cima</em>" e
+ * "<em>ponta de baixo</em>", "<em>primeira ponta</em>" e "<em>segunda
+ * ponta</em>", etc.
+ * 
+ * @author Bruno Abdon
+ */
 public enum Lado {
     ESQUERDO, DIREITO
 }

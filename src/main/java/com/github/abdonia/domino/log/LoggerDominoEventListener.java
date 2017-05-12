@@ -28,6 +28,8 @@ import java.io.PrintStream;
 
 import java.util.stream.Collector;
 
+import com.github.abdonia.domino.eventos.DominoEventListener;
+
 /**
  * Escuta tudo o que vai acontecendo no jogo e loga no {@link System#out}.
  * 
@@ -48,10 +50,20 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     private int baseDoPaddingDeLado;
     private int baseDoPaddingDeTocToc;
 
+    /**
+     * Cria uma instância que vai logar os {@link DominoEventListener eventos
+     * do jogo na {@link System#out saida padrão}.
+     */
     public LoggerDominoEventListener(){
         this(System.out);
     }
 
+    /**
+     * Cria uma instância que vai logar os {@link DominoEventListener eventos
+     * do jogo na stream passada como parâmetro.
+     * @param printStream uma stream onde devem ser logados os acontecimentos 
+     * do jogo.
+     */
     public LoggerDominoEventListener(final PrintStream printStream){
         this.printStream = printStream;
     }

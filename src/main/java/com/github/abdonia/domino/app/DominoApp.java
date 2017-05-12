@@ -31,9 +31,48 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.abdonia.domino.Jogador;
-import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.motor.Jogo;
 
+/**
+ * Uma aplicação simples. por linha de comando, que roda um {@link Jogo jogo de
+ * dominó}. 
+ * 
+ * As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
+ * de jogadores serão usadas, quais serão seus nomes, etc) pode ser informada
+ * num arquivo chamado <code>domino-config.xml</code> que deve estar no 
+ * diretório atual.
+ * 
+ * Um exemplo de conteudo do arquivo é
+ * 
+ * <pre>
+ * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ * &lt;domino&gt;
+ * &lt;duplas&gt;
+ *   &lt;dupla&gt; 
+ *        &lt;jogador nome="Amanda" classe="com.example.Jogador"/&gt;
+ *        &lt;jogador nome="Bruno" classe="com.acme.Jogador"/&gt;
+ *     &lt;/dupla&gt;
+ *     &lt;dupla&gt;
+ *        &lt;jogador nome="Igor" classe="com.foo.bar.Jogador"/&gt;
+ *        &lt;jogador nome="Ronaldo" classe="com.example.Jogador"/&gt;
+ *     &lt;/dupla&gt;
+ *  &lt;/duplas&gt;
+ *
+ *  &lt;event-listeners&gt;
+ *      &lt;event-listener classe="com.github.abdonia.domino.log.LoggerDominoEventListener"/&gt;
+ *      &lt;event-listener classe="com.acme.GuiEventListener"/&gt;
+ *  &lt;/event-listeners&gt;
+ *&lt;/domino&gt;
+ * </pre>
+ * 
+ * Caso o arquivo de configuração não seja encontrado, uma
+ * configuração default é usada onde ocorre um jogo entre algumas {@link com.github.abdonia.domino.exemplos implementações
+ * de exemplo jogadores} e onde um 
+ * {@link com.github.abdonia.domino.log.LoggerDominoEventListener} é registrado
+ * para imprimir na tela tudo o que acontece durante o jogo.
+ * 
+ * @author Bruno Abdon
+ */
 public class DominoApp {
 
     private static final String CONFIG_XML = "domino-config.xml";
@@ -41,7 +80,14 @@ public class DominoApp {
     private static final String MSG_BUNDLE = "DominoAppMsg";
 
     private DominoApp(){}
-    
+   
+    /**
+     * Roda um {@link Jogo}, de acordo com o arquivo 
+     * <code>domino-config.xml</code> ou segundo configurações default caso o 
+     * arquivo não exista.
+     * 
+     * @param args Argumentos são ignorados.
+     */
     public static void main(final String[] args) {
         
         try {

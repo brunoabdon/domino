@@ -22,7 +22,6 @@ package com.github.abdonia.domino;
  */
 public enum Pedra {
 
-    //0
     CARROCA_DE_LIMPO            (Numero.LIMPO), 
 
     //1

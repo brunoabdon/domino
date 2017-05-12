@@ -36,7 +36,16 @@ import com.github.abdonia.domino.Pedra;
  */
 public class JogadorMamao implements Jogador {
 
+    /**
+     * A  {@link Mesa} em que esse {@link Jogador} 
+     * {@link Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentou
+     * pra jogar.
+     */
     protected Mesa mesa;
+    
+    /**
+     * As {@link Pedra pedras} na mão desse {@link Jogaador}.
+     */
     protected List<Pedra> mao;
 
     private boolean perguntouSeEuQueriaJogar;

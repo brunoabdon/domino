@@ -23,15 +23,12 @@ import java.util.stream.Stream;
 
 /**
  * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
- * ele vai jogar e, caso seja necessário, em que cabeça jogar (obrigatório
- * apenas quando a pedra se encaixa nas duas cabeças da mesa e nao é uma
- * carroça).
+ * ele vai jogar e em que {@link Lado cabeça} jogar.
  *
  * Quando o jogador toca, deve usar a jogada singleton {@link #TOQUE} (não deve
  * usar <code>null</code>, por exemplo).
- *
+ * 
  * @author bruno
- *
  */
 public final class Jogada {
 
@@ -83,6 +80,12 @@ public final class Jogada {
      * 
      * Para tocar, o singleton {@link #TOQUE} deve ser usado.
      * 
+     * Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
+     * construtor e fazer com que as instâncias sejam reutilizadas.
+     * 
+     * (*) Cada uma das 28 pedras na esquerda, mais cada uma das 28 pedras na
+     * direita, mais o toque.
+     * 
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.
      * 
@@ -111,10 +114,18 @@ public final class Jogada {
         this.lado = lado;
     }
 
+    /**
+     * Retorna a {@link Pedra} desta jogada.
+     * @return a {@link Pedra} desta jogada.
+     */
     public Pedra getPedra() {
         return pedra;
     }
 
+    /**
+     * Retorna o {@link Lado} desta jogada.
+     * @return o {@link Lado} desta jogada.
+     */
     public Lado getLado() {
         return lado;
     }

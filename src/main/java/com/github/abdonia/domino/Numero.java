@@ -21,7 +21,41 @@ package com.github.abdonia.domino;
  * @author bruno
  */
 public enum Numero {
-    LIMPO(0), PIO(1), DUQUE(2), TERNO(3), QUADRA(4), QUINA(5), SENA(6);
+
+    /**
+     * A face sem nenhum ponto.
+     */
+    LIMPO(0),
+
+    /**
+     * A face com 1 ponto.
+     */
+    PIO(1),
+
+    /**
+     * A face com 2 pontos.
+     */
+    DUQUE(2),
+
+    /**
+     * A face com 3 pontos.
+     */
+    TERNO(3),
+
+    /**
+     * A face com 4 pontos.
+     */
+    QUADRA(4),
+
+    /**
+     * A face com 5 pontos.
+     */
+    QUINA(5),
+
+    /**
+     * A face com 6 pontos.
+     */
+    SENA(6);
 	
     private final int numeroDePontos;
 
