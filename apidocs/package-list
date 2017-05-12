@@ -4,7 +4,3 @@ com.github.abdonia.domino.eventos
 com.github.abdonia.domino.exemplos
 com.github.abdonia.domino.log
 com.github.abdonia.domino.motor
-com.github.abdonia.domino.motor.util
-com.github.abdonia.domino.ui
-com.github.abdonia.domino.ui.fx
-com.github.abdonia.domino.util
