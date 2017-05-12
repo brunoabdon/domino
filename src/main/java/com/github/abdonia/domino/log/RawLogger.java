@@ -45,7 +45,7 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     /**
      * Cria uma instância que vai logar os {@link DominoEventListener eventos
-     * do jogo na {@link System#out saida padrão}.
+     * do jogo} na {@link System#out saida padrão}.
      */
     public RawLogger(){
         this(System.out);
@@ -53,7 +53,7 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     /**
      * Cria uma instância que vai logar os {@link DominoEventListener eventos
-     * do jogo na stream passada como parâmetro.
+     * do jogo} na stream passada como parâmetro.
      * @param printStream uma stream onde devem ser logados os acontecimentos 
      * do jogo.
      */
