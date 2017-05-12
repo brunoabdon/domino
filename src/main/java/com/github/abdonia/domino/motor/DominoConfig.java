@@ -167,5 +167,4 @@ public class DominoConfig {
     public void setNomeRandomizadora(String nomeRandomizadora) {
         this.nomeRandomizadora = nomeRandomizadora;
     }
-    
 }
