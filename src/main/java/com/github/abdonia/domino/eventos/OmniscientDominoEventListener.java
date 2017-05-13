@@ -97,7 +97,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
     public default void jogadorFaleceu(final int quemFoi){
     } 
