@@ -33,7 +33,7 @@ public class DominoConfigException extends Exception {
      * Construtor com mensagem de erro.
      * @param msg a mensagem de erro.
      */
-    public DominoConfigException(final String msg) {
+    DominoConfigException(final String msg) {
         super(msg);
     }
 
@@ -45,7 +45,7 @@ public class DominoConfigException extends Exception {
      * @param msg a mensagem de erro.
      * @param params os parâmetros da mensagem.
      */
-    public DominoConfigException(final String msg, final Object ... params) {
+    DominoConfigException(final String msg, final Object ... params) {
         super(String.format(msg, params));
     }
 
@@ -57,7 +57,7 @@ public class DominoConfigException extends Exception {
      * @param causa a causa do erro.
      * @param params os parâmetros da mensagem
      */
-    public DominoConfigException(
+    DominoConfigException(
             final Exception causa, 
             final String msg, 
             final Object ... params) {
