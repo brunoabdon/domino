@@ -35,8 +35,9 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * {@link com.github.abdonia.domino.Jogador jogador}recebeu dadas 
      * {@link Pedra}s.
      * 
-     * @param quemFoi O jogador em questão (identificado pelo número da 
-     * cadeira).
+     * @param quemFoi O jogador em questão (identificado pelo 
+     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param pedras Uma coleção <em>não modificável</em> das 6 pedras que o 
      * jogador recebeu.
@@ -62,7 +63,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param pedra a {@link Pedra} que tentou jogar.
      * @param numero o {@link Numero} que a pedra deveria ter pra caber na mesa.
@@ -82,7 +83,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
     public default void jogadorErrouVontadeDeComeçar(int quemFoi){
     }
@@ -111,7 +112,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
     public default void jogadorJogouPedraNenhuma(final int quemFoi){
@@ -128,7 +129,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
     public default void jogadorComecouErrando(final int quemFoi){
@@ -147,7 +148,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
     public default void jogadorTocouTendoPedraPraJogar(final int quemFoi){
@@ -160,7 +161,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param quemFoi O jogador em espertinho (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira}
+     * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param pedra a {@link Pedra} que ele o jogador tirou do bolso pra jogar.
      */
