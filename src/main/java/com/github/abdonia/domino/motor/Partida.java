@@ -261,7 +261,7 @@ class Partida {
 
         loopProcurarMaiorCarroca: 
         for (int i = 6; i >= 2; i--) {
-            final Pedra carroca = Pedra.carrocas[i];
+            final Pedra carroca = Pedra.carrocas.get(i);
             for (vez = 0; vez < 4 ; vez++) {
 
                 final JogadorWrapper jogador = mesa.jogadorDaVez(vez);

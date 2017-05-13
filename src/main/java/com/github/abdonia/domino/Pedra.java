@@ -16,6 +16,10 @@
  */
 package com.github.abdonia.domino;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Cada uma das 28 pedras de uma dominó.
  * @author bruno
@@ -187,21 +191,26 @@ public enum Pedra {
     CARROCA_DE_SENA              (Numero.SENA);
 
     /**
-     * Uma array auxliar, contendo só as carroças, em ordem 
+     * Uma {@link List} auxliar, contendo só as carroças, em ordem 
      * crescente (de {@link #CARROCA_DE_LIMPO limpo} a 
      * {@link #CARROCA_DE_SENA sena}): <code>
      * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}</code>.
      */
-    public static final Pedra[] carrocas = 
-        new Pedra[]{
-            CARROCA_DE_LIMPO, 
-            CARROCA_DE_PIO, 
-            CARROCA_DE_DUQUE, 
-            CARROCA_DE_TERNO, 
-            CARROCA_DE_QUADRA, 
-            CARROCA_DE_QUINA, 
-            CARROCA_DE_SENA
-    };
+    public static final List<Pedra> carrocas = 
+        Collections
+        .unmodifiableList(
+            Arrays
+            .asList(new Pedra[]{
+                        CARROCA_DE_LIMPO, 
+                        CARROCA_DE_PIO, 
+                        CARROCA_DE_DUQUE, 
+                        CARROCA_DE_TERNO, 
+                        CARROCA_DE_QUADRA, 
+                        CARROCA_DE_QUINA, 
+                        CARROCA_DE_SENA
+                    }
+            )
+    );
 
     private final Numero primeiroNumero;
     private final Numero segundoNumero;
