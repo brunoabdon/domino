@@ -43,15 +43,15 @@ public class Jogo {
      * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma 
      * {@link DominoConfig#getNomeRandomizadora() geradora de aleatoriedade} for 
      * informada, será instanciada. Se não os eventos aleatórios serão baseados
-     * em R{@link java.util.Random}.
+     * em {@link java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
-     * @throws ConfigException caso a configuração passada esteja inválida (deve
+     * @throws DominoConfigException caso a configuração passada esteja inválida (deve
      * conter 4 jogadores e todos os nomes de classe deve ser válidos, para 
      * classes com um construtor vazio). 
      * 
      */
-    public Jogo(final DominoConfig configuracao) throws ConfigException{
+    public Jogo(final DominoConfig configuracao) throws DominoConfigException{
 
         //pegando os 4 jogadores da configuracao
         final JogadorWrapper jogador1dupla1 = 

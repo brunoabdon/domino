@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.abdonia.domino.Jogador;
-import com.github.abdonia.domino.motor.ConfigException;
+import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
@@ -41,7 +41,7 @@ import com.github.abdonia.domino.motor.Jogo;
  * <p>As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
  * de jogadores serão usadas, quais serão seus nomes, etc) pode ser informada
  * num arquivo chamado <code>domino-config.xml</code> que deve estar no 
- * diretório atual./</p>
+ * diretório atual.</p>
  * 
  * <p>Um exemplo de conteudo do arquivo é:</p>
  * 
@@ -107,7 +107,7 @@ public class DominoApp {
 
         } catch (DominoAppException e) {
             log(Level.WARNING, "Pipoco: ", e);
-        } catch (ConfigException e) {
+        } catch (DominoConfigException e) {
             log(Level.SEVERE, "Erro de configuração: " + e.getMessage(), e);
             
         }

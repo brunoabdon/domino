@@ -103,7 +103,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     
     /**
      * O {@link com.github.abdonia.domino.Jogador} retornou 
-     * <code>null</code> quando {{@link com.github.abdonia.domino.Jogador#joga()
+     * <code>null</code> quando {@link com.github.abdonia.domino.Jogador#joga()
      * perguntado qual seria sua jogada}. Mesmo no caso de
      * não ter uma {@link Pedra pedra} pra jogar, o jogador não deve 
      * retornar <code>null</code>, e sim {@link 

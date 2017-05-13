@@ -571,7 +571,7 @@ public class DominoConfig {
     
     JogadorWrapper makeInstanciaJogador(
         final int idxDupla, 
-        final int idxJogadorNaDupla) throws ConfigException{
+        final int idxJogadorNaDupla) throws DominoConfigException{
         
         final int index = indexJogador(idxDupla, idxJogadorNaDupla);        
         
@@ -584,7 +584,7 @@ public class DominoConfig {
     private Jogador makeJogador(
             final int index, 
             final int idxJogadorNaDupla, 
-            final int idxDupla) throws ConfigException {
+            final int idxDupla) throws DominoConfigException {
         
         Jogador jogador = jogadores[index];
         if(jogador == null){
@@ -592,7 +592,7 @@ public class DominoConfig {
             if(k == null){
                 final String className = nomesClassesJogadores[index];
                 if(className == null){
-                    throw new ConfigException(
+                    throw new DominoConfigException(
                             "O Jogador %d da dupla %d não foi setado.",
                             idxJogadorNaDupla,
                             idxDupla);
@@ -610,11 +610,11 @@ public class DominoConfig {
     private String makeNomeJogador(
             final int index, 
             final int idxJogadorNaDupla, 
-            final int idxDupla) throws ConfigException {
+            final int idxDupla) throws DominoConfigException {
         
         final String nome = this.nomesJogadores[index];
         if(nome == null) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                     "O nome do Jogador %d da dupla %d não foi setado.",
                     idxJogadorNaDupla,
                     idxDupla);
@@ -625,7 +625,7 @@ public class DominoConfig {
     
     RandomGoddess makeInstanciaRandomGoddess(
             final Class<? extends RandomGoddess> defaultClass) 
-                throws ConfigException{
+                throws DominoConfigException{
         
         final RandomGoddess randomGoddess;
         if (this.nomeRandomizadora != null) {
@@ -654,7 +654,7 @@ public class DominoConfig {
     }
     
     Collection<DominoEventListener> makeInstanciasListeners() 
-            throws ConfigException {
+            throws DominoConfigException {
         
         final Collection<DominoEventListener> listeners
                 = new ArrayList<>(this.eventListeners.size() 
@@ -679,7 +679,7 @@ public class DominoConfig {
                     .collect(Collectors.toList())
             );
         } catch (final WrappedException wep){
-            throw (ConfigException) wep.getCause();
+            throw (DominoConfigException) wep.getCause();
         }
    
         return listeners;

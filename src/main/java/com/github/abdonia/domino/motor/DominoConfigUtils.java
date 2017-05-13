@@ -24,7 +24,7 @@ class DominoConfigUtils {
   
     public static <K> K instancia(
             final Class<K> superKlass, 
-            final String className) throws ConfigException {
+            final String className) throws DominoConfigException {
 
         final K instance;
         
@@ -35,14 +35,14 @@ class DominoConfigUtils {
             instance = instancia(superKlass, klass);
 
         } catch (ClassCastException e) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                 e, 
                 "A classe \"%s\" foi usada onde se esperava uma classe que implementasse \"%s\".",
                 className,
                 superKlass.getName());
             
         } catch (ClassNotFoundException e) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                 "A classe \"%s\" foi mencionada ela não pode ser encontrada.", className);
         }
         return instance;
@@ -50,7 +50,7 @@ class DominoConfigUtils {
 
     public static <K> K instancia(
             final Class<? super K> superKlass, 
-            final Class<K> klass) throws ConfigException {
+            final Class<K> klass) throws DominoConfigException {
         
         final K instance;
 
@@ -59,13 +59,13 @@ class DominoConfigUtils {
             instance = klass.newInstance();
 
         } catch (InstantiationException e) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                 e, "Não consegui inicializar: %s.", klass.getName());
         } catch (IllegalAccessException e) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                 e, "Preciso de um construtor: %s.", klass.getName());
         } catch (ClassCastException e) {
-            throw new ConfigException(
+            throw new DominoConfigException(
                 e, 
                 "A classe \"%s\" foi usada onde se esperava uma classe que implementasse \"%s\".",
                 klass.getName(),

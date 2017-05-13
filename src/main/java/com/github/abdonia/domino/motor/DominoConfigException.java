@@ -20,20 +20,20 @@ package com.github.abdonia.domino.motor;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 
 /**
- * Uma {@link DominoException} indicando que aconteceu algum erro na tentativa
+ * Uma {@link Exception exceção} indicando que aconteceu algum erro na tentativa
  * de se criar um {@link Jogo} de dominó (não foram informados quais seriam os
  * 4 jogadores, não foi possível instanciar a classe de um dos {@link 
  * DominoEventListener listeners} informados, etc...).
  * 
  * @author Bruno Abdon
  */
-public class ConfigException extends DominoException {
+public class DominoConfigException extends Exception {
 
     /**
      * Construtor com mensagem de erro.
      * @param msg a mensagem de erro.
      */
-    public ConfigException(final String msg) {
+    public DominoConfigException(final String msg) {
         super(msg);
     }
 
@@ -45,7 +45,7 @@ public class ConfigException extends DominoException {
      * @param msg a mensagem de erro.
      * @param params os parâmetros da mensagem.
      */
-    public ConfigException(final String msg, final Object ... params) {
+    public DominoConfigException(final String msg, final Object ... params) {
         super(String.format(msg, params));
     }
 
@@ -57,10 +57,10 @@ public class ConfigException extends DominoException {
      * @param causa a causa do erro.
      * @param params os parâmetros da mensagem
      */
-    public ConfigException(
+    public DominoConfigException(
             final Exception causa, 
             final String msg, 
             final Object ... params) {
-        super(causa,String.format(msg, params));
+        super(String.format(msg, params),causa);
     }
 }
