@@ -16,12 +16,10 @@
  */
 package com.github.abdonia.domino.motor;
 
+import java.util.Collection;
 import java.util.EventListener;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import com.github.abdonia.domino.Jogador;
-import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 
@@ -38,10 +36,7 @@ public class Jogo {
     private final MesaImpl mesa;
     private final DominoEventBroadcaster eventBroadcaster;
     private final RandomGoddess fortuna;
-
-    private static final Function<String,DominoEventListener> EVT_LIST_INSTANC =
-        s-> DominoUtils.instancia(DominoEventListener.class, s);
-    
+  
     /**
      * Cria um jogo de dominó de acordo com as configurações passadas:
      * Os {@link Jogador}es e os {@link EventListener}ers informados no 
@@ -51,66 +46,49 @@ public class Jogo {
      * em R{@link java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
+     * @throws ConfigException caso a configuração passada esteja inválida (deve
+     * conter 4 jogadores e todos os nomes de classe deve ser válidos, para 
+     * classes com um construtor vazio). 
      * 
      */
-    public Jogo(final DominoConfig configuracao){
+    public Jogo(final DominoConfig configuracao) throws ConfigException{
 
+        //pegando os 4 jogadores da configuracao
         final JogadorWrapper jogador1dupla1 = 
-            JogadorWrapper
-                .criaJogador(
-                    configuracao.getNomeJogador1Dupla1(), 
-                    configuracao.getClasseJogador1Dupla1());
+            configuracao.makeInstanciaJogador(1, 1);
         
         final JogadorWrapper jogador1dupla2 = 
-            JogadorWrapper
-                .criaJogador(
-                    configuracao.getNomeJogador1Dupla2(), 
-                    configuracao.getClasseJogador1Dupla2());
+            configuracao.makeInstanciaJogador(1, 2);
 
         final JogadorWrapper jogador2dupla1 = 
-            JogadorWrapper
-                .criaJogador(
-                    configuracao.getNomeJogador2Dupla1(), 
-                    configuracao.getClasseJogador2Dupla1()); 
+            configuracao.makeInstanciaJogador(2, 1);
 
         final JogadorWrapper jogador2dupla2 = 
-            JogadorWrapper
-                .criaJogador(
-                    configuracao.getNomeJogador2Dupla2(), 
-                    configuracao.getClasseJogador2Dupla2());
+            configuracao.makeInstanciaJogador(2, 2);
         
-        this.eventBroadcaster = 
-            configuraEventListners(
-                jogador1dupla1, 
-                jogador1dupla2, 
-                jogador2dupla1, 
-                jogador2dupla2);
+        //pegando os eventlisteners da configuracao
+        final Collection<DominoEventListener> eventListeners = 
+            configuracao.makeInstanciasListeners();
         
-        final Consumer<DominoEventListener> addLisntener = 
-            (eventListener) -> {
-                this.eventBroadcaster
-                    .addEventListener(
-                        eventListener,
-                        true);
-        };
-
-        //adicionando os eventListeners ao jogo
-        configuracao
-            .getEventListeners()
-            .stream()
-            .map(EVT_LIST_INSTANC)
-            .forEach(addLisntener);
-
-        final String nomeDeusaRandomizacao = 
-            configuracao.getNomeRandomizadora();
-        
+        //pegando a geradora de aleatoriedade (ou usando a default, se nao tiver
         this.fortuna = 
-            nomeDeusaRandomizacao == null 
-                ? new DefaultRandomGoddess()
-                : DominoUtils.instancia(
-                    RandomGoddess.class,
-                    nomeDeusaRandomizacao);
+            configuracao.makeInstanciaRandomGoddess(DefaultRandomGoddess.class);
         
+        //configuracao tava ok. vamos registrar tudo agora.
+        
+        //criando o divulgador de eventos
+        this.eventBroadcaster = new DominoEventBroadcaster();
+
+        //registrando os jogadores que forem eventlistenres
+        jogadorAtento(this.eventBroadcaster, jogador1dupla1);
+        jogadorAtento(this.eventBroadcaster, jogador2dupla1);
+        jogadorAtento(this.eventBroadcaster, jogador1dupla2);
+        jogadorAtento(this.eventBroadcaster, jogador2dupla2);
+        
+        //registrando os eventlisteners configurados
+        this.eventBroadcaster.addEventListeners(eventListeners,true);
+
+        //criando a mesa finalmente, com os jogadores sentados nela.
         this.mesa = 
             new MesaImpl(
                 jogador1dupla1, 
@@ -118,12 +96,7 @@ public class Jogo {
                 jogador2dupla1, 
                 jogador2dupla2, 
                 this.fortuna,
-                eventBroadcaster);
-        
-        jogador1dupla1.sentaNaMesa(this.mesa, 1);
-        jogador1dupla2.sentaNaMesa(this.mesa, 2);
-        jogador2dupla1.sentaNaMesa(this.mesa, 3);
-        jogador2dupla2.sentaNaMesa(this.mesa, 4);
+                this.eventBroadcaster);
     }
 
     /**
@@ -174,13 +147,14 @@ public class Jogo {
                 dupla1.getPontos(), 
                 dupla2.getPontos());
 
-        } catch (BugDeJogadorException e) {
-            System.err.println("Tá Fazendo merda, " + e.getJogadorBuguento());
-            final Pedra pedra = e.getPedra();
-            if(pedra != null){
-                System.err.println(pedra);
-            }
-            e.printStackTrace(System.err);
+        } catch (final BugDeJogadorException e) {
+            this.avisaQueJogadorErrou(e);
+        } catch (final JogadorWrapper.RuntimeBugDeJogadorException rte){
+            //legar o erro de e.getCause()...
+            this.eventBroadcaster
+                .jogadorFaleceu(
+                    rte.getJogadorBuguento().getCadeira());
+            
         }
     }
 
@@ -198,26 +172,11 @@ public class Jogo {
             segundoJogadorDaDupla2.getNome());
     }
 
-    private DominoEventBroadcaster configuraEventListners(
-        final JogadorWrapper jogador1dupla1, 
-        final JogadorWrapper jogador1dupla2, 
-        final JogadorWrapper jogador2dupla1, 
-        final JogadorWrapper jogador2dupla2) {
-            
-        final DominoEventBroadcaster broadcaster = new DominoEventBroadcaster();
 
-        jogadorAtento(broadcaster, jogador1dupla1);
-        jogadorAtento(broadcaster, jogador2dupla1);
-        jogadorAtento(broadcaster, jogador1dupla2);
-        jogadorAtento(broadcaster, jogador2dupla2);
-        
-        return broadcaster;
-    }
-
-    private void jogadorAtento(
+    private static void jogadorAtento(
             final DominoEventBroadcaster eventBroadcaster,
             final JogadorWrapper jogadorWrapper) {
-
+        
         final Jogador jogador = jogadorWrapper.getWrapped();
         if(jogador instanceof DominoEventListener){
             eventBroadcaster
@@ -242,5 +201,47 @@ public class Jogo {
 
     private boolean alguemVenceu() {
         return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
+    }
+
+    private void avisaQueJogadorErrou(final BugDeJogadorException e) {
+            switch(e.getFalha()){
+                case PEDRA_INVALIDA:
+                    this.eventBroadcaster
+                        .jogadorJogouPedraInvalida(
+                            e.getJogadorBuguento().getCadeira(),
+                            e.getPedra(),
+                            e.getNumero());
+                    break;
+                case NAO_JOGOU_NEM_TOCOU:
+                    this.eventBroadcaster
+                        .jogadorJogouPedraNenhuma(
+                            e.getJogadorBuguento()
+                             .getCadeira());
+                    break;
+                case JA_COMECOU_ERRANDO:
+                    this.eventBroadcaster
+                        .jogadorComecouErrando(
+                            e.getJogadorBuguento()
+                             .getCadeira());
+                    break;
+                case TOCOU_TENDO:
+                    this.eventBroadcaster
+                        .jogadorComecouErrando(
+                            e.getJogadorBuguento()
+                             .getCadeira());
+                    break;
+                case NAO_SABE_SE_COMECE:
+                    this.eventBroadcaster
+                        .jogadorErrouVontadeDeComeçar(
+                            e.getJogadorBuguento()
+                             .getCadeira());
+                case TIROU_PEDRA_DO_BOLSO:
+                    this.eventBroadcaster.jogadorJogouPedraQueNãoTinha(
+                            e.getJogadorBuguento()
+                             .getCadeira(),
+                            e.getPedra());
+                    break;
+                    
+            }
     }
  }

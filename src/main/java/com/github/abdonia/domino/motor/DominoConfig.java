@@ -16,155 +16,673 @@
  */
 package com.github.abdonia.domino.motor;
 
+import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.eventos.DominoEventListener;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import pl.touk.throwing.ThrowingFunction;
+import pl.touk.throwing.exception.WrappedException;
 
 
 /**
  * As configurações de um {@link com.github.abdonia.domino.motor.Jogo Jogo de 
- * dominó}, ou seja, quais jogadores vão participar (quais são seus nomes e suas
- * classes) e quais os 
+ * dominó}, ou seja, quais {@link Jogador jogadores} vão participar 
+ * (quais são seus nomes e suas classes) e quais os 
  * {@link com.github.abdonia.domino.eventos.DominoEventListener listeners} que
  * devem ser registrados no jogo.
+ * 
+ * <p>Para um {@link Jogo} acontecer, as únicas configurações obrigatórias são os
+ * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners são importantes 
+ * pra que se possa saber o que aconteceu no jogo (para logar, salvar ou 
+ * animar uma GUI). A configuração de um {@link RandomGoddess gerador de 
+ * aleatoriedade} personalizado é raramente útil (normalmente pra testes).</p>
+ * 
+ * <p>Um exemplo de <b>configuração mínima</b> é:</p>
+ * 
+ * <pre>
+ *      import com.github.abdonia.domino.exemplos.*;
+ *      import com.github.abdonia.domino.log.*;
+ *      import com.github.abdonia.domino.motor.*;
+ *
+ *      //......
+ *        
+ *      DominoConfig dominoConfig = new DominoConfig();
+ *      
+ *      //obrigatoriamente 4 jogadores
+ *      dominoConfig.setJogador1Dupla1(new JogadorMamao());
+ *      dominoConfig.setJogador2Dupla1(new JogadorMamao());
+ *      dominoConfig.setJogador1Dupla2(new JogadorAlheio());
+ *      dominoConfig.setJogador2Dupla2(new JogadorAlheio());
+ *      
+ *      //opcional, mas importante, um listener pra mostrar o andamento do jogo.
+ *      dominoConfig.addEventListener(new LoggerDominoEventListener());
+ *      
+ *      //cria um jogo com essa configuração e joga
+ *      Jogo jogo = new Jogo(dominoConfig);
+ *      jogo.jogar();
+ * </pre>
+ * 
+ * <p>Tanto para jogadores, listeners e para o gerador de aleatoriedade, é possível
+ * escolher entre setar (1) suas instâncias, (2) suas {@link Class classes} ou 
+ * o {@link Class#getName() nome qualificado de suas classes}. Por exemplo, o
+ * jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
+ * 
+ * <pre>
+ *   DominoConfig dominoConfig = new DominoConfig();
+ * 
+ *   //(1) setando como instância
+ *   dominoConfig.setJogador1Dupla2(new com.acme.domino.JogadorEsperto());
+ *
+ *   //(2) setando a classe
+ *   dominoConfig.setJogador1Dupla2(com.acme.domino.JogadorEsperto.class);
+ *        
+ *   //(3) setando o nome da classe
+ *   dominoConfig.setJogador1Dupla2("com.acme.domino.JogadorEsperto");
+ * </pre>
+ * 
+ * <p>Ao setar uma das três opções, as outras opões são automaticamente setadas 
+ * pra <code>null</code>. A não ser no caso dos listeners, onde vários podem ser
+ * adicionados usando qualquer uma das formas.</p>
+ * 
+ * <pre>
+ *    //adicionando listener por classes
+ *    dominoConfig.addEventListener(LoggerDominoEventListener.class);
+ * 
+ *    //adicionando listener por nome da classe
+ *    dominoConfig.addEventListener("com.acme.domino.DBSaverEventListener");
+ * 
+ *    //adicionando listener por instância
+ *    dominoConfig.addEventListener(new DominoGUI());
+ * </pre>
+ * 
+ * 
+ * <p>A instânciação da classe passada na opção <em>(2)</em> ou mesmo a checagem 
+ * pela existência da classe cujo nome foi passado na opção <em>(3)</em> não 
+ * acontece no momento de chamada dos métods <code>set</code>. Só ocorrera 
+ * {@link Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a 
+ * configuração for usada pra se criar um Jogo}.</p>
  * 
  * @author Bruno Abdon
  */
 public class DominoConfig {
 
-    private final String[] nomes = new String[4];
-    private final String[] classes  = new String[4];
+    private static final Function<Class, DominoEventListener> instancListKlass = 
+        ThrowingFunction.unchecked(
+            k -> DominoConfigUtils.instancia(DominoEventListener.class, k)
+        )
+    ;
+    
+    private static final Function<String, DominoEventListener> instancListName = 
+        ThrowingFunction.unchecked(
+            s -> DominoConfigUtils.instancia(DominoEventListener.class, s)
+        )
+    ;
+    
+    private final String[] nomesJogadores = new String[4];
+    private final String[] nomesClassesJogadores  = new String[4];
+    private final Class[] classesJogadores  = new Class[4];
+    private final Jogador[] jogadores  = new Jogador[4];
 
     private String nomeRandomizadora;
+    private Class<? extends RandomGoddess> classeRandomizadora;
+    private RandomGoddess randomizadora;
 
-    private List<String> eventListeners = new ArrayList<>();
+    private List<String> nomesEventListeners = new ArrayList<>();
+    private List<Class> classesEventListeners = new ArrayList<>();
+    private List<DominoEventListener> eventListeners = new ArrayList<>();
 
     public String getNomeJogador1Dupla1() {
-        return this.nomes[0];
+        return this.nomesJogadores[0];
     }
 
     public void setNomeJogador1Dupla1(final String nomeJogador1Dupla1) {
-        this.nomes[0] = nomeJogador1Dupla1;
+        this.nomesJogadores[0] = nomeJogador1Dupla1;
     }
 
     public String getNomeJogador2Dupla1() {
-        return this.nomes[1];
+        return this.nomesJogadores[1];
     }
 
     public void setNomeJogador2Dupla1(final String nomeJogador2Dupla1) {
-        this.nomes[1] = nomeJogador2Dupla1;
+        this.nomesJogadores[1] = nomeJogador2Dupla1;
     }
 
     public String getNomeJogador1Dupla2() {
-        return this.nomes[2];
+        return this.nomesJogadores[2];
     }
 
     public void setNomeJogador1Dupla2(final String nomeJogador1Dupla2) {
-        this.nomes[2] = nomeJogador1Dupla2;
+        this.nomesJogadores[2] = nomeJogador1Dupla2;
     }
 
     public String getNomeJogador2Dupla2() {
-        return this.nomes[3];
+        return this.nomesJogadores[3];
     }
 
     public void setNomeJogador2Dupla2(final String nomeJogador2Dupla2) {
-        this.nomes[3] = nomeJogador2Dupla2;
+        this.nomesJogadores[3] = nomeJogador2Dupla2;
     }
 
-    public String getClasseJogador1Dupla1() {
-        return classes[0];
-    }
-
-    public void setClasseJogador1Dupla1(final String classeJogador1Dupla1) {
-        this.classes[0] = classeJogador1Dupla1;
-    }
-
-    public String getClasseJogador2Dupla1() {
-        return classes[1];
-    }
-
-    public void setClasseJogador2Dupla1(final String classeJogador2Dupla1) {
-        this.classes[1] = classeJogador2Dupla1;
-    }
-
-    public String getClasseJogador1Dupla2() {
-        return classes[2];
-    }
-
-    public void setClasseJogador1Dupla2(final String classeJogador1Dupla2) {
-        this.classes[2] = classeJogador1Dupla2;
-    }
-
-    public String getClasseJogador2Dupla2() {
-        return classes[3];
-    }
-
-    public void setClasseJogador2Dupla2(final String classeJogador2Dupla2) {
-        this.classes[3] = classeJogador2Dupla2;
+    public String getNomeClasseJogador1Dupla1() {
+        return nomesClassesJogadores[0];
     }
 
     /**
-     * Seta o nome e a classe de um dos dois jogadores de uma das duas dupplas
-     * @param nome O nome do jogador
-     * @param classe O nome da classe do jogador
-     * @param dupla O número da dupla (1 o 2)
-     * @param jogador O número do jogador na dupla (1 ou 2)
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
      */
-    public void setNomeEClasse(
-            final String nome, 
-            final String classe, 
-            final int dupla, 
-            final int jogador){
-        
-        //nao tenho certeza se deveria validar nesse ponto....
-        this.validaParametros(nome, classe, dupla, jogador);
-        
-        final int index = (dupla-1)*2 + (jogador-1);
-        
-        nomes[index] = nome;
-        classes[index] = classe;
+    public void setNomeClasseJogador1Dupla1(
+            final String nomeClasseJogador1Dupla1) {
+        this.nomesClassesJogadores[0] = nomeClasseJogador1Dupla1;
+        this.classesJogadores[0] = null;
     }
 
-    private void validaParametros(
-            final String nome, 
-            final String classe,
-            final int dupla, 
-            final int jogador) 
-                throws IllegalArgumentException, NullPointerException {
-        if(dupla != 1 && dupla != 2){
-            throw new IllegalArgumentException("Dupla invalida: " + dupla);
-        }
+    public String getNomeClasseJogador2Dupla1() {
+        return nomesClassesJogadores[1];
+    }
 
-        if(jogador != 1 && jogador != 2){
-            throw new IllegalArgumentException("Jogador invalido: " + dupla);
-        }
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeClasseJogador2Dupla1 O nome da classe desse jogador.
+     */
+    public void setNomeClasseJogador2Dupla1(
+            final String nomeClasseJogador2Dupla1) {
+        this.nomesClassesJogadores[1] = nomeClasseJogador2Dupla1;
+        this.classesJogadores[1] = null;
+    }
+
+    public String getNomeClasseJogador1Dupla2() {
+        return nomesClassesJogadores[2];
+    }
+
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeClasseJogador1Dupla2 O nome da classe desse jogador.
+     */
+    public void setNomeClasseJogador1Dupla2(
+            final String nomeClasseJogador1Dupla2) {
+        this.nomesClassesJogadores[2] = nomeClasseJogador1Dupla2;
+        this.classesJogadores[2] = null;
+    }
+
+    public String getNomeClasseJogador2Dupla2() {
+        return nomesClassesJogadores[3];
+    }
+
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeClasseJogador2Dupla2 O nome da classe desse jogador.
+     */
+    public void setNomeClasseJogador2Dupla2(
+            final String nomeClasseJogador2Dupla2) {
+        this.nomesClassesJogadores[3] = nomeClasseJogador2Dupla2;
+        this.classesJogadores[3] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador1Dupla1() {
+        return classesJogadores[0];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param classeJogador1Dupla1 a classe do jogador.
+     */
+    public void setClasseJogador1Dupla1(final Class<? extends Jogador> classeJogador1Dupla1) {
+        this.classesJogadores[0] = classeJogador1Dupla1;
+        this.nomesClassesJogadores[0] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador2Dupla1() {
+        return classesJogadores[1];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param classeJogador2Dupla1 a classe do jogador.
+     */
+    public void setClasseJogador2Dupla1(final Class<? extends Jogador> classeJogador2Dupla1) {
+        this.classesJogadores[1] = classeJogador2Dupla1;
+        this.nomesClassesJogadores[1] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador1Dupla2() {
+        return classesJogadores[2];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param classeJogador1Dupla2 a classe do jogador.
+     */
+    public void setClasseJogador1Dupla2(final Class<? extends Jogador> classeJogador1Dupla2) {
+        this.classesJogadores[2] = classeJogador1Dupla2;
+        this.nomesClassesJogadores[2] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador2Dupla2() {
+        return classesJogadores[3];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param classeJogador2Dupla2 a classe do jogador.
+     */
+    public void setClasseJogador2Dupla2(final Class<? extends Jogador> classeJogador2Dupla2) {
+        this.classesJogadores[3] = classeJogador2Dupla2;
+        this.nomesClassesJogadores[3] = null;
+    }
+    /**
+     * Seta o nome e a classe de um jogador de uma dupla. Ao setar o nome da 
+     * classe, a classe ou a instância de um dado jogador, os valores dos outros
+     * dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeJogador O nome do jogador.
+     * @param classeJogador A classe do jogador.
+     * @param idxDupla O número da dupla (1 o 2).
+     * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+     * 
+     * @throws  IllegalArgumentException caso o número da dupla ou do jogador
+     * seja algo difernente de 1 e 2.
+
+     */
+    public void setNomeEClasseJogador(
+            final String nomeJogador, 
+            final Class<? extends Jogador> classeJogador, 
+            final int idxDupla, 
+            final int idxJogadorNaDupla){
+        this.setNomeEClasseJogador(
+                nomeJogador, 
+                null, 
+                classeJogador, 
+                null, 
+                idxDupla, 
+                idxJogadorNaDupla);
+    }    
+
+    /**
+     * Seta o nome e o nome da classe de um jogador de uma dupla. Ao setar o 
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos  outros dois atributos vai a <code>null</code>.
+     * 
+     * 
+     * @param nomeJogador O nome do jogador.
+     * @param nomeClasseJogador O nome da classe do jogador.
+     * @param idxDupla O número da dupla (1 o 2).
+     * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+     * 
+     * @throws  IllegalArgumentException caso o número da dupla ou do jogador
+     * seja algo difernente de 1 e 2.
+     */
+    public void setNomeEClasseJogador(
+            final String nomeJogador, 
+            final String nomeClasseJogador, 
+            final int idxDupla, 
+            final int idxJogadorNaDupla){
+        this.setNomeEClasseJogador(
+                nomeJogador, 
+                nomeClasseJogador, 
+                null, 
+                null, 
+                idxDupla, 
+                idxJogadorNaDupla);
+    }    
+
+    
+ /**
+     * Seta o nome e a instância de um jogador de uma dupla. Ao setar o nome da
+     * classe, a classe ou a instância de um dado jogador, os valores dos
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param nomeJogador O nome do jogador.
+     * @param jogador O jogador.
+     * @param idxDupla O número da dupla (1 o 2).
+     * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+     * 
+     * @throws  IllegalArgumentException caso o número da dupla ou do jogador
+     * seja algo difernente de 1 e 2.
+     */
+    public void setNomeEInstanciaJogador(
+            final String nomeJogador, 
+            final Jogador jogador, 
+            final int idxDupla, 
+            final int idxJogadorNaDupla){
+        this.setNomeEClasseJogador(
+                nomeJogador, 
+                null, 
+                null, 
+                jogador, 
+                idxDupla, 
+                idxJogadorNaDupla);
+    }        
+    /**
+     * Método auxiliar que seta ao mesmo tempo o nome, o nome da classe, a 
+     * classe e a instância de um dos dois jogadores de uma das duas duplas. 
+     * Apenas um entre os parâmetros <code>nomeClasseJogador</code>, 
+     * <code>classeJogador</code> e <code>jogador</code>deve ser não nulo 
+     * (porém, isso não é verificado).
+     * 
+     * @param nomeJogador O nome do jogador.
+     * @param nomeClasseJogador O nome da classe do jogador.
+     * @param classeJogador A classe do jogador.
+     * @param jogador A instância do jogador.
+     * @param idxDupla O número da dupla (1 o 2).
+     * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+     * 
+     * @throws  IllegalArgumentException caso o número da dupla ou do jogador
+     * seja algo difernente de 1 e 2;
+     */
+    private void setNomeEClasseJogador(
+            final String nomeJogador, 
+            final String nomeClasseJogador, 
+            final Class<? extends Jogador> classeJogador, 
+            final Jogador jogador, 
+            final int idxDupla, 
+            final int idxJogadorNaDupla){
         
-        if(nome == null || classe == null){
-            throw new NullPointerException(
-                    String.format(
-                            "Nome ou clase nulos: [%s] [%s] ",
-                            nome,
-                            classe)
-            );
+        valida1ou2(idxDupla, "Dupla invalida: %d");
+        valida1ou2(idxJogadorNaDupla, "Jogador invalido: %d");
+        
+        final int index = indexJogador(idxDupla, idxJogadorNaDupla);
+        
+        nomesJogadores[index] = nomeJogador;
+        nomesClassesJogadores[index] = nomeClasseJogador;
+        classesJogadores[index] = classeJogador;
+        jogadores[index] = jogador;
+    }
+
+    private int indexJogador(final int idxDupla, final int idxJogadorNaDupla) {
+        return (idxDupla-1)*2 + (idxJogadorNaDupla-1);
+    }
+
+    /**
+     * Checa se um dado valor é igual a 1 ou 2, lançando uma exceção com uma
+     * dada mensagem {@link String#format(java.lang.String, java.lang.Object...)
+     * parametrizada} (usando "<code>%d</code>" pra exibir o número
+     * inválido) caso o valor não seja.
+     * @param valor o valor a ser checado.
+     * @param errorMsg A mensagem parametrizada a ser colocada na exceção, no 
+     * caso de erro.
+     * 
+     * @throws  IllegalArgumentException caso o valor seja algo difernente de 1 
+     * e 2;
+     */
+    private static void valida1ou2(final int valor, final String errorMsg){
+        if(valor != 1 && valor != 2){
+            throw new IllegalArgumentException(String.format(errorMsg, valor));
         }
     }
 
-    public List<String> getEventListeners() {
+    public Jogador getJogador1Dupla1() {
+        return jogadores[0];
+    }
+
+    /**
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param jogador1Dupla1 a instância do jogador.
+     */
+    public void setJogador1Dupla1(final Jogador jogador1Dupla1) {
+        this.jogadores[0] = jogador1Dupla1;
+        this.nomesClassesJogadores[0] = null;
+    }
+
+    public Jogador getJogador2Dupla1() {
+        return jogadores[1];
+    }
+
+    /**
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param jogador2Dupla1 a instância do jogador.
+     */
+    public void setJogador2Dupla1(final Jogador jogador2Dupla1) {
+        this.jogadores[1] = jogador2Dupla1;
+        this.nomesClassesJogadores[1] = null;
+    }
+
+    public Jogador getJogador1Dupla2() {
+        return jogadores[2];
+    }
+
+    /**
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param jogador1Dupla2 a instância do jogador.
+     */
+    public void setJogador1Dupla2(final Jogador jogador1Dupla2) {
+        this.jogadores[2] = jogador1Dupla2;
+        this.nomesClassesJogadores[2] = null;
+    }
+
+    public Jogador getJogador2Dupla2() {
+        return jogadores[3];
+    }
+
+    /**
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a <code>null</code>.
+     * 
+     * @param jogador2Dupla2  a instância do jogador.
+     */
+    public void setJogador2Dupla2(final Jogador jogador2Dupla2) {
+        this.jogadores[3] = jogador2Dupla2;
+        this.nomesClassesJogadores[3] = null;
+    }
+    
+    public List<String> getNomesEventListeners() {
+        return this.nomesEventListeners;
+    }
+
+    public void setNomesEventListeners(final List<String> nomesEventListeners) {
+        this.nomesEventListeners = nomesEventListeners;
+    }
+
+    public void addEventListener(final String nomeEventListener) {
+        this.nomesEventListeners.add(nomeEventListener);
+    }
+    
+    public List<DominoEventListener> getEventListeners() {
         return this.eventListeners;
     }
 
-    public void setEventListeners(final List<String> eventListeners) {
+    public void setEventListeners(final List<DominoEventListener> eventListeners) {
         this.eventListeners = eventListeners;
     }
 
-    public void addEventListener(final String eventListener) {
+    public void addEventListener(final DominoEventListener eventListener) {
         this.eventListeners.add(eventListener);
+    }
+    
+    public List<Class> getClassesEventListeners() {
+        return this.classesEventListeners;
+    }
+
+    public void setClassesEventListeners(final List<Class> classesEventListeners) {
+        this.classesEventListeners = classesEventListeners;
+    }
+
+    public void addEventListener(
+            final Class<? extends DominoEventListener> classeEventListener) {
+        this.classesEventListeners.add(classeEventListener);
     }
     
     public String getNomeRandomizadora() {
         return nomeRandomizadora;
     }
 
-    public void setNomeRandomizadora(String nomeRandomizadora) {
+    public void setNomeRandomizadora(final String nomeRandomizadora) {
         this.nomeRandomizadora = nomeRandomizadora;
+        this.randomizadora = null;
     }
+    
+    public RandomGoddess getRandomizadora() {
+        return randomizadora;
+    }
+
+    public void setRandomizadora(final RandomGoddess randomizadora) {
+        this.randomizadora = randomizadora;
+        this.nomeRandomizadora = null;
+    }
+
+    public Class<? extends RandomGoddess> getClasseRandomizadora() {
+        return classeRandomizadora;
+    }
+
+    public void setClasseRandomizadora(
+            final Class<? extends RandomGoddess> classeRandomizadora) {
+        this.classeRandomizadora = classeRandomizadora;
+    }
+    
+    JogadorWrapper makeInstanciaJogador(
+        final int idxDupla, 
+        final int idxJogadorNaDupla) throws ConfigException{
+        
+        final int index = indexJogador(idxDupla, idxJogadorNaDupla);        
+        
+        final String nome = makeNomeJogador(index, idxJogadorNaDupla, idxDupla);
+        final Jogador jogador = makeJogador(index, idxJogadorNaDupla, idxDupla);
+        
+        return new JogadorWrapper(jogador, nome);
+    }
+
+    private Jogador makeJogador(
+            final int index, 
+            final int idxJogadorNaDupla, 
+            final int idxDupla) throws ConfigException {
+        
+        Jogador jogador = jogadores[index];
+        if(jogador == null){
+            Class k = classesJogadores[index];
+            if(k == null){
+                final String className = nomesClassesJogadores[index];
+                if(className == null){
+                    throw new ConfigException(
+                            "O Jogador %d da dupla %d não foi setado.",
+                            idxJogadorNaDupla,
+                            idxDupla);
+                } else {
+                    jogador = DominoConfigUtils.instancia(Jogador.class, className);
+                }
+            } else {
+                jogador = DominoConfigUtils.instancia(Jogador.class, k);
+            }
+            
+        }
+        return jogador;
+    }
+
+    private String makeNomeJogador(
+            final int index, 
+            final int idxJogadorNaDupla, 
+            final int idxDupla) throws ConfigException {
+        
+        final String nome = this.nomesJogadores[index];
+        if(nome == null) {
+            throw new ConfigException(
+                    "O nome do Jogador %d da dupla %d não foi setado.",
+                    idxJogadorNaDupla,
+                    idxDupla);
+        }
+        return nome;
+    }
+    
+    
+    RandomGoddess makeInstanciaRandomGoddess(
+            final Class<? extends RandomGoddess> defaultClass) 
+                throws ConfigException{
+        
+        final RandomGoddess randomGoddess;
+        if (this.nomeRandomizadora != null) {
+            randomGoddess = 
+                DominoConfigUtils
+                    .instancia(
+                        RandomGoddess.class, 
+                        this.nomeRandomizadora);
+            
+        } else if(this.randomizadora != null){
+            randomGoddess = this.randomizadora;
+            
+        } else {
+            final Class<? extends RandomGoddess> klass = 
+                this.classeRandomizadora != null
+                    ? this.classeRandomizadora
+                    : defaultClass;
+            
+            randomGoddess = 
+                DominoConfigUtils.
+                    instancia(
+                        RandomGoddess.class, 
+                        klass);
+        }
+        return randomGoddess;
+    }
+    
+    Collection<DominoEventListener> makeInstanciasListeners() 
+            throws ConfigException {
+        
+        final Collection<DominoEventListener> listeners
+                = new ArrayList<>(this.eventListeners.size() 
+                                  + this.classesEventListeners.size()
+                                  + this.nomesEventListeners.size());
+        
+        listeners.addAll(this.eventListeners);
+
+        try {
+            
+            listeners.addAll(
+                this.classesEventListeners
+                    .parallelStream()
+                    .map(instancListKlass)
+                    .collect(Collectors.toList())
+            );
+
+            listeners.addAll(
+                this.nomesEventListeners
+                    .parallelStream()
+                    .map(instancListName)
+                    .collect(Collectors.toList())
+            );
+        } catch (final WrappedException wep){
+            throw (ConfigException) wep.getCause();
+        }
+   
+        return listeners;
+        
+    }    
 }

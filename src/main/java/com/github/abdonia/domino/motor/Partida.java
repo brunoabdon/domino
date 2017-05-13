@@ -26,6 +26,7 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
 class Partida {
 
@@ -89,7 +90,8 @@ class Partida {
 
             if(jogada == null){
                 throw new BugDeJogadorException(
-                    "Qual é a jogada? Nenhuma?", jogadorDaVez);
+                    Falha.NAO_JOGOU_NEM_TOCOU, 
+                    jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
                 
                 this.eventListener.jogadorTocou(cadeira);
@@ -104,7 +106,8 @@ class Partida {
 
                 if(tinhaPedraPraJogar){
                     throw new BugDeJogadorException(
-                        "Tocou tendo pedra pra jogar!", jogadorDaVez);
+                        Falha.TOCOU_TENDO, 
+                        jogadorDaVez);
                 }
 
                 trancou = ++numeroDeToquesSeguidos == 4;
@@ -118,15 +121,20 @@ class Partida {
                 //o jogador tinha mesmo essa pedra, ou tirou do bolso?
                 if(!maoDoJogadorDaVez.contains(pedra)){
                     throw new BugDeJogadorException(
-                        "Jogando pedra que não tinha!", 
-                        jogadorDaVez, pedra);
+                        Falha.TIROU_PEDRA_DO_BOLSO, 
+                        jogadorDaVez, 
+                        pedra);
                 }
 
                 maoDoJogadorDaVez.remove(pedra);
 
                 boolean colocouMesmo = this.mesa.coloca(pedra, lado);
                 if(!colocouMesmo){
-                    throw new PedraBebaException(jogadorDaVez, pedra);
+                    throw new BugDeJogadorException(
+                            Falha.PEDRA_INVALIDA,
+                            jogadorDaVez, 
+                            pedra,
+                            mesa.getNumero(lado));
                 }
 
                 numeroDeToquesSeguidos = 0;
@@ -265,7 +273,7 @@ class Partida {
                     
                     if(primeiraJogada == null){
                         throw new BugDeJogadorException(
-                            "Vai jogar não?", jogador);
+                            Falha.NAO_JOGOU_NEM_TOCOU, jogador);
                     }
                     
                     final Pedra pedra = primeiraJogada.getPedra();
@@ -279,8 +287,10 @@ class Partida {
                     //agora erre, meu velho
                     if(pedra != carroca){
                         throw new BugDeJogadorException(
-                            "Errou a saída, meu velho. Erra pra ser " + carroca,
-                            jogador);
+                            Falha.PEDRA_INVALIDA,
+                            jogador,
+                            pedra
+                        );
                     }
                     //limpeza
                     mao.remove(pedra);

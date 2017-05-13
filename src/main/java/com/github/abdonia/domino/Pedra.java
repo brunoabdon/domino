@@ -22,63 +22,175 @@ package com.github.abdonia.domino;
  */
 public enum Pedra {
 
+    /**
+     * <span style="font-size:2em">\uD83C\uDC63</span>
+     */
     CARROCA_DE_LIMPO            (Numero.LIMPO), 
 
     //1
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC64</span>	
+     */
     LIMPO_PIO       (Numero.LIMPO, Numero.PIO),
 
     //2
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6B</span>
+     */
     CARROCA_DE_PIO                (Numero.PIO),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC65</span>
+     */
     LIMPO_DUQUE   (Numero.LIMPO, Numero.DUQUE),
 
     //3
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC66</span>
+     */
     LIMPO_TERNO   (Numero.LIMPO, Numero.TERNO),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6C</span>
+     */
     PIO_DUQUE       (Numero.PIO, Numero.DUQUE),
 
     //4
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC67</span>
+     */
     LIMPO_QUADRA (Numero.LIMPO, Numero.QUADRA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6D</span>
+     */
     PIO_TERNO       (Numero.PIO, Numero.TERNO),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC73</span>
+     */
     CARROCA_DE_DUQUE            (Numero.DUQUE),
 
     //5
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC68</span>
+     */
     LIMPO_QUINA   (Numero.LIMPO, Numero.QUINA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6E</span>
+     */
     PIO_QUADRA     (Numero.PIO, Numero.QUADRA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC74</span>
+     */
     DUQUE_TERNO   (Numero.DUQUE, Numero.TERNO),
 
     //6
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC69</span>
+     */
     LIMPO_SENA     (Numero.LIMPO, Numero.SENA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6F</span>
+     */
     PIO_QUINA       (Numero.PIO, Numero.QUINA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC75</span>
+     */
     DUQUE_QUADRA (Numero.DUQUE, Numero.QUADRA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC7B</span>
+     */
     CARROCA_DE_TERNO            (Numero.TERNO),
 
     //7
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC70</span>
+     */
     PIO_SENA         (Numero.PIO, Numero.SENA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC76</span>
+     */
     DUQUE_QUINA   (Numero.DUQUE, Numero.QUINA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC7C</span>
+     */
     TERNO_QUADRA (Numero.TERNO, Numero.QUADRA),
 
     //8
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC77</span>
+     */
     DUQUE_SENA     (Numero.DUQUE, Numero.SENA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC7D</span>
+     */
     TERNO_QUINA   (Numero.TERNO, Numero.QUINA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC83</span>
+     */
     CARROCA_DE_QUADRA          (Numero.QUADRA),
 
     //9
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC7E</span>
+     */
     TERNO_SENA     (Numero.TERNO, Numero.SENA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC84</span>
+     */
     QUADRA_QUINA (Numero.QUADRA, Numero.QUINA),
 
     //10
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC85</span>
+     */
     QUADRA_SENA   (Numero.QUADRA, Numero.SENA),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC8B</span>
+     */
     CARROCA_DE_QUINA            (Numero.QUINA),
 
     //11
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC8C</span>
+     */
     QUINA_SENA     (Numero.QUINA, Numero.SENA),
 
     //12
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC93</span>
+     */
     CARROCA_DE_SENA              (Numero.SENA);
 
     /**
      * Uma array auxliar, contendo só as carroças, em ordem 
-     * crescente (de {@link Numero#LIMPO limpo} a 
-     * {@link Numero#SENA sena})
+     * crescente (de {@link #CARROCA_DE_LIMPO limpo} a 
+     * {@link #CARROCA_DE_SENA sena}): <code>
+     * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}</code>.
      */
     public static final Pedra[] carrocas = 
         new Pedra[]{
@@ -148,8 +260,11 @@ public enum Pedra {
     }
 
     /**
-     * Diz se essa pedra é uma carroça.
-     * @return se a predra é ou não carroça.
+     * Diz se essa pedra é uma carroça. Ou seja, se o {@link 
+     * #getPrimeiroNumero() primeiro número} é igual ao {@link 
+     * #getSegundoNumero() segundo}.
+     * 
+     * @return Se a predra é ou não carroça.
      */
     public boolean isCarroca(){
         return this.primeiroNumero == this.segundoNumero;

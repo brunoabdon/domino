@@ -29,6 +29,6 @@ public class UtilsTests {
     }
 
     static JogadorWrapper makeJogador(final String nome) {
-        return JogadorWrapper.criaJogador(nome,JogadorMamao.class.getName());
+        return new JogadorWrapper(new JogadorMamao(),nome);
     }
 }

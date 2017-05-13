@@ -91,7 +91,7 @@ public interface DominoEventListener {
      * além desse evento, também ocorrerá {@link #jogadorBateu(int, Vitoria)}
      * 
      * @param jogador quem jogou (identificado pelo número da cadeira)
-     * @param lado onde jogou (pode ter sido nulo)
+     * @param lado onde jogou
      * @param pedra o que jogou
      */
     public default void jogadorJogou(

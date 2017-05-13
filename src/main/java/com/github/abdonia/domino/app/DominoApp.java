@@ -31,18 +31,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.motor.ConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
- * Uma aplicação simples. por linha de comando, que roda um {@link Jogo jogo de
- * dominó}. 
+ * <p>Uma aplicação simples. por linha de comando, que roda um {@link Jogo jogo de
+ * dominó}.</p>
  * 
- * As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
+ * <p>As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
  * de jogadores serão usadas, quais serão seus nomes, etc) pode ser informada
  * num arquivo chamado <code>domino-config.xml</code> que deve estar no 
- * diretório atual.
+ * diretório atual./</p>
  * 
- * Um exemplo de conteudo do arquivo é
+ * <p>Um exemplo de conteudo do arquivo é:</p>
  * 
  * <pre>
  * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -65,11 +66,12 @@ import com.github.abdonia.domino.motor.Jogo;
  *&lt;/domino&gt;
  * </pre>
  * 
- * Caso o arquivo de configuração não seja encontrado, uma
- * configuração default é usada onde ocorre um jogo entre algumas {@link com.github.abdonia.domino.exemplos implementações
- * de exemplo jogadores} e onde um 
+ * <p>Caso o arquivo de configuração não seja encontrado, umaconfiguração 
+ * default é usada onde ocorre um jogo entre algumas 
+ * {@link com.github.abdonia.domino.exemplos implementações exemplo de 
+ * jogadores} e onde um 
  * {@link com.github.abdonia.domino.log.LoggerDominoEventListener} é registrado
- * para imprimir na tela tudo o que acontece durante o jogo.
+ * para imprimir na tela tudo o que acontece durante o jogo.</p>
  * 
  * @author Bruno Abdon
  */
@@ -79,6 +81,9 @@ public class DominoApp {
     private static final String DEFAULT_CONFIG_XML = "domino-config-default.xml";
     private static final String MSG_BUNDLE = "com.github.abdonia.domino.app.DominoAppMsg";
 
+    private static final ResourceBundle msgBundle = 
+        ResourceBundle.getBundle(MSG_BUNDLE);
+    
     private DominoApp(){}
    
     /**
@@ -102,6 +107,9 @@ public class DominoApp {
 
         } catch (DominoAppException e) {
             log(Level.WARNING, "Pipoco: ", e);
+        } catch (ConfigException e) {
+            log(Level.SEVERE, "Erro de configuração: " + e.getMessage(), e);
+            
         }
             
     }
@@ -110,6 +118,7 @@ public class DominoApp {
      * Carrega a {@link DominoConfig configuração do jogo} a ser usada, ou seja,
      * quais {@link Jogador jogadores} irão participar, como  
      * {@link DominoEventListener os eventos serão tratados}, etc..
+     * 
      * @return Uma {@link DominoConfig configuração de jogo de dominó}.
      * @throws DominoAppException 
      */
@@ -131,6 +140,7 @@ public class DominoApp {
      * {@link #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console,
      * uma mensagem podera ser exibida no caso da configuração default ser 
      * usada.
+     * 
      * @return Um {@link InputStream} com o documento xml de configuração.
      * 
      * @throws DominoAppException Caso alguma falha aconteça ao tentar abrir o
@@ -171,8 +181,6 @@ public class DominoApp {
     private static void tentarExibirAvisoConfiguracaoDefault() {
         final Console console = System.console();
         if(console != null){
-            final ResourceBundle msgBundle =
-                    ResourceBundle.getBundle(MSG_BUNDLE);
             final String msg =
                     MessageFormat.format(
                         msgBundle.getString("msg.defaultconfig"),
@@ -183,7 +191,19 @@ public class DominoApp {
     }
 
     private static void log(final Level l, final String msg, final Exception e){
-        System.err.printf("%s: %s\n",msg, e.getMessage());
-        Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
+        final Console console = System.console();
+        if(console != null){
+            console
+            .writer()
+            .println(
+                MessageFormat
+                .format(
+                    msgBundle.getString("error.config"),
+                    e.getMessage()));
+        } else {
+            //System.err.printf("%s: %s\n",msg, e.getMessage());
+            Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
+        }
+        
     }
 }

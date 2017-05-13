@@ -33,57 +33,79 @@ class JogadorWrapper implements Jogador {
 
     private final Jogador wrapped;
 
-    private JogadorWrapper(final Jogador wrapped, final String nome) {
+    public class RuntimeBugDeJogadorException extends RuntimeException{
 
-        if(nome == null) throw new IllegalArgumentException("João SemNome não joga.");
-        if(wrapped == null) throw new IllegalArgumentException("bug");
+        public RuntimeBugDeJogadorException(final RuntimeException cause) {
+            super(cause);
+        }
+        
+        public JogadorWrapper getJogadorBuguento(){
+            return JogadorWrapper.this;
+        }
+        
+        @Override
+        public RuntimeException getCause(){
+            //Throwable.cause não é final.Mas, quem vai mudar isso???
+            return (RuntimeException)super.getCause();
+        }
+    }
+    
+    /**
+     * Cria um {@link JogadorWrapper jogador} dado seu nome e o {@link Jogador}
+     * que implenta a IA.
+     * 
+     * @param nome O nome do jogador.
+     * @param wrapped A IA do jogador.
+     * 
+     * @throws NullPointerException caso um dos parâmetros seja nulo.
+     */
+    JogadorWrapper(final Jogador wrapped, final String nome) 
+            throws NullPointerException{
+
+        if(nome == null) throw new NullPointerException("João SemNome não joga.");
+        if(wrapped == null) throw new NullPointerException("bug");
 
         this.wrapped = wrapped;
         this.nome = nome;
     }
 
-    /**
-     * Cria um {@link JogadorWrapper jogador} dado seu nome e o nome de sua 
-     * classe.
-     * @param nomeJogador O nome do jogador.
-     * @param nomeClasse O nome completo da classe do jogador.
-     * @return Um {@link JogadorWrapper jogador} pronto pra jogar.
-     * @throws DominoAppException Caso não consiga instanciar o jogador.
-     */
-    static JogadorWrapper criaJogador(
-            final String nomeJogador, 
-            final String nomeClasse) {
-
-        final Jogador jogador = 
-            DominoUtils
-                .instancia(
-                    Jogador.class, 
-                    nomeClasse);
-
-        return new JogadorWrapper(jogador, nomeJogador);
-    }
-    
-    
     @Override
     public void recebeMao(final Pedra[] pedras) {
         this.mao = new ArrayList<>(Arrays.asList(pedras));
-        wrapped.recebeMao(pedras);
+        try {
+            wrapped.recebeMao(pedras);
+        } catch (RuntimeException e){
+            throw new RuntimeBugDeJogadorException(e);
+        }
+        
     }
 
     @Override
     public Jogada joga() {
-        return wrapped.joga();
+        try {
+            return wrapped.joga();
+        } catch (RuntimeException e){
+            throw new RuntimeBugDeJogadorException(e);
+        }
     }
 
     @Override
     public int vontadeDeComecar() {
-        return wrapped.vontadeDeComecar();
+        try {
+            return wrapped.vontadeDeComecar();
+        } catch (RuntimeException e){
+            throw new RuntimeBugDeJogadorException(e);
+        }
     }
 
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.cadeira = cadeiraQueSentou;
-        wrapped.sentaNaMesa(mesa, cadeiraQueSentou);
+        try {
+            wrapped.sentaNaMesa(mesa, cadeiraQueSentou);
+        } catch (RuntimeException e){
+            throw new RuntimeBugDeJogadorException(e);
+        }
     }
 
     String getNome() {

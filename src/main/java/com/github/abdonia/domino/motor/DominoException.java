@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2017 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,27 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Jogador;
-import com.github.abdonia.domino.Pedra;
+/**
+ * Exceção genérica, que representa um erro durante um {@link Jogo} de dominó.
+ * 
+ * @author Bruno Abdon
+ */
+public abstract class DominoException extends Exception {
 
-class PedraBebaException extends BugDeJogadorException {
-
-    private final Pedra pedraBeba;
-
-    public PedraBebaException(
-            final Jogador jogadorSacana, 
-            final Pedra pedraBeba) {
-        super("Jogou pedra beba!", jogadorSacana);
-        this.pedraBeba = pedraBeba;
+    /**
+     * Construtor com causa e mensagem de erro.
+     * @param msg a mensagem de erro.
+     * @param causa a causa do erro.
+     */
+    public DominoException(final Exception causa, final String msg) {
+        super(msg,causa);
     }
 
-    public PedraBebaException(final Pedra pedraBeba) {
-        this(null,pedraBeba);
-    }
-
-    public Pedra getPedraBeba() {
-        return pedraBeba;
+    /**
+     * Construtor com mensagem de erro.
+     * @param msg a mensagem de erro.
+     */
+    protected DominoException(String msg) {
+        super(msg);
     }
 }

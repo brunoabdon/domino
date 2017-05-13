@@ -17,6 +17,7 @@
 package com.github.abdonia.domino.motor;
 
 import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
 class Dupla {
     private int pontos;
@@ -25,9 +26,6 @@ class Dupla {
     private final JogadorWrapper jogador2;
 
     Dupla(final JogadorWrapper jogador1, final JogadorWrapper jogador2) {
-        if(jogador1 == null || jogador2 == null) 
-            throw new IllegalArgumentException("Só pode dupla de dois");
-
         this.jogador1 = jogador1;
         this.jogador2 = jogador2;
 
@@ -69,11 +67,11 @@ class Dupla {
             return vontadeDo1 - vontadeDo2; 
     }
 
-    private void validaVontade(final int vontade, final Jogador jogador) 
+    private void validaVontade(final int vontade, final JogadorWrapper jogador) 
             throws BugDeJogadorException {
         if(vontade < 0 || vontade > 10){
             throw new BugDeJogadorException(
-                    "Vontade é de zero a dez só, meu velho. Não inventa.",
+                    Falha.NAO_SABE_SE_COMECE,
                     jogador);
         }
     }

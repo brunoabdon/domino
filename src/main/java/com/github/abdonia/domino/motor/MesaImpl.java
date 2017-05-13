@@ -70,6 +70,14 @@ class MesaImpl implements Mesa{
         
         this.eventListener = eventListener;
         this.fortuna = fortuna; 
+        
+        //podem sentar
+        jogador1dupla1.sentaNaMesa(this, 1);
+        jogador1dupla2.sentaNaMesa(this, 2);
+        jogador2dupla1.sentaNaMesa(this, 3);
+        jogador2dupla2.sentaNaMesa(this, 4);
+        
+        
     }
 
     void embaralhaEdistribui() {
@@ -197,6 +205,13 @@ class MesaImpl implements Mesa{
     List<JogadorWrapper> getJogadores(){
         return this.jogadores;
     }
+    
+    public Numero getNumero(final Lado lado) {
+        return 
+            lado == Lado.ESQUERDO
+                ? numeroEsquerda
+                : numeroDireita;
+    }
 
     @Override
     public Numero getNumeroEsquerda() {
@@ -233,7 +248,7 @@ class MesaImpl implements Mesa{
                 .map(Object::toString)
                 .collect(JOINING);
     }
-    
+
     private class ReadOnlyIterator<E> implements Iterator<E> {
 
         private final Iterator<E> iterator;
@@ -254,7 +269,8 @@ class MesaImpl implements Mesa{
 
         @Override
         public void remove() {
-            throw new IllegalStateException("nao pode remover nada daqui");
+            throw new UnsupportedOperationException(
+                        "Tentativa de remover pedra da mesa.");
         }
     }
 

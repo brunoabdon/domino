@@ -24,8 +24,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.github.abdonia.domino.Lado;
+import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
@@ -49,6 +51,9 @@ class DominoEventBroadcaster implements
         Optional.ofNullable(Lado.DIREITO);
     private static final Optional<Lado> OPTIONAL_LADO_NENHUM = Optional.empty();
 
+    private static final Predicate<DominoEventListener> IS_OMNISCIENT = 
+        e -> e instanceof OmniscientDominoEventListener;
+    
     public DominoEventBroadcaster() {
         this.eventListeners = new LinkedList<>();
         this.omniscientEventListeners = new LinkedList<>();
@@ -58,19 +63,31 @@ class DominoEventBroadcaster implements
     }
 
     public void addEventListener(
-            final DominoEventListener eventListener, 
+            final DominoEventListener eventListener,
             final boolean permiteAcessoTotal) {
-        this.eventListeners.add(eventListener);
         
-        if(permiteAcessoTotal 
-            && eventListener instanceof OmniscientDominoEventListener){
-            
-            final OmniscientDominoEventListener omniscientEventListener = 
-                    (OmniscientDominoEventListener) eventListener;
-            this.omniscientEventListeners.add(omniscientEventListener);
-        } 
+        this.eventListeners.add(eventListener);
+        if(permiteAcessoTotal && IS_OMNISCIENT.test(eventListener)){
+            this.omniscientEventListeners
+                .add((OmniscientDominoEventListener)eventListener);
+        }
     }
+    
+    public void addEventListeners(
+            final Collection<DominoEventListener> eventListeners,
+            final boolean permiteAcessoTotal) {
 
+        this.eventListeners.addAll(eventListeners);
+        
+        if(permiteAcessoTotal){
+            eventListeners
+            .parallelStream()
+            .filter(IS_OMNISCIENT)
+            .map(e -> (OmniscientDominoEventListener) e)
+            .forEach(this.omniscientEventListeners::add);
+        }
+    }
+    
     private <E> void broadCastEvent(
             final Collection<E> listeners, 
             final Consumer<? super E> c) {
@@ -232,7 +249,7 @@ class DominoEventBroadcaster implements
     }
 
     @Override
-    public void jogadorRecebeuPedras(int quemFoi, Collection<Pedra> pedras) {
+    public void jogadorRecebeuPedras(final int quemFoi, Collection<Pedra> pedras) {
         broadCastEvent(omniscientEventListeners,
             (eventListener) -> {
                 eventListener.jogadorRecebeuPedras(quemFoi, pedras);
@@ -248,4 +265,69 @@ class DominoEventBroadcaster implements
             }
         );
     }
+
+    @Override
+    public void jogadorJogouPedraQueNãoTinha(final int quemFoi, final Pedra pedra) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorJogouPedraQueNãoTinha(quemFoi,pedra);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorTocouTendoPedraPraJogar(final int quemFoi) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorTocouTendoPedraPraJogar(quemFoi);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorComecouErrando(final int quemFoi) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorComecouErrando(quemFoi);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorJogouPedraNenhuma(final int quemFoi) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorJogouPedraNenhuma(quemFoi);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorFaleceu(final int quemFoi) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorFaleceu(quemFoi);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorErrouVontadeDeComeçar(final int quemFoi) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorErrouVontadeDeComeçar(quemFoi);
+            }
+        );
+    }
+
+    @Override
+    public void jogadorJogouPedraInvalida(
+            final int quemFoi, final Pedra pedra, final Numero numero) {
+        broadCastEvent(omniscientEventListeners,
+            (eventListener) -> {
+                eventListener.jogadorJogouPedraInvalida(quemFoi,pedra,numero);
+            }
+        );
+    }
+    
 }
