@@ -43,7 +43,7 @@ class DominoConfigUtils {
             
         } catch (ClassNotFoundException e) {
             throw new DominoConfigException(
-                "A classe \"%s\" foi mencionada ela não pode ser encontrada.", className);
+                "A classe \"%s\" foi mencionada mas ela não pode ser encontrada.", className);
         }
         return instance;
     }
