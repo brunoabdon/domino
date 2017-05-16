@@ -38,6 +38,22 @@ class Partida {
     
     private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
         MENOR_NO_ARRAY = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
+
+    /**
+     * Uma array auxliar, contendo só as carroças, em ordem 
+     * crescente (de {@link #CARROCA_DE_LIMPO limpo} a 
+     * {@link #CARROCA_DE_SENA sena}): <code>
+     * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}</code>.
+     */
+    private static final Pedra[] CARROCAS = {
+            Pedra.CARROCA_DE_LIMPO, 
+            Pedra.CARROCA_DE_PIO, 
+            Pedra.CARROCA_DE_DUQUE, 
+            Pedra.CARROCA_DE_TERNO, 
+            Pedra.CARROCA_DE_QUADRA, 
+            Pedra.CARROCA_DE_QUINA, 
+            Pedra.CARROCA_DE_SENA
+        };
     
     Partida(
         final MesaImpl mesa,
@@ -261,7 +277,7 @@ class Partida {
 
         loopProcurarMaiorCarroca: 
         for (int i = 6; i >= 2; i--) {
-            final Pedra carroca = Pedra.carrocas.get(i);
+            final Pedra carroca = CARROCAS[i];
             for (vez = 0; vez < 4 ; vez++) {
 
                 final JogadorWrapper jogador = mesa.jogadorDaVez(vez);
@@ -287,7 +303,7 @@ class Partida {
                     //agora erre, meu velho
                     if(pedra != carroca){
                         throw new BugDeJogadorException(
-                            Falha.PEDRA_INVALIDA,
+                            Falha.JA_COMECOU_ERRANDO,
                             jogador,
                             pedra
                         );
@@ -312,24 +328,21 @@ class Partida {
         ResultadoPartida resultado = null;
         
         final Collection<JogadorWrapper>jogadores = mesa.getJogadores();
-        for (JogadorWrapper jogador : jogadores) {
+        for (final JogadorWrapper jogador : jogadores) {
             int quantasNaoCarrocas = 0;
-            for (Pedra pedra : jogador.getMao()) {
+            for (final Pedra pedra : jogador.getMao()) {
                 if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
                     break;
                 }
             }
-            
-            if(quantasNaoCarrocas <= 1){
-                if(quantasNaoCarrocas == 1){
-                    //partida voltou! 5 carrocas na mao!
-                    this.eventListener.partidaVoltou(jogador.getCadeira());
-                    resultado = new ResultadoPartidaVolta(jogador);
 
-                } else if (quantasNaoCarrocas == 0){
-                    //batida imediata! 6 carrocas na mao!
-                    resultado = batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
-                }
+            if(quantasNaoCarrocas <= 1){
+                resultado = 
+                    quantasNaoCarrocas == 1
+                        //partida voltou! 5 carrocas na mao!
+                        ? volta(jogador) 
+                        //batida imediata! 6 carrocas na mao!
+                        : batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
                 break;
             }
         }
@@ -350,4 +363,18 @@ class Partida {
         this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
         return new Batida(tipoDeBatida, vencedor);
     }
+    
+    /**
+     * Métido auxiliar que anuncia o evento de que um dado {@link Jogador} tinha
+     * 5 carroças na mão e a partida vai voltar e cria e retorna um {@link 
+     * ResultadoPartida} equivalente a essa situação.
+     * 
+     * @param vencedor O jogador que bateu.
+     * @param tipoDeBatida O tipo de batida.
+     * @return Um {@link ResultadoPartida} equivalente a essa vitória.
+     */
+    private ResultadoPartida volta(final JogadorWrapper jogador) {
+        this.eventListener.partidaVoltou(jogador.getCadeira());
+        return new ResultadoPartidaVolta(jogador);
+   }
 }
