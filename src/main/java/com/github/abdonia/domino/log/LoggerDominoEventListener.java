@@ -296,7 +296,6 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             this.printWriter.println("   ======     INCHADINHA!   ======");
             imprimeUmaBarrona();
         }
-        this.printWriter.flush();
     }
 
     private String formataPedra(Pedra pedra, final int leftpadInicial) {
