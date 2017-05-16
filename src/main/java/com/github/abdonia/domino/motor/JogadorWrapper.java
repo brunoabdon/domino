@@ -121,7 +121,8 @@ class JogadorWrapper implements Jogador {
     }
     
     int getNumeroDePontosNaMao(){
-        return this.mao.stream().mapToInt(p -> p.getNumeroDePontos()).sum();
+        return 
+            this.mao.parallelStream().mapToInt(Pedra::getNumeroDePontos).sum();
     }
 
     Jogador getWrapped() {
