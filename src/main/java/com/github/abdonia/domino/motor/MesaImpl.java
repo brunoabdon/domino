@@ -82,6 +82,7 @@ class MesaImpl implements Mesa{
 
         //emborca as pedras...
         this.listaDePedras.clear();
+        this.numeroEsquerda = this.numeroDireita = null;
         
         //embaralha...
         final List<Pedra> pedras = fortuna.embaralha();
