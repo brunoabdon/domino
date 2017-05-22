@@ -34,12 +34,13 @@ import java.io.Console;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
  * Escuta tudo o que vai acontecendo no jogo e loga em um {@link PrintWriter}.
- * 
+ *
  * @author Bruno Abdon
  */
 public class LoggerDominoEventListener implements OmniscientDominoEventListener{
@@ -243,10 +244,10 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             imprimePlacar(0,0);
 
             final int maiorTamanhoDeNome = 
-                Math.max(nomeDoJogador1.length(), 
-                    Math.max(nomeDoJogador2.length(), 
-                        Math.max(nomeDoJogador3.length(), 
-                            nomeDoJogador4.length())));
+                Stream.of(this.nomeDosJogadores)
+                        .map(String::length)
+                        .max(Comparator.naturalOrder())
+                        .get();
 
             this.baseDoPaddingDePedra = maiorTamanhoDeNome + 13;
             this.baseDoPaddingDeLado = baseDoPaddingDePedra + 15;
