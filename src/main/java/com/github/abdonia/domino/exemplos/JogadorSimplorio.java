@@ -45,7 +45,7 @@ public class JogadorSimplorio implements Jogador{
      * @see Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) ;
      */
     @Override
-    public void sentaNaMesa(final Mesa mesa, int cadeiraQueSentou) {
+    public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.mesa = mesa;
         this.jaJogueiAlgumaVez = false;
     }
@@ -55,7 +55,7 @@ public class JogadorSimplorio implements Jogador{
      * @param pedras As minhas pedras.
      */
     @Override
-    public void recebeMao(Pedra[] pedras) {
+    public void recebeMao(final Pedra[] pedras) {
         this.pedras = pedras;
     }
 
@@ -77,14 +77,19 @@ public class JogadorSimplorio implements Jogador{
     public Jogada joga() {
         final Jogada jogada;
 
-        if(mesa.taVazia() && !jaJogueiAlgumaVez){
-            //ninguem jogou até agora. essa é a primeira jogada do jogo. deve 
-            //ser obrigatoriamente a maior carroça que eu tenho na mão 
-            //(provavelmente a carroça de senna).
-            jogada = jogaMaiorCarroca();
+        if(mesa.taVazia()){
+            //é o comeco de uma partida e eu sou o primeiro.
+            if(!jaJogueiAlgumaVez){
+                //é a primeira partida do jogo. devo jogar  maior carroca.
+                //(provavelmente a carroça de senna).
+                jogada = jogaMaiorCarroca();
+            } else {
+                //poço começar a partida com qualquer pedra. vai ser a primeira.
+                jogada = jogarAPrimeiraPedraDaMao();
+            }
         } else {
             //vou jogar uma peça qualquer que caiba na mesa.
-            jogada = jogaAlgumaPedra();
+            jogada = jogaAlgumaPedraQueCaibaNaMesa();
         }
         //já joguei pelo menos uma vez. não preciso mais me preocupar em jogar a
         //maior carroça.
@@ -92,24 +97,48 @@ public class JogadorSimplorio implements Jogador{
         return jogada;
     }
 
+    
+    /**
+     * Retorna uma {@link Jogada} com a primeira {@link Pedra} que eu tiver na 
+     * mão, de um {@link Lado} qualquer. A pedra jogada será removida da {@link 
+     * #pedras mão}, pois não poderá ser jogada de novo.
+     * 
+     * @return Uma {@link Jogada}.
+     */
+    private Jogada jogarAPrimeiraPedraDaMao(){
+        final Pedra pedra = pedras[0]; //a primeira pedra da mão.
+        pedras[0] = null; //tirando a pedra da mão.
+        
+        final Lado lado = Lado.ESQUERDO; //qualquer lado... a mesa está vazia.
+        
+        final Jogada jogada = Jogada.jogada(pedra, lado); 
+        
+        return jogada;
+    }
+    
     /**
      * Retorna uma {@link Jogada} com a maior carroça que tem na minha mão.
      * @return uma {@link Jogada} com a maior carroça que tem na minha mão.
      */
     private Jogada jogaMaiorCarroca() {
         Pedra maiorCarroca = null; //a maior até agora (nenhuma)
+        int indiceMaioCarroca = -1; //onde essa pedra está na mão
         //procurando a carroça entre as pedras....
-        for (Pedra pedra : pedras) {
+        for (int i = 0; i<pedras.length;i++) {
+            final Pedra pedra = pedras[i];
             if(pedra.isCarroca()){  //precisa ser carroca
-                if(maiorCarroca == null){
-                    //a primeira carroca que achei. até agora, é a maior.
+                //se eh a primeira carroca (mariorCarroca==null) ou
+                //se eh uma maior do que a anterior, ela é a maior agora.
+                if(maiorCarroca == null                     
+                    || pedra.getNumeroDePontos() > maiorCarroca.getNumeroDePontos()){
                     maiorCarroca = pedra;
-                } else if(pedra.getNumeroDePontos() > maiorCarroca.getNumeroDePontos()){
-                    //achei uma carroça maior do que a anterior. ela é a maior agora.
-                    maiorCarroca = pedra;
+                    indiceMaioCarroca = i;
                 }
             }
         }
+        
+        //retirando a pedra da mao
+        pedras[indiceMaioCarroca] = null;
         //retornando uma jogada com a maior carroça. o Lado é irrelevante.
         return Jogada.jogada(maiorCarroca, Lado.ESQUERDO);
     }
@@ -121,7 +150,7 @@ public class JogadorSimplorio implements Jogador{
      * 
      * @return Uma jogada válida.
      */
-    private Jogada jogaAlgumaPedra() {
+    private Jogada jogaAlgumaPedraQueCaibaNaMesa() {
         Jogada jogada = null;
         //procurando entre as pedras....
         for (int i = 0; i<pedras.length;i++) {
