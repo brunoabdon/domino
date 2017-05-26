@@ -29,10 +29,13 @@ import java.io.PrintStream;
 import java.util.stream.Collector;
 
 import com.github.abdonia.domino.eventos.DominoEventListener;
+
 import java.io.Console;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+
+import com.github.abdonia.domino.Numero;
 
 /**
  * Escuta tudo o que vai acontecendo no jogo e loga em um {@link PrintWriter}.
@@ -298,6 +301,91 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         }
     }
 
+    @Override
+    public void jogadorJogouPedraInvalida(
+            final int quemFoi, 
+            final Pedra pedra, 
+            final Numero numero) {
+
+        final String msg = 
+            new StringBuilder(nomeDosJogadores[quemFoi-1])
+            .append(" quis jogar ")
+            .append(pedra)
+            .append(" na cabeça que era de ")
+            .append(numero)
+            .toString();
+        
+        imprimeErroFatal(msg,false);
+    }
+
+    @Override
+    public void jogadorErrouVontadeDeComeçar(int quemFoi) {
+        final String msg = 
+            new StringBuilder(nomeDosJogadores[quemFoi-1])
+            .append(", você tem que escolher um número de 0 a 10.")
+            .toString();
+        
+        imprimeErroFatal(msg,false);
+    }
+
+    @Override
+    public void jogadorFaleceu(int quemFoi) {
+        final String msg = 
+            new StringBuilder("GRAVE: ")
+            .append(nomeDosJogadores[quemFoi-1])
+            .append("veio a falecer.")
+            .toString();
+        
+        imprimeErroFatal(msg,false);
+    }
+
+    @Override
+    public void jogadorJogouPedraNenhuma(int quemFoi) {
+        final String msg = 
+            new StringBuilder(nomeDosJogadores[quemFoi-1])
+            .append("jogou pedra nenhuma.")
+            .toString();
+        
+        imprimeErroFatal(msg,false);
+    }
+
+    @Override
+    public void jogadorComecouErrando(int quemFoi) {
+        final String msg = 
+            new StringBuilder("O jogo começa com a maior carroça, ")
+            .append(nomeDosJogadores[quemFoi-1])
+            .append(".")
+            .toString();
+        
+        imprimeErroFatal(msg,false);
+    }
+
+    @Override
+    public void jogadorTocouTendoPedraPraJogar(int quemFoi) {
+        final String msg = 
+            new StringBuilder(nomeDosJogadores[quemFoi-1])
+            .append(" disse que tocou mas tem pedra pra jogar.")
+            .toString();
+        
+        imprimeErroFatal(msg,true);
+    }
+
+    @Override
+    public void jogadorJogouPedraQueNãoTinha(int quemFoi, Pedra pedra) {
+        final String msg = 
+            new StringBuilder(nomeDosJogadores[quemFoi-1])
+            .append(" jogou ")
+            .append(pedra)
+            .append(" sem ter essa pedra na mão.")
+            .toString();
+                
+        
+        imprimeErroFatal(msg,true);
+    }
+
+    
+    
+    
     private String formataPedra(Pedra pedra, final int leftpadInicial) {
         final String pedraStr = pedra.toString();
         
@@ -310,10 +398,29 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
     
     private void imprimeUmaBarrinha() {
-        this.printWriter.println("=================");
+        this.printWriter.println("=============");
     }
 
     private void imprimeUmaBarrona() {
-        this.printWriter.println("   ===================================");
+        this.printWriter.println("   ===============================");
     }
+    
+    
+    private void imprimeErroFatal(final String msg, boolean foiRoubo){
+        imprimeUmaBarrinhaDeErro();
+        this.printWriter.println("              Bug de Jogador!\n");
+        this.printWriter.println(msg);
+        this.printWriter.print("\nJogo cancelado. ");
+        this.printWriter.println(
+                foiRoubo
+                    ? "Deixe de roubo."
+                    : "Vá estudar as regras."
+        );
+        imprimeUmaBarrinhaDeErro();
+        
+    }
+    private void imprimeUmaBarrinhaDeErro() {
+        this.printWriter.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    }
+
 }
