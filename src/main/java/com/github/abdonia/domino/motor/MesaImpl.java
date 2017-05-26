@@ -65,7 +65,7 @@ class MesaImpl implements Mesa{
         
         this.jogadores = 
             Arrays.asList(
-                jogador1dupla1, jogador2dupla1, 
+                jogador1dupla1, jogador1dupla2, 
                 jogador2dupla1, jogador2dupla2);
         
         this.eventListener = eventListener;
@@ -76,21 +76,20 @@ class MesaImpl implements Mesa{
         jogador1dupla2.sentaNaMesa(this, 2);
         jogador2dupla1.sentaNaMesa(this, 3);
         jogador2dupla2.sentaNaMesa(this, 4);
-        
-        
     }
 
     void embaralhaEdistribui() {
 
         //emborca as pedras...
         this.listaDePedras.clear();
+        this.numeroEsquerda = this.numeroDireita = null;
         
         //embaralha...
         final List<Pedra> pedras = fortuna.embaralha();
 
         //distribui as maos dos 4 jogadores
         for (int i = 0, idx = 0; i < 4; i++) {
-            final Collection<Pedra> mao = pedras.subList(idx, idx+=6); //imutavel
+            final Collection<Pedra> mao = pedras.subList(idx, idx+=6);
             this.entregaPedras(jogadorDaVez(i), mao);
         }
         //separa o dorme
@@ -113,7 +112,6 @@ class MesaImpl implements Mesa{
             jogador.getCadeira(),
             Collections.unmodifiableCollection(mao));
     }
-    
     
     @Override
     public boolean taVazia(){
@@ -273,5 +271,4 @@ class MesaImpl implements Mesa{
                         "Tentativa de remover pedra da mesa.");
         }
     }
-
 }

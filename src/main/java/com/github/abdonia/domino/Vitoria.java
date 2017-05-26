@@ -19,7 +19,8 @@ package com.github.abdonia.domino;
 /**
  * As diferente maneiras que um {@link Jogador} pode ganhar uma partida 
  * (uma rodada) de dominó.
- * @author bruno
+ * 
+ * @author Bruno Abdon
  */
 public enum Vitoria {
 

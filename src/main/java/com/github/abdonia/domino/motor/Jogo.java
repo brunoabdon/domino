@@ -47,7 +47,7 @@ public class Jogo {
      * 
      * @param configuracao A configuração do jogo.
      * @throws DominoConfigException caso a configuração passada esteja inválida (deve
-     * conter 4 jogadores e todos os nomes de classe deve ser válidos, para 
+     * conter 4 jogadores e todos os nomes de classe devem ser válidos, para 
      * classes com um construtor vazio). 
      * 
      */
@@ -150,7 +150,7 @@ public class Jogo {
         } catch (final BugDeJogadorException e) {
             this.avisaQueJogadorErrou(e);
         } catch (final JogadorWrapper.RuntimeBugDeJogadorException rte){
-            //legar o erro de e.getCause()...
+            //logar o erro de e.getCause()...
             this.eventBroadcaster
                 .jogadorFaleceu(
                     rte.getJogadorBuguento().getCadeira());

@@ -21,7 +21,6 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -112,13 +111,13 @@ import pl.touk.throwing.exception.WrappedException;
  */
 public class DominoConfig {
 
-    private static final Function<Class, DominoEventListener> instancListKlass = 
+    private static final Function<Class, DominoEventListener> INSTN_LIST_KLASS = 
         ThrowingFunction.unchecked(
             k -> DominoConfigUtils.instancia(DominoEventListener.class, k)
         )
     ;
     
-    private static final Function<String, DominoEventListener> instancListName = 
+    private static final Function<String, DominoEventListener> INSTN_LIST_NAME = 
         ThrowingFunction.unchecked(
             s -> DominoConfigUtils.instancia(DominoEventListener.class, s)
         )
@@ -248,7 +247,8 @@ public class DominoConfig {
      * 
      * @param classeJogador1Dupla1 a classe do jogador.
      */
-    public void setClasseJogador1Dupla1(final Class<? extends Jogador> classeJogador1Dupla1) {
+    public void setClasseJogador1Dupla1(
+            final Class<? extends Jogador> classeJogador1Dupla1) {
         this.classesJogadores[0] = classeJogador1Dupla1;
         this.nomesClassesJogadores[0] = null;
     }
@@ -264,7 +264,8 @@ public class DominoConfig {
      * 
      * @param classeJogador2Dupla1 a classe do jogador.
      */
-    public void setClasseJogador2Dupla1(final Class<? extends Jogador> classeJogador2Dupla1) {
+    public void setClasseJogador2Dupla1(
+            final Class<? extends Jogador> classeJogador2Dupla1) {
         this.classesJogadores[1] = classeJogador2Dupla1;
         this.nomesClassesJogadores[1] = null;
     }
@@ -280,7 +281,8 @@ public class DominoConfig {
      * 
      * @param classeJogador1Dupla2 a classe do jogador.
      */
-    public void setClasseJogador1Dupla2(final Class<? extends Jogador> classeJogador1Dupla2) {
+    public void setClasseJogador1Dupla2(
+            final Class<? extends Jogador> classeJogador1Dupla2) {
         this.classesJogadores[2] = classeJogador1Dupla2;
         this.nomesClassesJogadores[2] = null;
     }
@@ -296,7 +298,8 @@ public class DominoConfig {
      * 
      * @param classeJogador2Dupla2 a classe do jogador.
      */
-    public void setClasseJogador2Dupla2(final Class<? extends Jogador> classeJogador2Dupla2) {
+    public void setClasseJogador2Dupla2(
+            final Class<? extends Jogador> classeJogador2Dupla2) {
         this.classesJogadores[3] = classeJogador2Dupla2;
         this.nomesClassesJogadores[3] = null;
     }
@@ -521,7 +524,8 @@ public class DominoConfig {
         return this.eventListeners;
     }
 
-    public void setEventListeners(final List<DominoEventListener> eventListeners) {
+    public void setEventListeners(
+            final List<DominoEventListener> eventListeners) {
         this.eventListeners = eventListeners;
     }
 
@@ -533,7 +537,8 @@ public class DominoConfig {
         return this.classesEventListeners;
     }
 
-    public void setClassesEventListeners(final List<Class> classesEventListeners) {
+    public void setClassesEventListeners(
+            final List<Class> classesEventListeners) {
         this.classesEventListeners = classesEventListeners;
     }
 
@@ -622,7 +627,6 @@ public class DominoConfig {
         return nome;
     }
     
-    
     RandomGoddess makeInstanciaRandomGoddess(
             final Class<? extends RandomGoddess> defaultClass) 
                 throws DominoConfigException{
@@ -668,14 +672,14 @@ public class DominoConfig {
             listeners.addAll(
                 this.classesEventListeners
                     .parallelStream()
-                    .map(instancListKlass)
+                    .map(INSTN_LIST_KLASS)
                     .collect(Collectors.toList())
             );
 
             listeners.addAll(
                 this.nomesEventListeners
                     .parallelStream()
-                    .map(instancListName)
+                    .map(INSTN_LIST_NAME)
                     .collect(Collectors.toList())
             );
         } catch (final WrappedException wep){
@@ -683,6 +687,5 @@ public class DominoConfig {
         }
    
         return listeners;
-        
     }    
 }

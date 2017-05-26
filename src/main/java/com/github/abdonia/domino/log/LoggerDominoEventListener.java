@@ -34,20 +34,30 @@ import java.io.Console;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.Comparator;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import com.github.abdonia.domino.Numero;
 
 /**
  * Escuta tudo o que vai acontecendo no jogo e loga em um {@link PrintWriter}.
- * 
+ *
  * @author Bruno Abdon
  */
 public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     private static final Collector<CharSequence, ?, String> JOINING_DORME = 
         Collectors.joining(" | ", "(Dorme: ", ")");
+
+    private static final Function<Pedra,String> FORMATA_PEDRA_MAO = 
+        p -> formataPedra(p, 20);
     
-    private String[] nomeDosJogadores; 
+    private static final Function<String,String> MAO_DE = 
+        s -> "Mão de " + s + ":\n";
+    
+    private String[] nomeDosJogadores;
+    private String[] maoDeJogadores;
 
     private final PrintWriter printWriter;
 
@@ -89,7 +99,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     /**
-     * Se o programa estiver rodado em um {@link Console}, retorna o 
+     * Se o programa estiver rodando em um {@link Console}, retorna o 
      * {@link Console#writer() writer do console}. Caso contrário, retorna um
      * {@link PrintStream} que escreve na {@link System#out saída padrão}, 
      * usando o {@link Charset#defaultCharset() charset default} e com  
@@ -144,17 +154,23 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         imprimeUmaBarrinha();
     }
 
-
     @Override
     public void jogadorRecebeuPedras(
             final int quemFoi, 
             final Collection<Pedra> pedras) {
-        this.printWriter.println("Mão de " + nomeDosJogadores[quemFoi-1] + ":");
-        pedras.stream().forEach(
-            (pedra) -> printWriter.println(formataPedra(pedra, 20)));
+        
+        final Collector<CharSequence, ?, String> JOINING_MAO = 
+            Collectors.joining("\n", this.maoDeJogadores[quemFoi-1], "");
+        
+        this.printWriter.println(
+            pedras
+            .stream()
+            .sorted()
+            .map(FORMATA_PEDRA_MAO)
+            .collect(JOINING_MAO)
+        );
 
-        contadorRecebimentoDePedra++;
-        if(contadorRecebimentoDePedra == 4){
+        if(++this.contadorRecebimentoDePedra == 4){
             imprimeUmaBarrinha();
             contadorRecebimentoDePedra = 0;
         }
@@ -167,6 +183,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             .println(
                 pedras
                 .stream()
+                .sorted()
                 .map(Object::toString)
                 .collect(JOINING_DORME));
         imprimeUmaBarrinha();
@@ -188,7 +205,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             sb.append(
                 String.format(
                     "%1$" + padLado + "s",
-                    "(" + (lado == Lado.ESQUERDO?"E":"D") + ")"));
+                    "(" + (lado == Lado.ESQUERDO?"ESQ":"DIR") + ")"));
         }
 
         this.printWriter.println(sb);
@@ -200,9 +217,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         this.printWriter.print(nomeDoJogador + ":");
 
         final int leftPad = baseDoPaddingDeTocToc-nomeDoJogador.length();
-        final String strToc = 
-            String.format("%1$" + leftPad + "s","\"toc toc\"");
-        this.printWriter.println(strToc);
+
+        this.printWriter
+            .println(String.format("%1$" + leftPad + "s","\"toc toc\""));
     }
 
     @Override
@@ -219,17 +236,23 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
                     nomeDoJogador2,
                     nomeDoJogador3,
                     nomeDoJogador4};
+        
+            this.maoDeJogadores = 
+                Stream
+                    .of(this.nomeDosJogadores)
+                    .map(MAO_DE)
+                    .toArray(String[]::new);
 
             imprimePlacar(0,0);
 
             final int maiorTamanhoDeNome = 
-                Math.max(nomeDoJogador1.length(), 
-                    Math.max(nomeDoJogador2.length(), 
-                        Math.max(nomeDoJogador3.length(), 
-                            nomeDoJogador4.length())));
+                Stream.of(this.nomeDosJogadores)
+                        .map(String::length)
+                        .max(Comparator.naturalOrder())
+                        .get();
 
             this.baseDoPaddingDePedra = maiorTamanhoDeNome + 13;
-            this.baseDoPaddingDeLado = baseDoPaddingDePedra + 13;
+            this.baseDoPaddingDeLado = baseDoPaddingDePedra + 15;
             this.baseDoPaddingDeTocToc = baseDoPaddingDePedra + 4;
     }
 
@@ -299,7 +322,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             this.printWriter.println("   ======     INCHADINHA!   ======");
             imprimeUmaBarrona();
         }
+        this.printWriter.flush();
     }
+
 
     @Override
     public void jogadorJogouPedraInvalida(
@@ -386,7 +411,8 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     
     
     
-    private String formataPedra(Pedra pedra, final int leftpadInicial) {
+    private static String formataPedra(final Pedra pedra, final int leftpadInicial) {
+
         final String pedraStr = pedra.toString();
         
         final int distaciaDaBarraProFim = 

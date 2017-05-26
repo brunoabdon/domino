@@ -16,8 +16,6 @@
  */
 package com.github.abdonia.domino.app;
 
-import com.github.abdonia.domino.motor.DominoConfig;
-
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.eventos.DominoEventListener;
+import com.github.abdonia.domino.motor.DominoConfig;
 import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
@@ -81,7 +81,7 @@ public class DominoApp {
     private static final String DEFAULT_CONFIG_XML = "domino-config-default.xml";
     private static final String MSG_BUNDLE = "com.github.abdonia.domino.app.DominoAppMsg";
 
-    private static final ResourceBundle msgBundle = 
+    private static final ResourceBundle RESOURCE_BUNDLE = 
         ResourceBundle.getBundle(MSG_BUNDLE);
     
     private DominoApp(){}
@@ -182,8 +182,7 @@ public class DominoApp {
         final Console console = System.console();
         if(console != null){
             final String msg =
-                    MessageFormat.format(
-                        msgBundle.getString("msg.defaultconfig"),
+                    MessageFormat.format(RESOURCE_BUNDLE.getString("msg.defaultconfig"),
                         CONFIG_XML);
             console.writer().println(msg);
             console.readLine();
@@ -195,10 +194,8 @@ public class DominoApp {
         if(console != null){
             console
             .writer()
-            .println(
-                MessageFormat
-                .format(
-                    msgBundle.getString("error.config"),
+            .println(MessageFormat
+                .format(RESOURCE_BUNDLE.getString("error.config"),
                     e.getMessage()));
         } else {
             //System.err.printf("%s: %s\n",msg, e.getMessage());
