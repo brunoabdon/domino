@@ -403,15 +403,12 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             .append(pedra)
             .append(" sem ter essa pedra na mão.")
             .toString();
-                
         
         imprimeErroFatal(msg,true);
     }
-
     
-    
-    
-    private static String formataPedra(final Pedra pedra, final int leftpadInicial) {
+    private static String formataPedra(
+            final Pedra pedra, final int leftpadInicial) {
 
         final String pedraStr = pedra.toString();
         
@@ -431,7 +428,6 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         this.printWriter.println("   ===============================");
     }
     
-    
     private void imprimeErroFatal(final String msg, boolean foiRoubo){
         imprimeUmaBarrinhaDeErro();
         this.printWriter.println("              Bug de Jogador!\n");
@@ -448,5 +444,4 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     private void imprimeUmaBarrinhaDeErro() {
         this.printWriter.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
     }
-
 }

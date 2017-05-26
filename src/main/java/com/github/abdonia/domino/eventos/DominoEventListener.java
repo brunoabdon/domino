@@ -26,7 +26,7 @@ import com.github.abdonia.domino.Vitoria;
  * {@link com.github.abdonia.domino.Jogador}es que implementarem esta interface
  * serao automaticamente registrados para serem avisados dos eventos.
  * 
- * @author bruno
+ * @author Bruno Abdon
  *
  */
 public interface DominoEventListener {
@@ -41,10 +41,10 @@ public interface DominoEventListener {
      * @param nomeDoJogador4 nome do jogador 4 (dupla 2)
      */
     public default void jogoComecou(
-            String nomeDoJogador1, 
-            String nomeDoJogador2, 
-            String nomeDoJogador3, 
-            String nomeDoJogador4){
+            final String nomeDoJogador1, 
+            final String nomeDoJogador2, 
+            final String nomeDoJogador3, 
+            final String nomeDoJogador4){
     }
 
     /**
@@ -57,9 +57,9 @@ public interface DominoEventListener {
      * seqüência de empates)
      */
     public default void partidaComecou(
-            int placarDupla1, 
-            int placarDupla2, 
-            boolean ehDobrada){
+            final int placarDupla1, 
+            final int placarDupla2, 
+            final boolean ehDobrada){
     }
 
     /**
@@ -67,12 +67,13 @@ public interface DominoEventListener {
      * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior vai 
      * começar a partida.
      * 
-     * A decisão é tomada {@link com.github.abdonia.domino.Jogador#vontadeDeComecar()
-     * peguntando-se acada jogador da dupla o quanto ele quer começar a partida}
-     * . Quando um dos dois "quer" mais que o outro, diz-se que a decisão foi 
-     * tomada por consentimento mútuo. Quando os dois "empatam" sobre quem mais 
-     * quer começar, um dos dois é escolhido aleatoriamente, e é dito que não 
-     * houve consentimento mútuo na decisão.
+     * A decisão é tomada {@link 
+     * com.github.abdonia.domino.Jogador#vontadeDeComecar() peguntando-se acada
+     * jogador da dupla o quanto ele quer começar a partida}. Quando um dos dois
+     * "quer" mais que o outro, diz-se que a decisão foi tomada por 
+     * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer 
+     * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve 
+     * consentimento mútuo na decisão.
      * 
      * @param jogador O jogador (identificado pelo número da cadeira que sentou)
      * que vai começar a partida.
@@ -80,24 +81,25 @@ public interface DominoEventListener {
      * mútuo, ou se o jogador teve que ser escolhido aleatoriamente.
      */
     public default void decididoQuemComeca(
-        int jogador, boolean consentimentoMutuo){
+        final int jogador, final boolean consentimentoMutuo){
         
     }
     
     /**
      * Um determinado {@link com.github.abdonia.domino.Jogador} {@link 
      * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e nao 
-     * {@link com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver batido, 
-     * além desse evento, também ocorrerá {@link #jogadorBateu(int, Vitoria)}
+     * {@link com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver 
+     * batido, além desse evento, também ocorrerá {@link 
+     * #jogadorBateu(int, Vitoria)}.
      * 
-     * @param jogador quem jogou (identificado pelo número da cadeira)
-     * @param lado onde jogou
-     * @param pedra o que jogou
+     * @param jogador quem jogou (identificado pelo número da cadeira).
+     * @param lado onde jogou.
+     * @param pedra o que jogou.
      */
     public default void jogadorJogou(
-            int jogador, 
-            Lado lado, 
-            Pedra pedra){
+            final int jogador, 
+            final Lado lado, 
+            final Pedra pedra){
     }
 
     /**
@@ -106,7 +108,7 @@ public interface DominoEventListener {
      * 
      * @param jogador Quem foi (identificado pelo número da cadeira)
      */
-    public default void jogadorTocou(int jogador){
+    public default void jogadorTocou(final int jogador){
 
     }
 
@@ -119,18 +121,19 @@ public interface DominoEventListener {
      * @param jogador  O jogador (identificado pelo número da cadeira) que tinha 
      * cinco pedras na mão.
      */
-    public default void partidaVoltou(int jogador){
+    public default void partidaVoltou(final int jogador){
         
     }
     
     /**
-     * Um {@link com.github.abdonia.domino.Jogador} bateu e a partida acabou. O jogo 
-     * ainda pode continuar.
+     * Um {@link com.github.abdonia.domino.Jogador} bateu e a partida acabou. 
+     * O jogo ainda pode continuar.
      * 
-     * @param quemFoi Quem bateu (identificado pelo número da cadeira)
+     * @param quemFoi Quem bateu (identificado pelo número da cadeira).
      * @param tipoDeVitoria Como foi a batida.
      */
-    public default void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria){
+    public default void jogadorBateu(
+            final int quemFoi, final Vitoria tipoDeVitoria){
 
     }
 
@@ -147,7 +150,8 @@ public interface DominoEventListener {
      * @param placarDupla1 quantos pontos tinha a dupla 1
      * @param placarDupla2 quantos pontos tinha a dupla 2
      */
-    public default void jogoAcabou(int placarDupla1, int placarDupla2){
+    public default void jogoAcabou(
+            final int placarDupla1, final int placarDupla2){
 
     }	
 }

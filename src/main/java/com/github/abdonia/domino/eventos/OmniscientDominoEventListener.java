@@ -52,7 +52,6 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * @param pedras As pedras que foram pro dorme.
      */
     public default void dormeDefinido(final Collection<Pedra> pedras){
-        
     }
     
     /**
@@ -105,10 +104,9 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     /**
      * O {@link com.github.abdonia.domino.Jogador} retornou 
      * <code>null</code> quando {@link com.github.abdonia.domino.Jogador#joga()
-     * perguntado qual seria sua jogada}. Mesmo no caso de
-     * não ter uma {@link Pedra pedra} pra jogar, o jogador não deve 
-     * retornar <code>null</code>, e sim {@link 
-     * com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+     * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma {@link 
+     * Pedra pedra} pra jogar, o jogador não deve retornar <code>null</code>, e
+     * sim {@link com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -133,14 +131,13 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      */
     public default void jogadorComecouErrando(final int quemFoi){
-        
     }
     
     /**
      * O {@link com.github.abdonia.domino.Jogador jogador} {@link 
-     * com.github.abdonia.domino.Jogada#TOQUE tocou} quando tinha {@link 
-     * Pedra pedras} na pão que poderiam ser {@link 
-     * com.github.abdonia.domino.Jogada jogadas}. Isso é roubo (ou bug).
+     * com.github.abdonia.domino.Jogada#TOQUE tocou} quando tinha {@link Pedra 
+     * pedras} na pão que poderiam ser {@link com.github.abdonia.domino.Jogada
+     * jogadas}. Isso é roubo (ou bug).
      * 
      * <p>A pesar desse tipo de roubo ser comum na vida real, onde a pessoa faz
      * e ninguém percebe, o sistem é onisciente e não vai deixar isso rolar 
@@ -152,7 +149,6 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      */
     public default void jogadorTocouTendoPedraPraJogar(final int quemFoi){
-        
     }
 
     /**
@@ -167,6 +163,5 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      */
     public default void jogadorJogouPedraQueNãoTinha(
             final int quemFoi, final Pedra pedra){
-        
     }
 }
