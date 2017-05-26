@@ -73,12 +73,12 @@ public interface Jogador {
     /**
      * Usado na primeira rodada de uma partida quando a dupla desse {@link
      * Jogador} ganhou a partida anterior. Um dos dois jogadores da dupla deve
-     * fazer a primeira jogada. Cada jogador deve dizer, através deste metodo, 
-     * com uma nota de 0 a 10, o "<i>quanto ele quer ser o jogador a fazer a 
-     * primeira jogada</i>". O que der a maior nota, começa. Em caso de empate,
-     * um dois dois vai ser escolhido aleatoriamente.
+     * fazer a primeira {@link Jogada}. Cada jogador deve dizer, através deste 
+     * método, "<i>quanto ele quer ser o jogador a fazer a primeira jogada</i>".
+     * O que que tiver mais vontade começa. Em caso de empate, um dois dois vai 
+     * ser escolhido aleatoriamente.
      * 
-     * @return Um inteiro de zero a dez.
+     * @return A vontade deste jogador de ser o primeiro a jogar nessa partida.
      */
-    public int vontadeDeComecar();
+    public Vontade vontadeDeComecar();
 }

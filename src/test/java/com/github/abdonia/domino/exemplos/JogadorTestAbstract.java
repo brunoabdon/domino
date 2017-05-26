@@ -21,6 +21,7 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,6 +30,8 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import static org.junit.Assert.*;
+
+import com.github.abdonia.domino.Vontade;
 
 /**
  *
@@ -75,8 +78,8 @@ public abstract class JogadorTestAbstract {
 
     protected void testVontadeDeComecar(final Jogador jogador) {
         System.out.println("vontadeDeComecar");
-        int vontade = jogador.vontadeDeComecar();
-        assertTrue(vontade >= 0 && vontade <= 10);
+        final Vontade vontade = jogador.vontadeDeComecar();
+        assertNotNull(vontade);
     }
     
     protected void testaComecoDePartida(final Jogador jogador){
@@ -89,7 +92,8 @@ public abstract class JogadorTestAbstract {
                 Pedra.CARROCA_DE_PIO, 
                 Pedra.CARROCA_DE_DUQUE, 
                 Pedra.CARROCA_DE_TERNO});
-
+        //esse teste estah ruim. um jogador nao eh obrigado a funcionar 
+        //corretamente se os eventos da partida nao estao acontecendo....
         jogador.vontadeDeComecar();
         Jogada jogada = jogador.joga();
         assertNotNull("Jogada nula",jogada);

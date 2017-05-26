@@ -26,6 +26,7 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vontade;
 
 /**
  * {@link Jogador} mais simplório possível. Procura a primeira 
@@ -135,15 +136,15 @@ public class JogadorMamao implements Jogador {
     }
 
     /**
-     * Não sei se comece... não sei se não comece... vai 5 mesmo.
+     * Não sei se comece... não sei se não comece... tanto faz.
      * 
-     * @return 5
+     * @return {@link Vontade#TANTO_FAZ}.
      */
     @Override
-    public int vontadeDeComecar() {
+    public Vontade vontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
-        //vai 5 mesmo
-        return 5;
+        //tanto faz
+        return Vontade.TANTO_FAZ;
     }
 }

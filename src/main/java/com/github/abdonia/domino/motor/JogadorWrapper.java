@@ -24,6 +24,7 @@ import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vontade;
 
 class JogadorWrapper implements Jogador {
 
@@ -90,7 +91,7 @@ class JogadorWrapper implements Jogador {
     }
 
     @Override
-    public int vontadeDeComecar() {
+    public Vontade vontadeDeComecar() {
         try {
             return wrapped.vontadeDeComecar();
         } catch (RuntimeException e){

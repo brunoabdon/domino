@@ -31,6 +31,8 @@ import java.util.Random;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import com.github.abdonia.domino.Vontade;
+
 /**
  * Jogador que joga aleatoriamente qualquer pedra dentre as válidas em sua mão
  * no momento.
@@ -40,7 +42,9 @@ public class JogadorAlheio implements Jogador {
 
     private static final Collector<Pedra, ?, List<Pedra>> TO_LIST_COLLECTOR = 
         Collectors.toList();
+    
     private static final Random SORTE = new Random(2604l);
+    private static final Vontade VONTADES[] = Vontade.values(); //cache....
     
     private Mesa mesa;
     private List<Pedra> mao;
@@ -112,11 +116,17 @@ public class JogadorAlheio implements Jogador {
         return joga(pedra,lado);
     }
 
+    
+    
+    /**
+     * Não sei o quanto eu quero. Vou chutar.
+     * @return Uma {@link Vontade} aleatória.
+     */
     @Override
-    public int vontadeDeComecar() {
+    public Vontade vontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
-        return SORTE.nextInt(11);
+        return VONTADES[SORTE.nextInt(5)];
     }
 
     private Jogada joga(final Pedra pedra, final Lado lado) {

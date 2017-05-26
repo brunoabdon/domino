@@ -84,10 +84,10 @@ class BugDeJogadorException extends Exception {
          */
         NAO_JOGOU_NEM_TOCOU,
         /**
-         * O {@link Jogador jogador} retornou um valor inválido quando foi 
-         * {@link Jogador#vontadeDeComecar() perguntado sobre se queria começar}
-         * a partida. Isso é um bug do jogador e não faz mais sentido continuar
-         * um {@link Jogo jogo} com ele.
+         * O {@link Jogador jogador} retornou <code>null</code> quando foi{@link
+         * Jogador#vontadeDeComecar() perguntado sobre se queria começar} a 
+         * partida. Isso é um bug do jogador e não faz mais sentido continuar um
+         * {@link Jogo jogo} com ele.
          */
         NAO_SABE_SE_COMECE;
     };

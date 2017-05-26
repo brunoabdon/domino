@@ -16,6 +16,7 @@
  */
 package com.github.abdonia.domino.motor;
 
+import com.github.abdonia.domino.Vontade;
 import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
 /**
@@ -96,21 +97,37 @@ class Dupla {
      * falha} {@link Falha#NAO_SABE_SE_COMECE}).
      */
     int quemComeca() throws BugDeJogadorException {
-        final int vontadeDo1 = jogador1.vontadeDeComecar();
-        validaVontade(vontadeDo1,jogador1);
+        final Vontade vontadeDo1 = perguntaVontade(jogador1);
+        final Vontade vontadeDo2 = perguntaVontade(jogador2);
 
-        final int vontadeDo2 = jogador2.vontadeDeComecar();
-        validaVontade(vontadeDo2,jogador2);
-        return vontadeDo1 - vontadeDo2; 
+        return vontadeDo1.compareTo(vontadeDo2); 
     }
 
-    private void validaVontade(final int vontade, final JogadorWrapper jogador) 
-            throws BugDeJogadorException {
-        if(vontade < 0 || vontade > 10){
+    /**
+     * Pergunta a o dado {@link JogadorWrapper jogador} {@link 
+     * JogadorWrapper#vontadeDeComecar() qual a vontade dele começar a partida},
+     * levantando {@link BugDeJogadorException} caso ele retorne 
+     * <code>null</code>.
+     * 
+     * @param jogador Um jogador.
+     * @return A {@link JogadorWrapper#vontadeDeComecar() vontade dele de 
+     * começar a partida} (caso ele responda corretamente com um valor não nulo.
+     * @throws BugDeJogadorException caso o jogador retorne <code>null</code>
+     * erroneamente.
+     */
+    private Vontade perguntaVontade(
+            final JogadorWrapper jogador) 
+                throws BugDeJogadorException {
+
+        final Vontade vontade = jogador.vontadeDeComecar();
+
+        if(vontade == null){
             throw new BugDeJogadorException(
                     Falha.NAO_SABE_SE_COMECE,
                     jogador);
         }
+        
+        return vontade;
     }
     
     /**

@@ -22,6 +22,7 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vontade;
 
 /**
  * Implementação mais simples possível de um {@link Jogador}.
@@ -177,11 +178,11 @@ public class JogadorSimplorio implements Jogador{
     }
     
     /**
-     * Pra mim, tanto faz começar o não retorno 5 que é um meio termo.
-     * @return 5.
+     * Pra mim, tanto faz começar ou não.
+     * @return {@link Vontade#TANTO_FAZ}.
      */
     @Override
-    public int vontadeDeComecar() {
-        return 5;
+    public Vontade vontadeDeComecar() {
+        return Vontade.TANTO_FAZ;
     }
 }

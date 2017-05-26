@@ -18,6 +18,7 @@ package com.github.abdonia.domino.motor;
 
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
+
 import java.util.Collection;
 
 import com.github.abdonia.domino.Lado;
@@ -25,10 +26,13 @@ import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+
+import com.github.abdonia.domino.Vontade;
 
 
 /**
@@ -210,7 +214,7 @@ public class GeniusMalignus
     }
 
     @Override
-    public int vontadeDeComecar() {
+    public Vontade vontadeDeComecar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
