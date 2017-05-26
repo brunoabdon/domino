@@ -23,11 +23,13 @@ import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.github.abdonia.domino.eventos.DominoEventListener;
+
 import org.apache.commons.lang3.text.StrBuilder;
 
 /**
@@ -165,13 +167,26 @@ public class RawLogger implements OmniscientDominoEventListener{
     }
     
     @Override
-    public void jogadorRecebeuPedras(int quemFoi, Collection<Pedra> mao) {
-        this.preenchePedaco((quemFoi-1) * 6, mao);
+    public void jogadorRecebeuPedras(
+            final int quemFoi, 
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+        this.preenchePedaco(
+                (quemFoi-1) * 6, 
+                Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6));
     }
 
     @Override
-    public void dormeDefinido(Collection<Pedra> dorme) {
-        this.preenchePedaco(24, dorme);
+    public void dormeDefinido(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4) {
+        this.preenchePedaco(24, Arrays.asList(pedra1,pedra2,pedra3,pedra4));
     }
 
     @Override

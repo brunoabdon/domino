@@ -16,8 +16,6 @@
  */
 package com.github.abdonia.domino.eventos;
 
-import java.util.Collection;
-
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 
@@ -39,19 +37,36 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
-     * @param pedras Uma coleção <em>não modificável</em> das 6 pedras que o 
-     * jogador recebeu.
+     * @param pedra1 A primeira {@link Pedra pedra} da mão do jogador.
+     * @param pedra2 A segunda {@link Pedra pedra} da mão do jogador.
+     * @param pedra3 A terceira {@link Pedra pedra} da mão do jogador.
+     * @param pedra4 A quarta {@link Pedra pedra} da mão do jogador.
+     * @param pedra5 A quinta {@link Pedra pedra} da mão do jogador.
+     * @param pedra6 A última {@link Pedra pedra} da mão do jogador.
      */
     public default void jogadorRecebeuPedras(
-            final int quemFoi, final Collection<Pedra> pedras){
+            final int quemFoi, 
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6){
     }
     
     /**
      * As pedras foram distribuidas, e as quatro que sobraram foram pro dorme.
      * 
-     * @param pedras As pedras que foram pro dorme.
+     * @param pedra1 A primeira {@link Pedra pedra} do dorme.
+     * @param pedra2 A segunda {@link Pedra pedra} do dorme.
+     * @param pedra3 A terceira {@link Pedra pedra} do dorme.
+     * @param pedra4 A última {@link Pedra pedra} do dorme.
      */
-    public default void dormeDefinido(final Collection<Pedra> pedras){
+    public default void dormeDefinido(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4){
     }
     
     /**

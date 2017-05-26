@@ -81,17 +81,16 @@ public class JogadorMamaoTest extends JogadorTestAbstract {
     @Test
     public void testRecebeMao() {
         System.out.println("recebeMao");
-        final Pedra[] mao =
-            {   Pedra.DUQUE_SENA, 
-                Pedra.LIMPO_QUADRA, 
-                Pedra.CARROCA_DE_LIMPO, 
-                Pedra.CARROCA_DE_PIO, 
-                Pedra.CARROCA_DE_DUQUE, 
-                Pedra.CARROCA_DE_TERNO};
         JogadorMamao jogador = new JogadorMamao();
-        jogador.recebeMao(mao);
+        jogador.recebeMao(
+            Pedra.DUQUE_SENA, 
+            Pedra.LIMPO_QUADRA, 
+            Pedra.CARROCA_DE_LIMPO, 
+            Pedra.CARROCA_DE_PIO, 
+            Pedra.CARROCA_DE_DUQUE, 
+            Pedra.CARROCA_DE_TERNO);
         assertNotNull(jogador.mao);
-        assertEquals(jogador.mao.size(), mao.length);
+        assertEquals(jogador.mao.size(), 6);
     }
     
     

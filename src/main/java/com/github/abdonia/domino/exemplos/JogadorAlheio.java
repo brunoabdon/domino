@@ -57,8 +57,21 @@ public class JogadorAlheio implements Jogador {
     }
     
     @Override
-    public void recebeMao(final Pedra[] mao) {
-        this.mao = new ArrayList<>(Arrays.asList(mao));
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+
+        this.mao = new ArrayList<>(6);
+        this.mao.add(pedra1);
+        this.mao.add(pedra2);
+        this.mao.add(pedra3);
+        this.mao.add(pedra4);
+        this.mao.add(pedra5);
+        this.mao.add(pedra6);
         this.perguntouSeEuQueriaJogar = false;
     }
 

@@ -34,9 +34,11 @@ import java.io.Console;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import com.github.abdonia.domino.Numero;
 
@@ -157,13 +159,18 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     @Override
     public void jogadorRecebeuPedras(
             final int quemFoi, 
-            final Collection<Pedra> pedras) {
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
         
         final Collector<CharSequence, ?, String> JOINING_MAO = 
             Collectors.joining("\n", this.maoDeJogadores[quemFoi-1], "");
         
         this.printWriter.println(
-            pedras
+            Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6)
             .stream()
             .sorted()
             .map(FORMATA_PEDRA_MAO)
@@ -178,10 +185,13 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     @Override
     public void dormeDefinido(
-            final Collection<Pedra> pedras) {
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4) {
         this.printWriter
             .println(
-                pedras
+                Arrays.asList(pedra1,pedra2,pedra3,pedra4)
                 .stream()
                 .sorted()
                 .map(Object::toString)
@@ -358,7 +368,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         final String msg = 
             new StringBuilder("GRAVE: ")
             .append(nomeDosJogadores[quemFoi-1])
-            .append("veio a falecer.")
+            .append(" veio a falecer.")
             .toString();
         
         imprimeErroFatal(msg,false);
@@ -368,7 +378,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     public void jogadorJogouPedraNenhuma(int quemFoi) {
         final String msg = 
             new StringBuilder(nomeDosJogadores[quemFoi-1])
-            .append("jogou pedra nenhuma.")
+            .append(" jogou pedra nenhuma.")
             .toString();
         
         imprimeErroFatal(msg,false);

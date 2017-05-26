@@ -19,7 +19,6 @@ package com.github.abdonia.domino.motor;
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
 
-import java.util.Collection;
 
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Mesa;
@@ -49,9 +48,7 @@ public class GeniusMalignus
     
     //pra deixar mais facil de ler
     private static final int TAMANHO_MAO = 6;
-    private static final int TAMANHO_DORME = 4;
     private static final int QTD_JOGADORES = 4;
-    private static final int INICIO_DORME = QTD_JOGADORES * TAMANHO_MAO;
     
     private final LogJogo.Iterator logJogoIterator;
     
@@ -87,30 +84,37 @@ public class GeniusMalignus
     }
     
     @Override
-    public void dormeDefinido(final Collection<Pedra> dorme) {
-        assertNotNull(dorme);
-        assertEquals(dorme.size(),TAMANHO_DORME);
-        for(int i = INICIO_DORME; i < INICIO_DORME+TAMANHO_DORME; i++) {
-            final int ordinalPedra = ordemPedras[idxPartida][i];
-            final Pedra pedra = Pedra.values()[ordinalPedra];
-            assertTrue(dorme.contains(pedra));
-        }
+    public void dormeDefinido(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4) {
+        assertNotNull(pedra1);
+        assertNotNull(pedra2);
+        assertNotNull(pedra3);
+        assertNotNull(pedra4);
     }
 
     @Override
     public void jogadorRecebeuPedras(
             final int quemFoi, 
-            final Collection<Pedra> mao) {
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
         assertJogadorValido(quemFoi);
-        assertNotNull(mao);
-        assertEquals(mao.size(),TAMANHO_MAO);
+        assertNotNull(pedra1);
+        assertNotNull(pedra2);
+        assertNotNull(pedra3);
+        assertNotNull(pedra4);
+        assertNotNull(pedra5);
+        assertNotNull(pedra6);
         
-        final int inicio = (quemFoi-1)*TAMANHO_MAO;
-        for(int i = inicio; i < inicio+TAMANHO_MAO; i++) {
-            final int ordinalPedra = ordemPedras[idxPartida][i];
-            final Pedra pedra = Pedra.values()[ordinalPedra];
-            assertTrue(mao.contains(pedra));
-        }
+        /**
+         * @TODO testar que todas as peças são distintas
+         */
     }
 
     private void assertJogadorValido(final int quemFoi) {
@@ -201,9 +205,19 @@ public class GeniusMalignus
     }
 
     @Override
-    public void recebeMao(final Pedra[] pedras) {
-        assertNotNull(pedras);
-        assertEquals(pedras.length, TAMANHO_MAO);
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+        assertNotNull(pedra1);
+        assertNotNull(pedra2);
+        assertNotNull(pedra3);
+        assertNotNull(pedra4);
+        assertNotNull(pedra5);
+        assertNotNull(pedra6);
         //comparar pedras com as esperadas
     }
 

@@ -25,8 +25,6 @@ import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -85,15 +83,25 @@ class MesaImpl implements Mesa{
         this.numeroEsquerda = this.numeroDireita = null;
         
         //embaralha...
-        final List<Pedra> pedras = fortuna.embaralha();
+        final Pedra pedras[] = fortuna.embaralha().toArray(new Pedra[28]);
 
+        
         //distribui as maos dos 4 jogadores
-        for (int i = 0, idx = 0; i < 4; i++) {
-            final Collection<Pedra> mao = pedras.subList(idx, idx+=6);
-            this.entregaPedras(jogadorDaVez(i), mao);
+        for (int i = 0; i < 24;) {
+            final JogadorWrapper jogadorDaVez = jogadorDaVez(i/6);
+            final Pedra pedra1 = pedras[i++];
+            final Pedra pedra2 = pedras[i++];
+            final Pedra pedra3 = pedras[i++];
+            final Pedra pedra4 = pedras[i++];
+            final Pedra pedra5 = pedras[i++];
+            final Pedra pedra6 = pedras[i++];
+            
+            this.entregaPedras(
+                jogadorDaVez, pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         }
         //separa o dorme
-        this.eventListener.dormeDefinido(pedras.subList(24, 28));
+        this.eventListener
+            .dormeDefinido(pedras[24],pedras[25],pedras[26],pedras[27]);
     }
 
     /**
@@ -104,13 +112,19 @@ class MesaImpl implements Mesa{
      * @param mao As pedras que o jogador vai receber.
      */
     private void entregaPedras(
-            final JogadorWrapper jogador, final Collection<Pedra> mao) {
+            final JogadorWrapper jogador, 
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
 
-        jogador.recebeMao(mao.toArray(new Pedra[6]));
+        jogador.recebeMao(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         
         this.eventListener.jogadorRecebeuPedras(
             jogador.getCadeira(),
-            Collections.unmodifiableCollection(mao));
+            pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
     }
     
     @Override

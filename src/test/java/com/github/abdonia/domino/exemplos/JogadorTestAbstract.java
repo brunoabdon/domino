@@ -86,12 +86,12 @@ public abstract class JogadorTestAbstract {
         jogador.sentaNaMesa(DUMMY_MESA_VAZIA, 1);
         
         jogador.recebeMao(
-            new Pedra[]{Pedra.DUQUE_SENA, 
-                Pedra.LIMPO_QUADRA, 
-                Pedra.CARROCA_DE_LIMPO, 
-                Pedra.CARROCA_DE_PIO, 
-                Pedra.CARROCA_DE_DUQUE, 
-                Pedra.CARROCA_DE_TERNO});
+            Pedra.DUQUE_SENA, 
+            Pedra.LIMPO_QUADRA, 
+            Pedra.CARROCA_DE_LIMPO, 
+            Pedra.CARROCA_DE_PIO, 
+            Pedra.CARROCA_DE_DUQUE, 
+            Pedra.CARROCA_DE_TERNO);
         //esse teste estah ruim. um jogador nao eh obrigado a funcionar 
         //corretamente se os eventos da partida nao estao acontecendo....
         jogador.vontadeDeComecar();
@@ -101,33 +101,41 @@ public abstract class JogadorTestAbstract {
     }
     protected  void testaMaiorCarroca(final Jogador jogador){
         jogador.sentaNaMesa(DUMMY_MESA_VAZIA, 1);
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,new Pedra[]{Pedra.TERNO_SENA,Pedra.PIO_TERNO,Pedra.CARROCA_DE_QUADRA,Pedra.PIO_SENA,Pedra.TERNO_QUADRA,Pedra.DUQUE_TERNO});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,new Pedra[]{Pedra.CARROCA_DE_DUQUE,Pedra.QUINA_SENA,Pedra.CARROCA_DE_LIMPO,Pedra.PIO_QUADRA,Pedra.TERNO_QUINA,Pedra.LIMPO_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.PIO_DUQUE,Pedra.DUQUE_SENA,Pedra.QUADRA_QUINA,Pedra.LIMPO_QUINA,Pedra.CARROCA_DE_SENA,Pedra.CARROCA_DE_QUINA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_PIO,new Pedra[]{Pedra.DUQUE_QUINA,Pedra.DUQUE_QUADRA,Pedra.CARROCA_DE_PIO,Pedra.LIMPO_SENA,Pedra.LIMPO_PIO,Pedra.QUADRA_SENA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.LIMPO_QUADRA,Pedra.PIO_SENA,Pedra.TERNO_SENA,Pedra.CARROCA_DE_TERNO,Pedra.CARROCA_DE_SENA,Pedra.QUINA_SENA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,new Pedra[]{Pedra.LIMPO_QUINA,Pedra.TERNO_QUINA,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_PIO,Pedra.DUQUE_TERNO,Pedra.CARROCA_DE_DUQUE});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,new Pedra[]{Pedra.CARROCA_DE_QUINA,Pedra.DUQUE_QUINA,Pedra.PIO_TERNO,Pedra.QUADRA_QUINA,Pedra.LIMPO_TERNO,Pedra.DUQUE_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,new Pedra[]{Pedra.DUQUE_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.TERNO_SENA,Pedra.PIO_DUQUE,Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_DUQUE});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.TERNO_QUADRA,Pedra.CARROCA_DE_TERNO,Pedra.PIO_QUINA,Pedra.QUADRA_SENA,Pedra.CARROCA_DE_SENA,Pedra.LIMPO_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,new Pedra[]{Pedra.DUQUE_TERNO,Pedra.LIMPO_SENA,Pedra.PIO_TERNO,Pedra.QUINA_SENA,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_QUINA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_PIO,new Pedra[]{Pedra.PIO_SENA,Pedra.QUADRA_QUINA,Pedra.CARROCA_DE_PIO,Pedra.TERNO_QUINA,Pedra.LIMPO_PIO,Pedra.PIO_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,new Pedra[]{Pedra.DUQUE_SENA,Pedra.QUINA_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.DUQUE_QUINA,Pedra.TERNO_SENA,Pedra.PIO_TERNO});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_PIO,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_SENA,Pedra.TERNO_QUINA,Pedra.LIMPO_DUQUE});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,new Pedra[]{Pedra.LIMPO_QUINA,Pedra.DUQUE_SENA,Pedra.CARROCA_DE_PIO,Pedra.PIO_QUINA,Pedra.CARROCA_DE_DUQUE,Pedra.TERNO_QUINA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.PIO_QUADRA,Pedra.LIMPO_QUADRA,Pedra.CARROCA_DE_LIMPO,Pedra.DUQUE_QUADRA,Pedra.CARROCA_DE_SENA,Pedra.TERNO_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,new Pedra[]{Pedra.DUQUE_TERNO,Pedra.TERNO_SENA,Pedra.CARROCA_DE_QUINA,Pedra.PIO_SENA,Pedra.LIMPO_TERNO,Pedra.LIMPO_SENA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_TERNO,new Pedra[]{Pedra.CARROCA_DE_TERNO,Pedra.QUINA_SENA,Pedra.QUADRA_SENA,Pedra.PIO_DUQUE,Pedra.QUADRA_QUINA,Pedra.LIMPO_DUQUE});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,new Pedra[]{Pedra.CARROCA_DE_QUINA,Pedra.PIO_QUINA,Pedra.PIO_TERNO,Pedra.DUQUE_SENA,Pedra.LIMPO_TERNO,Pedra.TERNO_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,new Pedra[]{Pedra.DUQUE_QUINA,Pedra.PIO_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.LIMPO_SENA,Pedra.CARROCA_DE_SENA,Pedra.CARROCA_DE_LIMPO});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,new Pedra[]{Pedra.LIMPO_DUQUE,Pedra.LIMPO_PIO,Pedra.PIO_QUADRA,Pedra.CARROCA_DE_QUADRA,Pedra.PIO_DUQUE,Pedra.QUADRA_QUINA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_TERNO,new Pedra[]{Pedra.CARROCA_DE_PIO,Pedra.LIMPO_QUADRA,Pedra.CARROCA_DE_TERNO,Pedra.DUQUE_TERNO,Pedra.LIMPO_QUINA,Pedra.DUQUE_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_LIMPO,new Pedra[]{Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_QUADRA,Pedra.QUADRA_QUINA,Pedra.DUQUE_TERNO,Pedra.LIMPO_QUINA,Pedra.DUQUE_QUADRA});
-        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_LIMPO,new Pedra[]{Pedra.QUADRA_QUINA,Pedra.QUINA_SENA,Pedra.CARROCA_DE_LIMPO,Pedra.PIO_QUADRA,Pedra.TERNO_QUINA,Pedra.LIMPO_QUADRA});
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,Pedra.TERNO_SENA,Pedra.PIO_TERNO,Pedra.CARROCA_DE_QUADRA,Pedra.PIO_SENA,Pedra.TERNO_QUADRA,Pedra.DUQUE_TERNO);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,Pedra.CARROCA_DE_DUQUE,Pedra.QUINA_SENA,Pedra.CARROCA_DE_LIMPO,Pedra.PIO_QUADRA,Pedra.TERNO_QUINA,Pedra.LIMPO_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.PIO_DUQUE,Pedra.DUQUE_SENA,Pedra.QUADRA_QUINA,Pedra.LIMPO_QUINA,Pedra.CARROCA_DE_SENA,Pedra.CARROCA_DE_QUINA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_PIO,Pedra.DUQUE_QUINA,Pedra.DUQUE_QUADRA,Pedra.CARROCA_DE_PIO,Pedra.LIMPO_SENA,Pedra.LIMPO_PIO,Pedra.QUADRA_SENA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.LIMPO_QUADRA,Pedra.PIO_SENA,Pedra.TERNO_SENA,Pedra.CARROCA_DE_TERNO,Pedra.CARROCA_DE_SENA,Pedra.QUINA_SENA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,Pedra.LIMPO_QUINA,Pedra.TERNO_QUINA,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_PIO,Pedra.DUQUE_TERNO,Pedra.CARROCA_DE_DUQUE);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,Pedra.CARROCA_DE_QUINA,Pedra.DUQUE_QUINA,Pedra.PIO_TERNO,Pedra.QUADRA_QUINA,Pedra.LIMPO_TERNO,Pedra.DUQUE_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,Pedra.DUQUE_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.TERNO_SENA,Pedra.PIO_DUQUE,Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_DUQUE);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.TERNO_QUADRA,Pedra.CARROCA_DE_TERNO,Pedra.PIO_QUINA,Pedra.QUADRA_SENA,Pedra.CARROCA_DE_SENA,Pedra.LIMPO_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,Pedra.DUQUE_TERNO,Pedra.LIMPO_SENA,Pedra.PIO_TERNO,Pedra.QUINA_SENA,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_QUINA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_PIO,Pedra.PIO_SENA,Pedra.QUADRA_QUINA,Pedra.CARROCA_DE_PIO,Pedra.TERNO_QUINA,Pedra.LIMPO_PIO,Pedra.PIO_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,Pedra.DUQUE_SENA,Pedra.QUINA_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.DUQUE_QUINA,Pedra.TERNO_SENA,Pedra.PIO_TERNO);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_PIO,Pedra.CARROCA_DE_QUADRA,Pedra.CARROCA_DE_SENA,Pedra.TERNO_QUINA,Pedra.LIMPO_DUQUE);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_DUQUE,Pedra.LIMPO_QUINA,Pedra.DUQUE_SENA,Pedra.CARROCA_DE_PIO,Pedra.PIO_QUINA,Pedra.CARROCA_DE_DUQUE,Pedra.TERNO_QUINA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.PIO_QUADRA,Pedra.LIMPO_QUADRA,Pedra.CARROCA_DE_LIMPO,Pedra.DUQUE_QUADRA,Pedra.CARROCA_DE_SENA,Pedra.TERNO_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,Pedra.DUQUE_TERNO,Pedra.TERNO_SENA,Pedra.CARROCA_DE_QUINA,Pedra.PIO_SENA,Pedra.LIMPO_TERNO,Pedra.LIMPO_SENA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_TERNO,Pedra.CARROCA_DE_TERNO,Pedra.QUINA_SENA,Pedra.QUADRA_SENA,Pedra.PIO_DUQUE,Pedra.QUADRA_QUINA,Pedra.LIMPO_DUQUE);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUINA,Pedra.CARROCA_DE_QUINA,Pedra.PIO_QUINA,Pedra.PIO_TERNO,Pedra.DUQUE_SENA,Pedra.LIMPO_TERNO,Pedra.TERNO_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_SENA,Pedra.DUQUE_QUINA,Pedra.PIO_SENA,Pedra.CARROCA_DE_DUQUE,Pedra.LIMPO_SENA,Pedra.CARROCA_DE_SENA,Pedra.CARROCA_DE_LIMPO);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_QUADRA,Pedra.LIMPO_DUQUE,Pedra.LIMPO_PIO,Pedra.PIO_QUADRA,Pedra.CARROCA_DE_QUADRA,Pedra.PIO_DUQUE,Pedra.QUADRA_QUINA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_TERNO,Pedra.CARROCA_DE_PIO,Pedra.LIMPO_QUADRA,Pedra.CARROCA_DE_TERNO,Pedra.DUQUE_TERNO,Pedra.LIMPO_QUINA,Pedra.DUQUE_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_LIMPO,Pedra.CARROCA_DE_LIMPO,Pedra.LIMPO_QUADRA,Pedra.QUADRA_QUINA,Pedra.DUQUE_TERNO,Pedra.LIMPO_QUINA,Pedra.DUQUE_QUADRA);
+        testaMaiorCarroca(jogador,Pedra.CARROCA_DE_LIMPO,Pedra.QUADRA_QUINA,Pedra.QUINA_SENA,Pedra.CARROCA_DE_LIMPO,Pedra.PIO_QUADRA,Pedra.TERNO_QUINA,Pedra.LIMPO_QUADRA);
     }
     
-    private void testaMaiorCarroca(final Jogador jogador,final Pedra carroca, final Pedra[] mao){
-        jogador.recebeMao(mao);
+    private void testaMaiorCarroca(
+            final Jogador jogador,
+            final Pedra carroca, 
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6){
+        jogador.recebeMao(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         Jogada jogada = jogador.joga();
         assertNotNull("Jogada nula",jogada);
         assertSame("Maior carroca era " + carroca,jogada.getPedra(),carroca);

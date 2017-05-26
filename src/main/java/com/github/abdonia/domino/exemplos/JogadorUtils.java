@@ -16,8 +16,12 @@
  */
 package com.github.abdonia.domino.exemplos;
 
+import java.util.ArrayList;
+
 import com.github.abdonia.domino.Pedra;
+
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Métodos utilitários pra a implementação dos {@link Jogador joadores} de 
@@ -43,5 +47,25 @@ class JogadorUtils {
                 .filter(Pedra::isCarroca)
                 .max(Pedra::compareTo)
                 .get();
+    }
+    
+    public static List<Pedra> fazMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+     
+        final List<Pedra> mao = new ArrayList<>(6);
+        
+        mao.add(pedra1);
+        mao.add(pedra2);
+        mao.add(pedra3);
+        mao.add(pedra4);
+        mao.add(pedra5);
+        mao.add(pedra6);
+        
+        return mao;
     }
 }

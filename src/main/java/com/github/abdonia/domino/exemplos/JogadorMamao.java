@@ -16,8 +16,6 @@
  */
 package com.github.abdonia.domino.exemplos;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.github.abdonia.domino.Jogada;
@@ -57,10 +55,16 @@ public class JogadorMamao implements Jogador {
     }
 
     @Override
-    public void recebeMao(final Pedra[] mao) {
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
         //guardar como uma List
-        this.mao = new ArrayList<>(6);
-        Collections.addAll(this.mao, mao);
+        this.mao = 
+            JogadorUtils.fazMao(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         this.perguntouSeEuQueriaJogar = false;
     }
 

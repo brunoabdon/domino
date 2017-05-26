@@ -250,19 +250,33 @@ class DominoEventBroadcaster implements
 
     @Override
     public void jogadorRecebeuPedras(
-            final int quemFoi, final Collection<Pedra> pedras) {
+            final int quemFoi, 
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
         broadCastEvent(omniscientEventListeners,
             (eventListener) -> {
-                eventListener.jogadorRecebeuPedras(quemFoi, pedras);
+                eventListener
+                    .jogadorRecebeuPedras(
+                        quemFoi, 
+                        pedra1, pedra2, pedra3, 
+                        pedra4, pedra5, pedra6);
             }
         );
     }
 
     @Override
-    public void dormeDefinido(Collection<Pedra> pedras) {
+    public void dormeDefinido(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4) {
         broadCastEvent(omniscientEventListeners,
             (eventListener) -> {
-                eventListener.dormeDefinido(pedras);
+                eventListener.dormeDefinido(pedra1, pedra2, pedra3, pedra4);
             }
         );
     }

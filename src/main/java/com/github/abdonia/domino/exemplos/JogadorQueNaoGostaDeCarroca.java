@@ -17,7 +17,11 @@
 package com.github.abdonia.domino.exemplos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
@@ -25,6 +29,7 @@ import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vontade;
 
 /**
  * {@link Jogador} que dá prioridade a jogar as carroças. Não tendo carroça, 
@@ -33,13 +38,36 @@ import com.github.abdonia.domino.Pedra;
  * @author bruno
  *
  */
-public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
+public class JogadorQueNaoGostaDeCarroca implements Jogador {
 
     private Pedra[] carrocas;
+    private Collection<Pedra> naoCarrocas;
     private int quantasCarrocasEuTenho;
 
+    private Predicate<Pedra> jogavel;
+    /**
+     * A  {@link Mesa} em que esse {@link Jogador} 
+     * {@link Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentou}
+     * pra jogar.
+     */
+    protected Mesa mesa;
+    
+    /**
+     * As {@link Pedra pedras} na mão desse {@link Jogador}.
+     */
+    protected List<Pedra> mao;
+
+    private boolean perguntouSeEuQueriaJogar;
+
+
     @Override
-    public void recebeMao(final Pedra[] mao) {
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
         /* Separando as carroças das nao carroças. 
            As carroças eu mantenho no array carrocas, cada uma guardada no 
            indice de seu número (carroça de limpo no carrocas[0], carroça de 
@@ -49,19 +77,21 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
            vai jogar alguma entre elas sempre que eu não tiver carroça pra
            jogar.
          */
-        final List<Pedra> naoCarrocas = new ArrayList<>();
+        this.naoCarrocas = new ArrayList<>();
         this.carrocas = new Pedra[7];
         this.quantasCarrocasEuTenho = 0;
-        for (final Pedra pedra : mao) {
-            if (pedra.isCarroca()) {
-                carrocas[pedra.getPrimeiroNumero().getNumeroDePontos()] = pedra;
-                quantasCarrocasEuTenho++; //manter esse contador pra ajudar.
-            } else {
-                naoCarrocas.add(pedra);
-            }
-        }
-        //as não carroças, passo pro super.
-        super.recebeMao(naoCarrocas.toArray(new Pedra[naoCarrocas.size()]));
+        
+        Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6).forEach(
+            (pedra) -> {
+                if (pedra.isCarroca()) {
+                    final int indice = 
+                        pedra.getPrimeiroNumero().getNumeroDePontos();
+                    carrocas[indice] = pedra;
+                    quantasCarrocasEuTenho++; //manter esse contador pra ajudar.
+                } else {
+                    naoCarrocas.add(pedra);
+                }
+        });
     }
 
     /**
@@ -74,13 +104,20 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
     public Jogada joga() {
         Jogada jogada;
 
-        if (this.quantasCarrocasEuTenho == 0) {
-            //nem tenho carroça mais. simplificando e jogando feito mamão.
-            jogada = super.joga();
-        } else if (mesa.taVazia()) {
-            //tenho carroca e é jogada inicial.... jogo a maior.
-            jogada = fazJogadaDeMaiorCarroca();
-        } else {
+        final boolean ehPrimeiraJogadaDaPartida = mesa.taVazia();
+        final boolean ehPrimeiraJogadaDoJogo = 
+                ehPrimeiraJogadaDaPartida && !perguntouSeEuQueriaJogar;
+        final boolean tenhoCarroca = this.quantasCarrocasEuTenho != 0;
+
+        if(ehPrimeiraJogadaDaPartida){
+            if(ehPrimeiraJogadaDoJogo || tenhoCarroca){
+                jogada = fazJogadaDeMaiorCarroca();
+            } else {
+                final Pedra pedra = naoCarrocas.iterator().next();
+                naoCarrocas.remove(pedra);
+                jogada = Jogada.jogada(pedra, Lado.ESQUERDO);
+            }
+        } else if (tenhoCarroca){
             /* Tenho algumas carroças. Vou ver da pra jogar alguma delas. Vou 
              dar preferência pra jogar o maior número primeiro. Se não tiver,
              jogo o menor. Se não tiver, então não tem como jogar carroça. 
@@ -91,10 +128,38 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
             if (jogada == null) {
                 //As carroças que eu tenho não cabem na mesa. Vou jogar como 
                 //mamão mesmo.
-                jogada = super.joga();
+                jogada = fazJogadaDeNaoCarroca();
             }
+        } else {
+            //nao tenho carrocas....
+            jogada = fazJogadaDeNaoCarroca();
         }
         //seja o que Deus quiser.
+        return jogada;
+    }
+
+    private Jogada fazJogadaDeNaoCarroca() {
+        Jogada jogada;
+        //nem tenho carroça mais. simplificando e jogando feito mamão.
+        Pedra pedra = null;
+        Lado lado = null;
+        final Iterator<Pedra> iterator = naoCarrocas.iterator();
+        while(iterator.hasNext()){
+            pedra = iterator.next();
+            if(pedra.temNumero(mesa.getNumeroEsquerda())){
+                lado = Lado.ESQUERDO;
+            } else if (pedra.temNumero(mesa.getNumeroDireita())){
+                lado = Lado.DIREITO;
+            }
+            if(lado != null){
+                iterator.remove();
+                break;
+            }
+        }
+        jogada =
+                lado == null
+                ? Jogada.TOQUE
+                : Jogada.jogada(pedra, lado);
         return jogada;
     }
 
@@ -217,5 +282,21 @@ public class JogadorQueNaoGostaDeCarroca extends JogadorMamao {
         this.carrocas[indexNoArrayDeCarrocas] = null;
         this.quantasCarrocasEuTenho--;
         return carroca;
+    }
+
+    @Override
+    public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
+        this.mesa = mesa;
+        this.perguntouSeEuQueriaJogar = false;
+    }
+
+    @Override
+    public Vontade vontadeDeComecar() {
+        this.perguntouSeEuQueriaJogar = true;
+        return 
+            this.quantasCarrocasEuTenho > 0 
+                ? Vontade.QUERO_MUITO 
+                : Vontade.TANTO_FAZ;
+        
     }
 }

@@ -71,10 +71,20 @@ class JogadorWrapper implements Jogador {
     }
 
     @Override
-    public void recebeMao(final Pedra[] pedras) {
-        this.mao = new ArrayList<>(Arrays.asList(pedras));
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+        this.mao = 
+            new ArrayList<>(
+                Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6)
+        );
+        
         try {
-            wrapped.recebeMao(pedras);
+            wrapped.recebeMao(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6);
         } catch (RuntimeException e){
             throw new RuntimeBugDeJogadorException(e);
         }

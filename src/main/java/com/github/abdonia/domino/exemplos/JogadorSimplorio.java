@@ -53,11 +53,22 @@ public class JogadorSimplorio implements Jogador{
 
     /**
      * Recebo as 6 {@link Pedra pedras} no início de cada partida.
-     * @param pedras As minhas pedras.
+     * @param pedra1 A primeira {@link Pedra pedra} da mão.
+     * @param pedra2 A segunda {@link Pedra pedra} da mão.
+     * @param pedra3 A terceira {@link Pedra pedra} da mão.
+     * @param pedra4 A quarta {@link Pedra pedra} da mão.
+     * @param pedra5 A quinta {@link Pedra pedra} da mão.
+     * @param pedra6 A última {@link Pedra pedra} da mão.
      */
     @Override
-    public void recebeMao(final Pedra[] pedras) {
-        this.pedras = pedras;
+    public void recebeMao(
+            final Pedra pedra1,
+            final Pedra pedra2,
+            final Pedra pedra3,
+            final Pedra pedra4,
+            final Pedra pedra5,
+            final Pedra pedra6) {
+        this.pedras = new Pedra[]{pedra1,pedra2,pedra3,pedra4,pedra5,pedra6};
     }
 
     /**

@@ -44,11 +44,22 @@ public interface Jogador {
     public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou);
 
     /**
-     * O jogador recebe sua mão 6 {@link Pedra}s no início de cada partida.
+     * O jogador recebe sua mão: 6 {@link Pedra}s no início de cada partida.
      * 
-     * @param pedras um array contendo 6 {@link Pedra}s.
+     * @param pedra1 A primeira {@link Pedra pedra} da mão.
+     * @param pedra2 A segunda {@link Pedra pedra} da mão.
+     * @param pedra3 A terceira {@link Pedra pedra} da mão.
+     * @param pedra4 A quarta {@link Pedra pedra} da mão.
+     * @param pedra5 A quinta {@link Pedra pedra} da mão.
+     * @param pedra6 A última {@link Pedra pedra} da mão.
      */
-    public void recebeMao(Pedra[] pedras);
+    public void recebeMao(
+            Pedra pedra1,
+            Pedra pedra2,
+            Pedra pedra3,
+            Pedra pedra4,
+            Pedra pedra5,
+            Pedra pedra6);
 
     /**
      * Está na vez deste jogador jogar. Deve retornar uma {@link Jogada} dizendo
