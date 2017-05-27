@@ -25,11 +25,13 @@ package com.github.abdonia.domino;
  * Jogador} que tiver a {@link Pedra#CARROCA_DE_SENA carroça de sena}, cada 
  * partida é iniciada por um dos jogadores da dupla que venceu a partida 
  * anterior. Pra decidir qual dos dois vai começar, cada um deles, depois de 
- * {@link Jogador#recebeMao(com.github.abdonia.domino.Pedra[]) receber suas 
- * pedras}, vai ser {@link Jogador#vontadeDeComecar() perguntado "o quanto ele 
- * deseja começar a partida"}. O jogador da dupla que tiver mais vontade começa. 
- * Caso aconteça um empate, um dos dois vai ser escolhido aleatóriamente.
- * </p>
+ * {@link Jogador#recebeMao(com.github.abdonia.domino.Pedra, 
+ * com.github.abdonia.domino.Pedra, com.github.abdonia.domino.Pedra, 
+ * com.github.abdonia.domino.Pedra, com.github.abdonia.domino.Pedra, 
+ * com.github.abdonia.domino.Pedra) receber suas pedras}, vai ser 
+ * {@link Jogador#vontadeDeComecar() perguntado "o quanto ele deseja começar a 
+ * partida"}. O jogador da dupla que tiver mais vontade começa. Caso aconteça um 
+ * empate, um dos dois vai ser escolhido aleatóriamente.</p>
  * 
  * @author Bruno Abdon
  */

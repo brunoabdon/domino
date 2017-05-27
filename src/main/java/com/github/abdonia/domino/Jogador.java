@@ -65,8 +65,12 @@ public interface Jogador {
      * Está na vez deste jogador jogar. Deve retornar uma {@link Jogada} dizendo
      * qual peca quer jogar e de que {@link Lado} da mesa ela deve ser jogada.
      * 
-     * Obviamente, o jogador deve ter {@link #recebeMao(Pedra[]) recebido esssa
-     * pedra} nessa partida e não ter jogado ela ainda.
+     * Obviamente, o jogador deve ter {@link 
+     * #recebeMao(com.github.abdonia.domino.Pedra, 
+     * com.github.abdonia.domino.Pedra, com.github.abdonia.domino.Pedra, 
+     * com.github.abdonia.domino.Pedra, com.github.abdonia.domino.Pedra, 
+     * com.github.abdonia.domino.Pedra) recebido esssa pedra} nessa partida e 
+     * não ter jogado ela ainda.
      * 
      * É responsabilidade do jogador saber que, se for a primeira rodada da
      * primeira partida, ele deve comecar com o {@link Pedra#CARROCA_DE_SENA

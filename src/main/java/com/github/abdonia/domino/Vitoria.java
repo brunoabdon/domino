@@ -45,7 +45,8 @@ public enum Vitoria {
 
     /**
      * Caso raro: Se as seis {@link Pedra pedras} que o {@link Jogador jogador}  
-     * {@link Jogador#recebeMao(com.github.abdonia.domino.Pedra[]) receber} 
+     * {@link Jogador#recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) 
+     * receber} 
      * {@link Pedra#isCarroca() forem todas carroça}, a partida termina 
      * imediatamente com {@link Vitoria vitória} pra a dupla desse jogador. Essa
      * vitória vale 1 ponto.
