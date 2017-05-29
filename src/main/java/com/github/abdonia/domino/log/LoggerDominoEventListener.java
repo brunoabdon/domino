@@ -111,7 +111,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     private static PrintWriter getDefaultPrintWritter() {
         final Console console = System.console();
         return console != null
-                ? console.writer()
+                ? new PrintWriter(console.writer(),true)
                 : new PrintWriter(System.out,true);
     }
     
