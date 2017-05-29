@@ -26,5 +26,14 @@ package com.github.abdonia.domino;
  * @author Bruno Abdon
  */
 public enum Lado {
-    ESQUERDO, DIREITO
+
+    /**
+     * Um dos lados da {@link Mesa} onde se pode coloca uma {@link Pedra}.
+     */
+    ESQUERDO,
+
+    /**
+     * Um dos lados da {@link Mesa} onde se pode coloca uma {@link Pedra}.
+     */
+    DIREITO
 }

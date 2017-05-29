@@ -26,19 +26,19 @@ public enum Vitoria {
 
     /**
      * A {@link Mesa mesa} foi trancada (isto é, todos os {@link Jogador 
-     * jogadores} {@link Jogada#TOQUE} tocaram seguidamente, nenhum tem uma 
+     * jogadores} {@link Jogada#TOQUE tocaram} seguidamente, nenhum tem uma 
      * {@link Pedra pedra} jogável na mão) e ganhou aquele que 
-     * somava menos {@link Pedra#numeroDePontos pontos} nas pedras da mão. Essa
-     * vitória vale 1 ponto.
+     * somava menos {@link Pedra#getNumeroDePontos() pontos} nas pedras da mão. 
+     * Essa vitória vale 1 ponto.
      */
     CONTAGEM_DE_PONTOS(1), 
 
     /**
      * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
-     * pedra} (que {@link Pedra#isCarroca() não era uma carroça} em um dos 
+     * pedra} (que {@link Pedra#isCarroca() não era uma carroça}) em um dos 
      * {@link Lado lados} da {@link Mesa mesa} (e depois o {@link 
      * Mesa#getNumeroEsquerda() número de um lado da mesa} não ficou igual ao
-     * {@link  Mesa#getNumeroDireita() número do outro lado}. Essa
+     * {@link  Mesa#getNumeroDireita() número do outro lado}). Essa
      * vitória vale 1 ponto.
      */
     BATIDA_SIMPLES(1), 

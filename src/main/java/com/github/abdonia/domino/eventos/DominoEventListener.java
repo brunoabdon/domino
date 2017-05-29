@@ -68,7 +68,7 @@ public interface DominoEventListener {
      * começar a partida.
      * 
      * A decisão é tomada {@link 
-     * com.github.abdonia.domino.Jogador#vontadeDeComecar() peguntando-se acada
+     * com.github.abdonia.domino.Jogador#vontadeDeComecar() peguntando-se a cada
      * jogador da dupla o quanto ele quer começar a partida}. Quando um dos dois
      * "quer" mais que o outro, diz-se que a decisão foi tomada por 
      * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer 
