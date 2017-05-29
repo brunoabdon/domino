@@ -210,8 +210,9 @@ public enum Pedra {
     }
 
     /**
-     * O menor {@link Numero}dessa pedra. (Ou o {@link Numero} repetido, caso
-     * seja uma carroça).
+     * O menor {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
+     * {@link #isCarroca() seja uma carroça}).
+     * 
      * @return O menor número dessa pedra.
      */
     public Numero getPrimeiroNumero() {
@@ -219,8 +220,8 @@ public enum Pedra {
     }
 
     /**
-     * O maior {@link Numero}dessa pedra. (Ou o {@link Numero} repetido, caso
-     * seja uma carroça).
+     * O maior {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
+     * {@link #isCarroca() seja uma carroça}).
      * @return O menor número dessa pedra.
      */
     public Numero getSegundoNumero() {
@@ -230,6 +231,7 @@ public enum Pedra {
     /**
      * A soma dos dois {@link Numero}s. Usado quando tranca e tem que
      * contar os pontos na mão.
+     * 
      * @return A soma dos dois números;
      */
     public int getNumeroDePontos() {

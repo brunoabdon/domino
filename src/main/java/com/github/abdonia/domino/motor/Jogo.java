@@ -25,7 +25,7 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
 
 /**
  * Um jogo de dominó entre 4 {@link Jogador jogadores}, divididos em 2 duplas,
- * que vai ser extenter por várias partidas, até que uma das duplas alcumule 6 
+ * que vai ser extender por várias partidas, até que uma das duplas acumule 6 
  * pontos (Ver {@link Vitoria} para saber quantos pontos uma dupla ganha em cada 
  * tipo de vitória).
  * 
@@ -42,7 +42,7 @@ public class Jogo {
      * Os {@link Jogador}es e os {@link EventListener}ers informados no 
      * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma 
      * {@link DominoConfig#getNomeRandomizadora() geradora de aleatoriedade} for 
-     * informada, será instanciada. Se não os eventos aleatórios serão baseados
+     * informada, será instanciada. Se não, os eventos aleatórios serão baseados
      * em {@link java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.

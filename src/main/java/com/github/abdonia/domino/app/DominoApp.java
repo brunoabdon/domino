@@ -35,11 +35,11 @@ import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
- * <p>Uma aplicação simples. por linha de comando, que roda um {@link Jogo jogo de
+ * <p>Uma aplicação simples, por linha de comando, que roda um {@link Jogo jogo de
  * dominó}.</p>
  * 
  * <p>As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
- * de jogadores serão usadas, quais serão seus nomes, etc) pode ser informada
+ * de jogadores serão usadas, quais serão seus nomes, etc.) podem ser informadas
  * num arquivo chamado <code>domino-config.xml</code> que deve estar no 
  * diretório atual.</p>
  * 
@@ -66,7 +66,7 @@ import com.github.abdonia.domino.motor.Jogo;
  *&lt;/domino&gt;
  * </pre>
  * 
- * <p>Caso o arquivo de configuração não seja encontrado, umaconfiguração 
+ * <p>Caso o arquivo de configuração não seja encontrado, uma configuração 
  * default é usada onde ocorre um jogo entre algumas 
  * {@link com.github.abdonia.domino.exemplos implementações exemplo de 
  * jogadores} e onde um 
