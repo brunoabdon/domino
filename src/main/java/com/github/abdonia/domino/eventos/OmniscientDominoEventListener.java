@@ -99,7 +99,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
-    public default void jogadorErrouVontadeDeComeçar(int quemFoi){
+    public default void jogadorErrouVontadeDeComeçar(final int quemFoi){
     }
 
     /**
