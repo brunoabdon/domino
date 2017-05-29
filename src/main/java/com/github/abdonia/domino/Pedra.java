@@ -43,14 +43,14 @@ public enum Pedra {
     //2
 
     /**
-     * <span style="font-size:2em">\uD83C\uDC6B</span>
-     */
-    CARROCA_DE_PIO                (Numero.PIO),
-
-    /**
      * <span style="font-size:2em">\uD83C\uDC65</span>
      */
     LIMPO_DUQUE   (Numero.LIMPO, Numero.DUQUE),
+
+    /**
+     * <span style="font-size:2em">\uD83C\uDC6B</span>
+     */
+    CARROCA_DE_PIO                (Numero.PIO),
 
     //3
 
