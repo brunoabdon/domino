@@ -75,7 +75,7 @@ public final class Jogada {
     }
 
     /**
-     * A retorna a Jogada de uma determinada {@link Pedra} em um determinado 
+     * Retorna a Jogada de uma determinada {@link Pedra} em um determinado 
      * {@link Lado} da {@link Mesa}.
      * 
      * Para tocar, o singleton {@link #TOQUE} deve ser usado.

@@ -80,7 +80,7 @@ public class JogadorSimplorio implements Jogador{
      * não, a de {@link Pedra#CARROCA_DE_QUINA quadra}.</p>
      * 
      * <p>Se não for qualquer outra jogada além da primeira do jogo, vou jogar
-     * alguma das minas pedras que caibam na {@link Mesa mesa} ou, se não tiver
+     * alguma das minhas pedras que caibam na {@link Mesa mesa} ou, se não tiver
      * nenhuma pedra, vou {@link Jogada#TOQUE tocar}. </p>
      * @return A {@link Jogada} (qual  pedra em que lado da mesa) que eu decidi 
      * jogar.

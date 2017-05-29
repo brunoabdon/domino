@@ -25,7 +25,6 @@ import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collector;
@@ -34,8 +33,9 @@ import java.util.stream.Collectors;
 import com.github.abdonia.domino.Vontade;
 
 /**
- * Jogador que joga aleatoriamente qualquer pedra dentre as válidas em sua mão
- * no momento.
+ * Jogador que joga aleatoriamente qualquer {@link Pedra pedra} dentre as 
+ * válidas em sua mão no momento.
+ * 
  * @author Bruno Abdon
  */
 public class JogadorAlheio implements Jogador {

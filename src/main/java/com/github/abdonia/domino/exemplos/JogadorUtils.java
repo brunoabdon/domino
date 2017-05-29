@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Métodos utilitários pra a implementação dos {@link Jogador joadores} de 
+ * Métodos utilitários pra a implementação dos {@link Jogador jogadores} de 
  * exemplo. 
  * 
  * @author Bruno Abdon

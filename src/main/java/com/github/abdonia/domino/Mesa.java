@@ -96,8 +96,7 @@ public interface Mesa extends Iterable<Pedra>{
      * de 1 a 4 (e não de zero a três, como nerds esperariam) no sentido
      * anti-horário (fazendo então que as duplas sejam <i>1 e 3</i> contra <i>2
      * e 4</i>). Todo jogador é avisado sobre a posição que esta sentado no
-     * início do jogo pelo método {@link Jogador#sentaNaMesa(Mesa,int)} (de 
-     * implementação opcional).
+     * início do jogo pelo método {@link Jogador#sentaNaMesa(Mesa,int)}.
      * 
      * @param qualJogador qual o jogador que se deseja saber (de 1 a 4).
      * 
@@ -120,10 +119,11 @@ public interface Mesa extends Iterable<Pedra>{
     }
 
     /**
-     * Retorna a lista de {@link Pedra}s como um array, no sentido {@link
-     * #getNumeroEsquerda() esquerda}-pra-{@link #getNumeroDireita() direita}
+     * Retorna a lista de {@link Pedra}s da mesa como um array, no sentido 
+     * {@link #getNumeroEsquerda() esquerda}-pra-{@link #getNumeroDireita() 
+     * direita}
      * 
-     * @return a lista de {@link Pedra}s como um array
+     * @return a lista de {@link Pedra}s como um array.
      */
     public Pedra[] toArray();
 

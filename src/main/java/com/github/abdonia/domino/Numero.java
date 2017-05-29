@@ -18,7 +18,7 @@ package com.github.abdonia.domino;
 
 /**
  * Os sete números que podem aparcer numa face de uma {@link Pedra} de dominó.
- * @author bruno
+ * @author Bruno Abdon
  */
 public enum Numero {
 
@@ -64,8 +64,7 @@ public enum Numero {
     }
 
     /**
-     * Quantos pontinhos tem nesse número. Usado pra contar quantos pontos uma 
-     * {@link Pedra} tem quando alguem tranca a {@link Mesa}.
+     * Quantos pontinhos tem nesse número.
      * 
      * @return Quantos pontinhos tem nesse número.
      */
