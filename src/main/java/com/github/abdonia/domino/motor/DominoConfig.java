@@ -54,10 +54,10 @@ import pl.touk.throwing.exception.WrappedException;
  *      DominoConfig dominoConfig = new DominoConfig();
  *      
  *      //obrigatoriamente 4 jogadores
- *      dominoConfig.setJogador1Dupla1(new JogadorMamao());
- *      dominoConfig.setJogador2Dupla1(new JogadorMamao());
- *      dominoConfig.setJogador1Dupla2(new JogadorAlheio());
- *      dominoConfig.setJogador2Dupla2(new JogadorAlheio());
+ *      dominoConfig.setJogador1Dupla1("Bruno",new JogadorMamao());
+ *      dominoConfig.setJogador2Dupla1("Amanda",new JogadorMamao());
+ *      dominoConfig.setJogador1Dupla2("Marina",new JogadorAlheio());
+ *      dominoConfig.setJogador2Dupla2("Paulo",new JogadorAlheio());
  *      
  *      //opcional, mas importante, um listener pra mostrar o andamento do jogo.
  *      dominoConfig.addEventListener(new LoggerDominoEventListener());
@@ -179,7 +179,7 @@ public class DominoConfig {
      * 
      * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
      */
-    public void setNomeClasseJogador1Dupla1(
+    public void setJogador1Dupla1(
             final String nomeClasseJogador1Dupla1) {
         this.nomesClassesJogadores[0] = nomeClasseJogador1Dupla1;
         this.classesJogadores[0] = null;
@@ -196,7 +196,7 @@ public class DominoConfig {
      * 
      * @param nomeClasseJogador2Dupla1 O nome da classe desse jogador.
      */
-    public void setNomeClasseJogador2Dupla1(
+    public void setJogador2Dupla1(
             final String nomeClasseJogador2Dupla1) {
         this.nomesClassesJogadores[1] = nomeClasseJogador2Dupla1;
         this.classesJogadores[1] = null;
@@ -213,7 +213,7 @@ public class DominoConfig {
      * 
      * @param nomeClasseJogador1Dupla2 O nome da classe desse jogador.
      */
-    public void setNomeClasseJogador1Dupla2(
+    public void setJogador1Dupla2(
             final String nomeClasseJogador1Dupla2) {
         this.nomesClassesJogadores[2] = nomeClasseJogador1Dupla2;
         this.classesJogadores[2] = null;
@@ -230,7 +230,7 @@ public class DominoConfig {
      * 
      * @param nomeClasseJogador2Dupla2 O nome da classe desse jogador.
      */
-    public void setNomeClasseJogador2Dupla2(
+    public void setJogador2Dupla2(
             final String nomeClasseJogador2Dupla2) {
         this.nomesClassesJogadores[3] = nomeClasseJogador2Dupla2;
         this.classesJogadores[3] = null;
@@ -247,7 +247,7 @@ public class DominoConfig {
      * 
      * @param classeJogador1Dupla1 a classe do jogador.
      */
-    public void setClasseJogador1Dupla1(
+    public void setJogador1Dupla1(
             final Class<? extends Jogador> classeJogador1Dupla1) {
         this.classesJogadores[0] = classeJogador1Dupla1;
         this.nomesClassesJogadores[0] = null;
@@ -264,7 +264,7 @@ public class DominoConfig {
      * 
      * @param classeJogador2Dupla1 a classe do jogador.
      */
-    public void setClasseJogador2Dupla1(
+    public void setJogador2Dupla1(
             final Class<? extends Jogador> classeJogador2Dupla1) {
         this.classesJogadores[1] = classeJogador2Dupla1;
         this.nomesClassesJogadores[1] = null;
@@ -281,7 +281,7 @@ public class DominoConfig {
      * 
      * @param classeJogador1Dupla2 a classe do jogador.
      */
-    public void setClasseJogador1Dupla2(
+    public void setJogador1Dupla2(
             final Class<? extends Jogador> classeJogador1Dupla2) {
         this.classesJogadores[2] = classeJogador1Dupla2;
         this.nomesClassesJogadores[2] = null;
@@ -298,7 +298,7 @@ public class DominoConfig {
      * 
      * @param classeJogador2Dupla2 a classe do jogador.
      */
-    public void setClasseJogador2Dupla2(
+    public void setJogador2Dupla2(
             final Class<? extends Jogador> classeJogador2Dupla2) {
         this.classesJogadores[3] = classeJogador2Dupla2;
         this.nomesClassesJogadores[3] = null;
@@ -317,7 +317,7 @@ public class DominoConfig {
      * seja algo difernente de 1 e 2.
 
      */
-    public void setNomeEClasseJogador(
+    public void setJogador(
             final String nomeJogador, 
             final Class<? extends Jogador> classeJogador, 
             final int idxDupla, 
@@ -345,7 +345,7 @@ public class DominoConfig {
      * @throws  IllegalArgumentException caso o número da dupla ou do jogador
      * seja algo difernente de 1 e 2.
      */
-    public void setNomeEClasseJogador(
+    public void setJogador(
             final String nomeJogador, 
             final String nomeClasseJogador, 
             final int idxDupla, 
@@ -373,7 +373,7 @@ public class DominoConfig {
      * @throws  IllegalArgumentException caso o número da dupla ou do jogador
      * seja algo difernente de 1 e 2.
      */
-    public void setNomeEInstanciaJogador(
+    public void setJogador(
             final String nomeJogador, 
             final Jogador jogador, 
             final int idxDupla, 

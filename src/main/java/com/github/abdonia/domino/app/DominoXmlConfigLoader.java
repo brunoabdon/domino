@@ -105,7 +105,7 @@ class DominoXmlConfigLoader {
             if(qName.equals(ELEMENT_JOGADOR)){
                 final String nome = attributes.getValue(ATT_NOME);
                 
-                dominoConfig.setNomeEClasseJogador(
+                dominoConfig.setJogador(
                     nome, 
                     classe, 
                     (idxJogador>>1)+1, 
