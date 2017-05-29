@@ -320,7 +320,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             imprimeUmaBarrona();
             for (int i = 0; i < 3; i++) {
                 imprimeUmaBarrona();
-                this.printWriter.println("   =======     BUXUDINHA!!!   =====");
+                this.printWriter.println("   =======     BUXUDINHA!!!   ====");
             }
             for (int i = 0; i < 2; i++) {
                 imprimeUmaBarrona();
