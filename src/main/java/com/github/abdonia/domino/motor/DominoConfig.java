@@ -551,6 +551,14 @@ public class DominoConfig {
         return nomeRandomizadora;
     }
 
+    /**
+     * Seta, pelo nome completo da classe, qual {@link RandomGoddess} será usado
+     * pra gerar os eventos aleatórios de uma partida. É uma configuração 
+     * opcional que normalmente só é útil para testes controlados.
+     * 
+     * @param nomeRandomizadora O nome de uma classe que implementa a interface
+     * {@link RandomGoddess} .
+     */
     public void setNomeRandomizadora(final String nomeRandomizadora) {
         this.nomeRandomizadora = nomeRandomizadora;
         this.randomizadora = null;
@@ -560,6 +568,13 @@ public class DominoConfig {
         return randomizadora;
     }
 
+    /**
+     * Seta qual {@link RandomGoddess} será usado pra gerar os eventos 
+     * aleatórios de uma partida. É uma configuração opcional que normalmente só
+     * é útil para testes controlados.
+     * 
+     * @param randomizadora Uma instância de uma {@link RandomGoddess} .
+     */
     public void setRandomizadora(final RandomGoddess randomizadora) {
         this.randomizadora = randomizadora;
         this.nomeRandomizadora = null;
@@ -569,6 +584,15 @@ public class DominoConfig {
         return classeRandomizadora;
     }
 
+    /**
+     * Seta qual a classe concreta de {@link RandomGoddess} que será usado pra 
+     * gerar os eventos aleatórios de uma partida. A classe deverá ter um 
+     * construtor vazio, que será usado ao se instanciar um {@link Jogo}. É uma
+     * configuração opcional que normalmente só é útil para testes controlados.
+     * 
+     * @param classeRandomizadora Uma classe que implementa a interface {@link 
+     * RandomGoddess} e possui um construtor público vazio.
+     */
     public void setClasseRandomizadora(
             final Class<? extends RandomGoddess> classeRandomizadora) {
         this.classeRandomizadora = classeRandomizadora;
@@ -580,7 +604,7 @@ public class DominoConfig {
         
         final int index = indexJogador(idxDupla, idxJogadorNaDupla);        
         
-        final String nome = makeNomeJogador(index, idxJogadorNaDupla, idxDupla);
+        final String nome = pegaNomeJogador(index, idxJogadorNaDupla, idxDupla);
         final Jogador jogador = makeJogador(index, idxJogadorNaDupla, idxDupla);
         
         return new JogadorWrapper(jogador, nome);
@@ -612,7 +636,7 @@ public class DominoConfig {
         return jogador;
     }
 
-    private String makeNomeJogador(
+    private String pegaNomeJogador(
             final int index, 
             final int idxJogadorNaDupla, 
             final int idxDupla) throws DominoConfigException {

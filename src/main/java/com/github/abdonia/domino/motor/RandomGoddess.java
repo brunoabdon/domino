@@ -16,7 +16,6 @@
  */
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Pedra;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public interface RandomGoddess {
     /**
      * Retorna uma lista contendo as 28 {@link Pedra}s do dominó numa ordem 
      * qualquer.
-     * A lista resultante de 28 pedras 
      * 
      * @return Uma lista das 28 {@link Pedra}s.
      * 
@@ -41,10 +39,11 @@ public interface RandomGoddess {
     public List<Pedra> embaralha();
     
     /**
-     * Diz, (pseudo-)aleatóriamente se o primeiro jogador da dupla (e não o 
-     * segundo) é quem deve jogar a  primeira pedra na partida (em caso de 
-     * empate na {@link Jogador#vontadeDeComecar() vontade demonstrada para 
-     * começar a jogar}).
+     * Diz, aleatóriamente se o primeiro {@link 
+     * com.github.abdonia.domino.Jogador} da dupla (e não o segundo) é quem deve
+     * {@link com.github.abdonia.domino.Jogador#joga() fazer a primeira jogada} 
+     * da  partida (em caso de empate na {@link Jogador#vontadeDeComecar() 
+     * vontade demonstrada para começar a jogar}).
      * 
      * @return <code>true</code> se o primeiro jogador da dupla deve ser quem 
      * começa, ou <code>false</code> se é o segundo quem deve.
