@@ -37,7 +37,13 @@ import com.github.abdonia.domino.Vontade;
  *
  */
 public class JogadorQueNaoGostaDeCarroca implements Jogador {
-
+   
+    /**
+     * Dada uma {@link Pedra} e uma {@link Mesa}, diz como seria uma {@link 
+     * Jogada} ideal dessa pedra nessa mesa, considerando que uma jogada na 
+     * {@link Mesa#getNumeroEsquerda() esquerda} é preferível (arbitrário) e que
+     * a única jogada possível pode ser simplesmene {@link Jogada#TOQUE tocar}.
+     */
     private static final BiFunction<Mesa,Pedra,Jogada> JOGADA_MESA = 
     (m, p) -> 
         m.taVazia() || p.temNumero(m.getNumeroEsquerda())
@@ -85,6 +91,11 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      */
     protected List<Pedra> mao;
 
+    /**
+     * Dada uma {@link Pedra}, diz como seria uma {@link Jogada} dessa pedra na
+     * {@link #sentaNaMesa(Mesa, int) mesa em que estou sentado} de acordo com 
+     * os critérios definidos por {@link #JOGADA_MESA}.
+     */
     private Function<Pedra,Jogada> jogadaNaMesa;
 
     @Override
@@ -110,17 +121,15 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     public Jogada joga() {
         
         final Jogada jogada =
-            mao
-            .parallelStream()
-            .map(jogadaNaMesa)
-            .max(COMP_PREFERE_JOGAR_CARROCA)
+            mao.parallelStream() //pra cada pedra na minha mao...
+            .map(jogadaNaMesa) //...vê como seria uma jogada com ela...
+            .max(COMP_PREFERE_JOGAR_CARROCA) //...e escolhe a melhor.
             .get();
         
-        //mesmo se for TOQUE, nao tem problema. pedra = null;
+        //mesmo se for TOQUE, nao tem problema. TOQUE.getPedra() = null;
         this.mao.remove(jogada.getPedra());
         
         return jogada;
-        
     }
 
     @Override
@@ -131,6 +140,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     /**
      * Colabora com um possível parceiro da mesma classe: a vonta só empata
      * caso os dois tenham o memso número de carroças na mão.
+     * 
      * @return a vontade de começar a jogar, que vai aumentando de acordo com o
      * número de carroças na mão.
      */
