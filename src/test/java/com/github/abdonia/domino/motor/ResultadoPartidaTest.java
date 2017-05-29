@@ -19,6 +19,8 @@ package com.github.abdonia.domino.motor;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.github.abdonia.domino.Vitoria;
+
 /**
  *
  * @author Bruno Abdon
@@ -30,6 +32,7 @@ public class ResultadoPartidaTest {
      */
     @Test
     public void testEmpate() {
+        System.out.println("empate");
         assertNotNull(ResultadoPartida.EMPATE);
         assertNull(ResultadoPartida.EMPATE.getJogadorRelevante());
     }
@@ -38,12 +41,31 @@ public class ResultadoPartidaTest {
      * Test of getJogadorRelevante method, of class ResultadoPartida.
      */
     @Test
-    public void testGetJogadorRelevante() {
-        System.out.println("getJogadorRelevante");
+    public void testBatida() {
+        System.out.println("batida");
         final JogadorWrapper vencedor = UtilsTests.makeJogador();
-        ResultadoPartida rp = new ResultadoPartida(vencedor);
-        assertEquals(rp.getJogadorRelevante(),vencedor);
-
+        
+        for (final Vitoria vitoria : Vitoria.values()) {
+            final ResultadoPartida.Batida batida = 
+                ResultadoPartida.batida(vitoria,vencedor);
+            
+            assertNotNull(batida);
+            
+            assertSame(batida.getJogadorRelevante(),vencedor);
+            assertSame(batida.getVencedor(),vencedor);
+            assertSame(batida.getTipoDeVitoria(),vitoria);
+        }
     }
     
+    @Test
+    public void testVolta(){
+        System.out.println("volta");
+        final JogadorWrapper jogador = UtilsTests.makeJogador();
+        
+        final ResultadoPartida.Volta volta = 
+            ResultadoPartida.volta(jogador);
+        
+        assertNotNull(volta);
+        assertSame(volta.getJogadorRelevante(),jogador);
+    }
 }

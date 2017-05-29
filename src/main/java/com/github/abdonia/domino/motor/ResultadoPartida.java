@@ -16,6 +16,8 @@
  */
 package com.github.abdonia.domino.motor;
 
+import com.github.abdonia.domino.Vitoria;
+
 class ResultadoPartida {
 	
     private final JogadorWrapper jogadorRelevante;
@@ -26,11 +28,48 @@ class ResultadoPartida {
         this(null);
     }
 
-    protected ResultadoPartida(final JogadorWrapper jogadorRelevante) {
+    private ResultadoPartida(final JogadorWrapper jogadorRelevante) {
         this.jogadorRelevante = jogadorRelevante;
     }
 
     JogadorWrapper getJogadorRelevante() {
         return jogadorRelevante;
+    }
+
+    static ResultadoPartida.Volta volta(
+            final JogadorWrapper jogadorComCincoCarrocas){
+        return new Volta(jogadorComCincoCarrocas);
+    }
+    
+    static Batida batida(final Vitoria tipo, final JogadorWrapper vencedor){
+        return new Batida(tipo,vencedor);
+    }
+    
+    /**
+     * Um {@link ResultadoPartida} indicando que um determinado {@link Jogador} 
+     * bateu.
+     */
+    public static final class Batida extends ResultadoPartida{
+
+        private final Vitoria tipoDeVitoria;
+
+        private Batida(final Vitoria tipo, final JogadorWrapper vencedor) {
+            super(vencedor);
+            this.tipoDeVitoria = tipo;
+        }
+
+        public JogadorWrapper getVencedor() {
+            return super.getJogadorRelevante();
+        }
+
+        public Vitoria getTipoDeVitoria() {
+            return tipoDeVitoria;
+        }
+    }
+    
+    public static final class Volta extends ResultadoPartida{
+        private Volta(final JogadorWrapper jogadorComCincoCarrocas){
+            super(jogadorComCincoCarrocas);
+        }
     }
 }

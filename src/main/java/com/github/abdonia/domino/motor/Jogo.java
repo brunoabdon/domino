@@ -40,10 +40,11 @@ public class Jogo {
     /**
      * Cria um jogo de dominó de acordo com as configurações passadas:
      * Os {@link Jogador}es e os {@link EventListener}ers informados no 
-     * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma 
-     * {@link DominoConfig#getNomeRandomizadora() geradora de aleatoriedade} for 
-     * informada, será instanciada. Se não, os eventos aleatórios serão baseados
-     * em {@link java.util.Random}.
+     * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma {@link 
+     * RandomGoddessgeradora de aleatoriedade} {@link 
+     * DominoConfig#setRandomizadora(RandomGoddess) for informada}, será 
+     * instanciada. Se não, os eventos aleatórios serão baseados em {@link 
+     * java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
      * @throws DominoConfigException caso a configuração passada esteja inválida (deve
@@ -129,8 +130,9 @@ public class Jogo {
 
                 if(resultado == ResultadoPartida.EMPATE){
                     multiplicadorDobrada *=2;
-                } else if(resultado instanceof Batida){
-                    final Batida batida = (Batida) resultado;
+                } else if(resultado instanceof ResultadoPartida.Batida){
+                    final ResultadoPartida.Batida batida = 
+                        (ResultadoPartida.Batida) resultado;
 
                     ultimaDuplaQueVenceu = getDuplaVencedora(batida);
 
@@ -184,7 +186,7 @@ public class Jogo {
         }
     }
 
-    private Dupla getDuplaVencedora(final Batida resultado) {
+    private Dupla getDuplaVencedora(final ResultadoPartida.Batida resultado) {
         return this.mesa.getDuplaDoJogador(resultado.getVencedor());
     }
 
@@ -204,42 +206,33 @@ public class Jogo {
     }
 
     private void avisaQueJogadorErrou(final BugDeJogadorException e) {
+            
+        final int cadeira = e.getJogadorBuguento().getCadeira();
+        
             switch(e.getFalha()){
                 case PEDRA_INVALIDA:
                     this.eventBroadcaster
                         .jogadorJogouPedraInvalida(
-                            e.getJogadorBuguento().getCadeira(),
+                            cadeira,
                             e.getPedra(),
                             e.getNumero());
                     break;
                 case NAO_JOGOU_NEM_TOCOU:
-                    this.eventBroadcaster
-                        .jogadorJogouPedraNenhuma(
-                            e.getJogadorBuguento()
-                             .getCadeira());
+                    this.eventBroadcaster.jogadorJogouPedraNenhuma(cadeira);
                     break;
                 case JA_COMECOU_ERRANDO:
-                    this.eventBroadcaster
-                        .jogadorComecouErrando(
-                            e.getJogadorBuguento()
-                             .getCadeira());
+                    this.eventBroadcaster.jogadorComecouErrando(cadeira);
                     break;
                 case TOCOU_TENDO:
                     this.eventBroadcaster
-                        .jogadorComecouErrando(
-                            e.getJogadorBuguento()
-                             .getCadeira());
+                        .jogadorTocouTendoPedraPraJogar(cadeira);
                     break;
                 case NAO_SABE_SE_COMECE:
-                    this.eventBroadcaster
-                        .jogadorErrouVontadeDeComeçar(
-                            e.getJogadorBuguento()
-                             .getCadeira());
+                    this.eventBroadcaster.jogadorErrouVontadeDeComeçar(cadeira);
+                    break;
                 case TIROU_PEDRA_DO_BOLSO:
-                    this.eventBroadcaster.jogadorJogouPedraQueNãoTinha(
-                            e.getJogadorBuguento()
-                             .getCadeira(),
-                            e.getPedra());
+                    this.eventBroadcaster
+                        .jogadorJogouPedraQueNãoTinha(cadeira,e.getPedra());
                     break;
                     
             }
