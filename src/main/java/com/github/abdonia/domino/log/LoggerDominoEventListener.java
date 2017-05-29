@@ -21,7 +21,6 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 import java.io.PrintStream;
@@ -38,7 +37,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import com.github.abdonia.domino.Numero;
 
