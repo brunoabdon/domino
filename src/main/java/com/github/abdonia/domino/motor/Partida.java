@@ -243,7 +243,7 @@ class Partida {
         final boolean houveConsenso = quemDaDuplaComeca != 0;
 
         final boolean comecaOJogador1 = 
-            houveConsenso ? quemDaDuplaComeca < 0: fortuna.jogador1Comeca();
+            houveConsenso ? quemDaDuplaComeca > 0: fortuna.jogador1Comeca();
         
         final JogadorWrapper jogadorQueComeca = 
             comecaOJogador1 ? 

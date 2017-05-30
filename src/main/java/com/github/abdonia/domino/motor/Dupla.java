@@ -84,12 +84,12 @@ class Dupla {
     }
 
     /**
-     * Retorna um número negativo se o {@link #getJogador1() jogador1} for 
-     * começar, positivo se o {@link #getJogador1() jogador2 } for começar, ou 
+     * Retorna um número positivo se o {@link #getJogador1() jogador1} for 
+     * começar, negativo se o {@link #getJogador2() jogador2 } for começar, ou 
      * zero caso empatem na vontade.
      * 
-     * @return um número negativo se o {@link #getJogador1() jogador1} for 
-     * começar, positivo se o {@link #getJogador1() jogador2 } for começar, ou 
+     * @return um número positivo se o {@link #getJogador1() jogador1} for 
+     * começar, negativo se o {@link #getJogador2() jogador2 } for começar, ou 
      * zero caso empatem na vontade.
      * 
      * @throws BugDeJogadorException Se algum jogador se enrolar até pra dizer 
@@ -104,14 +104,16 @@ class Dupla {
     }
 
     /**
-     * Pergunta a o dado {@link JogadorWrapper jogador} {@link 
+     * Pergunta ao dado {@link JogadorWrapper jogador} {@link 
      * JogadorWrapper#vontadeDeComecar() qual a vontade dele começar a partida},
      * levantando {@link BugDeJogadorException} caso ele retorne 
      * <code>null</code>.
      * 
      * @param jogador Um jogador.
+     * 
      * @return A {@link JogadorWrapper#vontadeDeComecar() vontade dele de 
-     * começar a partida} (caso ele responda corretamente com um valor não nulo.
+     * começar a partida} (caso ele responda corretamente com um valor não 
+     * nulo).
      * @throws BugDeJogadorException caso o jogador retorne <code>null</code>
      * erroneamente.
      */
