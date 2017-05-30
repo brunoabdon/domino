@@ -33,7 +33,7 @@ import com.github.abdonia.domino.Vontade;
  * carroças}. Não tendo carroça, joga a primeira {@link Pedra} encontrar que 
  * caiba na {@link Mesa}.
  *
- * @author bruno
+ * @author Bruno Abdon
  *
  */
 public class JogadorQueNaoGostaDeCarroca implements Jogador {
@@ -45,12 +45,12 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      * a única jogada possível pode ser simplesmene {@link Jogada#TOQUE tocar}.
      */
     private static final BiFunction<Mesa,Pedra,Jogada> JOGADA_MESA = 
-    (m, p) -> 
-        m.taVazia() || p.temNumero(m.getNumeroEsquerda())
-            ? Jogada.jogada(p, Lado.ESQUERDO)
-            : p.temNumero(m.getNumeroDireita())
-                ? Jogada.jogada(p, Lado.DIREITO)
-                :Jogada.TOQUE;
+        (m, p) -> 
+            m.taVazia() || p.temNumero(m.getNumeroEsquerda())
+                ? Jogada.jogada(p, Lado.ESQUERDO)
+                : p.temNumero(m.getNumeroDireita())
+                    ? Jogada.jogada(p, Lado.DIREITO)
+                    : Jogada.TOQUE;
 
     /**
      * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@link 
