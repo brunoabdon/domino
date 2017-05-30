@@ -55,7 +55,7 @@ class Partida {
             Pedra.CARROCA_DE_QUADRA, 
             Pedra.CARROCA_DE_QUINA, 
             Pedra.CARROCA_DE_SENA
-        };
+    };
     
     Partida(
         final MesaImpl mesa,
@@ -68,7 +68,7 @@ class Partida {
     }
 
     protected ResultadoPartida jogar(final Dupla duplaQueGanhouApartidaAnterior) 
-        throws BugDeJogadorException{
+            throws BugDeJogadorException{
 
         mesa.embaralhaEdistribui();
         
