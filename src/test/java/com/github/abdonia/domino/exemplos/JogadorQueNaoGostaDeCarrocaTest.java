@@ -16,6 +16,8 @@
  */
 package com.github.abdonia.domino.exemplos;
 
+import com.github.abdonia.domino.Jogador;
+import com.github.abdonia.domino.Pedra;
 import org.junit.Test;
 
 /**
@@ -27,11 +29,6 @@ public class JogadorQueNaoGostaDeCarrocaTest extends JogadorTestAbstract {
     public JogadorQueNaoGostaDeCarrocaTest() {
     }
 
-    @Test
-    public void testVontadeDeComecar() {
-        super.testVontadeDeComecar(new JogadorQueNaoGostaDeCarroca());
-    }
-    
     @Test 
     public void testaComecoDePartida(){
         super.testaComecoDePartida(new JogadorQueNaoGostaDeCarroca());

@@ -41,7 +41,7 @@ public class Jogo {
      * Cria um jogo de dominó de acordo com as configurações passadas:
      * Os {@link Jogador}es e os {@link EventListener}ers informados no 
      * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma {@link 
-     * RandomGoddessgeradora de aleatoriedade} {@link 
+     * RandomGoddess geradora de aleatoriedade} {@link 
      * DominoConfig#setRandomizadora(RandomGoddess) for informada}, será 
      * instanciada. Se não, os eventos aleatórios serão baseados em {@link 
      * java.util.Random}.

@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Gerador de eventos aleatórios durante a partida, responsável por embaralhar
  * as pedras e por definir quem na dupla deve começar uma  partida em caso de 
- * empate na {@link Jogador#vontadeDeComecar() vontade demonstrada para começar 
- * a jogar}.
+ * empate na {@link com.github.abdonia.domino.Jogador#vontadeDeComecar() vontade
+ * demonstrada para começar a jogar}.
  * 
  * @author Bruno Abdon
  */
@@ -42,8 +42,9 @@ public interface RandomGoddess {
      * Diz, aleatóriamente se o primeiro {@link 
      * com.github.abdonia.domino.Jogador} da dupla (e não o segundo) é quem deve
      * {@link com.github.abdonia.domino.Jogador#joga() fazer a primeira jogada} 
-     * da  partida (em caso de empate na {@link Jogador#vontadeDeComecar() 
-     * vontade demonstrada para começar a jogar}).
+     * da  partida (em caso de empate na {@link 
+     * com.github.abdonia.domino.Jogador#vontadeDeComecar() vontade demonstrada
+     * para começar a jogar}).
      * 
      * @return <code>true</code> se o primeiro jogador da dupla deve ser quem 
      * começa, ou <code>false</code> se é o segundo quem deve.
