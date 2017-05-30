@@ -16,9 +16,8 @@
  */
 package com.github.abdonia.domino.motor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
@@ -30,7 +29,7 @@ class JogadorWrapper implements Jogador {
 
     private final String nome;
     private int cadeira;
-    private Collection<Pedra> mao;
+    private EnumSet<Pedra> mao;
 
     private final Jogador wrapped;
 
@@ -78,10 +77,8 @@ class JogadorWrapper implements Jogador {
             final Pedra pedra4,
             final Pedra pedra5,
             final Pedra pedra6) {
-        this.mao = 
-            new ArrayList<>(
-                Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6)
-        );
+        
+        this.mao = EnumSet.of(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6);
         
         try {
             wrapped.recebeMao(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6);
