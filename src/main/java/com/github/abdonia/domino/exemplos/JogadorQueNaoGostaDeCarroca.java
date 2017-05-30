@@ -17,6 +17,7 @@
 package com.github.abdonia.domino.exemplos;
 
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Function;
 
@@ -89,7 +90,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     /**
      * As {@link Pedra pedras} na mão desse {@link Jogador}.
      */
-    protected List<Pedra> mao;
+    protected EnumSet<Pedra> mao;
 
     /**
      * Dada uma {@link Pedra}, diz como seria uma {@link Jogada} dessa pedra na
@@ -108,7 +109,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
             final Pedra pedra6) {
         
         this.mao = 
-            JogadorUtils.fazMao(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
+            EnumSet.of(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
     }
     
     /**
