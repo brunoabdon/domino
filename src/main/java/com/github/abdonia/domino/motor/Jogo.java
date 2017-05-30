@@ -154,8 +154,7 @@ public class Jogo {
         } catch (final JogadorWrapper.RuntimeBugDeJogadorException rte){
             //logar o erro de e.getCause()...
             this.eventBroadcaster
-                .jogadorFaleceu(
-                    rte.getJogadorBuguento().getCadeira());
+                .jogadorFaleceu(rte.getJogadorBuguento().getCadeira());
             
         }
     }
@@ -209,32 +208,30 @@ public class Jogo {
             
         final int cadeira = e.getJogadorBuguento().getCadeira();
         
-            switch(e.getFalha()){
-                case PEDRA_INVALIDA:
-                    this.eventBroadcaster
-                        .jogadorJogouPedraInvalida(
-                            cadeira,
-                            e.getPedra(),
-                            e.getNumero());
-                    break;
-                case NAO_JOGOU_NEM_TOCOU:
-                    this.eventBroadcaster.jogadorJogouPedraNenhuma(cadeira);
-                    break;
-                case JA_COMECOU_ERRANDO:
-                    this.eventBroadcaster.jogadorComecouErrando(cadeira);
-                    break;
-                case TOCOU_TENDO:
-                    this.eventBroadcaster
-                        .jogadorTocouTendoPedraPraJogar(cadeira);
-                    break;
-                case NAO_SABE_SE_COMECE:
-                    this.eventBroadcaster.jogadorErrouVontadeDeComeçar(cadeira);
-                    break;
-                case TIROU_PEDRA_DO_BOLSO:
-                    this.eventBroadcaster
-                        .jogadorJogouPedraQueNãoTinha(cadeira,e.getPedra());
-                    break;
-                    
-            }
+        switch(e.getFalha()){
+            case PEDRA_INVALIDA:
+                this.eventBroadcaster
+                    .jogadorJogouPedraInvalida(
+                        cadeira,
+                        e.getPedra(),
+                        e.getNumero());
+                break;
+            case NAO_JOGOU_NEM_TOCOU:
+                this.eventBroadcaster.jogadorJogouPedraNenhuma(cadeira);
+                break;
+            case JA_COMECOU_ERRANDO:
+                this.eventBroadcaster.jogadorComecouErrando(cadeira);
+                break;
+            case TOCOU_TENDO:
+                this.eventBroadcaster.jogadorTocouTendoPedraPraJogar(cadeira);
+                break;
+            case NAO_SABE_SE_COMECE:
+                this.eventBroadcaster.jogadorErrouVontadeDeComeçar(cadeira);
+                break;
+            case TIROU_PEDRA_DO_BOLSO:
+                this.eventBroadcaster
+                    .jogadorJogouPedraQueNãoTinha(cadeira,e.getPedra());
+                break;
+        }
     }
  }
