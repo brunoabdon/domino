@@ -117,7 +117,7 @@ class Dupla {
      * @throws BugDeJogadorException caso o jogador retorne <code>null</code>
      * erroneamente.
      */
-    private Vontade perguntaVontade(
+    private static Vontade perguntaVontade(
             final JogadorWrapper jogador) 
                 throws BugDeJogadorException {
 
