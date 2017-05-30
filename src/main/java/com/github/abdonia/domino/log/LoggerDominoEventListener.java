@@ -54,7 +54,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         p -> formataPedra(p, 20);
     
     private static final Function<String,String> MAO_DE = 
-        s -> "Mão de " + s + ":\n";
+        s -> "Mao de " + s + ":\n";
     
     private String[] nomeDosJogadores;
     private String[] maoDeJogadores;
@@ -122,7 +122,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final boolean ehDobrada) {
 
         imprimeUmaBarrinha();
-        this.printWriter.println("Começando partida\n");
+        this.printWriter.println("Iniciando a partida\n");
         imprimePlacar(pontosDupla1,pontosDupla2);
         imprimeUmaBarrinha();	
     }
@@ -138,16 +138,16 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
         this.printWriter.print("-");	
         this.printWriter.print(nomeCompanheiro);
-        this.printWriter.println(": Quer começar?");
+        this.printWriter.println(": Quer ser o primeiro?");
         this.printWriter.print("-");	
         this.printWriter.print(nomeJogadorQueComecou);
         this.printWriter.print(": Quero.\n-");
         this.printWriter.print(nomeCompanheiro);
         
         if(consentimentoMutuo){
-            this.printWriter.println(": Vai la.");
+            this.printWriter.println(": Por mim, ok.");
         } else {
-            this.printWriter.print(": Eu tambem.\n[");
+            this.printWriter.print(": Idem.\n[");
             this.printWriter.print(nomeJogadorQueComecou);
             this.printWriter.println(" escolhido aleatoriamente]");
         }
@@ -236,7 +236,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final String nomeDoJogador3, final String nomeDoJogador4){
 
             this.printWriter.println("++++++++++++++++++++++++++++++++");    
-            this.printWriter.println("Começou o jogo");
+            this.printWriter.println("Jogo iniciado");
 
             this.nomeDosJogadores = 
                 new String[]{
@@ -282,7 +282,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             this.printWriter.print(
                 "\nCagada! " 
                 + nomeDoJogador 
-                + " tirou 6 carroças na mão! A Dupla ganha automaticamente.");
+                + " tirou 6 carrocas na mao! A Dupla ganha automaticamente.");
         } else {
             this.printWriter.print("\n" + nomeDoJogador + " bateu!");
             if (tipoDeVitoria != Vitoria.BATIDA_SIMPLES) {
@@ -294,12 +294,12 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     @Override
     public void partidaEmpatou(){
-        this.printWriter.println("Empatou. A próxima vale dobrada.");   
+        this.printWriter.println("Empatou. A partida que vem vale dobrada.");   
     }
     
     @Override
     public void partidaVoltou(final int jogador) {
-        this.printWriter.println("Não vai ter partida! "
+        this.printWriter.println("Partida cancelada! "
             + nomeDosJogadores[jogador-1] 
             + " tem 5 carroças na mão."
             + "\nVoltem as pedras...");   
@@ -344,7 +344,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             new StringBuilder(nomeDosJogadores[quemFoi-1])
             .append(" quis jogar ")
             .append(pedra)
-            .append(" na cabeça que era de ")
+            .append(" na ponta que era de ")
             .append(numero)
             .toString();
         
@@ -355,7 +355,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     public void jogadorErrouVontadeDeComeçar(int quemFoi) {
         final String msg = 
             new StringBuilder(nomeDosJogadores[quemFoi-1])
-            .append(", você tem que escolher um número de 0 a 10.")
+            .append(", tens que escolher um número de 0 a 10.")
             .toString();
         
         imprimeErroFatal(msg,false);
@@ -385,7 +385,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     @Override
     public void jogadorComecouErrando(int quemFoi) {
         final String msg = 
-            new StringBuilder("O jogo começa com a maior carroça, ")
+            new StringBuilder("O jogo abre com a maior carroca, ")
             .append(nomeDosJogadores[quemFoi-1])
             .append(".")
             .toString();
@@ -397,7 +397,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     public void jogadorTocouTendoPedraPraJogar(int quemFoi) {
         final String msg = 
             new StringBuilder(nomeDosJogadores[quemFoi-1])
-            .append(" disse que tocou mas tem pedra pra jogar.")
+            .append(" disse que tocou, mas tem pedra pra jogar.")
             .toString();
         
         imprimeErroFatal(msg,true);
@@ -409,7 +409,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             new StringBuilder(nomeDosJogadores[quemFoi-1])
             .append(" jogou ")
             .append(pedra)
-            .append(" sem ter essa pedra na mão.")
+            .append(" sem ter essa pedra na mao. Tirou do bolso?")
             .toString();
         
         imprimeErroFatal(msg,true);
@@ -444,7 +444,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         this.printWriter.println(
                 foiRoubo
                     ? "Deixe de roubo."
-                    : "Vá estudar as regras."
+                    : "Aprenda as regras."
         );
         imprimeUmaBarrinhaDeErro();
         
