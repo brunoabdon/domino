@@ -16,12 +16,14 @@
  */
 package com.github.abdonia.domino.motor;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import com.github.abdonia.domino.Vontade;
 
 /**
  *
@@ -109,9 +111,60 @@ public class DuplaTest {
         assertTrue(dupla.toString().length() > 0);
     }
 
+    @Test
+    public void testQuemComeca() throws BugDeJogadorException{
+        
+        final JogadorInfluenciavel bruno = new JogadorInfluenciavel();
+        final JogadorInfluenciavel igor = new JogadorInfluenciavel();
+        
+        final Dupla dupla = 
+            new Dupla(
+                new JogadorWrapper(bruno,"bruno"),
+                new JogadorWrapper(igor,"igor")
+        );
+        
+        for (final Vontade vontadeBruno : Vontade.values()) {
+            bruno.vontade = vontadeBruno;
+            for (final Vontade vontadeIgor : Vontade.values()) {
+                igor.vontade = vontadeIgor;
+                    int quemComeca;
+                    quemComeca = dupla.quemComeca();
+                    assertTrue(
+                        (quemComeca == 0 && vontadeBruno == vontadeIgor)
+                        || ((quemComeca > 0) == (vontadeBruno
+                                                .compareTo(vontadeIgor) > 0))
+                    );
+                
+            }
+        }
+    }
+    
     private Dupla makeDupla() {
         JogadorWrapper bruno = UtilsTests.makeJogador("bruno");
         JogadorWrapper igor = UtilsTests.makeJogador("igor");
         return new Dupla(bruno,igor);
     }
+    
+    private static class JogadorInfluenciavel implements Jogador {
+
+            Vontade vontade;
+            
+            @Override
+            public void sentaNaMesa(
+                final Mesa mesa, final int cadeiraQueSentou){}
+
+            @Override
+            public void recebeMao(
+                final Pedra pedra1, final Pedra pedra2, final Pedra pedra3, 
+                final Pedra pedra4, final Pedra pedra5, final Pedra pedra6) {}
+
+            @Override
+            public Jogada joga() { return null; }
+
+            @Override
+            public Vontade vontadeDeComecar() {
+                return vontade;
+            }
+        } 
+
 }
