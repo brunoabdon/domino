@@ -25,6 +25,8 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
+import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
+import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
@@ -173,22 +175,14 @@ class Partida {
 
     private Vitoria veOTipoDaBatida(final Pedra pedra) {
 
-        final Vitoria tipoDaBatida;
-        
         final boolean carroca = pedra.isCarroca();
-        final boolean laELo = 
-            mesa.getNumeroEsquerda() == mesa.getNumeroDireita();
+        final boolean laELo = mesa.taFechada();
 
-        if(carroca && laELo){
-            tipoDaBatida = Vitoria.CRUZADA;
-        } else if(laELo){
-            tipoDaBatida = Vitoria.LA_E_LO;
-        } else if (carroca) {
-            tipoDaBatida = Vitoria.CARROCA;
-        } else {
-            tipoDaBatida = Vitoria.BATIDA_SIMPLES;
-        }
-        return tipoDaBatida;
+        return
+            carroca && laELo ?  Vitoria.CRUZADA
+            : laELo ?           Vitoria.LA_E_LO
+            : carroca ?         Vitoria.CARROCA
+            :                   Vitoria.BATIDA_SIMPLES;
     }
 
     /**
@@ -227,9 +221,7 @@ class Partida {
             final JogadorWrapper jogadorComMenosPontosNaMao = 
                 this.mesa.jogadorDaVez(melhorIdx);
             
-            resultado = batida(
-                jogadorComMenosPontosNaMao,
-                Vitoria.CONTAGEM_DE_PONTOS);
+            resultado = batida(jogadorComMenosPontosNaMao,CONTAGEM_DE_PONTOS);
         }
         
         return resultado;
@@ -319,7 +311,7 @@ class Partida {
         return avanca(vez);
     }
 
-    private int avanca(int vez){
+    private static int avanca(int vez){
         return (vez+1)%4;
     }
 
@@ -327,7 +319,7 @@ class Partida {
         
         ResultadoPartida resultado = null;
         
-        final Collection<JogadorWrapper>jogadores = mesa.getJogadores();
+        final Collection<JogadorWrapper> jogadores = mesa.getJogadores();
         for (final JogadorWrapper jogador : jogadores) {
             int quantasNaoCarrocas = 0;
             for (final Pedra pedra : jogador.getMao()) {
@@ -342,7 +334,7 @@ class Partida {
                         //partida voltou! 5 carrocas na mao!
                         ? volta(jogador) 
                         //batida imediata! 6 carrocas na mao!
-                        : batida(jogador, Vitoria.SEIS_CARROCAS_NA_MAO);
+                        : batida(jogador, SEIS_CARROCAS_NA_MAO);
                 break;
             }
         }

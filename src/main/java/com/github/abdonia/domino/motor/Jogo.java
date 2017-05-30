@@ -91,7 +91,7 @@ public class Jogo {
 
         //criando a mesa finalmente, com os jogadores sentados nela.
         this.mesa = 
-            new MesaImpl(
+            MesaImpl.criaMesa(
                 jogador1dupla1, 
                 jogador1dupla2, 
                 jogador2dupla1, 

@@ -85,7 +85,6 @@ class JogadorWrapper implements Jogador {
         } catch (RuntimeException e){
             throw new RuntimeBugDeJogadorException(e);
         }
-        
     }
 
     @Override

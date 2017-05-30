@@ -32,7 +32,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
-class MesaImpl implements Mesa{
+final class MesaImpl implements Mesa{
 
     private final Dupla dupla1, dupla2;
     
@@ -49,7 +49,34 @@ class MesaImpl implements Mesa{
     private final static Collector<CharSequence, ?, String> JOINING = 
         Collectors.joining("","{","}");
 
-    MesaImpl(
+    static MesaImpl criaMesa(
+        final JogadorWrapper jogador1dupla1, 
+        final JogadorWrapper jogador1dupla2, 
+        final JogadorWrapper jogador2dupla1, 
+        final JogadorWrapper jogador2dupla2,
+        final RandomGoddess fortuna,
+        final OmniscientDominoEventListener eventListener){
+        
+        //monta a mesa
+        final MesaImpl mesa = 
+            new MesaImpl(
+                jogador1dupla1, 
+                jogador1dupla2, 
+                jogador2dupla1, 
+                jogador2dupla2, 
+                fortuna, 
+                eventListener);
+        
+        //avisa aos jogadores que podem sentar
+        jogador1dupla1.sentaNaMesa(mesa, 1);
+        jogador1dupla2.sentaNaMesa(mesa, 2);
+        jogador2dupla1.sentaNaMesa(mesa, 3);
+        jogador2dupla2.sentaNaMesa(mesa, 4);
+        
+        return mesa;
+    }
+    
+    private MesaImpl(
         final JogadorWrapper jogador1dupla1, 
         final JogadorWrapper jogador1dupla2, 
         final JogadorWrapper jogador2dupla1, 
@@ -57,7 +84,7 @@ class MesaImpl implements Mesa{
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
 
-        this.listaDePedras = new ArrayDeque<>(28-4);
+        this.listaDePedras = new ArrayDeque<>(28-4-3); //max de pedras possivel.
         this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
         this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
         
@@ -68,14 +95,8 @@ class MesaImpl implements Mesa{
         
         this.eventListener = eventListener;
         this.fortuna = fortuna; 
-        
-        //podem sentar
-        jogador1dupla1.sentaNaMesa(this, 1);
-        jogador1dupla2.sentaNaMesa(this, 2);
-        jogador2dupla1.sentaNaMesa(this, 3);
-        jogador2dupla2.sentaNaMesa(this, 4);
     }
-
+    
     void embaralhaEdistribui() {
 
         //emborca as pedras...
@@ -127,11 +148,6 @@ class MesaImpl implements Mesa{
             pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
     }
     
-    @Override
-    public boolean taVazia(){
-        return this.listaDePedras.isEmpty();
-    }
-
     private boolean podeJogar(final Pedra pedra, final Lado lado){
         final Numero cabeca = 
             lado == Lado.ESQUERDO 
@@ -145,17 +161,21 @@ class MesaImpl implements Mesa{
         if(qualJogador < 1 || qualJogador > 4 ) 
             throw new IllegalArgumentException("Dominó se joga com 4.");
         //jogador 1 joga na vez 0. jogadror 2, na vez 1...
-        return jogadorDaVez(qualJogador-1).getMao().size();
+        return this.jogadorDaVez(qualJogador-1).getMao().size();
     }
 
     /**
-     * Coloca uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, 
-     * lenvantando uma exceção se nao puder colocar.
+     * Tenta colocar uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, 
+     * retornando um boolean dizendo se foi possível colocar. 
+     * <p>É possível colocar qualquer pedra quando a mesa está {@link #taVazia() 
+     * está vazia}. Quando existem pedras, a pedra sendo colocada deve {@link 
+     * Pedra#temNumero(Numero) possuir o número} do lado sendo colocado.</p>
      * 
      * @param pedra A pedra que é pra colocar
      * @param lado Onde botar ela.
      * @return <code>true</code> se a pedra foi realmente colocada, ou 
-     * <code>false</code> caso fosse uma pedra bêba.
+     * <code>false</code> caso fosse uma pedra bêba, que não {@link 
+     * Pedra#temNumero(Numero) tem o número} daquele lado da mesa.
      */
     boolean coloca(final Pedra pedra, final Lado lado) {
 
@@ -185,7 +205,7 @@ class MesaImpl implements Mesa{
         return podeColocar;
     }
 
-    private Numero novaCabeca(
+    private static Numero novaCabeca(
             final Numero cabecaAtual, 
             final Pedra pedraQueFoiJogada){
         
@@ -218,11 +238,20 @@ class MesaImpl implements Mesa{
         return this.jogadores;
     }
     
-    public Numero getNumero(final Lado lado) {
+    Numero getNumero(final Lado lado) {
         return 
             lado == Lado.ESQUERDO
                 ? numeroEsquerda
                 : numeroDireita;
+    }
+    
+    boolean taFechada(){
+        return numeroEsquerda == numeroDireita; //mesmo null....
+    }
+
+    @Override
+    public boolean taVazia(){
+        return this.listaDePedras.isEmpty();
     }
 
     @Override
