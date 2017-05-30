@@ -18,7 +18,6 @@ package com.github.abdonia.domino.exemplos;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.github.abdonia.domino.Jogada;
@@ -39,13 +38,14 @@ import com.github.abdonia.domino.Vontade;
 public class JogadorQueNaoGostaDeCarroca implements Jogador {
    
     /**
-     * Dada uma {@link Pedra} e uma {@link Mesa}, diz como seria uma {@link 
-     * Jogada} ideal dessa pedra nessa mesa, considerando que uma jogada na 
-     * {@link Mesa#getNumeroEsquerda() esquerda} é preferível (arbitrário) e que
-     * a única jogada possível pode ser simplesmene {@link Jogada#TOQUE tocar}.
+     * Dada uma {@link Mesa}, retorna uma {@link Function} que mapeia {@link 
+     * Pedra pedras} em {@link Jogada jogadas} nessa mesa. A jogada vai ser 
+     * preferencialmente na {@link Mesa#getNumeroEsquerda() esquerda} (escolhido
+     * arbitrariamente), mas pode acontecer da única jogada possível pode ser 
+     * simplesmente {@link Jogada#TOQUE tocar}.
      */
-    private static final BiFunction<Mesa,Pedra,Jogada> JOGADA_MESA = 
-        (m, p) -> 
+    private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA = 
+        m -> p ->
             m.taVazia() || p.temNumero(m.getNumeroEsquerda())
                 ? Jogada.jogada(p, Lado.ESQUERDO)
                 : p.temNumero(m.getNumeroDireita())
@@ -134,7 +134,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
 
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
-        this.jogadaNaMesa = p -> JOGADA_MESA.apply(mesa, p);
+        this.jogadaNaMesa = JOGADA_MESA.apply(mesa);
     }
 
     /**
