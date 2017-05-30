@@ -17,7 +17,6 @@
 package com.github.abdonia.domino.motor;
 
 import java.util.Collection;
-import java.util.EventListener;
 
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Vitoria;
@@ -39,7 +38,7 @@ public class Jogo {
   
     /**
      * Cria um jogo de dominó de acordo com as configurações passadas:
-     * Os {@link Jogador}es e os {@link EventListener}ers informados no 
+     * Os {@link Jogador}es e os {@link DominoEventListener}s informados no 
      * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma {@link 
      * RandomGoddess geradora de aleatoriedade} {@link 
      * DominoConfig#setRandomizadora(RandomGoddess) for informada}, será 
@@ -47,9 +46,9 @@ public class Jogo {
      * java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
-     * @throws DominoConfigException caso a configuração passada esteja inválida (deve
-     * conter 4 jogadores e todos os nomes de classe devem ser válidos, para 
-     * classes com um construtor vazio). 
+     * @throws DominoConfigException caso a configuração passada esteja inválida 
+     * (deve conter 4 jogadores e todos os nomes de classe devem ser válidos, 
+     * para classes com um construtor vazio). 
      * 
      */
     public Jogo(final DominoConfig configuracao) throws DominoConfigException{
@@ -102,7 +101,7 @@ public class Jogo {
 
     /**
      * Roda um jogo com os quatro jogadores, notificando o andamento aos 
-     * {@link EventListener}s passados no construtor.
+     * {@link DominoEventListener}s passados no construtor.
      */
     public void jogar(){
         
@@ -172,7 +171,6 @@ public class Jogo {
             segundoJogadorDaDupla1.getNome(),
             segundoJogadorDaDupla2.getNome());
     }
-
 
     private static void jogadorAtento(
             final DominoEventBroadcaster eventBroadcaster,
