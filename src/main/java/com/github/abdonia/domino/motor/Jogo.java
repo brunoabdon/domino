@@ -59,10 +59,10 @@ public class Jogo {
             configuracao.makeInstanciaJogador(1, 1);
         
         final JogadorWrapper jogador1dupla2 = 
-            configuracao.makeInstanciaJogador(1, 2);
+            configuracao.makeInstanciaJogador(2, 1);
 
         final JogadorWrapper jogador2dupla1 = 
-            configuracao.makeInstanciaJogador(2, 1);
+            configuracao.makeInstanciaJogador(1, 2);
 
         final JogadorWrapper jogador2dupla2 = 
             configuracao.makeInstanciaJogador(2, 2);
