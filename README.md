@@ -27,3 +27,5 @@ O *Javadoc* é bem completo e está disponível em:
 http://brunoabdon.github.io/domino/apidocs/
 
 Um bom ponto inicial é a [referência pra a interface Jogador](http://brunoabdon.github.io/domino/apidocs/com/github/abdonia/domino/Jogador.html).
+
+Olhe também as implementações de exemplo no pacote [`com.github.abdonia.domino.exemplos`](https://github.com/brunoabdon/domino/tree/master/src/main/java/com/github/abdonia/domino/exemplos).
