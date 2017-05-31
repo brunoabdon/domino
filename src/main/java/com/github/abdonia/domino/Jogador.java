@@ -51,7 +51,7 @@ package com.github.abdonia.domino;
  * tem nenhuma pedra que se encaixe na mesa, a jogada vai ser {@link 
  * Jogada#TOQUE um toque}.</p>
  * 
- * <p>(*) Típicamente uma partida acaba com um dos jogadores colocando sua 
+ * <p>(*) Típicamente, uma partida acaba com um dos jogadores colocando sua 
  * última pedra na mesa. É uma "batida". Mas uma partida também pode terminar de
  * outras quatro maneiras diferentes:</p>
  * <ol><li><em>Vitória por contagem de pontos na mão</em>: nenhum dos quatro 
