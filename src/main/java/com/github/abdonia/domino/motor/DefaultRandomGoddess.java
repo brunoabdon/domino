@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2016 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import java.util.Random;
 /**
  * Implementação de {@link  RandomGoddess} baseada em {@link Random}.
  * 
- * @author Bruno Abdon <brunoabdon+github@gmail.com>
+ * @author Bruno Abdon
  */
 class DefaultRandomGoddess implements RandomGoddess{
 
@@ -43,5 +43,4 @@ class DefaultRandomGoddess implements RandomGoddess{
     public boolean jogador1Comeca() {
         return RAND.nextBoolean();
     }
-    
 }

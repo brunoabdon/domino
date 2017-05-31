@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2016 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ import org.apache.commons.lang3.text.StrBuilder;
 /**
  * Um {@link DominoEventListener} que loga o que aconteceu no jogo como uma 
  * sequência de caractéres mais apropriada para máquinas (e não humanos) lerem.
+ * 
  * @author Bruno Abdon
  */
 public class RawLogger implements OmniscientDominoEventListener{

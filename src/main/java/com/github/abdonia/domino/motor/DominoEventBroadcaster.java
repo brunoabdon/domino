@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2016 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,12 @@ import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
+/**
+ * Um {@link DominoEventListener} que ecoa os eventos que ouve pra uma lista
+ * de eventlisteners registrados.
+ * 
+ * @author Bruno Abdon
+ */
 class DominoEventBroadcaster implements 
         DominoEventListener, OmniscientDominoEventListener {
 

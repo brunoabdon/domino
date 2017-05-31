@@ -22,16 +22,16 @@ import com.github.abdonia.domino.Pedra;
 /**
  * Interface para receber eventos com informações sigilosas que acontecem 
  * durante o jogo. Deve ser implementado por UIs, Loggers, etc. mas não por
- * jogadores.
+ * {@link com.github.abdonia.domino.Jogador jogadores}.
  * 
- * @author bruno
+ * @author Bruno Abdon
  */
 public interface OmniscientDominoEventListener extends DominoEventListener {
 
     /**
      * Avisa que, no início de uma partida, um derterminado 
-     * {@link com.github.abdonia.domino.Jogador jogador}recebeu dadas 
-     * {@link Pedra}s.
+     * {@link com.github.abdonia.domino.Jogador jogador} recebeu dadas {@link 
+     * Pedra pedras}.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -71,9 +71,10 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     
     /**
      * O {@link com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} que 
-     * não cabia na {@link com.github.abdonia.domino.Mesa}, o que é um erro 
-     * grave (bug da implementação do jogador), e faz o {@link 
-     * com.github.abdonia.domino.motor.Jogo} ser abortado.
+     * não cabia na {@link com.github.abdonia.domino.Mesa}.
+     * 
+     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
+     * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -91,9 +92,10 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * perguntado} a {@link com.github.abdonia.domino.Jogador um dos 
      * jogadores } da dupla que venceu a partida anterior se ele queria ser o 
      * primeiro a jogar, e ele respondeu "<em>batata</em>". A resposta deve ser
-     * sempre um número de 0 a 10, como descrito na documentação. Isso é um erro 
-     * grave (bug da implementação do jogador), e faz o {@link 
-     * com.github.abdonia.domino.motor.Jogo} ser abortado.
+     * sempre um número de 0 a 10, como descrito na documentação. 
+     * 
+     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
+     * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -122,6 +124,9 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma {@link 
      * Pedra pedra} pra jogar, o jogador não deve retornar <code>null</code>, e
      * sim {@link com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+     * 
+     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
+     * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -155,7 +160,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * jogadas}. Isso é roubo (ou bug).
      * 
      * <p>A pesar desse tipo de roubo ser comum na vida real, onde a pessoa faz
-     * e ninguém percebe, o sistem é onisciente e não vai deixar isso rolar 
+     * e ninguém percebe, o sistema é onisciente e não vai deixar isso rolar 
      * aqui.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 

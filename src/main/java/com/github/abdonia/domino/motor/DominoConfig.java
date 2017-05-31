@@ -30,17 +30,17 @@ import pl.touk.throwing.exception.WrappedException;
 
 
 /**
- * As configurações de um {@link com.github.abdonia.domino.motor.Jogo Jogo de 
- * dominó}, ou seja, quais {@link Jogador jogadores} vão participar 
- * (quais são seus nomes e suas classes) e quais os 
- * {@link com.github.abdonia.domino.eventos.DominoEventListener listeners} que
- * devem ser registrados no jogo.
+ * As configurações de um {@link Jogo Jogo de dominó}, ou seja, quais {@link 
+ * Jogador jogadores} vão participar (quais são seus nomes e suas classes) e 
+ * quais os {@link DominoEventListener listeners} que devem ser registrados no 
+ * jogo.
  * 
- * <p>Para um {@link Jogo} acontecer, as únicas configurações obrigatórias são os
- * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners são importantes 
+ * <p>Para um Jogo acontecer, as únicas configurações obrigatórias são os
+ * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners} são importantes 
  * pra que se possa saber o que aconteceu no jogo (para logar, salvar ou 
- * animar uma GUI). A configuração de um {@link RandomGoddess gerador de 
- * aleatoriedade} personalizado é raramente útil (normalmente pra testes).</p>
+ * animar uma GUI), mas não necessários. A configuração de um {@link 
+ * RandomGoddess gerador de aleatoriedade} personalizado é raramente útil 
+ * (normalmente, só pra testes).</p>
  * 
  * <p>Um exemplo de <b>configuração mínima</b> é:</p>
  * 

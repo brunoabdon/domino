@@ -23,12 +23,15 @@ import java.util.stream.Stream;
 
 /**
  * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
- * ele vai jogar e em que {@link Lado cabeça} jogar.
+ * ele vai jogar e em que {@link Lado lado} da {@link Mesa mesa} jogar.
  *
- * Quando o jogador toca, deve usar a jogada singleton {@link #TOQUE} (não deve
- * usar <code>null</code>, por exemplo).
+ * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar, 
+ * retornando {@link #TOQUE} (retornar <code>null</code> não é permitido).
  * 
- * @author bruno
+ * <p>Essa classe é imutável e `final`. Suas instâncias são adquiridas pelo
+ * método estático {@link #jogada(Pedra, Lado)}.</p>
+ * 
+ * @author Bruno Abdon
  */
 public final class Jogada {
 
@@ -76,21 +79,20 @@ public final class Jogada {
 
     /**
      * Retorna a Jogada de uma determinada {@link Pedra} em um determinado 
-     * {@link Lado} da {@link Mesa}.
+     * {@link Lado} da {@link Mesa}. Para tocar, o singleton {@link #TOQUE} deve
+     * ser usado.
      * 
-     * Para tocar, o singleton {@link #TOQUE} deve ser usado.
+     * <p>Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
+     * construtor e fazer com que as instâncias sejam reutilizadas.</p>
      * 
-     * Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
-     * construtor e fazer com que as instâncias sejam reutilizadas.
-     * 
-     * (*) Cada uma das 28 pedras na esquerda, mais cada uma das 28 pedras na
-     * direita, mais o toque.
+     * <p>(*) As 57 jogadas possíveis são: cada uma das 28 pedras na {@link 
+     * Lado#ESQUERDO esquerda}, mais cada uma das 28 pedras na {@link 
+     * Lado#DIREITO direita}, mais o {@link #TOQUE toque}.</p>
      * 
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.
      * 
-     * @return Uma jogada da pedra em questão do lado informado, ou 
-     * <code>null</code>, caso um dos parametros seja nulo.
+     * @return Uma jogada da pedra em questão do lado informado.
      * 
      * @throws IllegalArgumentException Se a {@link Pedra} ou o {@link Lado} 
      * for <code>null</code>.

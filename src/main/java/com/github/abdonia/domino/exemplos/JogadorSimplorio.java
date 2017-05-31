@@ -26,6 +26,7 @@ import com.github.abdonia.domino.Vontade;
 
 /**
  * Implementação mais simples possível de um {@link Jogador}.
+ * 
  * @author Bruno Abdon
  */
 public class JogadorSimplorio implements Jogador{
@@ -43,7 +44,6 @@ public class JogadorSimplorio implements Jogador{
      * @param cadeiraQueSentou a cadeira em que sentei (1, 2, 3 ou 4). Vou 
      * ignorar esse parâmetro.
      * 
-     * @see Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) ;
      */
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {

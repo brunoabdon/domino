@@ -41,7 +41,8 @@ import java.util.stream.Stream;
 import com.github.abdonia.domino.Numero;
 
 /**
- * Escuta tudo o que vai acontecendo no jogo e loga em um {@link PrintWriter}.
+ * Um {@link DominoEventListener} que escuta tudo o que vai acontecendo no jogo 
+ * e logando em um {@link PrintWriter}.
  *
  * @author Bruno Abdon
  */

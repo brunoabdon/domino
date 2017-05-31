@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2017 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,12 @@ import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vontade;
-
+/**
+ * Represena um jogador sentado na mesa, jogando uma partida: É a visão de um
+ * {@link Jogador} do ponto de vista do motor do jogo.
+ * 
+ * @author Bruno Abdon
+ */
 class JogadorWrapper implements Jogador {
 
     private final String nome;
@@ -33,6 +38,12 @@ class JogadorWrapper implements Jogador {
 
     private final Jogador wrapped;
 
+    /**
+     * Exceção que indica que um {@link Jogador} levantou uma {@link 
+     * RuntimeException} enquanto tentava executar algum de seus métodos. A
+     * exceção levantada pelo jogador será guardada como {@link 
+     * Throwable#getCause() causa} desta exceção.
+     */
     public class RuntimeBugDeJogadorException extends RuntimeException{
 
         public RuntimeBugDeJogadorException(final RuntimeException cause) {

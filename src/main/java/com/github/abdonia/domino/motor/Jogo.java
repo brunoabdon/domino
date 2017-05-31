@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2016 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,8 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
 
 /**
  * Um jogo de dominó entre 4 {@link Jogador jogadores}, divididos em 2 duplas,
- * que vai ser extender por várias partidas, até que uma das duplas acumule 6 
- * pontos (Ver {@link Vitoria} para saber quantos pontos uma dupla ganha em cada 
- * tipo de vitória).
+ * que vai ser extender por várias partidas, até que uma das duplas acumule seis 
+ * pontos.
  * 
  * @author Bruno Abdon
  */
@@ -80,10 +79,10 @@ public class Jogo {
         this.eventBroadcaster = new DominoEventBroadcaster();
 
         //registrando os jogadores que forem eventlistenres
-        jogadorAtento(this.eventBroadcaster, jogador1dupla1);
-        jogadorAtento(this.eventBroadcaster, jogador2dupla1);
-        jogadorAtento(this.eventBroadcaster, jogador1dupla2);
-        jogadorAtento(this.eventBroadcaster, jogador2dupla2);
+        jogadorAtento(jogador1dupla1);
+        jogadorAtento(jogador2dupla1);
+        jogadorAtento(jogador1dupla2);
+        jogadorAtento(jogador2dupla2);
         
         //registrando os eventlisteners configurados
         this.eventBroadcaster.addEventListeners(eventListeners,true);
@@ -158,6 +157,13 @@ public class Jogo {
         }
     }
 
+    /**
+     * Faz broadcast do evento "{@link DominoEventListener#jogoComecou(String, 
+     * String, String, String) jogoComecou}" pra os {@link DominoEventListener
+     * eventListeners} registrados.
+     * @param dupla1 A primeira dupla de jogadores.
+     * @param dupla2 A segunda dupla de jogadores.
+     */
     private void avisaQueJogoComecou(final Dupla dupla1, final Dupla dupla2) {
         
         final JogadorWrapper primeiroJogadorDaDupla1 = dupla1.getJogador1();
@@ -172,21 +178,45 @@ public class Jogo {
             segundoJogadorDaDupla2.getNome());
     }
 
-    private static void jogadorAtento(
-            final DominoEventBroadcaster eventBroadcaster,
-            final JogadorWrapper jogadorWrapper) {
+    /**
+     * Registra um {@link Jogador} como pra ouvir os eventos deste jogo caso ele
+     * implemente também a interface {@link DominoEventListener}.
+     * 
+     * @param jogadorWrapper O {@link JogadorWrapper wrapper} contendo o {@link 
+     * Jogador} a ser possívelmente registrado pra ouvir os eventos.
+     */
+    private void jogadorAtento(final JogadorWrapper jogadorWrapper) {
         
         final Jogador jogador = jogadorWrapper.getWrapped();
         if(jogador instanceof DominoEventListener){
-            eventBroadcaster
+            this.eventBroadcaster
                 .addEventListener((DominoEventListener)jogador,false);
         }
     }
 
-    private Dupla getDuplaVencedora(final ResultadoPartida.Batida resultado) {
-        return this.mesa.getDuplaDoJogador(resultado.getVencedor());
+    /**
+     * Dada uma {@link ResultadoPartida.Batida batida}, diz qual é a {@link 
+     * Dupla} do {@link Jogador} que bateu.
+     * 
+     * @param batida Uma batida.
+     * @return a {@link Dupla} do {@link Jogador} que bateu essa batida.
+     */
+    private Dupla getDuplaVencedora(final ResultadoPartida.Batida batida) {
+        return this.mesa.getDuplaDoJogador(batida.getVencedor());
     }
 
+    /**
+     * Atualiza o placar desse jogo, dados quem foi a {@link Dupla dupla} 
+     * vencedora, qual foi o tipo de {@link Vitoria vitória} e se a {@link 
+     * Partida} estava valendo dobrada (ou quadruplicada, etc....).
+     * .
+     * 
+     * @param duplaDoVencedor A dupla vencedora.
+     * @param tipoDeBatida Com foi a vitória.
+     * @param multiplicadorDobrada Diz por quanto deve multiplicado o {@link 
+     * Vitoria#getPontos() valor da vitória} (quando uma partida empata, a 
+     * próxima vale dobrada).
+     */
     private void atualizaPlacar(
         final Dupla duplaDoVencedor, 
         final Vitoria tipoDeBatida, 
@@ -198,10 +228,21 @@ public class Jogo {
         duplaDoVencedor.adicionaPontos(pontosDaPartida);
     }
 
+    /**
+     * Diz se uma das duas {@link Dupla duplas} já atingiu seis {@link 
+     * Dupla#getPontos() pontos}.
+     * @return <code>true</code> se e somente se uma das duas duplas já tiver,
+     * pelo menos, seis pontos.
+     */
     private boolean alguemVenceu() {
         return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
     }
 
+    /**
+     * Dispara o evento correspondene a um {@link BugDeJogadorException bug de 
+     * um dos jogadores}.
+     * @param e A exceção levantada por um bug por parte de um {@link Jogador}.
+     */
     private void avisaQueJogadorErrou(final BugDeJogadorException e) {
             
         final int cadeira = e.getJogadorBuguento().getCadeira();
