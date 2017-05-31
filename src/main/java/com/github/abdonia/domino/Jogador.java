@@ -17,7 +17,7 @@
 package com.github.abdonia.domino;
 
 /**
- * Um jogador da partida, ou seja, a IA que decide como jogar
+ * Um jogador da partida, ou seja, a IA que decide como jogar.
  * 
  * <p>Num jogo de dominó, os quatro Jogadores vão primeiro {@link 
  * #sentaNaMesa(Mesa, int) sentar na mesa} (em duplas) e então jogar várias 
