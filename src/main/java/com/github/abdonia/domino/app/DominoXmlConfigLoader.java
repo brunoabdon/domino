@@ -80,7 +80,6 @@ class DominoXmlConfigLoader {
 
         private static final String ELEMENT_JOGADOR = "jogador";
         private static final String ELEMENT_EVENT_LISTENER = "event-listener";
-        private static final String ELEMENT_RANDOM_GODDESS = "random-goddess";
         
         private static final String ATT_NOME = "nome";
         private static final String ATT_CLASSE = "classe";
@@ -113,9 +112,6 @@ class DominoXmlConfigLoader {
 
             } else if(qName.equals(ELEMENT_EVENT_LISTENER)){
                 this.dominoConfig.addEventListener(classe);
-                
-            } else if(qName.equals(ELEMENT_RANDOM_GODDESS)){
-                this.dominoConfig.setNomeRandomizadora(classe);
             }
         }
     }

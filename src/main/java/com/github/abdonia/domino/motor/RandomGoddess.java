@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * @author Bruno Abdon
  */
-public interface RandomGoddess {
+interface RandomGoddess {
 
     /**
      * Retorna uma lista contendo as 28 {@linkplain Pedra pedras} do dominó numa

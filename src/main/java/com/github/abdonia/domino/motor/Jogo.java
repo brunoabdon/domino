@@ -39,10 +39,7 @@ public class Jogo {
      * Cria um jogo de dominó de acordo com as configurações passadas:
      * Os {@linkplain Jogador jogadores} e os {@link DominoEventListener 
      * eventListeners} informados no parâmetro {@code dominoConfig} serão 
-     * instanciados. Se uma {@link RandomGoddess geradora de aleatoriedade} 
-     * {@linkplain DominoConfig#setRandomizadora(RandomGoddess) for informada}, 
-     * será instanciada. Se não, os eventos aleatórios serão baseados em {@link 
-     * java.util.Random}.
+     * instanciados.
      * 
      * @param configuracao A configuração do jogo.
      * 
@@ -52,6 +49,24 @@ public class Jogo {
      * 
      */
     public Jogo(final DominoConfig configuracao) throws DominoConfigException{
+        this(configuracao,new DefaultRandomGoddess());
+    }
+    
+    /**
+     * Cria um jogo de dominó de acordo com o descrito em {@link 
+     * #Jogo(DominoConfig, mas onde os eventos "aleatórios" são criados por uma 
+     * {@link RandomGoddess} passada como parâmetro. Útil para testes 
+     * controlados.
+     * 
+     * @param configuracao A configuração do jogo.
+     * @param randomGoddess A geradora de aleatoriedade que vai ditar o jogo.
+     * 
+     * @throws DominoConfigException caso a configuração passada esteja inválida 
+     * (deve conter 4 jogadores e todos os nomes de classe devem ser válidos, 
+     * para classes com um construtor vazio).
+     */
+    Jogo( DominoConfig configuracao, final RandomGoddess randomGoddess) 
+            throws DominoConfigException{
 
         //pegando os 4 jogadores da configuracao
         final JogadorWrapper jogador1dupla1 = 
@@ -70,9 +85,7 @@ public class Jogo {
         final Collection<DominoEventListener> eventListeners = 
             configuracao.makeInstanciasListeners();
         
-        //pegando a geradora de aleatoriedade (ou usando a default, se nao tiver
-        this.fortuna = 
-            configuracao.makeInstanciaRandomGoddess(DefaultRandomGoddess.class);
+        this.fortuna = randomGoddess;
         
         //configuracao tava ok. vamos registrar tudo agora.
         

@@ -130,10 +130,6 @@ public class DominoConfig {
     private final Class[] classesJogadores  = new Class[4];
     private final Jogador[] jogadores  = new Jogador[4];
 
-    private String nomeRandomizadora;
-    private Class<? extends RandomGoddess> classeRandomizadora;
-    private RandomGoddess randomizadora;
-
     private List<String> nomesEventListeners = new ArrayList<>();
     private List<Class> classesEventListeners = new ArrayList<>();
     private List<DominoEventListener> eventListeners = new ArrayList<>();
@@ -549,57 +545,6 @@ public class DominoConfig {
         this.classesEventListeners.add(classeEventListener);
     }
     
-    public String getNomeRandomizadora() {
-        return nomeRandomizadora;
-    }
-
-    /**
-     * Seta, pelo nome completo da classe, qual {@link RandomGoddess} será usado
-     * pra gerar os eventos aleatórios de uma partida. É uma configuração 
-     * opcional que normalmente só é útil para testes controlados.
-     * 
-     * @param nomeRandomizadora O nome de uma classe que implementa a interface
-     * {@link RandomGoddess}.
-     */
-    public void setNomeRandomizadora(final String nomeRandomizadora) {
-        this.nomeRandomizadora = nomeRandomizadora;
-        this.randomizadora = null;
-    }
-    
-    public RandomGoddess getRandomizadora() {
-        return randomizadora;
-    }
-
-    /**
-     * Seta qual {@link RandomGoddess} será usado pra gerar os eventos 
-     * aleatórios de uma partida. É uma configuração opcional que normalmente só
-     * é útil para testes controlados.
-     * 
-     * @param randomizadora Uma instância de uma {@link RandomGoddess} .
-     */
-    public void setRandomizadora(final RandomGoddess randomizadora) {
-        this.randomizadora = randomizadora;
-        this.nomeRandomizadora = null;
-    }
-
-    public Class<? extends RandomGoddess> getClasseRandomizadora() {
-        return classeRandomizadora;
-    }
-
-    /**
-     * Seta qual a classe concreta de {@link RandomGoddess} que será usado pra 
-     * gerar os eventos aleatórios de uma partida. A classe deverá ter um 
-     * construtor vazio, que será usado ao se instanciar um {@link Jogo}. É uma
-     * configuração opcional que normalmente só é útil para testes controlados.
-     * 
-     * @param classeRandomizadora Uma classe que implementa a interface {@link 
-     * RandomGoddess} e possui um construtor público vazio.
-     */
-    public void setClasseRandomizadora(
-            final Class<? extends RandomGoddess> classeRandomizadora) {
-        this.classeRandomizadora = classeRandomizadora;
-    }
-    
     JogadorWrapper makeInstanciaJogador(
         final int idxDupla, 
         final int idxJogadorNaDupla) throws DominoConfigException{
@@ -649,33 +594,6 @@ public class DominoConfig {
                     idxDupla);
         }
         return nome;
-    }
-    
-    RandomGoddess makeInstanciaRandomGoddess(
-            final Class<? extends RandomGoddess> defaultClass) 
-                throws DominoConfigException{
-        
-        final RandomGoddess randomGoddess;
-        if (this.nomeRandomizadora != null) {
-            randomGoddess = 
-                DominoConfigUtils
-                    .instancia(
-                        RandomGoddess.class, 
-                        this.nomeRandomizadora);
-            
-        } else if(this.randomizadora != null){
-            randomGoddess = this.randomizadora;
-            
-        } else {
-            final Class<? extends RandomGoddess> klass = 
-                this.classeRandomizadora != null
-                    ? this.classeRandomizadora
-                    : defaultClass;
-            
-            randomGoddess = 
-                DominoConfigUtils.instancia(RandomGoddess.class, klass);
-        }
-        return randomGoddess;
     }
     
     Collection<DominoEventListener> makeInstanciasListeners() 
