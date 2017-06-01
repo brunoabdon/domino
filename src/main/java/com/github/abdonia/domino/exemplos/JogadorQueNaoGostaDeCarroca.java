@@ -18,7 +18,6 @@ package com.github.abdonia.domino.exemplos;
 
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.function.Function;
 
 import com.github.abdonia.domino.Jogada;
@@ -90,7 +89,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     /**
      * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
      */
-    protected EnumSet<Pedra> mao;
+    private EnumSet<Pedra> mao;
 
     /**
      * Dada uma {@link Pedra}, diz como seria uma {@link Jogada} dessa pedra na
@@ -113,9 +112,9 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     }
     
     /**
-     * Joga a maior carroça que puder jogar. Se não tiver carroça que dê pra 
-     * jogar, joga a maior não-carroça que puder jogar (ou {@linkplain 
-     * Jogada#TOQUE toca}.
+     * Joga a maior {@linkplain Pedra#isCarroca() carroça} que puder jogar. Se 
+     * não tiver carroça que dê pra jogar, joga a maior não-carroça que puder 
+     * jogar (ou {@linkplain Jogada#TOQUE toca}).
      * 
      * @return Uma {@link Pedra}, de preferência carroça.
      */
@@ -140,11 +139,12 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     }
 
     /**
-     * Colabora com um possível parceiro da mesma classe: a vonta só empata
-     * caso os dois tenham o memso número de carroças na mão.
+     * Colabora com um possível parceiro da mesma classe: a vontade só empata
+     * caso os dois tenham o mesmo número de {@linkplain Pedra#isCarroca() 
+     * carroças} na mão.
      * 
      * @return a vontade de começar a jogar, que vai aumentando de acordo com o
-     * número de carroças na mão.
+     * número de {@linkplain Pedra#isCarroca() carroças} na mão.
      */
     @Override
     public Vontade vontadeDeComecar() {

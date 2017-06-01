@@ -50,7 +50,7 @@ public final class Jogada {
     private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> JOGADAS = 
         funcToMap (
             lado->funcToMap(
-                pedra-> {return new Jogada(pedra,lado);}, 
+                pedra -> {return new Jogada(pedra,lado);}, 
                 Pedra.class), 
             Lado.class
         );
@@ -62,8 +62,8 @@ public final class Jogada {
      * @param <T> O tipo do valor do EnumMap
      * @param <E> O tipo do Enum que sera chave do EnumMap
      * @param f A função que determina qual o valor de cada chave
-     * @param t A classe do Enum 
-     * @param values os valores do enum que devem aparecer no EnumMap
+     * @param t A classe dos valores do mapa.
+     * 
      * @return Um EnumMap que replica uma Function.
      */
     private static <T,E extends Enum<E>> EnumMap<E,T> funcToMap(
