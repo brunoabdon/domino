@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar, 
  * retornando {@link #TOQUE} (retornar {@code null} não é permitido).
  * 
- * <p>Essa classe é imutável e `final`. Suas instâncias são adquiridas pelo
+ * <p>Essa classe é imutável e {@code final}. Suas instâncias são adquiridas pelo
  * método estático {@link #jogada(Pedra, Lado)}.</p>
  * 
  * @author Bruno Abdon
