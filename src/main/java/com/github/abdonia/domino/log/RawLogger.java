@@ -97,7 +97,7 @@ public class RawLogger implements OmniscientDominoEventListener{
                 
         LogPartida(final boolean ehDobrada){
             this.ordemOriginalPedras = new Integer[28];
-            this.foiDobrada= ehDobrada;
+            this.foiDobrada = ehDobrada;
         }
         
         private <C extends  Collection<E>, E extends  Enum<E>> void printEnums(
@@ -191,47 +191,47 @@ public class RawLogger implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogoAcabou(int placarDupla1, int placarDupla2) {
+    public void jogoAcabou(final int placarDupla1, final int placarDupla2) {
         this.printStream.println("RAW LOG: ");
-        logPartidas.stream().forEach(
-            (logPartida) -> {
-                logPartida.print();
-        });
+        logPartidas.stream().forEach(LogPartida::print);
     }
 
     @Override
-    public void partidaVoltou(int jogador) {
+    public void partidaVoltou(final int jogador) {
         this.logPartidaAtual.jogador = jogador;
     }
 
     @Override
-    public void jogadorBateu(int quemFoi, Vitoria tipoDeVitoria) {
+    public void jogadorBateu(final int quemFoi, final Vitoria tipoDeVitoria) {
         this.logPartidaAtual.jogador = quemFoi;
         this.logPartidaAtual.tipoDeVitoria = tipoDeVitoria;
     }
     
     @Override
-    public void jogadorTocou(int jogador) {
+    public void jogadorTocou(final int jogador) {
         this.logPartidaAtual.pedrasJogadas.add(null);
         this.logPartidaAtual.ladosJogadas.add(null);
     }
 
     @Override
-    public void jogadorJogou(int jogador, Lado lado, Pedra pedra) {
+    public void jogadorJogou(
+            final int jogador, final Lado lado, final Pedra pedra) {
         this.logPartidaAtual.pedrasJogadas.add(formatEnum(pedra));
         this.logPartidaAtual.ladosJogadas.add(formatEnum(lado));
     }
 
     @Override
-    public void decididoQuemComeca(int jogador, boolean consentimentoMutuo) {
+    public void decididoQuemComeca(
+            final int jogador, 
+            final boolean consentimentoMutuo) {
         if(!consentimentoMutuo) 
             this.logPartidaAtual
                 .jogador1Comeca
                 .add(jogador%2!=0);
     }
     
-    private void preenchePedaco(int idx, Collection<Pedra> pedras){
-        for (Pedra pedra : pedras) {
+    private void preenchePedaco(int idx, final Collection<Pedra> pedras){
+        for (final Pedra pedra : pedras) {
             this.logPartidaAtual.ordemOriginalPedras[idx++] = pedra.ordinal();
         }
     }    
