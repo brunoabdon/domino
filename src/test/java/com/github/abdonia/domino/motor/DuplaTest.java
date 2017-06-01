@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Bruno Abdon <brunoabdon+github@gmail.com>
+ * Copyright (C) 2016 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import com.github.abdonia.domino.Vontade;
 
 /**
  *
- * @author Bruno Abdon <brunoabdon+github@gmail.com>
+ * @author Bruno Abdon
  */
 public class DuplaTest {
     
