@@ -19,10 +19,10 @@ package com.github.abdonia.domino;
 /**
  * Cada uma das 28 pedras de um dominó.
  * 
- * <p>As constantes aparecem na ordem crescente do {@link #getNumeroDePontos()
- * número de pontos} da pedra, desempatando pelo valor do menor entre os dois
- * números da pedra (que sempre será dado por {@link #getPrimeiroNumero()}).
- * </p>
+ * <p>As constantes aparecem na ordem crescente do {@linkplain 
+ * #getNumeroDePontos() número de pontos} da pedra, desempatando pelo valor do 
+ * menor entre os dois números da pedra (que sempre será dado por 
+ * {@link #getPrimeiroNumero()}).</p>
  * 
  * @author Bruno Abdon
  */
@@ -211,7 +211,7 @@ public enum Pedra {
 
     /**
      * O menor {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
-     * {@link #isCarroca() seja uma carroça}).
+     * {@linkplain #isCarroca() seja uma carroça}).
      * 
      * @return O menor número dessa pedra.
      */
@@ -221,7 +221,7 @@ public enum Pedra {
 
     /**
      * O maior {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
-     * {@link #isCarroca() seja uma carroça}).
+     * {@linkplain #isCarroca() seja uma carroça}).
      * @return O menor número dessa pedra.
      */
     public Numero getSegundoNumero() {
@@ -229,8 +229,8 @@ public enum Pedra {
     }
 
     /**
-     * A soma dos dois {@link Numero}s. Usado quando tranca e tem que
-     * contar os pontos na mão.
+     * A soma dos dois {@linkplain Numero números}. Usado quando tranca e tem 
+     * que contar os pontos na mão.
      * 
      * @return A soma dos dois números;
      */
@@ -239,23 +239,23 @@ public enum Pedra {
     }
 
     /**
-     * Método auxiliar que diz se um dos dois {@link Numero}s dessa 
-     * pedra é o número dado como parâmentro.
+     * Método auxiliar que diz se um dos dois {@linkplain Numero números} dessa 
+     * pedra é o número dado como parâmetro.
      * 
      * @param numero Um {@link Numero}, pra testar se essa pedra tem ele.
-     * @return {@code true} só se um dos dois {@link Numero}s dessa pedra for o 
-     * dado como parâmetro.
+     * @return {@code true} só se um dos dois {@linkplain Numero números} dessa 
+     * pedra for o dado como parâmetro.
      */
     public boolean temNumero(final Numero numero){
         return numero == primeiroNumero || numero == segundoNumero; 
     }
 
     /**
-     * Diz se essa pedra é uma carroça. Ou seja, se o {@link 
-     * #getPrimeiroNumero() primeiro número} é igual ao {@link 
+     * Diz se essa pedra é uma carroça. Ou seja, se o {@linkplain  
+     * #getPrimeiroNumero() primeiro número} é igual ao {@linkplain  
      * #getSegundoNumero() segundo}.
      * 
-     * @return Se a predra é ou não carroça.
+     * @return Se essa pedra é ou não carroça.
      */
     public boolean isCarroca(){
         return this.primeiroNumero == this.segundoNumero;

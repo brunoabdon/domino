@@ -22,7 +22,7 @@ import com.github.abdonia.domino.Pedra;
 /**
  * Interface para receber eventos com informações sigilosas que acontecem 
  * durante o jogo. Deve ser implementado por UIs, Loggers, etc. mas não por
- * {@link com.github.abdonia.domino.Jogador jogadores}.
+ * {@link com.github.abdonia.domino.Jogador Jogadores}.
  * 
  * @author Bruno Abdon
  */
@@ -30,19 +30,19 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
 
     /**
      * Avisa que, no início de uma partida, um derterminado 
-     * {@link com.github.abdonia.domino.Jogador jogador} recebeu dadas {@link 
-     * Pedra pedras}.
+     * {@linkplain com.github.abdonia.domino.Jogador jogador} recebeu dadas 
+     * {@linkplain Pedra pedras}.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
-     * @param pedra1 A primeira {@link Pedra pedra} da mão do jogador.
-     * @param pedra2 A segunda {@link Pedra pedra} da mão do jogador.
-     * @param pedra3 A terceira {@link Pedra pedra} da mão do jogador.
-     * @param pedra4 A quarta {@link Pedra pedra} da mão do jogador.
-     * @param pedra5 A quinta {@link Pedra pedra} da mão do jogador.
-     * @param pedra6 A última {@link Pedra pedra} da mão do jogador.
+     * @param pedra1 A primeira {@linkplain Pedra pedra} da mão do jogador.
+     * @param pedra2 A segunda {@linkplain Pedra pedra} da mão do jogador.
+     * @param pedra3 A terceira {@linkplain Pedra pedra} da mão do jogador.
+     * @param pedra4 A quarta {@linkplain Pedra pedra} da mão do jogador.
+     * @param pedra5 A quinta {@linkplain Pedra pedra} da mão do jogador.
+     * @param pedra6 A última {@linkplain Pedra pedra} da mão do jogador.
      */
     public default void jogadorRecebeuPedras(
             final int quemFoi, 
@@ -57,10 +57,10 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     /**
      * As pedras foram distribuidas, e as quatro que sobraram foram pro dorme.
      * 
-     * @param pedra1 A primeira {@link Pedra pedra} do dorme.
-     * @param pedra2 A segunda {@link Pedra pedra} do dorme.
-     * @param pedra3 A terceira {@link Pedra pedra} do dorme.
-     * @param pedra4 A última {@link Pedra pedra} do dorme.
+     * @param pedra1 A primeira {@linkplain Pedra pedra} do dorme.
+     * @param pedra2 A segunda {@linkplain Pedra pedra} do dorme.
+     * @param pedra3 A terceira {@linkplain Pedra pedra} do dorme.
+     * @param pedra4 A última {@linkplain Pedra pedra} do dorme.
      */
     public default void dormeDefinido(
             final Pedra pedra1,
@@ -73,11 +73,11 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * O {@link com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} que 
      * não cabia na {@link com.github.abdonia.domino.Mesa}.
      * 
-     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
+     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param pedra a {@link Pedra} que tentou jogar.
@@ -88,17 +88,16 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
 
     /**
-     * Foi {@link com.github.abdonia.domino.Jogador#vontadeDeComecar() 
-     * perguntado} a {@link com.github.abdonia.domino.Jogador um dos 
-     * jogadores } da dupla que venceu a partida anterior se ele queria ser o 
-     * primeiro a jogar, e ele respondeu "<em>batata</em>". A resposta deve ser
-     * sempre um número de 0 a 10, como descrito na documentação. 
+     * Foi {@linkplain com.github.abdonia.domino.Jogador#vontadeDeComecar() 
+     * perguntado} a um dos {@linkplain com.github.abdonia.domino.Jogador
+     * jogadores} da dupla que venceu a partida anterior se ele queria ser o 
+     * primeiro a jogar, e ele respondeu "{@code null}". 
      * 
      * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
     public default void jogadorErrouVontadeDeComeçar(final int quemFoi){
@@ -112,7 +111,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * interrompido.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
     public default void jogadorFaleceu(final int quemFoi){
@@ -120,16 +119,17 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     
     /**
      * O {@link com.github.abdonia.domino.Jogador} retornou 
-     * {@code null} quando {@link com.github.abdonia.domino.Jogador#joga()
-     * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma {@link 
-     * Pedra pedra} pra jogar, o jogador não deve retornar {@code null}, e sim 
-     * {@link com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+     * {@code null} quando {@linkplain com.github.abdonia.domino.Jogador#joga()
+     * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma 
+     * {@linkplain Pedra pedra} pra jogar, o jogador não deve retornar {@code 
+     * null}, e sim {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocar} 
+     * explicitamente.
      * 
      * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
@@ -137,16 +137,17 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
     
     /**
-     * O {@link com.github.abdonia.domino.Jogador jogador} era quem 
-     * tinha a maior {@link Pedra#isCarroca() carroça} (provavelmente o {@link 
-     * Pedra#CARROCA_DE_SENA Dozão} na mão na primeira rodada da primeira 
-     * partida, mas começou o jogo {@link com.github.abdonia.domino.Jogada 
-     * jogando} outra {@link Pedra pedra}.
+     * O {@linkplain com.github.abdonia.domino.Jogador jogador} era quem 
+     * tinha a maior {@linkplain Pedra#isCarroca() carroça} (provavelmente o 
+     * {@linkplain Pedra#CARROCA_DE_SENA Dozão} na mão na primeira rodada da 
+     * primeira partida, mas começou o jogo {@linkplain  
+     * com.github.abdonia.domino.Jogada jogando} outra {@linkplain Pedra pedra}.
+     * 
      * <p>Esse cara não sabe o basico de jogar, não faz sentido continuar o 
      * jogo.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
@@ -154,17 +155,17 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
     
     /**
-     * O {@link com.github.abdonia.domino.Jogador jogador} {@link 
-     * com.github.abdonia.domino.Jogada#TOQUE tocou} quando tinha {@link Pedra 
-     * pedras} na pão que poderiam ser {@link com.github.abdonia.domino.Jogada
-     * jogadas}. Isso é roubo (ou bug).
+     * O {@linkplain com.github.abdonia.domino.Jogador jogador} {@linkplain  
+     * com.github.abdonia.domino.Jogada#TOQUE tocou} quando tinha {@linkplain
+     * Pedra pedras} na mão que poderiam ser {@linkplain
+     * com.github.abdonia.domino.Jogada jogadas}. Isso é roubo (ou bug).
      * 
      * <p>A pesar desse tipo de roubo ser comum na vida real, onde a pessoa faz
      * e ninguém percebe, o sistema é onisciente e não vai deixar isso rolar 
      * aqui.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      */
@@ -172,14 +173,15 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
 
     /**
-     * O {@link com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} que 
-     * ele não tinha na mão. Isso é roubo (ou bug) e faz o jogo ser abortado.
+     * O {@linkplain com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} 
+     * que ele não tinha na mão. Isso é roubo (ou bug) e faz o jogo ser 
+     * abortado.
      * 
-     * @param quemFoi O jogador em espertinho (identificado pelo 
-     * {@link com.github.abdonia.domino.Jogador#sentaNaMesa(
+     * @param quemFoi O jogador em questão (identificado pelo 
+     * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
-     * @param pedra a {@link Pedra} que ele o jogador tirou do bolso pra jogar.
+     * @param pedra a {@link Pedra} que o jogador tirou do bolso pra jogar.
      */
     public default void jogadorJogouPedraQueNãoTinha(
             final int quemFoi, final Pedra pedra){

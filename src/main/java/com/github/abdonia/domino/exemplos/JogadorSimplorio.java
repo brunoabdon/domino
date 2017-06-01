@@ -37,8 +37,8 @@ public class JogadorSimplorio implements Jogador{
     private boolean jaJogueiAlgumaVez;
     
     /**
-     * Vai guardar a referência pra a {@link Mesa} pra usar na hora de {@link 
-     * #joga() jogar}.
+     * Vai guardar a referência pra a {@link Mesa} pra usar na hora de 
+     * {@linkplain #joga() jogar}.
      * 
      * @param mesa A mesa do jogo.
      * @param cadeiraQueSentou a cadeira em que sentei (1, 2, 3 ou 4). Vou 
@@ -52,13 +52,13 @@ public class JogadorSimplorio implements Jogador{
     }
 
     /**
-     * Recebo as 6 {@link Pedra pedras} no início de cada partida.
-     * @param pedra1 A primeira {@link Pedra pedra} da mão.
-     * @param pedra2 A segunda {@link Pedra pedra} da mão.
-     * @param pedra3 A terceira {@link Pedra pedra} da mão.
-     * @param pedra4 A quarta {@link Pedra pedra} da mão.
-     * @param pedra5 A quinta {@link Pedra pedra} da mão.
-     * @param pedra6 A última {@link Pedra pedra} da mão.
+     * Recebo as 6 {@linkplain Pedra pedras} no início de cada partida.
+     * @param pedra1 A primeira {@linkplain Pedra pedra} da mão.
+     * @param pedra2 A segunda {@linkplain Pedra pedra} da mão.
+     * @param pedra3 A terceira {@linkplain Pedra pedra} da mão.
+     * @param pedra4 A quarta {@linkplain Pedra pedra} da mão.
+     * @param pedra5 A quinta {@linkplain Pedra pedra} da mão.
+     * @param pedra6 A última {@linkplain Pedra pedra} da mão.
      */
     @Override
     public void recebeMao(
@@ -72,16 +72,17 @@ public class JogadorSimplorio implements Jogador{
     }
 
     /**
-     * Vou dizer quais de minhas {@link Pedra pedras} vou querer jogar.
+     * Vou dizer quais de minhas {@linkplain Pedra pedras} vou querer jogar.
      * 
      * <p>Se for a primeira jogada do jogo inteiro, então tenho que jogar 
      * obrigatoriamente a {@link Pedra#CARROCA_DE_SENA carroça de senna}. Se não
      * tiver, tem que ser a {@link Pedra#CARROCA_DE_QUINA carroça de quina}. Se
-     * não, a de {@link Pedra#CARROCA_DE_QUINA quadra}.</p>
+     * não, a de {@linkplain Pedra#CARROCA_DE_QUINA quadra}.</p>
      * 
      * <p>Se não for qualquer outra jogada além da primeira do jogo, vou jogar
-     * alguma das minhas pedras que caibam na {@link Mesa mesa} ou, se não tiver
-     * nenhuma pedra, vou {@link Jogada#TOQUE tocar}. </p>
+     * alguma das minhas pedras que caibam na {@linkplain Mesa mesa} ou, se não
+     * tiver nenhuma pedra, vou {@linkplain Jogada#TOQUE tocar}.</p>
+     * 
      * @return A {@link Jogada} (qual  pedra em que lado da mesa) que eu decidi 
      * jogar.
      */
@@ -112,8 +113,8 @@ public class JogadorSimplorio implements Jogador{
     
     /**
      * Retorna uma {@link Jogada} com a primeira {@link Pedra} que eu tiver na 
-     * mão, de um {@link Lado} qualquer. A pedra jogada será removida da {@link 
-     * #pedras mão}, pois não poderá ser jogada de novo.
+     * mão, de um {@link Lado} qualquer. A pedra jogada será removida da 
+     * {@linkplain #pedras mão}, pois não poderá ser jogada de novo.
      * 
      * @return Uma {@link Jogada}.
      */
@@ -142,7 +143,7 @@ public class JogadorSimplorio implements Jogador{
                 //se eh a primeira carroca (mariorCarroca==null) ou
                 //se eh uma maior do que a anterior, ela é a maior agora.
                 if(maiorCarroca == null                     
-                    || pedra.getNumeroDePontos() > maiorCarroca.getNumeroDePontos()){
+                    || pedra.compareTo(maiorCarroca) > 0){
                     maiorCarroca = pedra;
                     indiceMaioCarroca = i;
                 }
@@ -156,9 +157,9 @@ public class JogadorSimplorio implements Jogador{
     }
 
     /**
-     * Retorna uma {@link Jogada} com alguma das minhas {@link Pedra pedras} que 
-     * caibam na {@link Mesa mesa}, ou retorna um {@link Jogada#TOQUE} caso eu
-     * não tenha nenhuma pedra que sirva pa jogar.
+     * Retorna uma {@link Jogada} com alguma das minhas {@linkplain Pedra 
+     * pedras} que caibam na {@linkplain Mesa mesa}, ou retorna um {@link 
+     * Jogada#TOQUE} caso eu não tenha nenhuma pedra que sirva pa jogar.
      * 
      * @return Uma jogada válida.
      */

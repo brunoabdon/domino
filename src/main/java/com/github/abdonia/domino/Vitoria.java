@@ -25,18 +25,18 @@ package com.github.abdonia.domino;
 public enum Vitoria {
 
     /**
-     * A {@link Mesa mesa} foi trancada (isto é, todos os {@link Jogador 
-     * jogadores} {@link Jogada#TOQUE tocaram} seguidamente, nenhum tem uma 
-     * {@link Pedra pedra} jogável na mão) e ganhou aquele que 
-     * somava menos {@link Pedra#getNumeroDePontos() pontos} nas pedras da mão. 
+     * A {@linkplain Mesa mesa} foi trancada (isto é, todos os {@link Jogador 
+     * jogadores} {@linkplain Jogada#TOQUE tocaram} seguidamente, nenhum tem uma 
+     * {@linkplain Pedra pedra} jogável na mão) e ganhou aquele que 
+     * somava menos {@linkplain Pedra#getNumeroDePontos() pontos} nas pedras da mão. 
      * Essa vitória vale 1 ponto.
      */
     CONTAGEM_DE_PONTOS(1), 
 
     /**
-     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link Pedra 
      * pedra} (que {@link Pedra#isCarroca() não era uma carroça}) em um dos 
-     * {@link Lado lados} da {@link Mesa mesa} (e depois o {@link 
+     * {@linkplain Lado lados} da {@linkplain Mesa mesa} (e depois o {@link 
      * Mesa#getNumeroEsquerda() número de um lado da mesa} não ficou igual ao
      * {@link  Mesa#getNumeroDireita() número do outro lado}). Essa
      * vitória vale 1 ponto.
@@ -44,7 +44,7 @@ public enum Vitoria {
     BATIDA_SIMPLES(1), 
 
     /**
-     * Caso raro: Se as seis {@link Pedra pedras} que o {@link Jogador jogador}  
+     * Caso raro: Se as seis {@linkplain Pedra pedras} que o {@linkplain Jogador jogador}  
      * {@link Jogador#recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) 
      * receber} 
      * {@link Pedra#isCarroca() forem todas carroça}, a partida termina 
@@ -54,29 +54,29 @@ public enum Vitoria {
     SEIS_CARROCAS_NA_MAO(1), 
 
     /**
-     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link Pedra 
      * pedra} que {@link Pedra#isCarroca() era uma carroça} em um dos 
-     * {@link Lado lados} da {@link Mesa mesa}, mas não poderia encaixara 
+     * {@linkplain Lado lados} da {@linkplain Mesa mesa}, mas não poderia encaixara 
      * carroça no outro lado, pois o {@link Numero número} lá era diferente. 
      * Essa vitória vale 2 pontos.
      */
     CARROCA(2), 
 
     /**
-     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link Pedra 
      * pedra} que {@link Pedra#isCarroca() não era uma carroça} e que poderia se
-     * encaixar tanto {@link Mesa#getNumeroEsquerda() num lado da mesa} como 
-     * {@link Mesa#getNumeroDireita() no outro}.
+     * encaixar tanto {@linkplain Mesa#getNumeroEsquerda() num lado da mesa} como 
+     * {@linkplain Mesa#getNumeroDireita() no outro}.
      * 
      * Essa vitória vale 3 pontos.
      */
     LA_E_LO(3), 
 
     /**
-     * Um dos {@link Jogador jogadores} bateu jogando sua última {@link Pedra 
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link Pedra 
      * pedra} que {@link Pedra#isCarroca() era uma carroça} e que poderia se
-     * encaixar tanto {@link Mesa#getNumeroEsquerda() num lado da mesa} como 
-     * {@link Mesa#getNumeroDireita() no outro} (pois eram o mesmo {@link Numero
+     * encaixar tanto {@linkplain Mesa#getNumeroEsquerda() num lado da mesa} como 
+     * {@linkplain Mesa#getNumeroDireita() no outro} (pois eram o mesmo {@link Numero
      * número}.
      * 
      * Essa vitória vale 4 pontos.

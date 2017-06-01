@@ -69,17 +69,17 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     private int baseDoPaddingDeTocToc;
 
     /**
-     * Cria uma instância que vai logar os {@link DominoEventListener eventos
-     * do jogo} no {@link Console} (caso um exista) ou na {@link System#out 
-     * saida padrão}.
+     * Cria uma instância que vai logar os {@linkplain DominoEventListener 
+     * eventos do jogo} no {@link Console} (caso um exista) ou na {@linkplain 
+     * System#out saida padrão}.
      */
     public LoggerDominoEventListener(){
         this(getDefaultPrintWritter());
     }
 
     /**
-     * Cria uma instância que vai logar os {@link DominoEventListener eventos
-     * do jogo} no {@link OutputStream} passado como parâmetro.
+     * Cria uma instância que vai logar os {@linkplain DominoEventListener 
+     * eventos do jogo} no {@link OutputStream} passado como parâmetro.
      * 
      * @param os  um stream onde devem ser logados os acontecimentos 
      * do jogo.
@@ -89,8 +89,8 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
     
     /**
-     * Cria uma instância que vai logar os {@link DominoEventListener eventos
-     * do jogo} no {@link PrintWriter} passado como parâmetro.
+     * Cria uma instância que vai logar os {@linkplain  DominoEventListener 
+     * eventos do jogo} no {@link PrintWriter} passado como parâmetro.
      * 
      * @param printWriter  uma wirter onde devem ser logados os acontecimentos 
      * do jogo.
@@ -101,10 +101,10 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
 
     /**
      * Se o programa estiver rodando em um {@link Console}, retorna o 
-     * {@link Console#writer() writer do console}. Caso contrário, retorna um
-     * {@link PrintStream} que escreve na {@link System#out saída padrão}, 
-     * usando o {@link Charset#defaultCharset() charset default} e com  
-     * {@link PrintStream#flush() flush} automático.
+     * {@linkplain Console#writer() writer do console}. Caso contrário, retorna 
+     * um {@link PrintStream} que escreve na {@linkplain  System#out saída 
+     * padrão}, usando o {@linkplain  Charset#defaultCharset() charset default} 
+     * e com {@linkplain  PrintStream#flush() flush} automático.
      * 
      * @return Um {@link PrintStream} apropriado pra ser usado caso nenhum seja
      * especificado;

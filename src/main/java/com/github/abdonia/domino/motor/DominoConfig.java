@@ -30,10 +30,10 @@ import pl.touk.throwing.exception.WrappedException;
 
 
 /**
- * As configurações de um {@link Jogo Jogo de dominó}, ou seja, quais {@link 
- * Jogador jogadores} vão participar (quais são seus nomes e suas classes) e 
- * quais os {@link DominoEventListener listeners} que devem ser registrados no 
- * jogo.
+ * As configurações de um {@linkplain  Jogo Jogo de dominó}, ou seja, quais 
+ * {@link Jogador Jogadores} vão participar (quais são seus nomes e suas 
+ * classes) e quais os {@link DominoEventListener listeners} que devem ser 
+ * registrados no jogo.
  * 
  * <p>Para um Jogo acontecer, as únicas configurações obrigatórias são os
  * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners} são importantes 
@@ -44,6 +44,7 @@ import pl.touk.throwing.exception.WrappedException;
  * 
  * <p>Um exemplo de <b>configuração mínima</b> é:</p>
  * 
+ * <pre>
  * {@code
  *      import com.github.abdonia.domino.exemplos.*;
  *      import com.github.abdonia.domino.log.*;
@@ -66,12 +67,13 @@ import pl.touk.throwing.exception.WrappedException;
  *      Jogo jogo = new Jogo(dominoConfig);
  *      jogo.jogar();
  * }
- * 
+ * </pre>
  * <p>Tanto para jogadores, listeners e para o gerador de aleatoriedade, é possível
- * escolher entre setar (1) suas instâncias, (2) suas {@link Class classes} ou 
- * o {@link Class#getName() nome qualificado de suas classes}. Por exemplo, o
- * jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
+ * escolher entre setar (1) suas instâncias, (2) suas {@linkplain Class classes} 
+ * ou o {@linkplain Class#getName() nome qualificado de suas classes}. Por 
+ * exemplo, o jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
  * 
+ * <pre>
  * {@code 
  *   DominoConfig dominoConfig = new DominoConfig();
  * 
@@ -84,11 +86,12 @@ import pl.touk.throwing.exception.WrappedException;
  *   //(3) setando o nome da classe
  *   dominoConfig.setJogador1Dupla2("com.acme.domino.JogadorEsperto");
  * }
- * 
+ * </pre>
  * <p>Ao setar uma das três opções, as outras opões são automaticamente setadas 
  * pra {@code null}. A não ser no caso dos listeners, onde vários podem ser
  * adicionados usando qualquer uma das formas.</p>
  * 
+ * <pre>
  * {@code 
  *    //adicionando listener por classes
  *    dominoConfig.addEventListener(LoggerDominoEventListener.class);
@@ -99,12 +102,12 @@ import pl.touk.throwing.exception.WrappedException;
  *    //adicionando listener por instância
  *    dominoConfig.addEventListener(new DominoGUI());
  * }
- * 
+ * </pre>
  * <p>A instânciação da classe passada na opção <em>(2)</em> ou mesmo a checagem 
  * pela existência da classe cujo nome foi passado na opção <em>(3)</em> não 
- * acontece no momento de chamada dos métods {@code set}. Só ocorrera {@link 
- * Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a configuração
- * for usada pra se criar um Jogo}.</p>
+ * acontece no momento de chamada dos métods {@code set}. Só ocorrera 
+ * {@linkplain Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a
+ * configuração for usada pra se criar um Jogo}.</p>
  * 
  * @author Bruno Abdon
  */
@@ -427,9 +430,9 @@ public class DominoConfig {
 
     /**
      * Checa se um dado valor é igual a 1 ou 2, lançando uma exceção com uma
-     * dada mensagem {@link String#format(java.lang.String, java.lang.Object...)
-     * parametrizada} (usando "{@code %d}" pra exibir o número
-     * inválido) caso o valor não seja.
+     * dada mensagem {@linkplain String#format(String, Object...) parametrizada}
+     * (usando "{@code %d}" pra exibir o número inválido) caso o valor não seja.
+     * 
      * @param valor o valor a ser checado.
      * @param errorMsg A mensagem parametrizada a ser colocada na exceção, no 
      * caso de erro.
@@ -556,7 +559,7 @@ public class DominoConfig {
      * opcional que normalmente só é útil para testes controlados.
      * 
      * @param nomeRandomizadora O nome de uma classe que implementa a interface
-     * {@link RandomGoddess} .
+     * {@link RandomGoddess}.
      */
     public void setNomeRandomizadora(final String nomeRandomizadora) {
         this.nomeRandomizadora = nomeRandomizadora;

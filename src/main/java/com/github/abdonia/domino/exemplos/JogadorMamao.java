@@ -37,13 +37,13 @@ public class JogadorMamao implements Jogador {
 
     /**
      * A  {@link Mesa} em que esse {@link Jogador} 
-     * {@link Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentou}
-     * pra jogar.
+     * {@linkplain Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) 
+     * sentou} pra jogar.
      */
     protected Mesa mesa;
     
     /**
-     * As {@link Pedra pedras} na mão desse {@link Jogador}.
+     * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
      */
     protected List<Pedra> mao;
 

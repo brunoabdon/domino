@@ -23,7 +23,8 @@ import java.util.stream.Stream;
 
 /**
  * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
- * ele vai jogar e em que {@link Lado lado} da {@link Mesa mesa} jogar.
+ * ele vai jogar e em que {@linkplain Lado lado} da {@linkplain Mesa mesa} 
+ * jogar.
  *
  * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar, 
  * retornando {@link #TOQUE} (retornar {@code null} não é permitido).
@@ -85,9 +86,9 @@ public final class Jogada {
      * <p>Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
      * construtor e fazer com que as instâncias sejam reutilizadas.</p>
      * 
-     * <p>(*) As 57 jogadas possíveis são: cada uma das 28 pedras na {@link 
-     * Lado#ESQUERDO esquerda}, mais cada uma das 28 pedras na {@link 
-     * Lado#DIREITO direita}, mais o {@link #TOQUE toque}.</p>
+     * <p>(*) As 57 jogadas possíveis são: cada uma das 28 pedras na {@linkplain 
+     * Lado#ESQUERDO esquerda}, mais cada uma das 28 pedras na {@linkplain 
+     * Lado#DIREITO direita}, mais o {@linkplain #TOQUE toque}.</p>
      * 
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.

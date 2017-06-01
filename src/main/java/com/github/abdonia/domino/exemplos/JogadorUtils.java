@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Métodos utilitários pra a implementação dos {@link Jogador jogadores} de 
+ * Métodos utilitários pra a implementação dos {@linkplain Jogador jogadores} de 
  * exemplo. 
  * 
  * @author Bruno Abdon
@@ -32,17 +32,17 @@ import java.util.List;
 class JogadorUtils {
 
     /**
-     * Retorna qual é a {@link Pedra#compareTo(java.lang.Enum) maior} 
-     * {@link Pedra#isCarroca() carroça} entre um conjunto de {@link Pedra 
-     * pedras}, ou lança {@link java.util.NoSuchElementException} caso não 
+     * Retorna qual é a {@linkplain Pedra#compareTo(Enum) maior} {@linkplain 
+     * Pedra#isCarroca() carroça} entre um conjunto de {@linkplain Pedra pedras}
+     * ou lança {@link java.util.NoSuchElementException} caso não 
      * exista uma carroça no conjunto.
      *  
-     * @return A maior {@link Pedra#isCarroca() carroça} entre as {@link Pedra 
-     * pedras} passsadas como parâmetro.
+     * @return A maior {@linkplain Pedra#isCarroca() carroça} entre as 
+     * {@linkplain Pedra pedras} passsadas como parâmetro.
      * 
-     * @throws java.util.NoSuchElementException caso não exista uma {@link 
-     * Pedra#isCarroca() carroça} entre as {@link Pedra pedras} passsadas como 
-     * parâmetro.
+     * @throws java.util.NoSuchElementException caso não exista uma {@linkplain  
+     * Pedra#isCarroca() carroça} entre as {@linkplain Pedra pedras} passsadas 
+     * como parâmetro.
      */
     public static Pedra aMaiorCarroca(final Collection<Pedra> pedras) {
         return pedras
@@ -52,16 +52,16 @@ class JogadorUtils {
                 .get();
     }
     /**
-     * Constrói uma {@link List lista} com as seis {@link Pedra pedras} 
-     * passadas como parâmetro, na ordem em que foram passadas.
+     * Constrói uma {@linkplain List lista} com as seis {@linkplain Pedra 
+     * pedras} passadas como parâmetro, na ordem em que foram passadas.
      * 
-     * @param pedra1 A primeira {@link Pedra pedra}.
-     * @param pedra2 A segunda {@link Pedra pedra}.
-     * @param pedra3 A terceira {@link Pedra pedra}.
-     * @param pedra4 A quarta {@link Pedra pedra}.
-     * @param pedra5 A quinta {@link Pedra pedra}.
-     * @param pedra6 A última {@link Pedra pedra}.
-     * @return Uma {@link List lista} com as seis {@link Pedra pedras}.
+     * @param pedra1 A primeira {@linkplain Pedra pedra}.
+     * @param pedra2 A segunda {@linkplain Pedra pedra}.
+     * @param pedra3 A terceira {@linkplain Pedra pedra}.
+     * @param pedra4 A quarta {@linkplain Pedra pedra}.
+     * @param pedra5 A quinta {@linkplain Pedra pedra}.
+     * @param pedra6 A última {@linkplain Pedra pedra}.
+     * @return Uma {@linkplain List lista} com as 6 {@linkplain Pedra pedras}.
      */
     public static List<Pedra> fazMao(
             final Pedra pedra1,

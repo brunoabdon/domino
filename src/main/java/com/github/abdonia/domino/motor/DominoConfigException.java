@@ -39,8 +39,7 @@ public class DominoConfigException extends Exception {
 
     /**
      * Construtor com mensagem de erro 
-     * {@link String#format(java.lang.String, java.lang.Object...) 
-     * parametrizada}.
+     * {@linkplain String#format(String, Object...) parametrizada}.
      * 
      * @param msg a mensagem de erro.
      * @param params os parâmetros da mensagem.
@@ -50,8 +49,8 @@ public class DominoConfigException extends Exception {
     }
 
     /**
-     * Construtor com causa e {@link String#format(java.lang.String, 
-     * java.lang.Object...) mensagem parametrizada} de erro.
+     * Construtor com causa e {@linkplain String#format(String, Object...)
+     * mensagem parametrizada} de erro.
      * 
      * @param msg a mensagem de erro.
      * @param causa a causa do erro.

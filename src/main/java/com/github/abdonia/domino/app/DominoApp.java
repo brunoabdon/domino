@@ -35,13 +35,13 @@ import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
- * <p>Uma aplicação simples, por linha de comando, que roda um {@link Jogo jogo de
- * dominó}.</p>
+ * <p>Uma aplicação simples, por linha de comando, que roda um {@linkplain  Jogo 
+ * jogo de dominó}.</p>
  * 
- * <p>As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
- * de jogadores serão usadas, quais serão seus nomes, etc.) podem ser informadas
- * num arquivo chamado <em>domino-config.xml</em> que deve estar no 
- * diretório atual.</p>
+ * <p>As {@linkplain DominoConfig configurações do Jogo} (isto é, quais 
+ * implementações de jogadores serão usadas, quais serão seus nomes, etc.) podem 
+ * ser informadas num arquivo chamado <em>domino-config.xml</em> que deve estar 
+ * no diretório atual.</p>
  * 
  * <p>Um exemplo de conteudo do arquivo é:</p>
  * 
@@ -68,7 +68,7 @@ import com.github.abdonia.domino.motor.Jogo;
  * 
  * <p>Caso o arquivo de configuração não seja encontrado, uma configuração 
  * default é usada onde ocorre um jogo entre algumas 
- * {@link com.github.abdonia.domino.exemplos implementações exemplo de 
+ * {@linkplain com.github.abdonia.domino.exemplos implementações exemplo de 
  * jogadores} e onde um 
  * {@link com.github.abdonia.domino.log.LoggerDominoEventListener} é registrado
  * para imprimir na tela tudo o que acontece durante o jogo.</p>
@@ -116,12 +116,13 @@ public class DominoApp {
     }
 
     /**
-     * Carrega a {@link DominoConfig configuração do jogo} a ser usada, ou seja,
-     * quais {@link Jogador jogadores} irão participar, como  
-     * {@link DominoEventListener os eventos serão tratados}, etc..
+     * Carrega a {@linkplain DominoConfig configuração do jogo} a ser usada, ou 
+     * seja, quais {@linkplain Jogador jogadores} irão participar, como 
+     * {@linkplain DominoEventListener os eventos serão tratados}, etc... .
      * 
-     * @return Uma {@link DominoConfig configuração de jogo de dominó}.
-     * @throws DominoAppException 
+     * @return Uma {@linkplain  DominoConfig configuração de jogo de dominó}.
+     * @throws DominoAppException Caso não consiga abrir, ler ou interpretar o
+     * arquivo.
      */
     private static DominoConfig carregaConfiguracao() 
             throws DominoAppException {

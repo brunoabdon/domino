@@ -23,11 +23,11 @@ import com.github.abdonia.domino.Vitoria;
 /**
  * Interface para receber eventos publicos do que acontece durante o jogo.
  * 
- * {@link com.github.abdonia.domino.Jogador}es que implementarem esta interface
- * serao automaticamente registrados para serem avisados dos eventos.
+ * {@linkplain com.github.abdonia.domino.Jogador jogadores} que implementarem 
+ * esta interface serão automaticamente registrados para serem avisados dos 
+ * eventos.
  * 
  * @author Bruno Abdon
- *
  */
 public interface DominoEventListener {
 
@@ -67,7 +67,7 @@ public interface DominoEventListener {
      * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior vai 
      * começar a partida.
      * 
-     * A decisão é tomada {@link 
+     * A decisão é tomada {@linkplain 
      * com.github.abdonia.domino.Jogador#vontadeDeComecar() peguntando-se a cada
      * jogador da dupla o quanto ele quer começar a partida}. Quando um dos dois
      * "quer" mais que o outro, diz-se que a decisão foi tomada por 
@@ -86,9 +86,9 @@ public interface DominoEventListener {
     }
     
     /**
-     * Um determinado {@link com.github.abdonia.domino.Jogador} {@link 
+     * Um determinado {@link com.github.abdonia.domino.Jogador} {@linkplain 
      * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e nao 
-     * {@link com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver 
+     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver 
      * batido, além desse evento, também ocorrerá {@link 
      * #jogadorBateu(int, Vitoria)}.
      * 
@@ -104,7 +104,7 @@ public interface DominoEventListener {
 
     /**
      * Um {@link com.github.abdonia.domino.Jogador} 
-     * {@link com.github.abdonia.domino.Jogada#TOQUE tocou}).
+     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}).
      * 
      * @param jogador Quem foi (identificado pelo número da cadeira)
      */
@@ -113,10 +113,10 @@ public interface DominoEventListener {
     }
 
     /**
-     * A partida voltou logo depois de serem distribuidas as {@link Pedra}s 
-     * porque um dos {@link com.github.abdonia.domino.Jogador}es tinha 5 {@link 
-     * Pedra#isCarroca() Carroças} na mão. (Ninguém marca ponto quando isso 
-     * acontece).
+     * A partida voltou logo depois de serem distribuidas as {@linkplain Pedra 
+     * pedras} porque um dos {@linkplain com.github.abdonia.domino.Jogador 
+     * jogadores} tinha 5 {@linkplain Pedra#isCarroca() carroças} na mão. 
+     * (Ninguém marca ponto quando isso acontece).
      * 
      * @param jogador  O jogador (identificado pelo número da cadeira) que tinha 
      * cinco pedras na mão.

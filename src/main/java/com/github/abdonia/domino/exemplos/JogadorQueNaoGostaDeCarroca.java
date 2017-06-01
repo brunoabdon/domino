@@ -29,8 +29,8 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vontade;
 
 /**
- * {@link Jogador} que dá prioridade a jogar as {@link Pedra#isCarroca() 
- * carroças}. Não tendo carroça, joga a primeira {@link Pedra} encontrar que 
+ * {@link Jogador} que dá prioridade a jogar as {@linkplain Pedra#isCarroca() 
+ * carroças}. Não tendo carroça, joga a primeira {@link Pedra} que encontrar que 
  * caiba na {@link Mesa}.
  *
  * @author Bruno Abdon
@@ -39,11 +39,11 @@ import com.github.abdonia.domino.Vontade;
 public class JogadorQueNaoGostaDeCarroca implements Jogador {
    
     /**
-     * Dada uma {@link Mesa}, retorna uma {@link Function} que mapeia {@link 
-     * Pedra pedras} em {@link Jogada jogadas} nessa mesa. A jogada vai ser 
-     * preferencialmente na {@link Mesa#getNumeroEsquerda() esquerda} (escolhido
-     * arbitrariamente), mas pode acontecer da única jogada possível pode ser 
-     * simplesmente {@link Jogada#TOQUE tocar}.
+     * Dada uma {@link Mesa}, retorna uma {@link Function} que mapeia 
+     * {@linkplain Pedra pedras} em {@linkplain Jogada jogadas} nessa mesa. A 
+     * jogada vai ser preferencialmente na {@linkplain Mesa#getNumeroEsquerda()
+     * esquerda} (escolhido arbitrariamente), mas pode acontecer da única jogada
+     * possível pode ser simplesmente {@linkplain Jogada#TOQUE tocar}.
      */
     private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA = 
         m -> p ->
@@ -54,7 +54,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
                     : Jogada.TOQUE;
 
     /**
-     * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@link 
+     * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@linkplain
      * Pedra#isCarroca() carroça} é maior que uma não-carroça e (2) carroças 
      * entre si e não-carroças entre si se comparam pelo {@link 
      * Pedra#compareTo(java.lang.Enum) comparador natura de pedras}.
@@ -71,8 +71,8 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     /**
      * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é 
      * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code 
-     * TOQUE} se diferenciam apenas pelas suas {@link Pedra pedras} (ignorando o
-     * {@link Lado}) de acordo com o comparador de pedras {@link 
+     * TOQUE} se diferenciam apenas pelas suas {@linkplain Pedra pedras}
+     * (ignorando o {@link Lado}) de acordo com o comparador de pedras {@link 
      * #COMP_PREFERE_CARROCA}.
      */
     private static final Comparator<Jogada> COMP_PREFERE_JOGAR_CARROCA =
@@ -88,14 +88,14 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     ;
                     
     /**
-     * As {@link Pedra pedras} na mão desse {@link Jogador}.
+     * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
      */
     protected EnumSet<Pedra> mao;
 
     /**
      * Dada uma {@link Pedra}, diz como seria uma {@link Jogada} dessa pedra na
-     * {@link #sentaNaMesa(Mesa, int) mesa em que estou sentado} de acordo com 
-     * os critérios definidos por {@link #JOGADA_MESA}.
+     * {@linkplain #sentaNaMesa(Mesa, int) mesa em que estou sentado} de acordo
+     * com os critérios definidos por {@link #JOGADA_MESA}.
      */
     private Function<Pedra,Jogada> jogadaNaMesa;
 
@@ -114,13 +114,14 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     
     /**
      * Joga a maior carroça que puder jogar. Se não tiver carroça que dê pra 
-     * jogar, joga como {@link JogadorMamao mamão} memso.
+     * jogar, joga a maior não-carroça que puder jogar (ou {@linkplain 
+     * Jogada#TOQUE toca}.
      * 
      * @return Uma {@link Pedra}, de preferência carroça.
      */
     @Override
     public Jogada joga() {
-        
+
         final Jogada jogada =
             mao.parallelStream() //pra cada pedra na minha mao...
             .map(jogadaNaMesa) //...vê como seria uma jogada com ela...
