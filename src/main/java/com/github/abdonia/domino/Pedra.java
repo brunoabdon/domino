@@ -243,8 +243,8 @@ public enum Pedra {
      * pedra é o número dado como parâmentro.
      * 
      * @param numero Um {@link Numero}, pra testar se essa pedra tem ele.
-     * @return <code>true</code> só se um dos dois {@link Numero}s dessa pedra
-     * for o dado como parâmetro.
+     * @return {@code true} só se um dos dois {@link Numero}s dessa pedra for o 
+     * dado como parâmetro.
      */
     public boolean temNumero(final Numero numero){
         return numero == primeiroNumero || numero == segundoNumero; 

@@ -33,19 +33,19 @@ import java.util.Iterator;
 public interface Mesa extends Iterable<Pedra>{
 
     /**
-     * O {@link Numero} da cabeça da esquerda, ou <code>null</code> caso a mesa 
+     * O {@link Numero} da cabeça da esquerda, ou {@code null} caso a mesa 
      * {@link #taVazia() esteja vazia}.
      * 
-     * @return O número da cabeça da esquerda, ou <code>null</code> caso a mesa 
+     * @return O número da cabeça da esquerda, ou {@code null} caso a mesa 
      * {@link #taVazia() esteja vazia}.
      */
     public Numero getNumeroEsquerda();
 
     /**
-     * O {@link Numero} da cabeça da direita, ou <code>null</code> caso a mesa 
+     * O {@link Numero} da cabeça da direita, ou {@code null} caso a mesa 
      * {@link #taVazia() esteja vazia}.
      * 
-     * @return O número da cabeça da direita, ou <code>null</code> caso a mesa 
+     * @return O número da cabeça da direita, ou {@code null} caso a mesa 
      * {@link #taVazia() esteja vazia}.
      */
     public Numero getNumeroDireita();
@@ -102,7 +102,7 @@ public interface Mesa extends Iterable<Pedra>{
      * 
      * @param qualJogador qual o jogador que se deseja saber (de 1 a 4).
      * 
-     * @return Quantas pedras o jogador de indice <code>qualJogador</code> tem
+     * @return Quantas pedras o jogador de indice {@code qualJogador} tem
      * na mão.
      * 
      * @throws IllegalArgumentException Se for passado um número que não seja 1,
@@ -134,7 +134,7 @@ public interface Mesa extends Iterable<Pedra>{
      * Diz se a mesa está vazia (ou seja, deve-se jogar a primeira {@link Pedra
      * pedra} da partida);
      * 
-     * @return <code>true</code> só se nao tiver {@link Pedra} na mesa.
+     * @return {@code true} só se nao tiver {@link Pedra} na mesa.
      */
     public default boolean taVazia(){
         return this.quantasPecas() == 0;

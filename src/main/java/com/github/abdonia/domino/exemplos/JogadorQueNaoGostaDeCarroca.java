@@ -70,9 +70,9 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     
     /**
      * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é 
-     * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são 
-     * <code>TOQUE</code> se diferenciam apenas pelas suas {@link Pedra pedras} 
-     * (ignorando o {@link Lado}) de acordo com o comparador de pedras {@link 
+     * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code 
+     * TOQUE} se diferenciam apenas pelas suas {@link Pedra pedras} (ignorando o
+     * {@link Lado}) de acordo com o comparador de pedras {@link 
      * #COMP_PREFERE_CARROCA}.
      */
     private static final Comparator<Jogada> COMP_PREFERE_JOGAR_CARROCA =

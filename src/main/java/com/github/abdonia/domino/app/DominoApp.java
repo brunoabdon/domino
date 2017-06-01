@@ -40,7 +40,7 @@ import com.github.abdonia.domino.motor.Jogo;
  * 
  * <p>As {@link DominoConfig configurações do Jogo} (isto é, quais implementações
  * de jogadores serão usadas, quais serão seus nomes, etc.) podem ser informadas
- * num arquivo chamado <code>domino-config.xml</code> que deve estar no 
+ * num arquivo chamado <em>domino-config.xml</em> que deve estar no 
  * diretório atual.</p>
  * 
  * <p>Um exemplo de conteudo do arquivo é:</p>
@@ -78,8 +78,10 @@ import com.github.abdonia.domino.motor.Jogo;
 public class DominoApp {
 
     private static final String CONFIG_XML = "domino-config.xml";
-    private static final String DEFAULT_CONFIG_XML = "domino-config-default.xml";
-    private static final String MSG_BUNDLE = "com.github.abdonia.domino.app.DominoAppMsg";
+    private static final String DEFAULT_CONFIG_XML = 
+        "domino-config-default.xml";
+    private static final String MSG_BUNDLE = 
+        "com.github.abdonia.domino.app.DominoAppMsg";
 
     private static final ResourceBundle RESOURCE_BUNDLE = 
         ResourceBundle.getBundle(MSG_BUNDLE);
@@ -87,9 +89,8 @@ public class DominoApp {
     private DominoApp(){}
    
     /**
-     * Roda um {@link Jogo}, de acordo com o arquivo 
-     * <code>domino-config.xml</code> ou segundo configurações default caso o 
-     * arquivo não exista.
+     * Roda um {@link Jogo}, de acordo com o arquivo <em>domino-config.xml</em>
+     * ou segundo configurações default caso o arquivo não exista.
      * 
      * @param args Argumentos são ignorados.
      */
@@ -173,7 +174,7 @@ public class DominoApp {
      * Caso a aplicação esteja rodando num console, exibe uma mensagem avisando
      * que o jogo usará uma configuração default (por não ter encontrado nenhum
      * arquivo de configuração). Após exibir a mensagem, o programa espera o 
-     * usuário apertar <code>ENTER</code> para prosseguir.
+     * usuário apertar <em>ENTER\u23CE</em> para prosseguir.
      * 
      * Se a aplicação não estiver rodando num console, nada acontece.
      * 
@@ -182,8 +183,8 @@ public class DominoApp {
         final Console console = System.console();
         if(console != null){
             final String msg =
-                    MessageFormat.format(RESOURCE_BUNDLE.getString("msg.defaultconfig"),
-                        CONFIG_XML);
+                MessageFormat.format(
+                    RESOURCE_BUNDLE.getString("msg.defaultconfig"),CONFIG_XML);
             console.writer().println(msg);
             console.readLine();
         }
@@ -194,13 +195,13 @@ public class DominoApp {
         if(console != null){
             console
             .writer()
-            .println(MessageFormat
-                .format(RESOURCE_BUNDLE.getString("error.config"),
-                    e.getMessage()));
+            .println(MessageFormat.format(
+                        RESOURCE_BUNDLE.getString("error.config"),
+                        e.getMessage())
+            );
         } else {
             //System.err.printf("%s: %s\n",msg, e.getMessage());
             Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
         }
-        
     }
 }

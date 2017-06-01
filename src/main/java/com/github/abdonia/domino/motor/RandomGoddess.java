@@ -46,8 +46,8 @@ public interface RandomGoddess {
      * com.github.abdonia.domino.Jogador#vontadeDeComecar() vontade demonstrada
      * para começar a jogar}).
      * 
-     * @return <code>true</code> se o primeiro jogador da dupla deve ser quem 
-     * começa, ou <code>false</code> se é o segundo quem deve.
+     * @return {@code true} se o primeiro jogador da dupla deve ser quem 
+     * começa, ou {@code false} se é o segundo quem deve.
      */
     public boolean jogador1Comeca();
     

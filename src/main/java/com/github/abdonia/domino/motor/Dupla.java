@@ -76,7 +76,7 @@ class Dupla {
     /**
      * Diz se um dado {@link JogadorWrapper jogadore} pertence a essa dupla.
      * @param jogador Um jogador.
-     * @return <code>true</code> se e somente se este jogador
+     * @return {@code true} se e somente se este jogador
      * for um dos 2 jogadores da dupla.
      */
     boolean contem(final JogadorWrapper jogador){
@@ -107,14 +107,14 @@ class Dupla {
      * Pergunta ao dado {@link JogadorWrapper jogador} {@link 
      * JogadorWrapper#vontadeDeComecar() qual a vontade dele começar a partida},
      * levantando {@link BugDeJogadorException} caso ele retorne 
-     * <code>null</code>.
+     * {@code null}.
      * 
      * @param jogador Um jogador.
      * 
      * @return A {@link JogadorWrapper#vontadeDeComecar() vontade dele de 
      * começar a partida} (caso ele responda corretamente com um valor não 
      * nulo).
-     * @throws BugDeJogadorException caso o jogador retorne <code>null</code>
+     * @throws BugDeJogadorException caso o jogador retorne {@code null}
      * erroneamente.
      */
     private static Vontade perguntaVontade(

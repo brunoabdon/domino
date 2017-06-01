@@ -44,7 +44,7 @@ import pl.touk.throwing.exception.WrappedException;
  * 
  * <p>Um exemplo de <b>configuração mínima</b> é:</p>
  * 
- * <pre>
+ * {@code
  *      import com.github.abdonia.domino.exemplos.*;
  *      import com.github.abdonia.domino.log.*;
  *      import com.github.abdonia.domino.motor.*;
@@ -65,14 +65,14 @@ import pl.touk.throwing.exception.WrappedException;
  *      //cria um jogo com essa configuração e joga
  *      Jogo jogo = new Jogo(dominoConfig);
  *      jogo.jogar();
- * </pre>
+ * }
  * 
  * <p>Tanto para jogadores, listeners e para o gerador de aleatoriedade, é possível
  * escolher entre setar (1) suas instâncias, (2) suas {@link Class classes} ou 
  * o {@link Class#getName() nome qualificado de suas classes}. Por exemplo, o
  * jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
  * 
- * <pre>
+ * {@code 
  *   DominoConfig dominoConfig = new DominoConfig();
  * 
  *   //(1) setando como instância
@@ -83,13 +83,13 @@ import pl.touk.throwing.exception.WrappedException;
  *        
  *   //(3) setando o nome da classe
  *   dominoConfig.setJogador1Dupla2("com.acme.domino.JogadorEsperto");
- * </pre>
+ * }
  * 
  * <p>Ao setar uma das três opções, as outras opões são automaticamente setadas 
- * pra <code>null</code>. A não ser no caso dos listeners, onde vários podem ser
+ * pra {@code null}. A não ser no caso dos listeners, onde vários podem ser
  * adicionados usando qualquer uma das formas.</p>
  * 
- * <pre>
+ * {@code 
  *    //adicionando listener por classes
  *    dominoConfig.addEventListener(LoggerDominoEventListener.class);
  * 
@@ -98,14 +98,13 @@ import pl.touk.throwing.exception.WrappedException;
  * 
  *    //adicionando listener por instância
  *    dominoConfig.addEventListener(new DominoGUI());
- * </pre>
- * 
+ * }
  * 
  * <p>A instânciação da classe passada na opção <em>(2)</em> ou mesmo a checagem 
  * pela existência da classe cujo nome foi passado na opção <em>(3)</em> não 
- * acontece no momento de chamada dos métods <code>set</code>. Só ocorrera 
- * {@link Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a 
- * configuração for usada pra se criar um Jogo}.</p>
+ * acontece no momento de chamada dos métods {@code set}. Só ocorrera {@link 
+ * Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a configuração
+ * for usada pra se criar um Jogo}.</p>
  * 
  * @author Bruno Abdon
  */
@@ -175,7 +174,7 @@ public class DominoConfig {
     /**
      * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
      * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a <code>null</code>.
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
      */
@@ -192,7 +191,7 @@ public class DominoConfig {
     /**
      * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
      * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a <code>null</code>.
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador2Dupla1 O nome da classe desse jogador.
      */
@@ -209,7 +208,7 @@ public class DominoConfig {
     /**
      * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
      * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a <code>null</code>.
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador1Dupla2 O nome da classe desse jogador.
      */
@@ -226,7 +225,7 @@ public class DominoConfig {
     /**
      * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
      * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a <code>null</code>.
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador2Dupla2 O nome da classe desse jogador.
      */
@@ -243,7 +242,7 @@ public class DominoConfig {
     /**
      * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param classeJogador1Dupla1 a classe do jogador.
      */
@@ -260,7 +259,7 @@ public class DominoConfig {
     /**
      * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param classeJogador2Dupla1 a classe do jogador.
      */
@@ -277,7 +276,7 @@ public class DominoConfig {
     /**
      * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param classeJogador1Dupla2 a classe do jogador.
      */
@@ -294,7 +293,7 @@ public class DominoConfig {
     /**
      * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param classeJogador2Dupla2 a classe do jogador.
      */
@@ -306,7 +305,7 @@ public class DominoConfig {
     /**
      * Seta o nome e a classe de um jogador de uma dupla. Ao setar o nome da 
      * classe, a classe ou a instância de um dado jogador, os valores dos outros
-     * dois atributos vai a <code>null</code>.
+     * dois atributos vai a {@code null}.
      * 
      * @param nomeJogador O nome do jogador.
      * @param classeJogador A classe do jogador.
@@ -334,7 +333,7 @@ public class DominoConfig {
     /**
      * Seta o nome e o nome da classe de um jogador de uma dupla. Ao setar o 
      * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos  outros dois atributos vai a <code>null</code>.
+     * dos  outros dois atributos vai a {@code null}.
      * 
      * 
      * @param nomeJogador O nome do jogador.
@@ -363,7 +362,7 @@ public class DominoConfig {
  /**
      * Seta o nome e a instância de um jogador de uma dupla. Ao setar o nome da
      * classe, a classe ou a instância de um dado jogador, os valores dos
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param nomeJogador O nome do jogador.
      * @param jogador O jogador.
@@ -389,9 +388,9 @@ public class DominoConfig {
     /**
      * Método auxiliar que seta ao mesmo tempo o nome, o nome da classe, a 
      * classe e a instância de um dos dois jogadores de uma das duas duplas. 
-     * Apenas um entre os parâmetros <code>nomeClasseJogador</code>, 
-     * <code>classeJogador</code> e <code>jogador</code>deve ser não nulo 
-     * (porém, isso não é verificado).
+     * Apenas um entre os parâmetros {@code nomeClasseJogador}, {@code 
+     * classeJogador} e {@code jogador} deve ser não nulo (porém, isso não é 
+     * verificado).
      * 
      * @param nomeJogador O nome do jogador.
      * @param nomeClasseJogador O nome da classe do jogador.
@@ -429,7 +428,7 @@ public class DominoConfig {
     /**
      * Checa se um dado valor é igual a 1 ou 2, lançando uma exceção com uma
      * dada mensagem {@link String#format(java.lang.String, java.lang.Object...)
-     * parametrizada} (usando "<code>%d</code>" pra exibir o número
+     * parametrizada} (usando "{@code %d}" pra exibir o número
      * inválido) caso o valor não seja.
      * @param valor o valor a ser checado.
      * @param errorMsg A mensagem parametrizada a ser colocada na exceção, no 
@@ -451,7 +450,7 @@ public class DominoConfig {
     /**
      * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param jogador1Dupla1 a instância do jogador.
      */
@@ -467,7 +466,7 @@ public class DominoConfig {
     /**
      * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param jogador2Dupla1 a instância do jogador.
      */
@@ -483,7 +482,7 @@ public class DominoConfig {
     /**
      * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param jogador1Dupla2 a instância do jogador.
      */
@@ -499,7 +498,7 @@ public class DominoConfig {
     /**
      * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a <code>null</code>.
+     * outros dois atributos vai a {@code null}.
      * 
      * @param jogador2Dupla2  a instância do jogador.
      */
@@ -617,21 +616,19 @@ public class DominoConfig {
         
         Jogador jogador = jogadores[index];
         if(jogador == null){
-            Class k = classesJogadores[index];
-            if(k == null){
+            final Class klass = classesJogadores[index];
+            if(klass == null){
                 final String className = nomesClassesJogadores[index];
                 if(className == null){
                     throw new DominoConfigException(
                             "O Jogador %d da dupla %d não foi setado.",
                             idxJogadorNaDupla,
                             idxDupla);
-                } else {
-                    jogador = DominoConfigUtils.instancia(Jogador.class, className);
                 }
+                jogador = DominoConfigUtils.instancia(Jogador.class, className);
             } else {
-                jogador = DominoConfigUtils.instancia(Jogador.class, k);
+                jogador = DominoConfigUtils.instancia(Jogador.class, klass);
             }
-            
         }
         return jogador;
     }
@@ -673,10 +670,7 @@ public class DominoConfig {
                     : defaultClass;
             
             randomGoddess = 
-                DominoConfigUtils.
-                    instancia(
-                        RandomGoddess.class, 
-                        klass);
+                DominoConfigUtils.instancia(RandomGoddess.class, klass);
         }
         return randomGoddess;
     }

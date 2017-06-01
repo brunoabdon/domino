@@ -173,9 +173,9 @@ final class MesaImpl implements Mesa{
      * 
      * @param pedra A pedra que é pra colocar
      * @param lado Onde botar ela.
-     * @return <code>true</code> se a pedra foi realmente colocada, ou 
-     * <code>false</code> caso fosse uma pedra bêba, que não {@link 
-     * Pedra#temNumero(Numero) tem o número} daquele lado da mesa.
+     * @return {@code true} se a pedra foi realmente colocada, ou {@code false} 
+     * caso fosse uma pedra bêba, que não {@link Pedra#temNumero(Numero) tem o 
+     * número} daquele lado da mesa.
      */
     boolean coloca(final Pedra pedra, final Lado lado) {
 

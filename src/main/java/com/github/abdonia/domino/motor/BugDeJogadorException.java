@@ -16,15 +16,14 @@
  */
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 
 /**
  * Exceção que indica um comportamente excepcional (errado) por parte de um 
- * {@link Jogador}. 
+ * {@link com.github.abdonia.domino.Jogador}. 
  * 
- * <p>É esperado que implementações de <code>Jogador</code> 
+ * <p>É esperado que implementações de {@code Jogador} 
  * conheçam e sigam as regras do jogo. Quando um jogador tenta fazer alguma 
  * coisa fora das regras (como jogar uma {@link Pedra pedra} que não 
  * cabia na {@link com.github.abdonia.domino.Mesa mesa}, ou {@link 
@@ -52,7 +51,7 @@ class BugDeJogadorException extends Exception {
          */
         PEDRA_INVALIDA,
         /**
-         * O {@link Jogador jogador} {@link 
+         * O {@link com.github.abdonia.domino.Jogador jogador} {@link 
          * com.github.abdonia.domino.Jogada#TOQUE tocou} mesmo tendo uma {@link
          * Pedra pedra} que poderia ter {@link com.github.abdonia.domino.Jogada
          * jogado}. Isso pode ser um roubo comum na vida real, mas o sistema é
@@ -60,8 +59,8 @@ class BugDeJogadorException extends Exception {
          */
         TOCOU_TENDO,
         /**
-         * {@link Jogador jogador} era quem tinha a maior {@link 
-         * Pedra#isCarroca() carroça} (provavelmente o {@link 
+         * {@link com.github.abdonia.domino.Jogador jogador} era quem tinha a 
+         * maior {@link Pedra#isCarroca() carroça} (provavelmente o {@link 
          * Pedra#CARROCA_DE_SENA Dozão} na mão na primeira rodada da primeira
          * {@link Partida partida}, mas começou o {@link Jogo jogo} {@link 
          * com.github.abdonia.domino.Jogada jogando} outra {@link Pedra pedra}.
@@ -70,24 +69,26 @@ class BugDeJogadorException extends Exception {
          */
         JA_COMECOU_ERRANDO,
         /**
-         * O {@link Jogador jogador} {@link com.github.abdonia.domino.Jogada 
-         * jogou} uma {@link Pedra pedra} que não tinha na mão. Isso é bug ou
-         * roubo.
+         * O {@link com.github.abdonia.domino.Jogador jogador} 
+         * {@link com.github.abdonia.domino.Jogada jogou} uma {@link Pedra 
+         * pedra} que não tinha na mão. Isso é bug ou roubo.
          */
         TIROU_PEDRA_DO_BOLSO,
         /**
-         * O {@link Jogador jogador} retornou <code>null</code> quando {{@link 
-         * Jogador#joga() perguntado qual seria sua jogada}. Mesmo no caso de
-         * não ter uma {@link Pedra pedra} pra jogar, o jogador não deve 
-         * retornar <code>null</code>, e sim {@link 
+         * O {@link com.github.abdonia.domino.Jogador jogador} retornou {@code 
+         * null} quando {@link Jogador#joga() perguntado qual seria sua jogada}.
+         * Mesmo no caso de não ter uma {@link Pedra pedra} pra jogar, o jogador
+         * não deve retornar {@code null}, e sim {@link 
          * com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
          */
         NAO_JOGOU_NEM_TOCOU,
         /**
-         * O {@link Jogador jogador} retornou <code>null</code> quando foi{@link
-         * Jogador#vontadeDeComecar() perguntado sobre se queria começar} a 
-         * partida. Isso é um bug do jogador e não faz mais sentido continuar um
-         * {@link Jogo jogo} com ele.
+         * O {@link com.github.abdonia.domino.Jogador jogador} retornou {@code 
+         * null} quando foi 
+         * {@link com.github.abdonia.domino.Jogador#vontadeDeComecar() 
+         * perguntado sobre se queria começar} a partida. Isso é um bug do 
+         * jogador e não faz mais sentido continuar um {@link Jogo jogo} com 
+         * ele.
          */
         NAO_SABE_SE_COMECE;
     };

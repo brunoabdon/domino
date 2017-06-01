@@ -120,10 +120,10 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     
     /**
      * O {@link com.github.abdonia.domino.Jogador} retornou 
-     * <code>null</code> quando {@link com.github.abdonia.domino.Jogador#joga()
+     * {@code null} quando {@link com.github.abdonia.domino.Jogador#joga()
      * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma {@link 
-     * Pedra pedra} pra jogar, o jogador não deve retornar <code>null</code>, e
-     * sim {@link com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+     * Pedra pedra} pra jogar, o jogador não deve retornar {@code null}, e sim 
+     * {@link com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
      * 
      * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>

@@ -44,8 +44,8 @@ class Partida {
     /**
      * Uma array auxliar, contendo só as carroças, em ordem 
      * crescente (de {@link #CARROCA_DE_LIMPO limpo} a 
-     * {@link #CARROCA_DE_SENA sena}): <code>
-     * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}</code>.
+     * {@link #CARROCA_DE_SENA sena}): {@code 
+     * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}}.
      */
     private static final Pedra[] CARROCAS = {
             Pedra.CARROCA_DE_LIMPO, 

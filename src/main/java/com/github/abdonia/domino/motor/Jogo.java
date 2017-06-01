@@ -37,14 +37,15 @@ public class Jogo {
   
     /**
      * Cria um jogo de dominó de acordo com as configurações passadas:
-     * Os {@link Jogador}es e os {@link DominoEventListener}s informados no 
-     * parâmetro <code>dominoConfig</code> serão  instanciados. Se uma {@link 
-     * RandomGoddess geradora de aleatoriedade} {@link 
-     * DominoConfig#setRandomizadora(RandomGoddess) for informada}, será 
+     * Os {@link Jogador jogadores} e os {@link DominoEventListener 
+     * eventListeners} informados no parâmetro {@code dominoConfig} serão 
+     * instanciados. Se uma {@link RandomGoddess geradora de aleatoriedade} 
+     * {@link DominoConfig#setRandomizadora(RandomGoddess) for informada}, será 
      * instanciada. Se não, os eventos aleatórios serão baseados em {@link 
      * java.util.Random}.
      * 
      * @param configuracao A configuração do jogo.
+     * 
      * @throws DominoConfigException caso a configuração passada esteja inválida 
      * (deve conter 4 jogadores e todos os nomes de classe devem ser válidos, 
      * para classes com um construtor vazio). 
@@ -231,7 +232,7 @@ public class Jogo {
     /**
      * Diz se uma das duas {@link Dupla duplas} já atingiu seis {@link 
      * Dupla#getPontos() pontos}.
-     * @return <code>true</code> se e somente se uma das duas duplas já tiver,
+     * @return {@code true} se e somente se uma das duas duplas já tiver,
      * pelo menos, seis pontos.
      */
     private boolean alguemVenceu() {

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * ele vai jogar e em que {@link Lado lado} da {@link Mesa mesa} jogar.
  *
  * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar, 
- * retornando {@link #TOQUE} (retornar <code>null</code> não é permitido).
+ * retornando {@link #TOQUE} (retornar {@code null} não é permitido).
  * 
  * <p>Essa classe é imutável e `final`. Suas instâncias são adquiridas pelo
  * método estático {@link #jogada(Pedra, Lado)}.</p>
@@ -95,7 +95,7 @@ public final class Jogada {
      * @return Uma jogada da pedra em questão do lado informado.
      * 
      * @throws IllegalArgumentException Se a {@link Pedra} ou o {@link Lado} 
-     * for <code>null</code>.
+     * for {@code null}.
      */
     public static Jogada jogada(final Pedra pedra, final Lado lado) {
         if(pedra == null || lado == null) 
