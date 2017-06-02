@@ -10,7 +10,7 @@ Javadoc disponível em http://brunoabdon.github.io/domino/apidocs/
 
 Você precisa ter a [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) e o [Maven](https://maven.apache.org/) instalado (e o [git](https://git-scm.com/) também).
 
-Em 4 passos: Baixar os fontes, entrar no diretório, compilar e roda:
+Em 4 passos: Baixar os fontes, entrar no diretório, compilar e rodar:
 ``` 
 $ git https://github.com/brunoabdon/domino.git
 $ cd domino
