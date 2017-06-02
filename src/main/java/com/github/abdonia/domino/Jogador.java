@@ -21,12 +21,13 @@ package com.github.abdonia.domino;
  * 
  * <hr>
  * <h2>Métodos básicos</h2>
- * <p>{@code void} <b>{@link #sentaNaMesa(Mesa, int) jogador.sentaNaMesa(...)}</b>: Num jogo 
- * de dominó, os quatro Jogadores vão primeiro {@linkplain #sentaNaMesa(Mesa, 
- * int) sentar na mesa} (em duplas) e então jogar várias partidas, até que uma
- * das duplas acumule seis pontos e o jogo termine.</p>
+ * <p>{@code void} 
+ * <b>{@link #sentaNaMesa(Mesa, int) jogador.sentaNaMesa(...)}</b>: Num jogo de 
+ * dominó, os quatro Jogadores vão primeiro {@linkplain #sentaNaMesa(Mesa, int) 
+ * sentar na mesa} (em duplas) e então jogar várias partidas, até que uma das 
+ * duplas acumule seis pontos e o jogo termine.</p>
  * 
- * <p>{@code void} <b>{@link #recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) 
+ * <p>{@code void} <b>{@link #recebeMao(Pedra,Pedra,Pedra,Pedra,Pedra,Pedra) 
  * jogador.recebeMao(...)}</b>: Cada partida começa com cada Jogador {@link 
  * #recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) recebendo seis pedras na 
  * mão} e com a {@linkplain Mesa#taVazia() mesa vazia}. Quatro pedras ficam no 
@@ -34,25 +35,26 @@ package com.github.abdonia.domino;
  * jogando} em turnos até que um deles vence ao colocar sua última pedra na 
  * {@linkplain Mesa mesa}<a href="#fim">*</a>.</p>
  * 
- * <p>{@link Vontade} <b>{@link #vontadeDeComecar() jogador.vontadeDeComecar()}</b>: Com a 
- * exceção da primeira partida, em que quem começa é o jogador que tiver o 
- * {@linkplain Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>, nas demais
- * partidas, quem começa é um dos jogadores da dupla que venceu a partida 
- * anterior. A dupla precisa decidir quais dos dois membros vai começar, mas 
- * deve fazer isso sem trocar muita informação. Pra isso, cada jogador deve 
- * saber responde "{@linkplain #vontadeDeComecar() o quanto ele gostaria de 
- * começar a jogar}" olhando apenas pra suas pedras iniciais, sem se comunicar 
- * com seu parceiro de dupla.</p>
+ * <p>{@link Vontade}
+ * <b>{@link #vontadeDeComecar() jogador.vontadeDeComecar()}</b>: Com a exceção 
+ * da primeira partida, em que quem começa é o jogador que tiver o {@linkplain 
+ * Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>, nas demais partidas, 
+ * quem começa é um dos jogadores da dupla que venceu a partida anterior. A 
+ * dupla precisa decidir quais dos dois membros vai começar, mas deve fazer isso
+ * sem trocar muita informação. Pra isso, cada jogador deve saber responde 
+ * "{@linkplain #vontadeDeComecar() o quanto ele gostaria de começar a jogar}" 
+ * olhando apenas pra suas pedras iniciais, sem se comunicar com seu parceiro de
+ * dupla.</p>
  *
- * <p>{@link Jogada} <b>{@link #joga() jogador.joga()}</b>: Na sua vez de {@linkplain #joga()
- * jogar}, o jogador deve analisar o estado da {@linkplain Mesa mesa} e decidir
- * qual será sua {@link Jogada}: qual {@linkplain Pedra pedra} de sua mão e em 
- * que {@linkplain Lado lado} da mesa. Caso veja que nãotem nenhuma pedra que se
- * encaixe na mesa, a jogada vai ser {@linkplain Jogada#TOQUE um toque}.
- * Caso seja a primeira jogada do primeira partida<a href="#ini">***</a>, cabe 
- * ao jogador entender que deve jogar a maior {@linkplain Pedra#isCarroca() 
- * carroça} (normalmente o {@linkplain Pedra#CARROCA_DE_SENA Dozão}<a 
- * href="#dozao">**</a>).</p> 
+ * <p>{@link Jogada} <b>{@link #joga() jogador.joga()}</b>: Na sua vez de 
+ * {@linkplain #joga() jogar}, o jogador deve analisar o estado da {@linkplain 
+ * Mesa mesa} e decidir qual será sua {@link Jogada}: qual {@linkplain Pedra 
+ * pedra} de sua mão e em que {@linkplain Lado lado} da mesa. Caso veja que não
+ * tem nenhuma pedra que se encaixe na mesa, a jogada vai ser {@linkplain 
+ * Jogada#TOQUE um toque}. Caso seja a primeira jogada do primeira partida<a 
+ * href="#ini">***</a>, cabe ao jogador entender que deve jogar a maior 
+ * {@linkplain Pedra#isCarroca() carroça} (normalmente o {@linkplain 
+ * Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>).</p> 
  * <hr>
  * <h2 id="eventos">Usando mais informações sobre o jogo</h2>
  * <p>Jogadores que implementarem {@link 
@@ -87,13 +89,13 @@ package com.github.abdonia.domino;
  * </ol>
  * 
  * <p><a name="dozao">(**)</a> Pode acontecer do {@linkplain 
- * Pedra#CARROCA_DE_SENA Dozão} estar no dorme,e então o jogo deve começar com a
- * {@linkplain Pedra#CARROCA_DE_QUINA carroça de quina}. Como o dorme tem quatro
- * {@linkplain Pedra pedras}, é possivel até que estejam nele as carroças de 
- * {@linkplain Numero#SENA sena}, {@linkplain Numero#QUINA quina}, {@linkplain 
- * Numero#QUADRA quadra} e {@linkplain Numero#TERNO terno}, obrigando o jogo a 
- * ser inciado pelo jogador que tiver a {@linkplain Pedra#CARROCA_DE_DUQUE 
- * carroça de duque}.</p>
+ * Pedra#CARROCA_DE_SENA Dozão} estar no dorme, e então o jogo deve começar com 
+ * a {@linkplain Pedra#CARROCA_DE_QUINA carroça de quina}. Como o dorme tem 
+ * quatro {@linkplain Pedra pedras}, é possivel até que estejam nele as carroças 
+ * de {@linkplain Numero#SENA sena}, {@linkplain Numero#QUINA quina}, 
+ * {@linkplain Numero#QUADRA quadra} e {@linkplain Numero#TERNO terno}, 
+ * obrigando o jogo a ser inciado pelo jogador que tiver a {@linkplain 
+ * Pedra#CARROCA_DE_DUQUE carroça de duque}.</p>
  * 
  * <p><a name="ini">(***)</a> É possível perceber que é a primeira jogada da 
  * partida se a {@linkplain Mesa#taVazia() mesa estiver vazia}. E, se o método
@@ -114,9 +116,9 @@ public interface Jogador {
      * a usada em {@link Mesa#quantasPedrasOJogadoresTem(int)}.
      * 
      * @param mesa A mesa do jogo do dominó, de onde se poderá descobrir, na 
-     * hora de {@linkplain #joga() jogar}, que {@linkplain Pedra pedras} estão dispostas, qual o
-     * {@link Numero} aparece em cada {@link Lado} e quantas pedras cada 
-     * {@link Jogador} tem na mão.
+     * hora de {@linkplain #joga() jogar}, que {@linkplain Pedra pedras} estão 
+     * dispostas, qual o {@link Numero} aparece em cada {@link Lado} e quantas 
+     * pedras cada {@link Jogador} tem na mão.
      * 
      * @param cadeiraQueSentou O número da cadeira em que o jogador se sentou 
      * (entre 1 e 4).
@@ -124,7 +126,8 @@ public interface Jogador {
     public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou);
 
     /**
-     * O jogador recebe sua mão: 6 {@linkplain Pedra pedras} no início de cada partida.
+     * O jogador recebe sua mão: 6 {@linkplain Pedra pedras} no início de cada 
+     * partida.
      * 
      * @param pedra1 A primeira {@linkplain Pedra pedra} da mão.
      * @param pedra2 A segunda {@linkplain Pedra pedra} da mão.
@@ -143,18 +146,18 @@ public interface Jogador {
 
     /**
      * Está na vez deste jogador jogar. Deve retornar uma {@link Jogada} dizendo
-     * qual {@linkplain Pedra pedra} quer jogar e de que {@link Lado} da mesa ela 
-     * deve ser jogada.
+     * qual {@linkplain Pedra pedra} quer jogar e de que {@link Lado} da mesa 
+     * ela  deve ser jogada.
      * 
-     * <p>Obviamente, o jogador deve ter {@linkplain #recebeMao(Pedra, Pedra, Pedra, 
-     * Pedra, Pedra, Pedra) recebido esssa pedra} nessa partida e 
-     * não ter jogado ela ainda.</p>
+     * <p>Obviamente, o jogador deve ter {@linkplain #recebeMao(Pedra, Pedra, 
+     * Pedra, Pedra, Pedra, Pedra) recebido esssa pedra} nessa partida e não ter
+     * jogado ela ainda.</p>
      * 
      * <p>É responsabilidade do jogador saber que, se for a primeira rodada da
-     * primeira partida, ele deve comecar com o {@linkplain Pedra#CARROCA_DE_SENA
-     * dozão}, ou {@linkplain Pedra carroça de quina}, etc. (se o sistema disser que
-     * este jogador deve ser o primeiro a jogar, então é certo que este jogador
-     * é quem tem a maior carroça).</p>
+     * primeira partida, ele deve comecar com o {@linkplain 
+     * Pedra#CARROCA_DE_SENA dozão}, ou {@linkplain Pedra carroça de quina}, 
+     * etc. (se o sistema disser que este jogador deve ser o primeiro a jogar, 
+     * então é certo que este jogador é quem tem a maior carroça).</p>
 
      * <p>Para tocar, deve retornar o singleton {@link Jogada#TOQUE}. Retornar
      * {@code null} ou um pedra-beba cancela o jogo imediatamente.</p>
@@ -165,13 +168,14 @@ public interface Jogador {
 
     /**
      * Usado na primeira rodada de uma partida quando a dupla desse {@link
-     * Jogador} ganhou a partida anterior. Um dos dois jogadores da dupla deve
-     * fazer a primeira {@link Jogada}. Cada jogador deve dizer, através deste 
-     * método, "<i>quanto ele quer ser o jogador a fazer a primeira jogada</i>".
-     * O que que tiver mais vontade começa. Em caso de empate, um dois dois vai 
-     * ser escolhido aleatoriamente.
+     * Jogador} ganhou a partida anterior, pra definir qual dos membros da dupla
+     * irá iniciar a partida. Cada jogador deve dizer, através deste método, o 
+     * "<i>quanto ele quer ser o jogador a fazer a primeira jogada</i>". Irá 
+     * começar a partida aquele que demonstrar uma {@link Vontade} maior. Em
+     * caso de empate, um dois dois vai ser escolhido aleatoriamente.
      * 
-     * @return A vontade deste jogador de ser o primeiro a jogar nessa partida.
+     * @return A {@link Vontade} deste jogador em ser o primeiro a jogar nessa 
+     * partida.
      */
     public Vontade vontadeDeComecar();
 }
