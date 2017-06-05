@@ -17,8 +17,11 @@
 package com.github.abdonia.domino.motor;
 
 import com.github.abdonia.domino.Pedra;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 /**
  *
@@ -48,13 +51,13 @@ public class ExMachina implements RandomGoddess{
     }
     
     @Override
-    public List<Pedra> embaralha() {
-        final List<Pedra> pedras = new ArrayList<>(QUANTAS_PEDRAS);
+    public Pedra[] embaralha() {
+        final Pedra pedras[] = new Pedra[QUANTAS_PEDRAS];
         
         final int[] ordem = getOrdem();
         
         for (int i = 0; i < QUANTAS_PEDRAS; i++) {
-            pedras.add(TODAS[ordem[i]]);
+            pedras[i] = TODAS[ordem[i]];
         }
         return pedras;
     }

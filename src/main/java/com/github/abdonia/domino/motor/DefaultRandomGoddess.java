@@ -33,9 +33,9 @@ class DefaultRandomGoddess implements RandomGoddess{
     private static final Random RAND = new Random();
     
     @Override
-    public List<Pedra> embaralha() {
-        final List<Pedra> pedras= Arrays.asList(Pedra.values());
-        Collections.shuffle(pedras,RAND);
+    public Pedra[] embaralha() {
+        final Pedra pedras[] = Pedra.values();
+        Collections.shuffle(Arrays.asList(pedras),RAND);
         return pedras;
     }
 

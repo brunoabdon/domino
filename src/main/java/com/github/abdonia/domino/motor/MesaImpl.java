@@ -104,8 +104,7 @@ final class MesaImpl implements Mesa{
         this.numeroEsquerda = this.numeroDireita = null;
         
         //embaralha...
-        final Pedra pedras[] = fortuna.embaralha().toArray(new Pedra[28]);
-
+        final Pedra pedras[] = fortuna.embaralha();
         
         //distribui as maos dos 4 jogadores
         for (int i = 0; i < 24;) {

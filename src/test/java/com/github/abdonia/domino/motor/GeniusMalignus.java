@@ -67,13 +67,13 @@ public class GeniusMalignus
     }
     
     @Override
-    public List<Pedra> embaralha() {
-        final List<Pedra> pedras = new ArrayList<>(QUANTAS_PEDRAS);
+    public Pedra[] embaralha() {
+        final Pedra pedras[] = new Pedra[QUANTAS_PEDRAS];
         
         final int[] ordem = this.ordemPedras[this.idxPartida++];
         
         for (int i = 0; i < QUANTAS_PEDRAS; i++) {
-            pedras.add(TODAS[ordem[i]]);
+            pedras[i] = TODAS[ordem[i]];
         }
         return pedras;
     }
