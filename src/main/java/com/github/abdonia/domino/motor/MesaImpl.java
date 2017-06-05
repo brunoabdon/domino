@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-
 final class MesaImpl implements Mesa{
 
     private final Dupla dupla1, dupla2;

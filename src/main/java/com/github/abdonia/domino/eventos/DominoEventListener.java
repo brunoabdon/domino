@@ -23,7 +23,7 @@ import com.github.abdonia.domino.Vitoria;
 /**
  * Interface para receber eventos publicos do que acontece durante o jogo.
  * 
- * {@linkplain com.github.abdonia.domino.Jogador jogadores} que implementarem 
+ * {@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem 
  * esta interface serão automaticamente registrados para serem avisados dos 
  * eventos.
  * 
