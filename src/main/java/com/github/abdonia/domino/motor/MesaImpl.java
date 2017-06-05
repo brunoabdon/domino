@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.Validate;
@@ -37,7 +38,7 @@ final class MesaImpl implements Mesa{
     private final Dupla dupla1, dupla2;
     
     private final Deque<Pedra> listaDePedras;
-    private Numero numeroEsquerda, numeroDireita;
+    private final Cabeca cabecaEsquerda, cabecaDireita;
     
     private final List<JogadorWrapper> jogadores;
 
@@ -85,6 +86,9 @@ final class MesaImpl implements Mesa{
         final OmniscientDominoEventListener eventListener) {
 
         this.listaDePedras = new ArrayDeque<>(28-4-3); //max de pedras possivel.
+        this.cabecaEsquerda = new Cabeca(this.listaDePedras::addFirst);
+        this.cabecaDireita = new Cabeca(this.listaDePedras::addLast);
+        
         this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
         this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
         
@@ -101,7 +105,8 @@ final class MesaImpl implements Mesa{
 
         //emborca as pedras...
         this.listaDePedras.clear();
-        this.numeroEsquerda = this.numeroDireita = null;
+        this.cabecaEsquerda.limpa(); 
+        this.cabecaEsquerda.limpa();
         
         //embaralha...
         final Pedra pedras[] = fortuna.embaralha();
@@ -147,14 +152,6 @@ final class MesaImpl implements Mesa{
             pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
     }
     
-    private boolean podeJogar(final Pedra pedra, final Lado lado){
-        final Numero cabeca = 
-            lado == Lado.ESQUERDO 
-                ? numeroEsquerda 
-                : numeroDireita; 
-        return pedra.temNumero(cabeca);
-    }
-
     @Override
     public int quantasPedrasOJogadoresTem(final int cadeira) {
         Validate.inclusiveBetween(1, 4,cadeira, "%d? São 4 jogadores.",cadeira);
@@ -176,43 +173,28 @@ final class MesaImpl implements Mesa{
      * número} daquele lado da mesa.
      */
     boolean coloca(final Pedra pedra, final Lado lado) {
-
-        final boolean podeColocar;
-        
-        if(taVazia()){
-            podeColocar = true;
-            
-            this.listaDePedras.addFirst(pedra);
-            this.numeroEsquerda = pedra.getPrimeiroNumero();
-            this.numeroDireita = pedra.getSegundoNumero();
-        
-        } else {
-
-            podeColocar = podeJogar(pedra, lado);
-            
-            if(podeColocar){
-                if(lado == Lado.ESQUERDO){
-                    listaDePedras.addFirst(pedra);
-                    numeroEsquerda = novaCabeca(numeroEsquerda, pedra);
-                } else {
-                    listaDePedras.addLast(pedra);
-                    numeroDireita = novaCabeca(numeroDireita, pedra);
-                }
-            }
-        }
-        return podeColocar;
+        return colocaNaMesaVazia(pedra)
+                || (lado == Lado.ESQUERDO ? cabecaEsquerda : cabecaDireita)
+                    .coloca(pedra);
     }
+    
+    /**
+     * Coloca uma {@link Pedra} na mesa se (e somente se) ela {@linkplain 
+     * #taVazia() estiver vazia}. Não faz nada (e retorna {@code false}) se a
+     * mesa não estiver vazia.
+     * @param pedra A {@link Pedra} pra iniciar a mesa.
+     * @return {@code true} se a mesa estava vazia e a pedra foi colocada ou
+     * {@code false} caso contrário.
+     */
+    private boolean colocaNaMesaVazia(final Pedra pedra){
+       final boolean colocou;
+       if(colocou = this.taVazia()){
+            this.listaDePedras.addFirst(pedra);
 
-    private static Numero novaCabeca(
-            final Numero cabecaAtual, 
-            final Pedra pedraQueFoiJogada){
-        
-        final Numero primeiroNumeroDaPedra = 
-            pedraQueFoiJogada.getPrimeiroNumero();
-
-        return primeiroNumeroDaPedra == cabecaAtual 
-            ? pedraQueFoiJogada.getSegundoNumero() 
-            : primeiroNumeroDaPedra;
+            this.cabecaEsquerda.inicia(pedra.getPrimeiroNumero());
+            this.cabecaDireita.inicia(pedra.getSegundoNumero());
+       }
+       return colocou;
     }
 
     JogadorWrapper jogadorDaVez(final int vez) {
@@ -237,14 +219,11 @@ final class MesaImpl implements Mesa{
     }
     
     Numero getNumero(final Lado lado) {
-        return 
-            lado == Lado.ESQUERDO
-                ? numeroEsquerda
-                : numeroDireita;
+        return (lado == Lado.ESQUERDO?cabecaEsquerda:cabecaDireita).getNumero();
     }
     
     boolean taFechada(){
-        return numeroEsquerda == numeroDireita; //mesmo null....
+        return getNumeroEsquerda() == getNumeroDireita(); //mesmo null....
     }
 
     @Override
@@ -254,11 +233,11 @@ final class MesaImpl implements Mesa{
 
     @Override
     public Numero getNumeroEsquerda() {
-        return numeroEsquerda;
+        return this.cabecaEsquerda.getNumero();
     }
     @Override
     public Numero getNumeroDireita() {
-        return numeroDireita;
+        return this.cabecaDireita.getNumero();
     }
 
     @Override
@@ -283,12 +262,39 @@ final class MesaImpl implements Mesa{
 
     @Override
     public String toString() {
-        return listaDePedras.stream()
-                .map(Object::toString)
-                .collect(JOINING);
+        return listaDePedras.stream().map(Object::toString).collect(JOINING);
     }
 
-    private class ReadOnlyIterator<E> implements Iterator<E> {
+    private static class Cabeca{
+        
+        private Numero numero;
+        private final Consumer<Pedra> adicionaNaLista;
+        
+        public Cabeca (final Consumer<Pedra> adicionaNaLista){
+            this.adicionaNaLista = adicionaNaLista;
+        }
+        
+        public Numero getNumero(){ return numero;}
+        public void limpa(){ this.numero = null;}
+        public void inicia(final Numero numero){ this.numero = numero;}
+        
+        public boolean coloca(final Pedra pedra){
+            
+            final boolean colocou;
+            
+            if(colocou = pedra.temNumero(this.numero)){
+                final Numero primeiroNumeroPedra = pedra.getPrimeiroNumero();
+                this.numero =
+                    this.numero == primeiroNumeroPedra 
+                        ? pedra.getSegundoNumero()
+                        : primeiroNumeroPedra;
+                this.adicionaNaLista.accept(pedra);
+            }
+            return colocou;
+        }
+    }
+    
+    private static class ReadOnlyIterator<E> implements Iterator<E> {
 
         private final Iterator<E> iterator;
 
@@ -296,20 +302,14 @@ final class MesaImpl implements Mesa{
             this.iterator = iterator;
         }
 
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public E next() {
-            return iterator.next();
-        }
+        @Override public boolean hasNext() { return iterator.hasNext(); }
+        @Override public E next() { return iterator.next(); }
 
         @Override
         public void remove() {
             throw new UnsupportedOperationException(
-                        "Tentativa de remover pedra da mesa.");
+                        "Tentativa de remover pedra da mesa."
+            );
         }
     }
 }
