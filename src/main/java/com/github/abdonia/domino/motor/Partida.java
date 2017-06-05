@@ -42,20 +42,18 @@ class Partida {
         MENOR_NO_ARRAY = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
 
     /**
-     * Uma array auxliar, contendo só as carroças, em ordem 
-     * crescente (de {@link #CARROCA_DE_LIMPO limpo} a 
-     * {@link #CARROCA_DE_SENA sena}): {@code 
-     * {\uD83C\uDC63,\uD83C\uDC6B,\uD83C\uDC73,\uD83C\uDC7B,\uD83C\uDC83,\uD83C\uDC8B,\uD83C\uDC93}}.
+     * Uma array auxliar, contendo só as 5 maiores carroças, em ordem 
+     * decrescente (de {@linkplain  Pedra#CARROCA_DE_SENA limpo} a 
+     * {@linkplain  Pedra#CARROCA_DE_DUQUE sena}): {@code {\uD83C\uDC93,\uD83C\uDC8B,\uD83C\uDC83,\uD83C\uDC7B,\uD83C\uDC73
+     * que são as carroças possíveis de serem a pedra da jogada inicial da
+     * primeira partida.
      */
-    private static final Pedra[] CARROCAS = {
-            Pedra.CARROCA_DE_LIMPO, 
-            Pedra.CARROCA_DE_PIO, 
-            Pedra.CARROCA_DE_DUQUE, 
-            Pedra.CARROCA_DE_TERNO, 
-            Pedra.CARROCA_DE_QUADRA, 
+    final Pedra MAIORES_CARROCAS[] = {
+            Pedra.CARROCA_DE_SENA, 
             Pedra.CARROCA_DE_QUINA, 
-            Pedra.CARROCA_DE_SENA
-    };
+            Pedra.CARROCA_DE_QUADRA, 
+            Pedra.CARROCA_DE_TERNO, 
+            Pedra.CARROCA_DE_DUQUE};        
     
     Partida(
         final MesaImpl mesa,
@@ -262,10 +260,9 @@ class Partida {
     private int primeiraJogada() throws BugDeJogadorException{
 
         int vez = -1;
-
+        
         loopProcurarMaiorCarroca: 
-        for (int i = 6; i >= 2; i--) {
-            final Pedra carroca = CARROCAS[i];
+        for(final Pedra carroca : MAIORES_CARROCAS){
             for (vez = 0; vez < 4 ; vez++) {
 
                 final JogadorWrapper jogador = this.jogadorDaVez(vez);
