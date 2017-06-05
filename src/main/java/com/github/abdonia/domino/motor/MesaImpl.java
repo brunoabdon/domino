@@ -265,7 +265,10 @@ final class MesaImpl implements Mesa{
         return listaDePedras.stream().map(Object::toString).collect(JOINING);
     }
 
-    private static class Cabeca{
+    /**
+     * Uma "ponta" da fila de {@linkplain Pedra pedras} na mesa.
+     */
+    private static class Cabeca {
         
         private Numero numero;
         private final Consumer<Pedra> adicionaNaLista;
