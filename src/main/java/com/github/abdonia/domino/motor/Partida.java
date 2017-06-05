@@ -21,7 +21,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import com.github.abdonia.domino.Jogada;
-import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
@@ -44,9 +43,10 @@ class Partida {
     /**
      * Uma array auxliar, contendo só as 5 maiores carroças, em ordem 
      * decrescente (de {@linkplain  Pedra#CARROCA_DE_SENA limpo} a 
-     * {@linkplain  Pedra#CARROCA_DE_DUQUE sena}): {@code {\uD83C\uDC93,\uD83C\uDC8B,\uD83C\uDC83,\uD83C\uDC7B,\uD83C\uDC73
-     * que são as carroças possíveis de serem a pedra da jogada inicial da
-     * primeira partida.
+     * {@linkplain  Pedra#CARROCA_DE_DUQUE sena}): {@code {\uD83C\uDC93, 
+     * \uD83C\uDC8B, \uD83C\uDC83, \uD83C\uDC7B, \uD83C\uDC73}} que são as 
+     * carroças possíveis de serem a pedra da jogada inicial da primeira 
+     * partida.
      */
     final Pedra MAIORES_CARROCAS[] = {
             Pedra.CARROCA_DE_SENA, 
@@ -184,12 +184,14 @@ class Partida {
     }
 
     /**
-     * Conta quantos pontos cada jogador tem na mão, definindo quem ganha numa
-     * mesa travada. Lança o evento correspondente ao resultado, que pode ser 
-     * avisar sobre um empate ou sobre uma vitória por pontos.
+     * Conta quantos pontos cada {@linkplain JogadorWrapper jogador} tem na mão, 
+     * definindo quem ganha numa mesa travada. Lança o evento correspondente ao 
+     * resultado, que pode ser avisar sobre um empate ou sobre uma vitória por 
+     * pontos.
      * 
      * @return O resultado da partida, que vai ser ou um empate ou uma vitória
-     * por pontos (pelo Jogador que tiver menos pontos).
+     * por pontos (pelo {@linkplain JogadorWrapper jogador} que tiver menos 
+     * pontos na mão).
      */
     private ResultadoPartida contaPontos() {
 
@@ -245,11 +247,12 @@ class Partida {
     }
 
     /**
-     * Realiza a primeira rodada da primeira partida, que deve ser do {@link 
-     * Jogador} que tiver a maior {@link Pedra#isCarroca() carroça} na mão.
+     * Realiza a primeira rodada da primeira partida, que deve ser do 
+     * {@linkplain JogadorWrapper jogador} que tiver a maior {@link 
+     * Pedra#isCarroca() carroça} na mão.
      * 
      * O jogador será definido e será 
-     * {@link Jogador#joga() chamado a jogar}. Sua {@link Jogada} será validada,
+     * {@link JogadorWrapper#joga() chamado a jogar}. Sua {@link Jogada} será validada,
      * devendo ser obrigatoriamente a maior carroça.
      * 
      * @return A vez do próximo jogador a jogar.
@@ -308,12 +311,25 @@ class Partida {
         return (vez+1)%4;
     }
 
+    /**
+     * Verifica se a partida vai parar subitamente, antes de qualquer um jogar,
+     * por um dos dois motivos: (a) um dos {@linkplain JogadorWrapper jogadores} 
+     * recebeu 5 {@linkplain Pedra#isCarroca() carroças} na mão (e a partida
+     * {@linkplain ResultadoPartida.Volta volta}) ou (b) um dos jogadores 
+     * recebeu 6 carroças na mão e sua {@linkplain Dupla dupla} {@linkplain 
+     * ResultadoPartida.Batida vence} imediatamente.
+     * @return Uma {@linkplain ResultadoPartida.Volta}, se um dos {@linkplain 
+     * JogadorWrapper jogadores} recebeu exatamente 5 {@linkplain 
+     * Pedra#isCarroca() carroças} na mão, ou uma {@link
+     * ResultadoPartida.Batida} do tipo {@link SEIS_CARROCAS_NA_MAO}, se um dos 
+     * jogadores recebeu 6 carroças na mão, ou {@code null} null caso nenhuma
+     * das condições ocorrer.
+     */
     private ResultadoPartida verificaMorteSubita() {
         
         ResultadoPartida resultado = null;
         
-        final Collection<JogadorWrapper> jogadores = mesa.getJogadores();
-        for (final JogadorWrapper jogador : jogadores) {
+        for (final JogadorWrapper jogador : mesa.getJogadores()) {
             int quantasNaoCarrocas = 0;
             for (final Pedra pedra : jogador.getMao()) {
                 if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
@@ -335,9 +351,10 @@ class Partida {
     }
 
     /**
-     * Métido auxiliar que anuncia o evento de que um dado {@link Jogador} bateu 
-     * (com um dado {@link Vitoria tipo de batida}) e cria e retorna um {@link 
-     * ResultadoPartida} equivalente a essa vitória.
+     * Métido auxiliar que anuncia o evento de que um dado {@linkplain 
+     * JogadorWrapper jogador} bateu (com um dado {@link Vitoria tipo de 
+     * batida}) e cria e retorna um {@link ResultadoPartida} equivalente a essa 
+     * vitória.
      * 
      * @param vencedor O jogador que bateu.
      * @param tipoDeBatida O tipo de batida.
@@ -350,9 +367,9 @@ class Partida {
     }
     
     /**
-     * Métido auxiliar que anuncia o evento de que um dado {@link Jogador} tinha
-     * 5 carroças na mão e a partida vai voltar e cria e retorna um {@link 
-     * ResultadoPartida} equivalente a essa situação.
+     * Métido auxiliar que anuncia o evento de que um dado {@linkplain 
+     * JogadorWrapper jogador} tinha 5 carroças na mão e a partida vai voltar e 
+     * cria e retorna um {@link ResultadoPartida} equivalente a essa situação.
      * 
      * @param vencedor O jogador que bateu.
      * @param tipoDeBatida O tipo de batida.
