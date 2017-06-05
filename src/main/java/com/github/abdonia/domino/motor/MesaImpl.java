@@ -112,18 +112,19 @@ final class MesaImpl implements Mesa{
         final Pedra pedras[] = fortuna.embaralha();
         
         //distribui as maos dos 4 jogadores
-        for (int i = 0; i < 24;) {
-            final JogadorWrapper jogadorDaVez = jogadorDaVez(i/6);
+        int i = 0;
+        for(final JogadorWrapper jogador : jogadores){
             final Pedra pedra1 = pedras[i++];
             final Pedra pedra2 = pedras[i++];
             final Pedra pedra3 = pedras[i++];
             final Pedra pedra4 = pedras[i++];
             final Pedra pedra5 = pedras[i++];
             final Pedra pedra6 = pedras[i++];
-            
+
             this.entregaPedras(
-                jogadorDaVez, pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
+                jogador, pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         }
+
         //separa o dorme
         this.eventListener
             .dormeDefinido(pedras[24],pedras[25],pedras[26],pedras[27]);
@@ -155,8 +156,7 @@ final class MesaImpl implements Mesa{
     @Override
     public int quantasPedrasOJogadoresTem(final int cadeira) {
         Validate.inclusiveBetween(1, 4,cadeira, "%d? São 4 jogadores.",cadeira);
-        //jogador na caidera 1 joga na vez 0. cadeira 2, na vez 1...
-        return this.jogadorDaVez(cadeira-1).getMao().size();
+        return this.jogadorNaCadeira(cadeira).getMao().size();
     }
 
     /**
@@ -197,9 +197,9 @@ final class MesaImpl implements Mesa{
        return colocou;
     }
 
-    JogadorWrapper jogadorDaVez(final int vez) {
-        final Dupla dupla = (vez%2)==0 ? dupla1 : dupla2;
-        return vez<2 ? dupla.getJogador1() : dupla.getJogador2();
+    JogadorWrapper jogadorNaCadeira(final int cadeira) {
+        final Dupla dupla = (cadeira%2)==1? dupla1 : dupla2;
+        return cadeira<3 ? dupla.getJogador1() : dupla.getJogador2();
     }
     
     Dupla getDupla1(){

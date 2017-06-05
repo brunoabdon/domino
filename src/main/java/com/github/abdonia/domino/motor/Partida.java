@@ -98,7 +98,7 @@ class Partida {
 
         while(!(alguemBateu || trancou)){
 
-            jogadorDaVez = this.mesa.jogadorDaVez(vez);
+            jogadorDaVez = this.jogadorDaVez(vez);
 
             final int cadeira = jogadorDaVez.getCadeira();
 
@@ -215,7 +215,7 @@ class Partida {
         } else {
             final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
             final JogadorWrapper jogadorComMenosPontosNaMao = 
-                this.mesa.jogadorDaVez(melhorIdx);
+                this.jogadorDaVez(melhorIdx);
             
             resultado = batida(jogadorComMenosPontosNaMao,CONTAGEM_DE_PONTOS);
         }
@@ -268,7 +268,7 @@ class Partida {
             final Pedra carroca = CARROCAS[i];
             for (vez = 0; vez < 4 ; vez++) {
 
-                final JogadorWrapper jogador = mesa.jogadorDaVez(vez);
+                final JogadorWrapper jogador = this.jogadorDaVez(vez);
                 
                 final Collection<Pedra> mao = jogador.getMao();
                 if(mao.contains(carroca)){
@@ -364,5 +364,9 @@ class Partida {
     private ResultadoPartida volta(final JogadorWrapper jogador) {
         this.eventListener.partidaVoltou(jogador.getCadeira());
         return ResultadoPartida.volta(jogador);
-   }
+    }
+   
+    private JogadorWrapper jogadorDaVez(final int vez){
+        return this.mesa.jogadorNaCadeira(vez+1);
+    }
 }
