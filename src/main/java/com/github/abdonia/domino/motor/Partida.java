@@ -197,15 +197,11 @@ class Partida {
 
         final ResultadoPartida resultado;
 
-        final Dupla dupla1 = mesa.getDupla1();
-        final Dupla dupla2 = mesa.getDupla2();
-
-        final Integer pontos[] = new Integer[]{
-            dupla1.getJogador1().getNumeroDePontosNaMao(),
-            dupla2.getJogador1().getNumeroDePontosNaMao(),
-            dupla1.getJogador2().getNumeroDePontosNaMao(),
-            dupla2.getJogador2().getNumeroDePontosNaMao(),
-        };
+        final Integer pontos[] = 
+            mesa.getJogadores()
+                .stream()
+                .map(JogadorWrapper::getNumeroDePontosNaMao)
+                .toArray(Integer[]::new);
         
         final BiFunction<Integer,Integer, Integer> menor = 
             MENOR_NO_ARRAY.apply(pontos);
