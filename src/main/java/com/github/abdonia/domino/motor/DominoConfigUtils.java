@@ -21,7 +21,13 @@ package com.github.abdonia.domino.motor;
  * @author Bruno Abdon
  */
 class DominoConfigUtils {
-  
+
+    private static final String ERR_SUPER_KLASS = 
+        "A classe \"%s\" deveria mas não implementa \"%s\".";
+
+    private static final String ERR_CLASSE_DESCONHECIDA = 
+        "A classe \"%s\" foi mencionada mas ela não pode ser encontrada.";    
+    
     public static <K> K instancia(
             final Class<K> superKlass, 
             final String className) throws DominoConfigException {
@@ -35,15 +41,9 @@ class DominoConfigUtils {
             instance = instancia(superKlass, klass);
 
         } catch (ClassCastException e) {
-            throw new DominoConfigException(
-                e, 
-                "A classe \"%s\" foi usada onde se esperava uma classe que implementasse \"%s\".",
-                className,
-                superKlass.getName());
-            
+            throw erroSuper(e, className, superKlass);
         } catch (ClassNotFoundException e) {
-            throw new DominoConfigException(
-                "A classe \"%s\" foi mencionada mas ela não pode ser encontrada.", className);
+            throw new DominoConfigException(ERR_CLASSE_DESCONHECIDA, className);
         }
         return instance;
     }
@@ -65,12 +65,15 @@ class DominoConfigUtils {
             throw new DominoConfigException(
                 e, "Preciso de um construtor: %s.", klass.getName());
         } catch (ClassCastException e) {
-            throw new DominoConfigException(
-                e, 
-                "A classe \"%s\" foi usada onde se esperava uma classe que implementasse \"%s\".",
-                klass.getName(),
-                superKlass.getName());
+            throw erroSuper(e, klass.getName(), superKlass);
         }
         return instance;
+    }
+    private static DominoConfigException erroSuper(
+            final ClassCastException e,
+            final String klass,
+            final Class<?> superr){
+        return 
+            new DominoConfigException(e,ERR_SUPER_KLASS,klass,superr.getName());
     }
 }
