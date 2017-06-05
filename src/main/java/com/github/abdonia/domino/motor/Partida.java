@@ -26,6 +26,7 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
 import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
+import static com.github.abdonia.domino.Vitoria.tipoDeBatida;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
@@ -164,23 +165,11 @@ class Partida {
         if(trancou){
             resultadoPartida = contaPontos();
         } else {
-            final Vitoria tipoDaBatida = veOTipoDaBatida(pedra);
+            final Vitoria tipoDaBatida = tipoDeBatida(pedra,mesa.taFechada());
             resultadoPartida = batida(jogadorDaVez,tipoDaBatida);
         }
 
         return resultadoPartida;
-    }
-
-    private Vitoria veOTipoDaBatida(final Pedra pedra) {
-
-        final boolean carroca = pedra.isCarroca();
-        final boolean laELo = mesa.taFechada();
-
-        return
-            carroca && laELo ?  Vitoria.CRUZADA
-            : laELo ?           Vitoria.LA_E_LO
-            : carroca ?         Vitoria.CARROCA
-            :                   Vitoria.BATIDA_SIMPLES;
     }
 
     /**

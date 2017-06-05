@@ -97,4 +97,33 @@ public enum Vitoria {
     public int getPontos(){
         return this.pontos;
     }
+    
+    /**
+     * Diz qual é o tipo de vitória que acontece quando se
+     * bate com uma dada {@linkplain Pedra pedra}, fechando ou não a mesa.
+     * @param ultimaPedra a última {@linkplain Pedra pedra} da mão do {@link 
+     * Jogador}, que ele {@link Jogador#joga() jogou} e bateu.
+     * @param fechouAMesa Diz se, depois dessa última {@linkplain Jogada 
+     * jogada}, a mesa ficou com {@link Mesa#getNumeroEsquerda() o número de um
+     * lado} igual ao {@link  Mesa#getNumeroDireita() número do outro}.
+     * 
+     * @return {@link #CRUZADA}, se a {@code ultimaPedra} for uma {@linkplain 
+     * Pedra#isCarroca() carroça} e tiver fechado a mesa, ou {@link #LA_E_LO} se
+     * tive fechado a mesa com uma pedra que não é carroça, ou {@link #CARROCA},
+     * se a última pedra foi uma carroça que não fechou a mesa ou {@link 
+     * #BATIDA_SIMPLES} caso nenhuma dessas condições acontecer.
+     */
+    public static Vitoria tipoDeBatida(
+            final Pedra ultimaPedra, 
+            final boolean fechouAMesa) {
+
+        final boolean carroca = ultimaPedra.isCarroca();
+
+        return
+            carroca && fechouAMesa  ?   CRUZADA
+            : fechouAMesa           ?   LA_E_LO
+            : carroca               ?   CARROCA
+            :                           BATIDA_SIMPLES;
+    }
+    
 }
