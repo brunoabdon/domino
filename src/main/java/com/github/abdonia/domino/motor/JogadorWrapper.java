@@ -18,6 +18,7 @@ package com.github.abdonia.domino.motor;
 
 import java.util.Collection;
 import java.util.EnumSet;
+import org.apache.commons.lang3.Validate;
 
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Jogador;
@@ -70,11 +71,10 @@ class JogadorWrapper implements Jogador {
      * 
      * @throws NullPointerException caso um dos parâmetros seja nulo.
      */
-    JogadorWrapper(final Jogador wrapped, final String nome) 
-            throws NullPointerException{
+    JogadorWrapper(final Jogador wrapped, final String nome){
 
-        if(nome == null) throw new NullPointerException("João SemNome não joga.");
-        if(wrapped == null) throw new NullPointerException("bug");
+        Validate.notNull(nome,"João SemNome não joga.");
+        Validate.notNull(wrapped,"Bug.");
 
         this.wrapped = wrapped;
         this.nome = nome;

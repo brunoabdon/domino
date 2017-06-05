@@ -20,6 +20,7 @@ import java.util.EnumMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
@@ -35,6 +36,9 @@ import java.util.stream.Stream;
  * @author Bruno Abdon
  */
 public final class Jogada {
+
+    private static final String ERR_LADO_NULO = "Lado 'null' numa jogada";
+    private static final String ERR_PEDRA_NULA = "Pedra 'null' numa jogada";
 
     private final Pedra pedra;
     private final Lado lado;
@@ -99,9 +103,8 @@ public final class Jogada {
      * for {@code null}.
      */
     public static Jogada jogada(final Pedra pedra, final Lado lado) {
-        if(pedra == null || lado == null) 
-            throw new IllegalArgumentException(
-                "Nem a Pedra nem o Lado podem ser nulos numa jogada");
+        Validate.notNull(pedra, ERR_PEDRA_NULA);
+        Validate.notNull(lado, ERR_LADO_NULO);
             
         return  JOGADAS.get(lado).get(pedra);
     }

@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.Validate;
 
 final class MesaImpl implements Mesa{
 
@@ -156,11 +157,10 @@ final class MesaImpl implements Mesa{
     }
 
     @Override
-    public int quantasPedrasOJogadoresTem(final int qualJogador) {
-        if(qualJogador < 1 || qualJogador > 4 ) 
-            throw new IllegalArgumentException("Dominó se joga com 4.");
-        //jogador 1 joga na vez 0. jogadror 2, na vez 1...
-        return this.jogadorDaVez(qualJogador-1).getMao().size();
+    public int quantasPedrasOJogadoresTem(final int cadeira) {
+        Validate.inclusiveBetween(1, 4,cadeira, "%d? São 4 jogadores.",cadeira);
+        //jogador na caidera 1 joga na vez 0. cadeira 2, na vez 1...
+        return this.jogadorDaVez(cadeira-1).getMao().size();
     }
 
     /**

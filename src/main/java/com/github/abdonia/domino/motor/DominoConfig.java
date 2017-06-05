@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.Validate;
 
 import pl.touk.throwing.ThrowingFunction;
 import pl.touk.throwing.exception.WrappedException;
@@ -36,11 +37,9 @@ import pl.touk.throwing.exception.WrappedException;
  * registrados no jogo.
  * 
  * <p>Para um Jogo acontecer, as únicas configurações obrigatórias são os
- * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners} são importantes 
+ * nomes e as classes-ou-instâncias dos 4 jogadores. Listeners são importantes 
  * pra que se possa saber o que aconteceu no jogo (para logar, salvar ou 
- * animar uma GUI), mas não necessários. A configuração de um {@link 
- * RandomGoddess gerador de aleatoriedade} personalizado é raramente útil 
- * (normalmente, só pra testes).</p>
+ * animar uma GUI), mas não necessários.</p>
  * 
  * <p>Um exemplo de <b>configuração mínima</b> é:</p>
  * 
@@ -68,9 +67,9 @@ import pl.touk.throwing.exception.WrappedException;
  *      jogo.jogar();
  * }
  * </pre>
- * <p>Tanto para jogadores, listeners e para o gerador de aleatoriedade, é possível
- * escolher entre setar (1) suas instâncias, (2) suas {@linkplain Class classes} 
- * ou o {@linkplain Class#getName() nome qualificado de suas classes}. Por 
+ * <p>Tanto para jogadores como para os listeners é possível escolher entre 
+ * setar (1) suas instâncias, (2) suas {@linkplain Class classes} 
+ * ou (3) o {@linkplain Class#getName() nome qualificado de suas classes}. Por 
  * exemplo, o jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
  * 
  * <pre>
@@ -87,9 +86,10 @@ import pl.touk.throwing.exception.WrappedException;
  *   dominoConfig.setJogador1Dupla2("com.acme.domino.JogadorEsperto");
  * }
  * </pre>
- * <p>Ao setar uma das três opções, as outras opões são automaticamente setadas 
- * pra {@code null}. A não ser no caso dos listeners, onde vários podem ser
- * adicionados usando qualquer uma das formas.</p>
+ * <p>No caso de jogadores, ao setar uma das três opções, as outras opções (prao
+ * o mesmo jogador da mesma dupla) são automaticamente setadas pra {@code null}.
+ * Já no caso dos listeners é possível adcionar vários, cada um usando qualquer 
+ * uma das formas.</p>
  * 
  * <pre>
  * {@code 
@@ -409,9 +409,10 @@ public class DominoConfig {
             final int idxDupla, 
             final int idxJogadorNaDupla){
         
-        valida1ou2(idxDupla, "Dupla invalida: %d");
-        valida1ou2(idxJogadorNaDupla, "Jogador invalido: %d");
-        
+        Validate.inclusiveBetween(1,2,idxDupla,"Dupla invalida: %d",idxDupla);
+        Validate.inclusiveBetween(
+                1,2,idxJogadorNaDupla,"Jogador invalido: %d",idxJogadorNaDupla);
+
         final int index = indexJogador(idxDupla, idxJogadorNaDupla);
         
         nomesJogadores[index] = nomeJogador;
@@ -422,24 +423,6 @@ public class DominoConfig {
 
     private int indexJogador(final int idxDupla, final int idxJogadorNaDupla) {
         return (idxDupla-1)*2 + (idxJogadorNaDupla-1);
-    }
-
-    /**
-     * Checa se um dado valor é igual a 1 ou 2, lançando uma exceção com uma
-     * dada mensagem {@linkplain String#format(String, Object...) parametrizada}
-     * (usando "{@code %d}" pra exibir o número inválido) caso o valor não seja.
-     * 
-     * @param valor o valor a ser checado.
-     * @param errorMsg A mensagem parametrizada a ser colocada na exceção, no 
-     * caso de erro.
-     * 
-     * @throws  IllegalArgumentException caso o valor seja algo difernente de 1 
-     * e 2;
-     */
-    private static void valida1ou2(final int valor, final String errorMsg){
-        if(valor != 1 && valor != 2){
-            throw new IllegalArgumentException(String.format(errorMsg, valor));
-        }
     }
 
     public Jogador getJogador1Dupla1() {
