@@ -46,7 +46,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      */
     private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA = 
         m -> p ->
-            m.taVazia() || p.temNumero(m.getNumeroEsquerda())
+            m.getPedras().isEmpty() || p.temNumero(m.getNumeroEsquerda())
                 ? Jogada.jogada(p, Lado.ESQUERDO)
                 : p.temNumero(m.getNumeroDireita())
                     ? Jogada.jogada(p, Lado.DIREITO)

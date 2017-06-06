@@ -53,23 +53,13 @@ public abstract class JogadorTestAbstract {
         }
 
         @Override
-        public Iterator<Pedra> iteratorEsquedaPraDireita() {
-            return Collections.emptyIterator();
-        }
-
-        @Override
-        public Iterator<Pedra> iteratorDireitaPraEsquerda() {
-            return Collections.emptyIterator();
-        }
-
-        @Override
         public int quantasPedrasOJogadoresTem(int qualJogador) {
             return 6;
         }
-
+        
         @Override
-        public Pedra[] toArray() {
-            return NENHUMA_PEDRA;
+        public List<Pedra> getPedras(){
+            return Collections.emptyList();
         }
     };
     

@@ -30,10 +30,10 @@ package com.github.abdonia.domino;
  * <p>{@code void} <b>{@link #recebeMao(Pedra,Pedra,Pedra,Pedra,Pedra,Pedra) 
  * jogador.recebeMao(...)}</b>: Cada partida começa com cada Jogador {@link 
  * #recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) recebendo seis pedras na 
- * mão} e com a {@linkplain Mesa#taVazia() mesa vazia}. Quatro pedras ficam no 
- * <em>dorme</em> e estão fora dessa partida. Os jogadores vão {@link #joga() 
- * jogando} em turnos até que um deles vence ao colocar sua última pedra na 
- * {@linkplain Mesa mesa}<a href="#fim">*</a>.</p>
+ * mão} e com a mesa sem pedras. Quatro pedras ficam no <em>dorme</em> e estão 
+ * fora dessa partida. Os jogadores vão {@link #joga() jogando} em turnos até 
+ * que um deles vence ao colocar sua última pedra na {@linkplain Mesa mesa}<a 
+ * href="#fim">*</a>.</p>
  * 
  * <p>{@link Vontade}
  * <b>{@link #vontadeDeComecar() jogador.vontadeDeComecar()}</b>: Com a exceção 
@@ -98,10 +98,10 @@ package com.github.abdonia.domino;
  * Pedra#CARROCA_DE_DUQUE carroça de duque}.</p>
  * 
  * <p><a name="ini">(***)</a> É possível perceber que é a primeira jogada da 
- * partida se a {@linkplain Mesa#taVazia() mesa estiver vazia}. E, se o método
- * {@link #vontadeDeComecar()} não foi chamado, então esta é a primeira partida 
- * do jogo. É possível também saber quantas partidas foram jogadas 
- * <a href="#eventos">ouvindo eventos</a>.
+ * partida se não existir {@linkplain Mesa#getPedras() pedras na mesa}. E, se o 
+ * método {@link #vontadeDeComecar()} não foi chamado, então esta é a primeira 
+ * partida  do jogo. É possível também saber quantas partidas foram jogadas <a 
+ * href="#eventos">ouvindo eventos</a>.
  * </p>
  * 
  * @author Bruno Abdon

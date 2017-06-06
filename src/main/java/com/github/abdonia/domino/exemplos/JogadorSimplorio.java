@@ -90,7 +90,7 @@ public class JogadorSimplorio implements Jogador{
     public Jogada joga() {
         final Jogada jogada;
 
-        if(mesa.taVazia()){
+        if(mesa.getPedras().isEmpty()){
             //é o comeco de uma partida e eu sou o primeiro.
             if(!jaJogueiAlgumaVez){
                 //é a primeira partida do jogo. devo jogar  maior carroca.

@@ -115,7 +115,7 @@ class Partida {
                 
                 //tocou mesmo?
                 final boolean tinhaPedraPraJogar = 
-                    mesa.taVazia()
+                    mesa.getPedras().isEmpty()
                     || maoDoJogadorDaVez.stream().anyMatch(
                         pedraNaMao -> 
                             pedraNaMao.temNumero(mesa.getNumeroEsquerda()) 

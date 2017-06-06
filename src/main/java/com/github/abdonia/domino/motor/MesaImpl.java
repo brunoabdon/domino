@@ -23,22 +23,24 @@ import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.Validate;
 
-final class MesaImpl implements Mesa{
+final class MesaImpl implements Mesa {
 
     private final Dupla dupla1, dupla2;
     
     private final Deque<Pedra> listaDePedras;
     private final Cabeca cabecaEsquerda, cabecaDireita;
+
+    private List<Pedra> visaoDaListaDePedras;
     
     private final List<JogadorWrapper> jogadores;
 
@@ -85,7 +87,11 @@ final class MesaImpl implements Mesa{
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
 
-        this.listaDePedras = new ArrayDeque<>(28-4-3); //max de pedras possivel.
+        
+        final LinkedList pedras = new LinkedList();
+        this.listaDePedras = pedras;
+        this.visaoDaListaDePedras = Collections.unmodifiableList(pedras);
+        
         this.cabecaEsquerda = new Cabeca(this.listaDePedras::addFirst);
         this.cabecaDireita = new Cabeca(this.listaDePedras::addLast);
         
@@ -162,9 +168,10 @@ final class MesaImpl implements Mesa{
     /**
      * Tenta colocar uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, 
      * retornando um boolean dizendo se foi possível colocar. 
-     * <p>É possível colocar qualquer pedra quando a mesa está {@link #taVazia() 
-     * está vazia}. Quando existem pedras, a pedra sendo colocada deve {@link 
-     * Pedra#temNumero(Numero) possuir o número} do lado sendo colocado.</p>
+     * <p>É possível colocar qualquer pedra quando ainda não existe nenhuma 
+     * {@linkplain #getPedras() pedra na mesa}. Quando existem pedras, a pedra 
+     * sendo colocada deve {@link Pedra#temNumero(Numero) possuir o número} do 
+     * lado sendo colocado.</p>
      * 
      * @param pedra A pedra que é pra colocar
      * @param lado Onde botar ela.
@@ -179,16 +186,16 @@ final class MesaImpl implements Mesa{
     }
     
     /**
-     * Coloca uma {@link Pedra} na mesa se (e somente se) ela {@linkplain 
-     * #taVazia() estiver vazia}. Não faz nada (e retorna {@code false}) se a
-     * mesa não estiver vazia.
+     * Coloca uma {@link Pedra} na mesa se (e somente se) ainda não existir 
+     * nenhuma {@linkplain #getPedras() pedra na mesa}. Não faz nada (e retorna 
+     * {@code false}) se a mesa não estiver vazia.
      * @param pedra A {@link Pedra} pra iniciar a mesa.
      * @return {@code true} se a mesa estava vazia e a pedra foi colocada ou
      * {@code false} caso contrário.
      */
     private boolean colocaNaMesaVazia(final Pedra pedra){
        final boolean colocou;
-       if(colocou = this.taVazia()){
+       if(colocou = this.getPedras().isEmpty()){
             this.listaDePedras.addFirst(pedra);
 
             this.cabecaEsquerda.inicia(pedra.getPrimeiroNumero());
@@ -227,11 +234,6 @@ final class MesaImpl implements Mesa{
     }
 
     @Override
-    public boolean taVazia(){
-        return this.listaDePedras.isEmpty();
-    }
-
-    @Override
     public Numero getNumeroEsquerda() {
         return this.cabecaEsquerda.getNumero();
     }
@@ -241,25 +243,10 @@ final class MesaImpl implements Mesa{
     }
 
     @Override
-    public Iterator<Pedra> iteratorEsquedaPraDireita() {
-        return new ReadOnlyIterator<>(listaDePedras.iterator());
+    public List<Pedra> getPedras(){
+        return this.visaoDaListaDePedras;
     }
-
-    @Override
-    public Iterator<Pedra> iteratorDireitaPraEsquerda() {
-        return new ReadOnlyIterator<>(listaDePedras.descendingIterator());
-    }
-
-    @Override
-    public int quantasPecas(){
-        return this.listaDePedras.size();
-    }
-
-    @Override
-    public Pedra[] toArray(){
-        return this.listaDePedras.toArray(new Pedra[this.listaDePedras.size()]);
-    }
-
+    
     @Override
     public String toString() {
         return listaDePedras.stream().map(Object::toString).collect(JOINING);
@@ -294,25 +281,6 @@ final class MesaImpl implements Mesa{
                 this.adicionaNaLista.accept(pedra);
             }
             return colocou;
-        }
-    }
-    
-    private static class ReadOnlyIterator<E> implements Iterator<E> {
-
-        private final Iterator<E> iterator;
-
-        public ReadOnlyIterator(final Iterator<E> iterator) {
-            this.iterator = iterator;
-        }
-
-        @Override public boolean hasNext() { return iterator.hasNext(); }
-        @Override public E next() { return iterator.next(); }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException(
-                        "Tentativa de remover pedra da mesa."
-            );
         }
     }
 }

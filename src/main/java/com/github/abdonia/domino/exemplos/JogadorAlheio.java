@@ -78,7 +78,7 @@ public class JogadorAlheio implements Jogador {
     @Override
     public Jogada joga() {
         return  
-            mesa.taVazia()
+            mesa.getPedras().isEmpty()
                 ? primeiraJogada()
                 : jogadaNormal();
     }

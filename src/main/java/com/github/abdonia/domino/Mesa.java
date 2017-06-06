@@ -16,12 +16,12 @@
  */
 package com.github.abdonia.domino;
 
-import java.util.Iterator;
+import java.util.List;
 
 /**
  * A visão que um {@link Jogador} tem de como está a mesa a cada momento, ou 
- * seja, qual a lista de {@linkplain Pedra pedras} nela e quantas pedras cada jogador
- * ainda tem na mão.
+ * seja, qual a lista de {@linkplain Pedra pedras} nela e quantas pedras cada 
+ * jogador ainda tem na mão.
  * 
  * <p>As números expostos nas duas pontas da lista são referidas como {@link 
  * #getNumeroEsquerda() número da esquerda} e {@link #getNumeroDireita() número
@@ -30,75 +30,51 @@ import java.util.Iterator;
  *   
  * @author Bruno Abdon
  */
-public interface Mesa extends Iterable<Pedra>{
+public interface Mesa {
 
     /**
-     * O {@link Numero} da cabeça da esquerda, ou {@code null} caso a mesa 
-     * {@linkplain #taVazia() esteja vazia}.
+     * O {@link Numero} da cabeça da esquerda, ou {@code null} caso não existam
+     * {@linkplain #getPedras() pedras na mesa}.
      * 
-     * @return O número da cabeça da esquerda, ou {@code null} caso a mesa 
-     * {@linkplain #taVazia() esteja vazia}.
+     * @return O número da cabeça da esquerda, ou {@code null} caso não existam
+     * {@linkplain #getPedras() pedras na mesa}.
      */
     public Numero getNumeroEsquerda();
 
     /**
-     * O {@link Numero} da cabeça da direita, ou {@code null} caso a mesa 
-     * {@linkplain #taVazia() esteja vazia}.
+     * O {@link Numero} da cabeça da direita, ou {@code null} caso não existam
+     * {@linkplain #getPedras() pedras na mesa}.
      * 
-     * @return O número da cabeça da direita, ou {@code null} caso a mesa 
-     * {@linkplain #taVazia() esteja vazia}.
+     * @return O número da cabeça da direita, ou {@code null} caso não existam
+     * {@linkplain #getPedras() pedras na mesa}.
      */
     public Numero getNumeroDireita();
-
+    
     /**
-     * Um {@link Iterator} que permite percorer todas as {@linkplain Pedra pedras} da 
-     * mesa, no sentido {@linkplain #getNumeroEsquerda() esquerda}-pra-{@link
-     * #getNumeroDireita() direita}.
-     * 
-     * <p>O iterator será "read-only", ou seja, uma chamada a {@link
-     * Iterator#remove()} é ilegal e vai causar {@link 
+     * Retorna uma visão somente-leitura da {@linkplain List lista} de 
+     * {@linkplain Pedra pedras} na mesa, na ordem da {@linkplain 
+     * #getNumeroEsquerda() esquerda} pra {@linkplain #getNumeroDireita() 
+     * direita}. 
+     * <p>Tentativas de alterar a lista direta ou indiretamene (através de um
+     * {@link List#iterator() iterator}) vão resultar em {@link 
      * UnsupportedOperationException}.</p>
+     * <p>Durate uma partida, é garantido que será retornada sempre a mesa 
+     * instância da lista, que vai sempre refletir situação atual dessa mesa. 
+     * Enquanto a referência pra a lista pode ser reutilizada, os {@link 
+     * List#iterator() iterators dessa lista} deixam de funcionar se houver uma
+     * aleração à lista de pedras.</p>
      * 
-     * @return um {@link Iterator} pra ver as {@linkplain Pedra pedras} desta mesa.
+     * @return A lista de {@linkplain Pedra pedras} na mesa.
      */
-    @Override
-    public default Iterator<Pedra> iterator(){
-        return iteratorEsquedaPraDireita();
-    }
+    public List<Pedra> getPedras();
 
     /**
-     * Um {@link Iterator} que permite percorer todas as {@linkplain Pedra pedras} da 
-     * mesa, no sentido {@linkplain #getNumeroEsquerda() esquerda}-pra-{@link
-     * #getNumeroDireita() direita}.
-     * 
-     * <p>O iterator será "read-only", ou seja, uma chamada a {@link
-     * Iterator#remove()} é ilegal e vai causar {@link 
-     * UnsupportedOperationException}.</p>
-     * 
-     * @return um {@link Iterator} pra ver as {@linkplain Pedra pedras} desta mesa.
-     */
-    public Iterator<Pedra> iteratorEsquedaPraDireita();
-
-    /**
-     * Um {@link Iterator} que permite percorer todas as {@linkplain Pedra pedras} da 
-     * mesa, no sentido {@linkplain #getNumeroDireita() direita}-pra-{@link
-     * #getNumeroEsquerda() esquerda}.
-     * 
-     * <p>O iterator será "read-only", ou seja, uma chamada a {@link
-     * Iterator#remove()} é ilegal e vai causar {@link 
-     * UnsupportedOperationException}.</p>
-     * 
-     * @return um {@link Iterator} pra ver as {@linkplain Pedra pedras} desta mesa.
-     */
-    public Iterator<Pedra> iteratorDireitaPraEsquerda();
-
-    /**
-     * Diz quantas {@linkplain Pedra pedras} um dado {@link Jogador} tem na mão no 
-     * momento. <b>Importante:</b> Os jogadores são identificados pelos números
-     * de 1 a 4 (e não de zero a três, como nerds esperariam), fazendo então que 
-     * as duplas sejam <i>1 e 3</i> contra <i>2 e 4</i>. Todo jogador é avisado 
-     * sobre a posição que esta sentado no início do jogo pelo método {@link 
-     * Jogador#sentaNaMesa(Mesa,int)}.
+     * Diz quantas {@linkplain Pedra pedras} um dado {@link Jogador} tem na mão
+     * no momento. <b>Importante:</b> Os jogadores são identificados pelos 
+     * números de 1 a 4 (e não de zero a três, como nerds esperariam), fazendo 
+     * então que as duplas sejam <i>1 e 3</i> contra <i>2 e 4</i>. Todo jogador 
+     * é avisado sobre a posição que esta sentado no início do jogo pelo método 
+     * {@link Jogador#sentaNaMesa(Mesa,int)}.
      * 
      * @param qualJogador qual o jogador que se deseja saber (de 1 a 4).
      * 
@@ -110,33 +86,4 @@ public interface Mesa extends Iterable<Pedra>{
      * 
      */
     public int quantasPedrasOJogadoresTem(int qualJogador);
-
-    /**
-     * Diz quantas {@linkplain Pedra pedras} tem na mesa.
-     * 
-     * @return quantas  {@linkplain Pedra pedras} tem na mesa.
-     */
-    public default int quantasPecas(){
-        return toArray().length;
-    }
-
-    /**
-     * Retorna a lista de {@linkplain Pedra pedras} da mesa como um array, no 
-     * sentido {@linkplain #getNumeroEsquerda() esquerda}-pra-{@linkplain 
-     * #getNumeroDireita() direita}. O array pode ser modificado a vontade (isso
-     * não influenciará no estado real da mesa).
-     * 
-     * @return a lista de {@linkplain Pedra pedras} como um array.
-     */
-    public Pedra[] toArray();
-
-    /**
-     * Diz se a mesa está vazia (ou seja, deve-se jogar a primeira {@linkplain 
-     * Pedra pedra} da partida);
-     * 
-     * @return {@code true} só se nao tiver {@link Pedra} na mesa.
-     */
-    public default boolean taVazia(){
-        return this.quantasPecas() == 0;
-    }
 }

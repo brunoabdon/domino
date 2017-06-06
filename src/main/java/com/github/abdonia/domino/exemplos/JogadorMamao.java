@@ -75,7 +75,7 @@ public class JogadorMamao implements Jogador {
         Pedra pedraPraJogar = null;
         Lado ladoDeJogar = null;
 
-        if(mesa.taVazia()){
+        if(mesa.getPedras().isEmpty()){
             //opa! minha vez e a mesa tah vazia? é pra comecar agora! sou o 
             //primeiro;
             if(!perguntouSeEuQueriaJogar){
