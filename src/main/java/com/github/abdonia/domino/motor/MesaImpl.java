@@ -26,6 +26,7 @@ import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -39,8 +40,10 @@ final class MesaImpl implements Mesa {
     
     private final Deque<Pedra> listaDePedras;
     private final Cabeca cabecaEsquerda, cabecaDireita;
+    
+    private final EnumSet<Pedra> dorme;
 
-    private List<Pedra> visaoDaListaDePedras;
+    private final List<Pedra> visaoDaListaDePedras;
     
     private final List<JogadorWrapper> jogadores;
 
@@ -86,12 +89,13 @@ final class MesaImpl implements Mesa {
         final JogadorWrapper jogador2dupla2,
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
-
         
         final LinkedList pedras = new LinkedList();
         this.listaDePedras = pedras;
         this.visaoDaListaDePedras = Collections.unmodifiableList(pedras);
         
+        this.dorme = EnumSet.noneOf(Pedra.class);
+
         this.cabecaEsquerda = new Cabeca(this.listaDePedras::addFirst);
         this.cabecaDireita = new Cabeca(this.listaDePedras::addLast);
         
@@ -111,6 +115,7 @@ final class MesaImpl implements Mesa {
 
         //emborca as pedras...
         this.listaDePedras.clear();
+        this.dorme.clear();
         this.cabecaEsquerda.limpa(); 
         this.cabecaEsquerda.limpa();
         
@@ -131,9 +136,21 @@ final class MesaImpl implements Mesa {
                 jogador, pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         }
 
-        //separa o dorme
-        this.eventListener
-            .dormeDefinido(pedras[24],pedras[25],pedras[26],pedras[27]);
+        this.separaODorme(pedras[24],pedras[25],pedras[26],pedras[27]);
+    }
+
+    private void separaODorme(
+            final Pedra pedra1, 
+            final Pedra pedra2, 
+            final Pedra pedra3, 
+            final Pedra pedra4) {
+
+        this.dorme.add(pedra1);
+        this.dorme.add(pedra2);
+        this.dorme.add(pedra3);
+        this.dorme.add(pedra4);
+
+        this.eventListener.dormeDefinido(pedra1,pedra2,pedra3,pedra4);
     }
 
     /**
@@ -231,6 +248,10 @@ final class MesaImpl implements Mesa {
     
     boolean taFechada(){
         return getNumeroEsquerda() == getNumeroDireita(); //mesmo null....
+    }
+    
+    EnumSet<Pedra> getDorme(){
+        return this.dorme;
     }
 
     @Override
