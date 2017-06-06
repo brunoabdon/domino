@@ -17,6 +17,7 @@
 package com.github.abdonia.domino.motor;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -199,8 +200,7 @@ class Partida {
         final int melhorIdxDupla2 = menor.apply(1,3);
         
         if(pontos[melhorIdxDupla1].equals(pontos[melhorIdxDupla2])){
-            resultado = ResultadoPartida.EMPATE;
-            eventListener.partidaEmpatou();
+            resultado = empate();
         } else {
             final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
             final JogadorWrapper jogadorComMenosPontosNaMao = 
@@ -240,9 +240,9 @@ class Partida {
      * {@linkplain JogadorWrapper jogador} que tiver a maior {@link 
      * Pedra#isCarroca() carroça} na mão.
      * 
-     * O jogador será definido e será 
-     * {@link JogadorWrapper#joga() chamado a jogar}. Sua {@link Jogada} será validada,
-     * devendo ser obrigatoriamente a maior carroça.
+     * <p>O jogador será definido e será {@link JogadorWrapper#joga() chamado a 
+     * jogar}. Sua {@link Jogada} será validada, devendo ser obrigatoriamente a 
+     * maior carroça.</p>
      * 
      * @return A vez do próximo jogador a jogar.
      * 
@@ -251,49 +251,75 @@ class Partida {
      */
     private int primeiraJogada() throws BugDeJogadorException{
 
-        int vez = -1;
+        //a pedra que tem que ser jogada
+        final Pedra maiorCarrocaForaDoDorme =
+            EnumSet
+                .complementOf(this.mesa.getDorme())
+                .parallelStream()
+                .filter(Pedra::isCarroca)
+                .max(Pedra::compareTo)
+                .get();
         
-        loopProcurarMaiorCarroca: 
-        for(final Pedra carroca : MAIORES_CARROCAS){
-            for (vez = 0; vez < 4 ; vez++) {
+        //o jogador que tem que jogar
+        final JogadorWrapper jogadorComMaiorCarroca = 
+            this.mesa
+                .getJogadores()
+                .parallelStream()
+                .filter(j -> j.getMao().contains(maiorCarrocaForaDoDorme))
+                .findAny()
+                .get();
 
-                final JogadorWrapper jogador = this.jogadorDaVez(vez);
-                
-                final Collection<Pedra> mao = jogador.getMao();
-                if(mao.contains(carroca)){
+        //a jogada do jogador
+        return this.primeiraJogada(jogadorComMaiorCarroca,maiorCarrocaForaDoDorme);
+    }
 
-                    final Jogada primeiraJogada = jogador.joga();
-                    
-                    if(primeiraJogada == null){
-                        throw new BugDeJogadorException(
-                            Falha.NAO_JOGOU_NEM_TOCOU, jogador);
-                    }
-                    
-                    final Pedra pedra = primeiraJogada.getPedra();
-                    final Lado lado = primeiraJogada.getLado();
-
-                    this.eventListener.jogadorJogou(
-                        jogador.getCadeira(), 
-                        lado, 
-                        pedra);
-
-                    //agora erre, meu velho
-                    if(pedra != carroca){
-                        throw new BugDeJogadorException(
-                            Falha.JA_COMECOU_ERRANDO,
-                            jogador,
-                            pedra
-                        );
-                    }
-                    //limpeza
-                    mao.remove(pedra);
-                    this.mesa.coloca(pedra,lado);
-
-                    break loopProcurarMaiorCarroca;
-                }
-            }
+    /**
+     * Pede pra um {@linkplain  JogadorWrapper jogador} {@linkplain 
+     * JogadorWrapper#joga() jogar} e valida que ele jogue  uma dada {@linkplain 
+     * Pedra#isCarroca() carroça}, levantando {@link BugDeJogadorException} caso
+     * ele retorne {@code null} ou tente jogar uma outra {@linkplain Pedra 
+     * pedra}. 
+     * 
+     * @param jogador O {@linkplain  JogadorWrapper jogador} que deve 
+     * {@linkplain JogadorWrapper#joga() jogar}.
+     * 
+     * @param carroca A {@linkplain Pedra pedra} que o jogador deve jogar.
+     * 
+     * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
+     * não seja a da maior carroça da mesa (que está na mão dele).
+     */
+    private int primeiraJogada(
+            final JogadorWrapper jogador, 
+            final Pedra carroca) 
+                throws BugDeJogadorException {
+        
+        final Jogada primeiraJogada = jogador.joga();
+        
+        if(primeiraJogada == null){
+            throw new BugDeJogadorException(
+                    Falha.NAO_JOGOU_NEM_TOCOU, jogador);
         }
-        return avanca(vez);
+        
+        final Pedra pedra = primeiraJogada.getPedra();
+        final Lado lado = primeiraJogada.getLado();
+        final int cadeira = jogador.getCadeira();
+        
+        this.eventListener.jogadorJogou(cadeira,lado,pedra);
+        
+        //agora erre, meu velho
+        if(pedra != carroca){
+            throw new BugDeJogadorException(
+                    Falha.JA_COMECOU_ERRANDO,
+                    jogador,
+                    pedra
+            );
+        }
+        //limpeza
+        jogador.getMao().remove(pedra);
+        
+        this.mesa.coloca(pedra,lado);
+        
+        return jogador.getCadeira(); //cadeira == vez+1
     }
 
     private static int avanca(int vez){
@@ -368,8 +394,20 @@ class Partida {
         this.eventListener.partidaVoltou(jogador.getCadeira());
         return ResultadoPartida.volta(jogador);
     }
-   
+
+    /**
+     * Métido auxiliar que anuncia o evento de que a partida empatou e retorna 
+     * um {@link ResultadoPartida} equivalente a essa situação.
+     * 
+     * @return {@link ResultadoPartida#EMPATE}.
+     */
+    private ResultadoPartida empate() {
+        eventListener.partidaEmpatou();
+        return ResultadoPartida.EMPATE;
+    }
+    
     private JogadorWrapper jogadorDaVez(final int vez){
         return this.mesa.jogadorNaCadeira(vez+1);
     }
+    
 }
