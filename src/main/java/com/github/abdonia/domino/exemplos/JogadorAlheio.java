@@ -136,7 +136,7 @@ public class JogadorAlheio implements Jogador {
      * @return Uma {@link Vontade} aleatória.
      */
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
         return VONTADES[SORTE.nextInt(5)];
@@ -144,6 +144,6 @@ public class JogadorAlheio implements Jogador {
 
     private Jogada joga(final Pedra pedra, final Lado lado) {
         this.mao.remove(pedra);
-        return Jogada.jogada(pedra,lado);
+        return Jogada.de(pedra,lado);
     }
 }

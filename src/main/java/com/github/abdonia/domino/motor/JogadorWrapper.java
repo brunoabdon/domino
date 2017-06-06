@@ -139,21 +139,21 @@ class JogadorWrapper implements Jogador {
 
     /**
      * 
-     * Perguna ao {@link #getWrapped jogador wrapped} sua {@linkplain 
-     * Jogador#vontadeDeComecar() vonta de começar} e retorna o que ele disser 
-     * (sem nenhuma validação).
+     * Perguna ao {@link #getWrapped jogador wrapped} sua {@link 
+     * Jogador#getVontadeDeComecar() vonta de começar} e retorna o que ele 
+     * disser (sem nenhuma validação).
      * 
      * @return O que o o {@link #getWrapped jogador wrapped} retornar sobre sua 
      * vontade de jogar (podendo ser {@code null} ou outra coisa inválida).
      * 
      * @throws BugDeJogadorException caso o {@link #getWrapped jogador wrapped} 
-     * lance uma {@link RuntimeException} ao {@linkplain 
-     * Jogador#vontadeDeComecar()  tentar responder sobre sua vontade}.
+     * lance uma {@link RuntimeException} ao {@link 
+     * Jogador#getVontadeDeComecar() tentar responder sobre sua vontade}.
      */
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         try {
-            return wrapped.vontadeDeComecar();
+            return wrapped.getVontadeDeComecar();
         } catch (RuntimeException e){
             throw new RuntimeBugDeJogadorException(e);
         }

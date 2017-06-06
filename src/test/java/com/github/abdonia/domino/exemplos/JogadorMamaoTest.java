@@ -52,7 +52,7 @@ public class JogadorMamaoTest extends JogadorTestAbstract {
     }
 
     /**
-     * Test of vontadeDeComecar method, of class JogadorMamao.
+     * Test of getVontadeDeComecar method, of class JogadorMamao.
      */
     @Test
     public void testVontadeDeComecar() {

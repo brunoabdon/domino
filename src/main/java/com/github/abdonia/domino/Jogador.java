@@ -36,15 +36,15 @@ package com.github.abdonia.domino;
  * href="#fim">*</a>.</p>
  * 
  * <p>{@link Vontade}
- * <b>{@link #vontadeDeComecar() jogador.vontadeDeComecar()}</b>: Com a exceção 
- * da primeira partida, em que quem começa é o jogador que tiver o {@linkplain 
- * Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>, nas demais partidas, 
- * quem começa é um dos jogadores da dupla que venceu a partida anterior. A 
- * dupla precisa decidir quais dos dois membros vai começar, mas deve fazer isso
- * sem trocar muita informação. Pra isso, cada jogador deve saber responde 
- * "{@linkplain #vontadeDeComecar() o quanto ele gostaria de começar a jogar}" 
- * olhando apenas pra suas pedras iniciais, sem se comunicar com seu parceiro de
- * dupla.</p>
+ * <b>{@link #getVontadeDeComecar() jogador.getVontadeDeComecar()}</b>: Com a 
+ * exceção da primeira partida, em que quem começa é o jogador que tiver o 
+ * {@linkplain Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>, nas demais
+ * partidas, quem começa é um dos jogadores da dupla que venceu a partida 
+ * anterior. A dupla precisa decidir quais dos dois membros vai começar, mas 
+ * deve fazer isso sem trocar muita informação. Pra isso, cada jogador deve 
+ * saber responde "{@link #getVontadeDeComecar() o quanto ele gostaria de 
+ * começar a jogar}" olhando apenas pra suas pedras iniciais, sem se comunicar 
+ * com seu parceiro de dupla.</p>
  *
  * <p>{@link Jogada} <b>{@link #joga() jogador.joga()}</b>: Na sua vez de 
  * {@linkplain #joga() jogar}, o jogador deve analisar o estado da {@linkplain 
@@ -99,9 +99,9 @@ package com.github.abdonia.domino;
  * 
  * <p><a name="ini">(***)</a> É possível perceber que é a primeira jogada da 
  * partida se não existir {@linkplain Mesa#getPedras() pedras na mesa}. E, se o 
- * método {@link #vontadeDeComecar()} não foi chamado, então esta é a primeira 
- * partida  do jogo. É possível também saber quantas partidas foram jogadas <a 
- * href="#eventos">ouvindo eventos</a>.
+ * método {@link #getVontadeDeComecar()} não foi chamado, então esta é a 
+ * primeira partida  do jogo. É possível também saber quantas partidas foram 
+ * jogadas <a href="#eventos">ouvindo eventos</a>.
  * </p>
  * 
  * @author Bruno Abdon
@@ -113,7 +113,7 @@ public interface Jogador {
      * <b>Importante:</b> Os jogadores são identificados pelos números de 1 a 4
      * (e não de 0 a 3, como nerds esperariam), fazendo então que as duplas 
      * sejam <i>1 e 3</i> contra <i>2 e 4</i>). Esta numeração é consistente com 
-     * a usada em {@link Mesa#quantasPedrasOJogadoresTem(int)}.
+     * a usada em {@link Mesa#getQuantidadeDePedrasDoJogador(int)}.
      * 
      * @param mesa A mesa do jogo do dominó, de onde se poderá descobrir, na 
      * hora de {@linkplain #joga() jogar}, que {@linkplain Pedra pedras} estão 
@@ -167,9 +167,9 @@ public interface Jogador {
     public Jogada joga();
 
     /**
-     * Usado na primeira rodada de uma partida quando a dupla desse {@link
-     * Jogador} ganhou a partida anterior, pra definir qual dos membros da dupla
-     * irá iniciar a partida. Cada jogador deve dizer, através deste método, o 
+     * Usado na primeira rodada de uma partida quando a dupla desse jogador
+     * ganhou a partida anterior, pra definir qual dos membros da dupla irá 
+     * iniciar a partida. Cada jogador deve dizer, através deste método, o 
      * "<i>quanto ele quer ser o jogador a fazer a primeira jogada</i>". Irá 
      * começar a partida aquele que demonstrar uma {@link Vontade} maior. Em
      * caso de empate, um dois dois vai ser escolhido aleatoriamente.
@@ -177,5 +177,5 @@ public interface Jogador {
      * @return A {@link Vontade} deste jogador em ser o primeiro a jogar nessa 
      * partida.
      */
-    public Vontade vontadeDeComecar();
+    public Vontade getVontadeDeComecar();
 }

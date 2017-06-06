@@ -85,5 +85,5 @@ public interface Mesa {
      * 2, 3 nem 4.
      * 
      */
-    public int quantasPedrasOJogadoresTem(int qualJogador);
+    public int getQuantidadeDePedrasDoJogador(int qualJogador);
 }

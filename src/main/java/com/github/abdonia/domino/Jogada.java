@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Uma jogada que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
+ * Uma de que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
  * ele vai jogar e em que {@linkplain Lado lado} da {@linkplain Mesa mesa} 
  * jogar.
  *
@@ -31,7 +31,7 @@ import org.apache.commons.lang3.Validate;
  * retornando {@link #TOQUE} (retornar {@code null} não é permitido).
  * 
  * <p>Essa classe é imutável e {@code final}. Suas instâncias são adquiridas pelo
- * método estático {@link #jogada(Pedra, Lado)}.</p>
+ * método estático {@link #de(Pedra, Lado)}.</p>
  * 
  * @author Bruno Abdon
  */
@@ -102,7 +102,7 @@ public final class Jogada {
      * @throws IllegalArgumentException Se a {@link Pedra} ou o {@link Lado} 
      * for {@code null}.
      */
-    public static Jogada jogada(final Pedra pedra, final Lado lado) {
+    public static Jogada de(final Pedra pedra, final Lado lado) {
         Validate.notNull(pedra, ERR_PEDRA_NULA);
         Validate.notNull(lado, ERR_LADO_NULO);
             

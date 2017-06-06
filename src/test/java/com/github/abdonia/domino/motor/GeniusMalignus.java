@@ -228,7 +228,7 @@ public class GeniusMalignus
     }
 
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

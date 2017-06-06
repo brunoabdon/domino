@@ -105,13 +105,13 @@ class Dupla {
 
     /**
      * Pergunta ao dado {@link JogadorWrapper jogador} {@link 
-     * JogadorWrapper#vontadeDeComecar() qual a vontade dele começar a partida},
+     * JogadorWrapper#getVontadeDeComecar() qual a vontade dele começar a partida},
      * levantando {@link BugDeJogadorException} caso ele retorne 
      * {@code null}.
      * 
      * @param jogador Um jogador.
      * 
-     * @return A {@link JogadorWrapper#vontadeDeComecar() vontade dele de 
+     * @return A {@link JogadorWrapper#getVontadeDeComecar() vontade dele de 
      * começar a partida} (caso ele responda corretamente com um valor não 
      * nulo).
      * @throws BugDeJogadorException caso o jogador retorne {@code null}
@@ -121,7 +121,7 @@ class Dupla {
             final JogadorWrapper jogador) 
                 throws BugDeJogadorException {
 
-        final Vontade vontade = jogador.vontadeDeComecar();
+        final Vontade vontade = jogador.getVontadeDeComecar();
 
         if(vontade == null){
             throw new BugDeJogadorException(

@@ -53,7 +53,7 @@ public abstract class JogadorTestAbstract {
         }
 
         @Override
-        public int quantasPedrasOJogadoresTem(int qualJogador) {
+        public int getQuantidadeDePedrasDoJogador(int qualJogador) {
             return 6;
         }
         
@@ -68,7 +68,7 @@ public abstract class JogadorTestAbstract {
 
     protected void testVontadeDeComecar(final Jogador jogador) {
         System.out.println("vontadeDeComecar");
-        final Vontade vontade = jogador.vontadeDeComecar();
+        final Vontade vontade = jogador.getVontadeDeComecar();
         assertNotNull(vontade);
     }
     
@@ -84,7 +84,7 @@ public abstract class JogadorTestAbstract {
             Pedra.CARROCA_DE_TERNO);
         //esse teste estah ruim. um jogador nao eh obrigado a funcionar 
         //corretamente se os eventos da partida nao estao acontecendo....
-        jogador.vontadeDeComecar();
+        jogador.getVontadeDeComecar();
         Jogada jogada = jogador.joga();
         assertNotNull("Jogada nula",jogada);
         assertNotEquals(jogada,Jogada.TOQUE);

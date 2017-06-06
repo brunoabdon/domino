@@ -133,7 +133,7 @@ public class JogadorMamao implements Jogador {
             mao.remove(pedraPraJogar);
             //criando a jogada: a pedra que escolhi e a cabeça em que vou 
             //colocar ela.
-            jogada = Jogada.jogada(pedraPraJogar,ladoDeJogar);
+            jogada = Jogada.de(pedraPraJogar,ladoDeJogar);
         }
         //retornando a jogada
         return jogada; 
@@ -145,7 +145,7 @@ public class JogadorMamao implements Jogador {
      * @return {@link Vontade#TANTO_FAZ}.
      */
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
         //tanto faz

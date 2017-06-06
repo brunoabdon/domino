@@ -162,7 +162,7 @@ public class DuplaTest {
             public Jogada joga() { return null; }
 
             @Override
-            public Vontade vontadeDeComecar() {
+            public Vontade getVontadeDeComecar() {
                 return vontade;
             }
         } 

@@ -160,7 +160,7 @@ final class MesaImpl implements Mesa {
     }
     
     @Override
-    public int quantasPedrasOJogadoresTem(final int cadeira) {
+    public int getQuantidadeDePedrasDoJogador(final int cadeira) {
         Validate.inclusiveBetween(1, 4,cadeira, "%d? São 4 jogadores.",cadeira);
         return this.jogadorNaCadeira(cadeira).getMao().size();
     }

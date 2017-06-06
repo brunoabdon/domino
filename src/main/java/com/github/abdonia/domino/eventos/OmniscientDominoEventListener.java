@@ -88,7 +88,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
 
     /**
-     * Foi {@linkplain com.github.abdonia.domino.Jogador#vontadeDeComecar() 
+     * Foi {@linkplain com.github.abdonia.domino.Jogador#getVontadeDeComecar() 
      * perguntado} a um dos {@linkplain com.github.abdonia.domino.Jogador
      * jogadores} da dupla que venceu a partida anterior se ele queria ser o 
      * primeiro a jogar, e ele respondeu "{@code null}". 

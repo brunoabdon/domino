@@ -47,9 +47,9 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA = 
         m -> p ->
             m.getPedras().isEmpty() || p.temNumero(m.getNumeroEsquerda())
-                ? Jogada.jogada(p, Lado.ESQUERDO)
+                ? Jogada.de(p, Lado.ESQUERDO)
                 : p.temNumero(m.getNumeroDireita())
-                    ? Jogada.jogada(p, Lado.DIREITO)
+                    ? Jogada.de(p, Lado.DIREITO)
                     : Jogada.TOQUE;
     
     /**
@@ -127,7 +127,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      * número de {@linkplain Pedra#isCarroca() carroças} na mão.
      */
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         final Vontade vontade;
         switch((int)this.mao.parallelStream().filter(Pedra::isCarroca).count()){
             case 0:         vontade = Vontade.NAO_QUERO_MESMO;  break;

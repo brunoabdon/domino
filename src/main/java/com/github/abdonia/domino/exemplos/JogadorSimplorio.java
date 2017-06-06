@@ -124,7 +124,7 @@ public class JogadorSimplorio implements Jogador{
         
         final Lado lado = Lado.ESQUERDO; //qualquer lado... a mesa está vazia.
         
-        final Jogada jogada = Jogada.jogada(pedra, lado); 
+        final Jogada jogada = Jogada.de(pedra, lado); 
         
         return jogada;
     }
@@ -153,7 +153,7 @@ public class JogadorSimplorio implements Jogador{
         //retirando a pedra da mao
         pedras[indiceMaioCarroca] = null;
         //retornando uma jogada com a maior carroça. o Lado é irrelevante.
-        return Jogada.jogada(maiorCarroca, Lado.ESQUERDO);
+        return Jogada.de(maiorCarroca, Lado.ESQUERDO);
     }
 
     /**
@@ -171,12 +171,12 @@ public class JogadorSimplorio implements Jogador{
             if(pedra != null){ //ainda não joguei essa pedra
                 if(pedra.temNumero(mesa.getNumeroEsquerda())){
                     //a pedra cabe do lado esquerdo da mesa. vou jogar ela lá.
-                    jogada = Jogada.jogada(pedra,Lado.ESQUERDO);
+                    jogada = Jogada.de(pedra,Lado.ESQUERDO);
                     pedras[i] = null; //removendo ela da minha mão.
                     break; //não precisa procurar mais.
                 } else if(pedra.temNumero(mesa.getNumeroDireita())){
                     //a pedra cabe do lado direito da mesa. vou jogar ela lá.
-                    jogada = Jogada.jogada(pedra,Lado.DIREITO);
+                    jogada = Jogada.de(pedra,Lado.DIREITO);
                     pedras[i] = null; //removendo ela da minha mão.
                     break; //não precisa procurar mais.
                 } 
@@ -194,7 +194,7 @@ public class JogadorSimplorio implements Jogador{
      * @return {@link Vontade#TANTO_FAZ}.
      */
     @Override
-    public Vontade vontadeDeComecar() {
+    public Vontade getVontadeDeComecar() {
         return Vontade.TANTO_FAZ;
     }
 }

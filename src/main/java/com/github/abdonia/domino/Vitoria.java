@@ -99,10 +99,12 @@ public enum Vitoria {
     }
     
     /**
-     * Diz qual é o tipo de vitória que acontece quando se
-     * bate com uma dada {@linkplain Pedra pedra}, fechando ou não a mesa.
+     * Diz qual é o tipo de vitória que acontece quando se bate com uma dada 
+     * {@linkplain Pedra pedra}, fechando ou não a mesa.
+     * 
      * @param ultimaPedra a última {@linkplain Pedra pedra} da mão do {@link 
      * Jogador}, que ele {@link Jogador#joga() jogou} e bateu.
+     * 
      * @param fechouAMesa Diz se, depois dessa última {@linkplain Jogada 
      * jogada}, a mesa ficou com {@link Mesa#getNumeroEsquerda() o número de um
      * lado} igual ao {@link  Mesa#getNumeroDireita() número do outro}.
@@ -125,5 +127,4 @@ public enum Vitoria {
             : carroca               ?   CARROCA
             :                           BATIDA_SIMPLES;
     }
-    
 }
