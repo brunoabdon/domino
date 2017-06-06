@@ -34,13 +34,12 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 /**
- * Um {@link DominoEventListener} que ecoa os eventos que ouve pra uma lista
- * de eventlisteners registrados.
+ * Um {@link OmniscientDominoEventListener} que ecoa os eventos que ouve pra uma 
+ * lista de eventlisteners registrados.
  * 
  * @author Bruno Abdon
  */
-class DominoEventBroadcaster implements 
-        DominoEventListener, OmniscientDominoEventListener {
+class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
     private final List<DominoEventListener> eventListeners;
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
