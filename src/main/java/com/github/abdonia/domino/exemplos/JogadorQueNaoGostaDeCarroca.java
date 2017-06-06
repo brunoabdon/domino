@@ -53,6 +53,15 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
                     : Jogada.TOQUE;
     
     /**
+     * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@linkplain
+     * Pedra#isCarroca() carroça} é maior que uma não-carroça e (2) carroças 
+     * entre si e não-carroças entre si se comparam pelo {@link 
+     * Pedra#compareTo(java.lang.Enum) comparador natura de pedras}.
+     */
+    private static final Comparator<Pedra> COMP_PREFERE_CARROCA =
+        Comparator.comparing(Pedra::isCarroca).thenComparing(Pedra::compareTo);
+    
+    /**
      * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é 
      * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code 
      * TOQUE} se diferenciam apenas pelas suas {@linkplain Pedra pedras}
@@ -60,11 +69,11 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      * #COMP_PREFERE_CARROCA}.
      */
     private static final Comparator<Jogada> COMP_PREFERE_JOGAR_CARROCA =
-        Comparator
-            .comparing((Jogada j) -> j != Jogada.TOQUE)
-            .thenComparing(j -> j.getPedra().isCarroca())
-            .thenComparing(Jogada::getPedra)
-    ;
+        (jog1,jog2) ->
+            jog1 == jog2                    ? 0 
+            : jog1 == Jogada.TOQUE          ? -1 
+            : jog2 == Jogada.TOQUE          ? 1 
+            : COMP_PREFERE_CARROCA.compare(jog1.getPedra(), jog2.getPedra());
                     
     /**
      * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
