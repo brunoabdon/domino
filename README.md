@@ -10,7 +10,7 @@ Javadoc disponível em http://brunoabdon.github.io/domino/apidocs/
 
 Você precisa ter a [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) e o [Maven](https://maven.apache.org/) instalado (e o [git](https://git-scm.com/) também).
 
-4 passo: Baixar os fontes, entrar no diretório, compilar e roda:
+Em 4 passos: Baixar os fontes, entrar no diretório, compilar e rodar:
 ``` 
 $ git https://github.com/brunoabdon/domino.git
 $ cd domino
@@ -25,9 +25,6 @@ Copie o arquivo [`domino-config.xml`](https://gist.githubusercontent.com/brunoab
 ## Implementando seu próprio [Jogador](http://brunoabdon.github.io/domino/apidocs/com/github/abdonia/domino/Jogador.html)
 Considere usar o archetype maven [`domino-artchetype-jogador`](https://github.com/brunoabdon/domino-archetype-jogador) para criar um *projeto starter* pra seu Jogador.
 
-O *Javadoc* é bem completo e está disponível em:
-http://brunoabdon.github.io/domino/apidocs/
+O [**Javadoc**](http://brunoabdon.github.io/domino/apidocs/) está completo e detalhado.
 
-Um bom ponto inicial é a [referência pra a interface Jogador](http://brunoabdon.github.io/domino/apidocs/com/github/abdonia/domino/Jogador.html).
-
-Olhe também as implementações de exemplo no pacote [`com.github.abdonia.domino.exemplos`](https://github.com/brunoabdon/domino/tree/master/src/main/java/com/github/abdonia/domino/exemplos).
+Olhe também o código fonte das implementações de exemplo no pacote [`com.github.abdonia.domino.exemplos`](https://github.com/brunoabdon/domino/tree/master/src/main/java/com/github/abdonia/domino/exemplos).
