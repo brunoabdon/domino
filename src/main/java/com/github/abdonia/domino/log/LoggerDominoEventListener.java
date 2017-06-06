@@ -56,22 +56,16 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     
     private static final Function<String,String> MAO_DE = 
         s -> "Mao de " + s + ":\n";
-
-    private static Comparator<Pedra> COMP_PEDRA_POR_MENOR_NUMERO =
-        (p1,p2) -> {
-            final int resNum1 = 
-                p1.getPrimeiroNumero().compareTo(p2.getPrimeiroNumero());
-            return 
-                resNum1 != 0
-                    ?  resNum1
-                    :  p1.getSegundoNumero().compareTo(p2.getSegundoNumero());
-            
-        };
     
+    private static Comparator<Pedra> COMP_PEDRA_POR_MENOR_NUMERO =
+        Comparator
+            .comparing(Pedra::getPrimeiroNumero)
+            .thenComparing(Pedra::getSegundoNumero);
+
     private String[] nomeDosJogadores;
     private String[] maoDeJogadores;
 
-    private final PrintWriter printWriter;
+    private final PrintWriter printWriter; 
 
     private int contadorRecebimentoDePedra;
 
@@ -266,7 +260,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final int maiorTamanhoDeNome = 
                 Stream.of(this.nomeDosJogadores)
                         .map(String::length)
-                        .max(Comparator.naturalOrder())
+                        .max(Integer::compare)
                         .get();
 
             this.baseDoPaddingDePedra = maiorTamanhoDeNome + 13;
