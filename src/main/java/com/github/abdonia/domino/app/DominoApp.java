@@ -137,9 +137,9 @@ public class DominoApp {
     /**
      * Retorna um {@link InputStream} de onde deverá ser lido o documento xml de 
      * configuração do jogo. Tenta primeiro encontrar no diretório corrente o
-     * arquivo {@link #CONFIG_XML}. Caso não exista, vai usar um documento de 
+     * arquivo {@value #CONFIG_XML}. Caso não exista, vai usar um documento de 
      * configuração default que existe no classpath em
-     * {@link #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console,
+     * {@value #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console,
      * uma mensagem podera ser exibida no caso da configuração default ser 
      * usada.
      * 
@@ -172,21 +172,18 @@ public class DominoApp {
     }
 
     /**
-     * Caso a aplicação esteja rodando num console, exibe uma mensagem avisando
-     * que o jogo usará uma configuração default (por não ter encontrado nenhum
-     * arquivo de configuração). Após exibir a mensagem, o programa espera o 
-     * usuário apertar <em>ENTER\u23CE</em> para prosseguir.
+     * Caso a aplicação esteja rodando num {@linkplain Console console}, exibe 
+     * uma mensagem avisando que o jogo usará uma configuração default (por não 
+     * ter encontrado nenhum arquivo de configuração). Após exibir a mensagem, o
+     * programa espera o usuário apertar <em>ENTER\u23CE</em> para prosseguir.
      * 
-     * Se a aplicação não estiver rodando num console, nada acontece.
+     * <p>Se a aplicação não estiver rodando num console, nada acontece.</p>
      * 
      */
     private static void tentarExibirAvisoConfiguracaoDefault() {
         final Console console = System.console();
         if(console != null){
-            final String msg =
-                MessageFormat.format(
-                    RESOURCE_BUNDLE.getString("msg.defaultconfig"),CONFIG_XML);
-            console.writer().println(msg);
+            console.writer().println(formatted("msg.defaultconfig",CONFIG_XML));
             console.readLine();
         }
     }
@@ -194,15 +191,13 @@ public class DominoApp {
     private static void log(final Level l, final String msg, final Exception e){
         final Console console = System.console();
         if(console != null){
-            console
-            .writer()
-            .println(MessageFormat.format(
-                        RESOURCE_BUNDLE.getString("error.config"),
-                        e.getMessage())
-            );
+            console.writer().println(formatted("error.config",e.getMessage()));
         } else {
-            //System.err.printf("%s: %s\n",msg, e.getMessage());
             Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
         }
+    }
+    
+    private static String formatted(final String key, final Object param){
+        return MessageFormat.format(RESOURCE_BUNDLE.getString(key), param);
     }
 }
