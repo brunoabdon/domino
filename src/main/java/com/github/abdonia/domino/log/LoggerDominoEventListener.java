@@ -56,6 +56,17 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     
     private static final Function<String,String> MAO_DE = 
         s -> "Mao de " + s + ":\n";
+
+    private static Comparator<Pedra> COMP_PEDRA_POR_MENOR_NUMERO =
+        (p1,p2) -> {
+            final int resNum1 = 
+                p1.getPrimeiroNumero().compareTo(p2.getPrimeiroNumero());
+            return 
+                resNum1 != 0
+                    ?  resNum1
+                    :  p1.getSegundoNumero().compareTo(p2.getSegundoNumero());
+            
+        };
     
     private String[] nomeDosJogadores;
     private String[] maoDeJogadores;
@@ -169,11 +180,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             Collectors.joining("\n", this.maoDeJogadores[quemFoi-1], "");
         
         this.printWriter.println(
-            Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6)
-            .stream()
-            .sorted()
-            .map(FORMATA_PEDRA_MAO)
-            .collect(JOINING_MAO)
+            asSortedStream(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6)
+                .map(FORMATA_PEDRA_MAO)
+                .collect(JOINING_MAO)
         );
 
         if(++this.contadorRecebimentoDePedra == 4){
@@ -190,9 +199,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
             final Pedra pedra4) {
         this.printWriter
             .println(
-                Arrays.asList(pedra1,pedra2,pedra3,pedra4)
-                .stream()
-                .sorted()
+                asSortedStream(pedra1,pedra2,pedra3,pedra4)
                 .map(Object::toString)
                 .collect(JOINING_DORME));
         imprimeUmaBarrinha();
@@ -452,5 +459,10 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
     private void imprimeUmaBarrinhaDeErro() {
         this.printWriter.println("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    }
+    
+    private static Stream<Pedra> asSortedStream(final Pedra ... pedras){
+        return 
+            Arrays.asList(pedras).stream().sorted(COMP_PEDRA_POR_MENOR_NUMERO);
     }
 }
