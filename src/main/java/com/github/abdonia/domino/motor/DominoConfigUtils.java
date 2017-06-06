@@ -23,10 +23,10 @@ package com.github.abdonia.domino.motor;
 class DominoConfigUtils {
 
     private static final String ERR_SUPER_KLASS = 
-        "A classe \"%s\" deveria mas não implementa \"%s\".";
+        "A classe \"%s\" deveria mas nao implementa \"%s\".";
 
     private static final String ERR_CLASSE_DESCONHECIDA = 
-        "A classe \"%s\" foi mencionada mas ela não pode ser encontrada.";    
+        "A classe \"%s\" foi mencionada mas ela nao pode ser encontrada.";    
     
     public static <K> K instancia(
             final Class<K> superKlass, 

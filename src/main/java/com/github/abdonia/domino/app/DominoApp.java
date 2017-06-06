@@ -109,7 +109,7 @@ public class DominoApp {
         } catch (DominoAppException e) {
             log(Level.WARNING, "Pipoco: ", e);
         } catch (DominoConfigException e) {
-            log(Level.SEVERE, "Erro de configuração: " + e.getMessage(), e);
+            log(Level.SEVERE, "Erro de configuracao: " + e.getMessage(), e);
             
         }
             
