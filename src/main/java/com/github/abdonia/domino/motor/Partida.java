@@ -39,7 +39,7 @@ class Partida {
     private final OmniscientDominoEventListener eventListener;
     
     private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
-        MENOR_NO_ARRAY = (arr) -> (i,j) -> {return arr[i] <= arr[j] ? i : j;};
+        MENOR_NO_ARRAY = (arr) -> (i,j) -> arr[i] <= arr[j] ? i : j;
 
     /**
      * Uma array auxliar, contendo só as 5 maiores carroças, em ordem 
