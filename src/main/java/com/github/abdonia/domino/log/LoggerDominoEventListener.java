@@ -160,9 +160,9 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
            dialogo.append(": Por mim, ok.");
         } else {
            dialogo
-                .append(": Idem.\n[")
+                .append(": Idem.\n[Decidido aleatoriamente que ")
                 .append(nomeJogadorQueComecou)
-                .append(" escolhido aleatoriamente]");
+                .append(" vai joga primeiro]");
         }
         this.printWriter.println(dialogo);
         imprimeUmaBarrinha();
