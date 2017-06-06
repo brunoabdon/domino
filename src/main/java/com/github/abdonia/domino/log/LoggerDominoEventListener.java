@@ -147,22 +147,24 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
         
         final String nomeJogadorQueComecou = nomeDosJogadores[jogador-1];
         final String nomeCompanheiro = nomeDosJogadores[companheiro-1];
-
-        this.printWriter.print("-");	
-        this.printWriter.print(nomeCompanheiro);
-        this.printWriter.println(": Quer ser o primeiro?");
-        this.printWriter.print("-");	
-        this.printWriter.print(nomeJogadorQueComecou);
-        this.printWriter.print(": Quero.\n-");
-        this.printWriter.print(nomeCompanheiro);
+        
+        final StringBuilder dialogo =
+            new StringBuilder("-")
+            .append(nomeCompanheiro)
+            .append(": Quer ser o primeiro?\n-")
+            .append(nomeJogadorQueComecou)
+            .append(": Quero.\n-")
+            .append(nomeCompanheiro);
         
         if(consentimentoMutuo){
-            this.printWriter.println(": Por mim, ok.");
+           dialogo.append(": Por mim, ok.");
         } else {
-            this.printWriter.print(": Idem.\n[");
-            this.printWriter.print(nomeJogadorQueComecou);
-            this.printWriter.println(" escolhido aleatoriamente]");
+           dialogo
+                .append(": Idem.\n[")
+                .append(nomeJogadorQueComecou)
+                .append(" escolhido aleatoriamente]");
         }
+        this.printWriter.println(dialogo);
         imprimeUmaBarrinha();
     }
 
