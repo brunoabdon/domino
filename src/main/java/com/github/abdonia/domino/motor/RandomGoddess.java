@@ -17,7 +17,6 @@
 package com.github.abdonia.domino.motor;
 
 import com.github.abdonia.domino.Pedra;
-import java.util.List;
 
 /**
  * Gerador de eventos aleatórios durante a partida, responsável por embaralhar

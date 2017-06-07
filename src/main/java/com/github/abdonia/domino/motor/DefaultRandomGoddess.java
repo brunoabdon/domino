@@ -20,7 +20,6 @@ import com.github.abdonia.domino.Pedra;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -31,7 +30,7 @@ import java.util.Random;
 class DefaultRandomGoddess implements RandomGoddess{
 
     private static final Random RAND = new Random();
-    
+
     @Override
     public Pedra[] embaralha() {
         final Pedra pedras[] = Pedra.values();
