@@ -50,7 +50,7 @@ class Partida {
      * carroças possíveis de serem a pedra da jogada inicial da primeira 
      * partida.
      */
-    final Pedra MAIORES_CARROCAS[] = {
+    private static final Pedra MAIORES_CARROCAS[] = {
             Pedra.CARROCA_DE_SENA, 
             Pedra.CARROCA_DE_QUINA, 
             Pedra.CARROCA_DE_QUADRA, 
@@ -252,25 +252,19 @@ class Partida {
     private int primeiraJogada() throws BugDeJogadorException{
 
         //a pedra que tem que ser jogada
-        final Pedra maiorCarrocaForaDoDorme =
-            EnumSet
-                .complementOf(this.mesa.getDorme())
-                .parallelStream()
-                .filter(Pedra::isCarroca)
-                .max(Pedra::compareTo)
-                .get();
+        final Pedra carrocaInicial = getMaiorCarrocaForaDoDorme();
         
         //o jogador que tem que jogar
         final JogadorWrapper jogadorComMaiorCarroca = 
             this.mesa
                 .getJogadores()
                 .parallelStream()
-                .filter(j -> j.getMao().contains(maiorCarrocaForaDoDorme))
+                .filter(j -> j.getMao().contains(carrocaInicial))
                 .findAny()
                 .get();
 
         //a jogada do jogador
-        return this.primeiraJogada(jogadorComMaiorCarroca,maiorCarrocaForaDoDorme);
+        return this.primeiraJogada(jogadorComMaiorCarroca,carrocaInicial);
     }
 
     /**
@@ -296,8 +290,7 @@ class Partida {
         final Jogada primeiraJogada = jogador.joga();
         
         if(primeiraJogada == null){
-            throw new BugDeJogadorException(
-                    Falha.NAO_JOGOU_NEM_TOCOU, jogador);
+            throw new BugDeJogadorException(Falha.NAO_JOGOU_NEM_TOCOU, jogador);
         }
         
         final Pedra pedra = primeiraJogada.getPedra();
@@ -314,12 +307,13 @@ class Partida {
                     pedra
             );
         }
+        
         //limpeza
         jogador.getMao().remove(pedra);
         
         this.mesa.coloca(pedra,lado);
         
-        return jogador.getCadeira(); //cadeira == vez+1
+        return jogador.getCadeira(); //cadeira == vez+1 = vez do proximo jogador
     }
 
     private static int avanca(int vez){
@@ -333,26 +327,30 @@ class Partida {
      * {@linkplain ResultadoPartida.Volta volta}) ou (b) um dos jogadores 
      * recebeu 6 carroças na mão e sua {@linkplain Dupla dupla} {@linkplain 
      * ResultadoPartida.Batida vence} imediatamente.
+     * 
      * @return Uma {@linkplain ResultadoPartida.Volta}, se um dos {@linkplain 
      * JogadorWrapper jogadores} recebeu exatamente 5 {@linkplain 
      * Pedra#isCarroca() carroças} na mão, ou uma {@link
-     * ResultadoPartida.Batida} do tipo {@link SEIS_CARROCAS_NA_MAO}, se um dos 
-     * jogadores recebeu 6 carroças na mão, ou {@code null} null caso nenhuma
-     * das condições ocorrer.
+     * ResultadoPartida.Batida} do tipo {@link Vitoria#SEIS_CARROCAS_NA_MAO 
+     * SEIS_CARROCAS_NA_MAO}, se um dos jogadores recebeu 6 carroças na mão, ou 
+     * {@code null} caso nenhuma das condições ocorrer.
      */
     private ResultadoPartida verificaMorteSubita() {
         
         ResultadoPartida resultado = null;
-        
+        int totalCarrocas = 0; //toltal que já vi na mão de jogador
         for (final JogadorWrapper jogador : mesa.getJogadores()) {
-            int quantasNaoCarrocas = 0;
+            //contagem pra esse jogador
+            int quantasCarrocas = 0, quantasNaoCarrocas = 0;
             for (final Pedra pedra : jogador.getMao()) {
-                if(!pedra.isCarroca() && ++quantasNaoCarrocas == 2){
-                    break;
+                if((!pedra.isCarroca() || ++quantasCarrocas == -1) 
+                    && ++quantasNaoCarrocas == 2){
+                    //jogador já tem 2 não-carrocas. nao vai ter 5 ou 6 carrocas
+                    break; 
                 }
             }
 
-            if(quantasNaoCarrocas <= 1){
+            if(quantasCarrocas <= 1){
                 resultado = 
                     quantasNaoCarrocas == 1
                         //partida voltou! 5 carrocas na mao!
@@ -361,6 +359,10 @@ class Partida {
                         : batida(jogador, SEIS_CARROCAS_NA_MAO);
                 break;
             }
+            
+            //se já vi pelo menos 3 carrocas em mao de jogador, mais nenhum vai 
+            //ter 5 ou 6 mais.
+            if((totalCarrocas += quantasCarrocas) >= 3) break;
         }
         return resultado;
     }
@@ -409,5 +411,26 @@ class Partida {
     private JogadorWrapper jogadorDaVez(final int vez){
         return this.mesa.jogadorNaCadeira(vez+1);
     }
-    
+ 
+    /**
+     * Calcula qual deve ser a {@linkplain Pedra pedra} usada na primeira 
+     * {@linkplain Jogada jogada} da primeira partida: Deve ser a maior 
+     * {@linkplain Pedra#isCarroca() carroça} que não estiver no {@linkplain 
+     * MesaImpl#getDorme() dorme}.
+     * @return A maior {@linkplain Pedra#isCarroca() carroça} que não estiver no
+     * {@linkplain MesaImpl#getDorme() dorme}.
+     */
+    private Pedra getMaiorCarrocaForaDoDorme(){
+        Pedra carrocaInicial = null;
+        
+        final EnumSet<Pedra> dorme = this.mesa.getDorme();
+        
+        for (final Pedra pedra : MAIORES_CARROCAS) {
+            if(!dorme.contains(pedra)){
+                carrocaInicial = pedra;
+                break;
+            }
+        }
+        return carrocaInicial;
+    }
 }
