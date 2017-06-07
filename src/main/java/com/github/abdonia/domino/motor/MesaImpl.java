@@ -37,7 +37,7 @@ import org.apache.commons.lang3.Validate;
 final class MesaImpl implements Mesa {
 
     //sempre funciona: int dupla = cadeira&1; int jogadorNaDupla = cadeira>>1;
-     private final Dupla[] duplas;
+    private final Dupla[] duplas;
     
     private final Deque<Pedra> listaDePedras;
     private final Cabeca cabecaEsquerda, cabecaDireita;
@@ -121,7 +121,7 @@ final class MesaImpl implements Mesa {
         this.listaDePedras.clear();
         this.dorme.clear();
         this.cabecaEsquerda.limpa(); 
-        this.cabecaEsquerda.limpa();
+        this.cabecaDireita.limpa();
         
         //embaralha...
         final Pedra pedras[] = fortuna.embaralha();
