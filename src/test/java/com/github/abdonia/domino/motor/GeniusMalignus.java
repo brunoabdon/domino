@@ -79,7 +79,7 @@ public class GeniusMalignus
     }
 
     @Override
-    public boolean jogador1Comeca() {
+    public boolean primeiroJogadorComeca() {
         return this.jogador1Comeca[this.idxJogador1Comeca++];
     }
     

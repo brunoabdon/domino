@@ -39,7 +39,7 @@ class DefaultRandomGoddess implements RandomGoddess{
     }
 
     @Override
-    public boolean jogador1Comeca() {
+    public boolean primeiroJogadorComeca() {
         return RAND.nextBoolean();
     }
 }

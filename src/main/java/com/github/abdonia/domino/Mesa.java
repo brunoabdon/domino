@@ -70,19 +70,18 @@ public interface Mesa {
 
     /**
      * Diz quantas {@linkplain Pedra pedras} um dado {@link Jogador} tem na mão
-     * no momento. <b>Importante:</b> Os jogadores são identificados pelos 
-     * números de 1 a 4 (e não de zero a três, como nerds esperariam), fazendo 
-     * então que as duplas sejam <i>1 e 3</i> contra <i>2 e 4</i>. Todo jogador 
-     * é avisado sobre a posição que esta sentado no início do jogo pelo método 
-     * {@link Jogador#sentaNaMesa(Mesa,int)}.
+     * no momento. Os jogadores são identificados pelos números de 0 a 3, 
+     * fazendo então que as duplas sejam <i>0 e 2</i> contra <i>1 e 3</i>. Todo 
+     * jogador é avisado sobre a posição que esta sentado no início do jogo pelo 
+     * método {@link Jogador#sentaNaMesa(Mesa,int)}.
      * 
-     * @param qualJogador qual o jogador que se deseja saber (de 1 a 4).
+     * @param qualJogador qual o jogador que se deseja saber (de 0 a 3).
      * 
      * @return Quantas pedras o jogador de indice {@code qualJogador} tem
      * na mão.
      * 
-     * @throws IllegalArgumentException Se for passado um número que não seja 1,
-     * 2, 3 nem 4.
+     * @throws IllegalArgumentException Se for passado um número que não seja 0, 
+     * 1, 2 nem 3.
      * 
      */
     public int getQuantidadeDePedrasDoJogador(int qualJogador);

@@ -118,11 +118,11 @@ public class Jogo {
      */
     public void jogar(){
         
-        final Dupla dupla1 = mesa.getDupla1();
-        final Dupla dupla2 = mesa.getDupla2();
+        final Dupla dupla0 = mesa.getDupla(0);
+        final Dupla dupla1 = mesa.getDupla(1);
         
         //lancando o evento...
-        this.avisaQueJogoComecou(dupla1, dupla2);
+        this.avisaQueJogoComecou(dupla0, dupla1);
 
         try {
             Dupla ultimaDuplaQueVenceu = null;
@@ -130,8 +130,8 @@ public class Jogo {
             while(!alguemVenceu()){
 
                 this.eventBroadcaster.partidaComecou(
+                    dupla0.getPontos(), 
                     dupla1.getPontos(), 
-                    dupla2.getPontos(), 
                     multiplicadorDobrada != 1);
 
                 final Partida partida = 
@@ -158,8 +158,8 @@ public class Jogo {
             }
 
             this.eventBroadcaster.jogoAcabou(
-                dupla1.getPontos(), 
-                dupla2.getPontos());
+                dupla0.getPontos(), 
+                dupla1.getPontos());
 
         } catch (final BugDeJogadorException e) {
             this.avisaQueJogadorErrou(e);
@@ -175,21 +175,15 @@ public class Jogo {
      * Faz broadcast do evento "{@link DominoEventListener#jogoComecou(String, 
      * String, String, String) jogoComecou}" pra os {@link DominoEventListener
      * eventListeners} registrados.
-     * @param dupla1 A primeira dupla de jogadores.
-     * @param dupla2 A segunda dupla de jogadores.
+     * @param dupla0 A primeira dupla de jogadores.
+     * @param dupla1 A segunda dupla de jogadores.
      */
-    private void avisaQueJogoComecou(final Dupla dupla1, final Dupla dupla2) {
-        
-        final JogadorWrapper primeiroJogadorDaDupla1 = dupla1.getJogador1();
-        final JogadorWrapper primeiroJogadorDaDupla2 = dupla2.getJogador1();
-        final JogadorWrapper segundoJogadorDaDupla1 = dupla1.getJogador2();
-        final JogadorWrapper segundoJogadorDaDupla2 = dupla2.getJogador2();
-        
+    private void avisaQueJogoComecou(final Dupla dupla0, final Dupla dupla1) {
         eventBroadcaster.jogoComecou(
-            primeiroJogadorDaDupla1.getNome(),
-            primeiroJogadorDaDupla2.getNome(),
-            segundoJogadorDaDupla1.getNome(),
-            segundoJogadorDaDupla2.getNome());
+            dupla0.getJogador(0).getNome(),
+            dupla1.getJogador(0).getNome(),
+            dupla0.getJogador(1).getNome(),
+            dupla1.getJogador(1).getNome());
     }
 
     /**
@@ -249,7 +243,7 @@ public class Jogo {
      * pelo menos, seis pontos.
      */
     private boolean alguemVenceu() {
-        return mesa.getDupla1().venceu() || mesa.getDupla2().venceu();
+        return mesa.getDupla(0).venceu() || mesa.getDupla(1).venceu();
     }
 
     /**
@@ -258,9 +252,9 @@ public class Jogo {
      * @param e A exceção levantada por um bug por parte de um {@link Jogador}.
      */
     private void avisaQueJogadorErrou(final BugDeJogadorException e) {
-            
+
         final int cadeira = e.getJogadorBuguento().getCadeira();
-        
+
         switch(e.getFalha()){
             case PEDRA_INVALIDA:
                 this.eventBroadcaster

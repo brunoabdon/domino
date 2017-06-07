@@ -38,16 +38,15 @@ interface RandomGoddess {
     public Pedra[] embaralha();
     
     /**
-     * Diz, aleatóriamente se o primeiro {@link 
-     * com.github.abdonia.domino.Jogador} da dupla (e não o segundo) é quem deve
-     * {@linkplain com.github.abdonia.domino.Jogador#joga() fazer a primeira 
-     * jogada} da  partida (em caso de empate na {@linkplain 
+     * Diz, aleatóriamente se o primeiro {@linkplain JogadorWrapper jogador} da 
+     * {@linkplain Dupla dupla} (e não o segundo) é quem deve {@linkplain 
+     * JogadorWrapper#joga() fazer a primeira jogada} da  partida (em caso de empate na {@linkplain 
      * com.github.abdonia.domino.Jogador#vontadeDeComecar() vontade demonstrada
      * para começar a jogar}).
      * 
-     * @return {@code true} se o primeiro jogador da dupla deve ser quem 
-     * começa, ou {@code false} se é o segundo quem deve.
+     * @return {@code true} se o primeiro jogador da {@linkplain Dupla dupla}
+     * deve ser quem começa, ou {@code false} se é o segundo quem deve.
      */
-    public boolean jogador1Comeca();
+    public boolean primeiroJogadorComeca();
     
 }

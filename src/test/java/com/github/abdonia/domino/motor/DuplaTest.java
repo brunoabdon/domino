@@ -40,8 +40,8 @@ public class DuplaTest {
         final JogadorWrapper bruno = UtilsTests.makeJogador("bruno");
         final JogadorWrapper igor = UtilsTests.makeJogador("igor");
         final Dupla dupla = new Dupla(bruno,igor);
-        assertEquals(dupla.getJogador1(), bruno);
-        assertEquals(dupla.getJogador2(), igor);
+        assertEquals(dupla.getJogador(0), bruno);
+        assertEquals(dupla.getJogador(1), igor);
     }
 
     /**
@@ -128,7 +128,7 @@ public class DuplaTest {
             for (final Vontade vontadeIgor : Vontade.values()) {
                 igor.vontade = vontadeIgor;
                     int quemComeca;
-                    quemComeca = dupla.quemComeca();
+                    quemComeca = dupla.quemTemMaisVontadeDeComecar();
                     assertTrue(
                         (quemComeca == 0 && vontadeBruno == vontadeIgor)
                         || ((quemComeca > 0) == (vontadeBruno

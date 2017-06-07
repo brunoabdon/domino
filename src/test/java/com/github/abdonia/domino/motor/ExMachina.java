@@ -63,7 +63,7 @@ public class ExMachina implements RandomGoddess{
     }
 
     @Override
-    public boolean jogador1Comeca() {
+    public boolean primeiroJogadorComeca() {
         return jogador1Comeca[idxJogador1Comeca++];
     }
 

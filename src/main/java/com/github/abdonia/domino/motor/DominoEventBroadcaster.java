@@ -165,15 +165,15 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
                 
     @Override
     public void partidaComecou(
+            final int placarDupla0, 
             final int placarDupla1, 
-            final int placarDupla2, 
             final boolean ehDobrada) {
         broadCastEvent(eventListeners,
             (eventListener) -> {
                 eventListener
                     .partidaComecou(
+                        placarDupla0, 
                         placarDupla1, 
-                        placarDupla2, 
                         ehDobrada);
             }
         );
@@ -192,21 +192,21 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
     @Override
     public void jogoComecou(
-        final String nomeDoJogador1, final String nomeDoJogador2, 
-        final String nomeDoJogador3, final String nomeDoJogador4) {
+        final String nomeDoJogador0, final String nomeDoJogador1, 
+        final String nomeDoJogador2, final String nomeDoJogador3) {
         
         broadCastEvent(eventListeners,
             (eventListener) -> {
                 eventListener.jogoComecou(
-                    nomeDoJogador1, nomeDoJogador2, 
-                    nomeDoJogador3, nomeDoJogador4);
+                    nomeDoJogador0, nomeDoJogador1, 
+                    nomeDoJogador2, nomeDoJogador3);
             }
         );
 
+        montaCacheJogadasDoJogador(0);
         montaCacheJogadasDoJogador(1);
         montaCacheJogadasDoJogador(2);
         montaCacheJogadasDoJogador(3);
-        montaCacheJogadasDoJogador(4);
     }
 
     private void montaCacheJogadasDoJogador(final int jogador) {

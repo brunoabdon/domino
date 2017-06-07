@@ -33,32 +33,32 @@ public interface DominoEventListener {
 
     /**
      * O jogo comecou. O placar está zero a zero (um jogo é a 
-     * seqëncia de várias partidas).
+     * seqëncia de várias partidas). 
      *   
-     * @param nomeDoJogador1 nome do jogador 1 (dupla 1)
-     * @param nomeDoJogador2 nome do jogador 2 (dupla 2)
-     * @param nomeDoJogador3 nome do jogador 3 (dupla 1)
-     * @param nomeDoJogador4 nome do jogador 4 (dupla 2)
+     * @param nomeDoJogador0 nome do primeiro jogador da primeira dupla.
+     * @param nomeDoJogador1 nome do primeiro jogador da segunda dupla.
+     * @param nomeDoJogador2 nome do segundo jogador  da primeira dupla.
+     * @param nomeDoJogador3 nome do segundo jogador  da segunda dupla.
      */
     public default void jogoComecou(
+            final String nomeDoJogador0, 
             final String nomeDoJogador1, 
             final String nomeDoJogador2, 
-            final String nomeDoJogador3, 
-            final String nomeDoJogador4){
+            final String nomeDoJogador3){
     }
 
     /**
      * Mais uma partida começou (um jogo tem várias partidas).
      *  
-     * @param placarDupla1 Quantos pontos a dupla 1 tem.
-     * @param placarDupla2 Quantos pontos a dupla 2 tem
+     * @param placarPrimeiraDupla Quantos pontos a dupla 0 tem.
+     * @param placarSegundaDupla Quantos pontos a dupla 1 tem.
      * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por 
      * causa de um empate na partida anterior (por ser o caso de ser uma 
      * seqüência de empates)
      */
     public default void partidaComecou(
-            final int placarDupla1, 
-            final int placarDupla2, 
+            final int placarPrimeiraDupla, 
+            final int placarSegundaDupla, 
             final boolean ehDobrada){
     }
 

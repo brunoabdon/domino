@@ -109,11 +109,10 @@ package com.github.abdonia.domino;
 public interface Jogador {
 
     /**
-     * O jogador toma uma das quatro posições pra jogar no inicio do Jogo.
-     * <b>Importante:</b> Os jogadores são identificados pelos números de 1 a 4
-     * (e não de 0 a 3, como nerds esperariam), fazendo então que as duplas 
-     * sejam <i>1 e 3</i> contra <i>2 e 4</i>). Esta numeração é consistente com 
-     * a usada em {@link Mesa#getQuantidadeDePedrasDoJogador(int)}.
+     * O jogador toma uma das quatro posições pra jogar no inicio do Jogo,
+     * identificadas pelos números de 0 a 3 (fazendo então que as duplas sejam 
+     * <i>0 e 2</i> contra <i>1 e 3</i>). Esta numeração é consistente com a 
+     * usada em {@link Mesa#getQuantidadeDePedrasDoJogador(int)}.
      * 
      * @param mesa A mesa do jogo do dominó, de onde se poderá descobrir, na 
      * hora de {@linkplain #joga() jogar}, que {@linkplain Pedra pedras} estão 
@@ -121,7 +120,7 @@ public interface Jogador {
      * pedras cada {@link Jogador} tem na mão.
      * 
      * @param cadeiraQueSentou O número da cadeira em que o jogador se sentou 
-     * (entre 1 e 4).
+     * (entre 0 e 3).
      */
     public void sentaNaMesa(Mesa mesa, int cadeiraQueSentou);
 

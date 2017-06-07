@@ -27,35 +27,34 @@ import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 class Dupla {
     private int pontos;
 
+    private final JogadorWrapper jogador0;
     private final JogadorWrapper jogador1;
-    private final JogadorWrapper jogador2;
 
     /**
      * Cria uma dupla com dois {@link JogadorWrapper jogadores}.
-     * @param jogador1 O primeiro jogador da dupla.
-     * @param jogador2 O segundo jogador da dupla.
+     * @param jogador0 O primeiro jogador da dupla.
+     * @param jogador1 O segundo jogador da dupla.
      */
-    Dupla(final JogadorWrapper jogador1, final JogadorWrapper jogador2) {
+    Dupla(final JogadorWrapper jogador0, final JogadorWrapper jogador1) {
+        this.jogador0 = jogador0;
         this.jogador1 = jogador1;
-        this.jogador2 = jogador2;
 
         this.pontos = 0;
     }
+    
     /**
-     * Retorna o primeiro {@link JogadorWrapper jogador} da dupla.
-     * @return o primeiro {@link JogadorWrapper jogador} da dupla.
+     * Retorna o {@link JogadorWrapper jogador} 0 ou 1, de acordo com o 
+     * parâmetro. 
+     * <p>O método não valida que o se o parâmetro está entre 0 e 1. Um valor
+     * indeterminado e retornado caso outro número seja pedido.
+     * 
+     * @param jogador O número 0 ou 1.
+     * @return O {@link JogadorWrapper jogador} 0 ou 1.
      */
-    public JogadorWrapper getJogador1() {
-        return jogador1;
+    public JogadorWrapper getJogador(final int jogador){
+        return jogador == 0 ? jogador0 : jogador1;
     }
-
-    /**
-     * Retorna o segundo {@link JogadorWrapper jogador} da dupla.
-     * @return o segundo {@link JogadorWrapper jogador} da dupla.
-     */
-    public JogadorWrapper getJogador2() {
-        return jogador2;
-    }
+    
 
     /**
      * Retorna quantos pontos essa dupla tem.
@@ -80,27 +79,27 @@ class Dupla {
      * for um dos 2 jogadores da dupla.
      */
     boolean contem(final JogadorWrapper jogador){
-        return this.jogador1 == jogador || this.jogador2 == jogador;
+        return this.jogador0 == jogador || this.jogador1 == jogador;
     }
 
     /**
-     * Retorna um número positivo se o {@link #getJogador1() jogador1} for 
-     * começar, negativo se o {@link #getJogador2() jogador2 } for começar, ou 
+     * Retorna um número positivo se o {@link #getJogador0() jogador0} for 
+     * começar, negativo se o {@link #getJogador1() jogador1 } for começar, ou 
      * zero caso empatem na vontade.
      * 
-     * @return um número positivo se o {@link #getJogador1() jogador1} for 
-     * começar, negativo se o {@link #getJogador2() jogador2 } for começar, ou 
+     * @return um número positivo se o {@link #getJogador0() jogador0} for 
+     * começar, negativo se o {@link #getJogador1() jogador1 } for começar, ou 
      * zero caso empatem na vontade.
      * 
      * @throws BugDeJogadorException Se algum jogador se enrolar até pra dizer 
      * se quer começar ou não (com a {@link BugDeJogadorException#getFalha() 
      * falha} {@link Falha#NAO_SABE_SE_COMECE}).
      */
-    int quemComeca() throws BugDeJogadorException {
+    int quemTemMaisVontadeDeComecar() throws BugDeJogadorException {
+        final Vontade vontadeDo0 = perguntaVontade(jogador0);
         final Vontade vontadeDo1 = perguntaVontade(jogador1);
-        final Vontade vontadeDo2 = perguntaVontade(jogador2);
 
-        return vontadeDo1.compareTo(vontadeDo2); 
+        return vontadeDo0.compareTo(vontadeDo1); 
     }
 
     /**
@@ -142,6 +141,6 @@ class Dupla {
 
     @Override
     public String toString() {
-        return this.jogador1 + " e "  + this.jogador2 + ", " + this.pontos;
+        return this.jogador0 + " e "  + this.jogador1 + ", " + this.pontos;
     }
 }

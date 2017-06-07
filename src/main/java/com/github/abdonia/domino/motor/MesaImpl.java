@@ -36,7 +36,8 @@ import org.apache.commons.lang3.Validate;
 
 final class MesaImpl implements Mesa {
 
-    private final Dupla dupla1, dupla2;
+    //sempre funciona: int dupla = cadeira&1; int jogadorNaDupla = cadeira>>1;
+     private final Dupla[] duplas;
     
     private final Deque<Pedra> listaDePedras;
     private final Cabeca cabecaEsquerda, cabecaDireita;
@@ -56,37 +57,37 @@ final class MesaImpl implements Mesa {
         Collectors.joining("","{","}");
 
     static MesaImpl criaMesa(
-        final JogadorWrapper jogador1dupla1, 
-        final JogadorWrapper jogador1dupla2, 
-        final JogadorWrapper jogador2dupla1, 
-        final JogadorWrapper jogador2dupla2,
+        final JogadorWrapper jogador0dupla0, 
+        final JogadorWrapper jogador0dupla1, 
+        final JogadorWrapper jogador1dupla0, 
+        final JogadorWrapper jogador1dupla1,
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener){
         
         //monta a mesa
         final MesaImpl mesa = 
             new MesaImpl(
+                jogador0dupla0, 
+                jogador0dupla1, 
+                jogador1dupla0, 
                 jogador1dupla1, 
-                jogador1dupla2, 
-                jogador2dupla1, 
-                jogador2dupla2, 
                 fortuna, 
                 eventListener);
         
         //avisa aos jogadores que podem sentar
-        jogador1dupla1.sentaNaMesa(mesa, 1);
-        jogador1dupla2.sentaNaMesa(mesa, 2);
-        jogador2dupla1.sentaNaMesa(mesa, 3);
-        jogador2dupla2.sentaNaMesa(mesa, 4);
+        jogador0dupla0.sentaNaMesa(mesa, 0);
+        jogador0dupla1.sentaNaMesa(mesa, 1);
+        jogador1dupla0.sentaNaMesa(mesa, 2);
+        jogador1dupla1.sentaNaMesa(mesa, 3);
         
         return mesa;
     }
     
     private MesaImpl(
-        final JogadorWrapper jogador1dupla1, 
-        final JogadorWrapper jogador1dupla2, 
-        final JogadorWrapper jogador2dupla1, 
-        final JogadorWrapper jogador2dupla2,
+        final JogadorWrapper jogador0dupla0, 
+        final JogadorWrapper jogador0dupla1, 
+        final JogadorWrapper jogador1dupla0, 
+        final JogadorWrapper jogador1dupla1,
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
         
@@ -99,13 +100,16 @@ final class MesaImpl implements Mesa {
         this.cabecaEsquerda = new Cabeca(this.listaDePedras::addFirst);
         this.cabecaDireita = new Cabeca(this.listaDePedras::addLast);
         
-        this.dupla1 = new Dupla(jogador1dupla1, jogador2dupla1);
-        this.dupla2 = new Dupla(jogador1dupla2, jogador2dupla2);
+        this.duplas = 
+            new Dupla[]{
+                new Dupla(jogador0dupla0, jogador1dupla0),
+                new Dupla(jogador0dupla1, jogador1dupla1)
+            };
         
         this.jogadores = 
             Arrays.asList(
-                jogador1dupla1, jogador1dupla2, 
-                jogador2dupla1, jogador2dupla2);
+                jogador0dupla0, jogador0dupla1, 
+                jogador1dupla0, jogador1dupla1);
         
         this.eventListener = eventListener;
         this.fortuna = fortuna; 
@@ -178,7 +182,7 @@ final class MesaImpl implements Mesa {
     
     @Override
     public int getQuantidadeDePedrasDoJogador(final int cadeira) {
-        Validate.inclusiveBetween(1, 4,cadeira, "%d? São 4 jogadores.",cadeira);
+        Validate.inclusiveBetween(0, 3, cadeira, "%d? É de 0 a 3.", cadeira);
         return this.jogadorNaCadeira(cadeira).getMao().size();
     }
 
@@ -221,21 +225,30 @@ final class MesaImpl implements Mesa {
        return colocou;
     }
 
+    /**
+     * Retorna o {@linkplain JogadorWrapper jogador} {@linkplain 
+     * JogadorWrapper#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentado 
+     * numa dada cadeira}.
+     * 
+     * @param cadeira A cadeira que o {@linkplain JogadorWrapper jogador} está 
+     * sentado.
+     * 
+     * @return O {@linkplain JogadorWrapper jogador} {@linkplain 
+     * JogadorWrapper#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentado
+     * na cadeira}.
+     */
     JogadorWrapper jogadorNaCadeira(final int cadeira) {
-        final Dupla dupla = (cadeira%2)==1? dupla1 : dupla2;
-        return cadeira<3 ? dupla.getJogador1() : dupla.getJogador2();
+        //sempre funciona: dupla = cadeira&1; jogadorNaDupla = cadeira>>1;
+        return duplas[cadeira&1].getJogador(cadeira>>1);
     }
     
-    Dupla getDupla1(){
-        return this.dupla1;
+    Dupla getDupla(final int idxDupla){
+        return this.duplas[idxDupla];
     }
 
-    Dupla getDupla2(){
-        return this.dupla2;
-    }
     
     Dupla getDuplaDoJogador(final JogadorWrapper jogador){
-        return dupla1.contem(jogador) ? dupla1 : dupla2;
+        return duplas[jogador.getCadeira()&1];
     }
     
     List<JogadorWrapper> getJogadores(){

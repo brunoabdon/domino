@@ -78,8 +78,6 @@ class Partida {
             return resultadoPartida;
         }
         
-        JogadorWrapper jogadorDaVez = null;
-
         Pedra pedra = null;
 
         boolean alguemBateu = false, trancou = false;
@@ -88,17 +86,16 @@ class Partida {
 
         boolean ehPrimeiraRodada = duplaQueGanhouApartidaAnterior == null;
 
-        int vez;
-        
+        JogadorWrapper jogadorDaVez ;
         if(ehPrimeiraRodada){
-            vez = primeiraJogada();
+            final JogadorWrapper primeiroJogador = primeiraJogada();
+            jogadorDaVez = proximo(primeiroJogador);
         } else {
-            vez = decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
+            jogadorDaVez = 
+                decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
         }
 
         while(!(alguemBateu || trancou)){
-
-            jogadorDaVez = this.jogadorDaVez(vez);
 
             final int cadeira = jogadorDaVez.getCadeira();
 
@@ -159,8 +156,10 @@ class Partida {
 
                 alguemBateu = maoDoJogadorDaVez.isEmpty();
             }
+            if(!alguemBateu){ //passado a vez
+                jogadorDaVez = proximo(jogadorDaVez);
+            }
 
-            vez = avanca(vez);
         }
 
         if(trancou){
@@ -171,6 +170,10 @@ class Partida {
         }
 
         return resultadoPartida;
+    }
+
+    private JogadorWrapper proximo(final JogadorWrapper jogadorDaVez) {
+        return mesa.jogadorNaCadeira((jogadorDaVez.getCadeira()+1)%4);
     }
 
     /**
@@ -212,27 +215,29 @@ class Partida {
         return resultado;
     }
 
-    private int decideDeQuemDosDoisVaiComecar(final Dupla duplaQueComeca) 
+    private JogadorWrapper decideDeQuemDosDoisVaiComecar(final Dupla dupla) 
             throws BugDeJogadorException {
-            
-        final int quemDaDuplaComeca = duplaQueComeca.quemComeca();
-        
-        final boolean houveConsenso = quemDaDuplaComeca != 0;
 
-        final boolean comecaOJogador1 = 
-            houveConsenso ? quemDaDuplaComeca > 0: fortuna.jogador1Comeca();
+        final int quemTemMaisVontade = dupla.quemTemMaisVontadeDeComecar();
+        
+        final boolean houveConsenso = quemTemMaisVontade != 0;
+
+        final boolean primeiroJogadorComeca = 
+            houveConsenso 
+                ? quemTemMaisVontade > 0
+                : fortuna.primeiroJogadorComeca();
         
         final JogadorWrapper jogadorQueComeca = 
-            comecaOJogador1 ? 
-                duplaQueComeca.getJogador1():
-                duplaQueComeca.getJogador2();
+            primeiroJogadorComeca 
+                ? dupla.getJogador(0)
+                : dupla.getJogador(1);
         
         final int cadeiraDoJogadorQueComeca = jogadorQueComeca.getCadeira();
         
         this.eventListener.decididoQuemComeca(
             cadeiraDoJogadorQueComeca, houveConsenso);
         
-        return cadeiraDoJogadorQueComeca-1; //vez
+        return this.mesa.jogadorNaCadeira(cadeiraDoJogadorQueComeca);
     }
 
     /**
@@ -249,7 +254,7 @@ class Partida {
      * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
      * não seja a da maior carroça da mesa (que está na mão dele).
      */
-    private int primeiraJogada() throws BugDeJogadorException{
+    private JogadorWrapper primeiraJogada() throws BugDeJogadorException{
 
         //a pedra que tem que ser jogada
         final Pedra carrocaInicial = getMaiorCarrocaForaDoDorme();
@@ -264,7 +269,9 @@ class Partida {
                 .get();
 
         //a jogada do jogador
-        return this.primeiraJogada(jogadorComMaiorCarroca,carrocaInicial);
+        this.primeiraJogada(jogadorComMaiorCarroca,carrocaInicial);
+        
+        return jogadorComMaiorCarroca;
     }
 
     /**
@@ -282,7 +289,7 @@ class Partida {
      * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
      * não seja a da maior carroça da mesa (que está na mão dele).
      */
-    private int primeiraJogada(
+    private void primeiraJogada(
             final JogadorWrapper jogador, 
             final Pedra carroca) 
                 throws BugDeJogadorException {
@@ -312,8 +319,6 @@ class Partida {
         jogador.getMao().remove(pedra);
         
         this.mesa.coloca(pedra,lado);
-        
-        return jogador.getCadeira(); //cadeira == vez+1 = vez do proximo jogador
     }
 
     private static int avanca(int vez){
@@ -350,7 +355,7 @@ class Partida {
                 }
             }
 
-            if(quantasCarrocas <= 1){
+            if(quantasNaoCarrocas <= 1){
                 resultado = 
                     quantasNaoCarrocas == 1
                         //partida voltou! 5 carrocas na mao!
