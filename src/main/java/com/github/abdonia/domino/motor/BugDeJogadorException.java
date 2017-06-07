@@ -26,12 +26,12 @@ import com.github.abdonia.domino.Pedra;
  * <p>É esperado que implementações de {@code Jogador} 
  * conheçam e sigam as regras do jogo. Quando um jogador tenta fazer alguma 
  * coisa fora das regras (como jogar uma {@link Pedra pedra} que não 
- * cabia na {@link com.github.abdonia.domino.Mesa mesa}, ou {@link 
+ * caiba na {@link com.github.abdonia.domino.Mesa mesa}, ou {@link 
  * com.github.abdonia.domino.Jogada#TOQUE tocar} tendo pedras pra jogar) não faz
  * mais sentido continuar o jogo, e ele é interrompido com esta exceção.</p>
  * 
  * <p>A exceção guarda as informações sobre qual foi o jogador que cometeu o 
- * erroa e qual foi a violação cometida. A partir delas, o sistema ira 
+ * erro e qual foi a violação cometida. A partir delas, o sistema irá 
  * {@link com.github.abdonia.domino.eventos emitir eventos} que podem ser úteis 
  * para logs ou interfaces de usuário.</p>
  * 
@@ -59,12 +59,12 @@ class BugDeJogadorException extends Exception {
          */
         TOCOU_TENDO,
         /**
-         * {@link com.github.abdonia.domino.Jogador jogador} era quem tinha a 
-         * maior {@link Pedra#isCarroca() carroça} (provavelmente o {@link 
-         * Pedra#CARROCA_DE_SENA Dozão} na mão na primeira rodada da primeira
-         * {@link Partida partida}, mas começou o {@link Jogo jogo} {@link 
+         * O {@link com.github.abdonia.domino.Jogador jogador} que tinha a maior 
+         * {@link Pedra#isCarroca() carroça} (provavelmente o {@link 
+         * Pedra#CARROCA_DE_SENA Dozão}) na mão na primeira rodada da primeira
+         * {@link Partida partida} começou o {@link Jogo jogo} {@link 
          * com.github.abdonia.domino.Jogada jogando} outra {@link Pedra pedra}.
-         * Esse cara não sabe o basico de jogar, não faz sentido continuar o 
+         * Esse cara não sabe o básico de jogar, não faz sentido continuar o 
          * {@link Jogo jogo}.
          */
         JA_COMECOU_ERRANDO,
@@ -76,16 +76,17 @@ class BugDeJogadorException extends Exception {
         TIROU_PEDRA_DO_BOLSO,
         /**
          * O {@link com.github.abdonia.domino.Jogador jogador} retornou {@code 
-         * null} quando {@link Jogador#joga() perguntado qual seria sua jogada}.
-         * Mesmo no caso de não ter uma {@link Pedra pedra} pra jogar, o jogador
-         * não deve retornar {@code null}, e sim {@link 
-         * com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+         * null} quando {@link com.github.abdonia.domino.Jogador#joga() 
+         * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma 
+         * {@link Pedra pedra} pra jogar, o jogador não deve retornar {@code 
+         * null}, e sim {@link com.github.abdonia.domino.Jogada#TOQUE tocar} 
+         * explicitamente.
          */
         NAO_JOGOU_NEM_TOCOU,
         /**
          * O {@link com.github.abdonia.domino.Jogador jogador} retornou {@code 
          * null} quando foi 
-         * {@link com.github.abdonia.domino.Jogador#vontadeDeComecar() 
+         * {@link com.github.abdonia.domino.Jogador#getVontadeDeComecar() 
          * perguntado sobre se queria começar} a partida. Isso é um bug do 
          * jogador e não faz mais sentido continuar um {@link Jogo jogo} com 
          * ele.
