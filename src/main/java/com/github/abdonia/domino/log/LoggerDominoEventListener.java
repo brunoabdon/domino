@@ -369,11 +369,12 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogadorFaleceu(int quemFoi) {
+    public void jogadorFaleceu(final int quemFoi, final String causaMortis) {
         final String msg = 
             new StringBuilder("GRAVE: ")
             .append(nomeDosJogadores[quemFoi])
-            .append(" veio a falecer.")
+            .append(" veio a falecer.\nCausa mortis: ")
+            .append(causaMortis)
             .toString();
         
         imprimeErroFatal(msg,false);

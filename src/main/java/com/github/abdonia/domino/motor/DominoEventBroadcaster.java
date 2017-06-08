@@ -324,10 +324,10 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     }
 
     @Override
-    public void jogadorFaleceu(final int quemFoi) {
+    public void jogadorFaleceu(final int quemFoi, final String causaMortis) {
         broadCastEvent(omniscientEventListeners,
             (eventListener) -> {
-                eventListener.jogadorFaleceu(quemFoi);
+                eventListener.jogadorFaleceu(quemFoi, causaMortis);
             }
         );
     }

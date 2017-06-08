@@ -166,8 +166,9 @@ public class Jogo {
         } catch (final JogadorWrapper.RuntimeBugDeJogadorException rte){
             //logar o erro de e.getCause()...
             this.eventBroadcaster
-                .jogadorFaleceu(rte.getJogadorBuguento().getCadeira());
-            
+                .jogadorFaleceu(
+                    rte.getJogadorBuguento().getCadeira(),
+                    rte.getCause().toString());
         }
     }
 
