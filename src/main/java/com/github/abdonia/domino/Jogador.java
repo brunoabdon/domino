@@ -39,24 +39,25 @@ package com.github.abdonia.domino;
  * <b>{@link #getVontadeDeComecar() jogador.getVontadeDeComecar()}</b>: Com a 
  * exceção da primeira partida, em que quem começa é o jogador que tiver o 
  * {@linkplain Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>, nas demais
- * partidas, quem começa é um dos jogadores da dupla que venceu a partida 
+ * partidas quem começa é um dos jogadores da dupla que venceu a partida 
  * anterior. A dupla precisa decidir quais dos dois membros vai começar, mas 
- * deve fazer isso sem trocar muita informação. Pra isso, cada jogador deve 
- * saber responde "{@link #getVontadeDeComecar() o quanto ele gostaria de 
- * começar a jogar}" olhando apenas pra suas pedras iniciais, sem se comunicar 
- * com seu parceiro de dupla.</p>
+ * deve fazer isso sem que os membros troquem muita informação. Pra isso, cada 
+ * jogador deve saber responde "{@link #getVontadeDeComecar() o quanto ele 
+ * gostaria de começar a jogar}" olhando apenas pra suas pedras iniciais, sem se 
+ * comunicar com seu parceiro de dupla.</p>
  *
  * <p>{@link Jogada} <b>{@link #joga() jogador.joga()}</b>: Na sua vez de 
  * {@linkplain #joga() jogar}, o jogador deve analisar o estado da {@linkplain 
  * Mesa mesa} e decidir qual será sua {@link Jogada}: qual {@linkplain Pedra 
  * pedra} de sua mão e em que {@linkplain Lado lado} da mesa. Caso veja que não
  * tem nenhuma pedra que se encaixe na mesa, a jogada vai ser {@linkplain 
- * Jogada#TOQUE um toque}. Caso seja a primeira jogada do primeira partida<a 
+ * Jogada#TOQUE um toque}. Caso seja a primeira jogada da primeira partida<a 
  * href="#ini">***</a>, cabe ao jogador entender que deve jogar a maior 
  * {@linkplain Pedra#isCarroca() carroça} (normalmente o {@linkplain 
  * Pedra#CARROCA_DE_SENA Dozão}<a href="#dozao">**</a>).</p> 
  * <hr>
- * <h2 id="eventos">Usando mais informações sobre o jogo</h2>
+ * <h2 id="eventos">Usando mais informações sobre o jogo - {@linkplain 
+ * com.github.abdonia.domino.eventos.DominoEventListener}</h2>
  * <p>Jogadores que implementarem {@link 
  * com.github.abdonia.domino.eventos.DominoEventListener} vão ser avisados dos 
  * eventos que acontecem no jogo (alguem tocou, tal jogador iniciou a partida,

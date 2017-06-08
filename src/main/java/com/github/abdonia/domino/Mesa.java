@@ -19,14 +19,14 @@ package com.github.abdonia.domino;
 import java.util.List;
 
 /**
- * A visão que um {@link Jogador} tem de como está a mesa a cada momento, ou 
+ * A visão que um {@link Jogador} tem de como está a mesa a cada momento, ou  
  * seja, qual a lista de {@linkplain Pedra pedras} nela e quantas pedras cada 
  * jogador ainda tem na mão.
  * 
- * <p>As números expostos nas duas pontas da lista são referidas como {@link 
- * #getNumeroEsquerda() número da esquerda} e {@link #getNumeroDireita() número
- * da direita}, mas o nome é só uma convenção. Não tem nada a ver com pra que 
- * lado as pedras estão (isso não importa).</p>
+ * <p>Os números expostos nas duas pontas da lista de pedras são referidos como 
+ * "{@link #getNumeroEsquerda() número da esquerda}" e "{@link 
+ * #getNumeroDireita() número da direita}", mas o nome é só uma convenção. Não 
+ * tem nada a ver com pra que lado as pedras estão (isso não importa).</p>
  *   
  * @author Bruno Abdon
  */
