@@ -1,10 +1,7 @@
 # domino
 
-Jogo de Dominó pra Programadores.
-
-Você implementa sua classe pra jogar com outras. 
-
-Javadoc disponível em http://brunoabdon.github.io/domino/apidocs/
+domino é um "[Programming game](https://en.wikipedia.org/wiki/Programming_game)" 
+onde os jogadores são classes programadas pra jogar um Jogo de Dominó, de acordo com as regras tradicionais de Recife.
 
 ## Quickstart:
 
