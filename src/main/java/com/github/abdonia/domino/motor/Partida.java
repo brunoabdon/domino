@@ -39,9 +39,6 @@ class Partida {
 
     private final OmniscientDominoEventListener eventListener;
     
-    private static final Function<Integer[],BiFunction<Integer,Integer,Integer>> 
-        MENOR_NO_ARRAY = (arr) -> (i,j) -> arr[i] <= arr[j] ? i : j;
-
     /**
      * Uma array auxliar, contendo só as 5 maiores carroças, em ordem 
      * decrescente (de {@linkplain  Pedra#CARROCA_DE_SENA limpo} a 
@@ -55,8 +52,9 @@ class Partida {
             Pedra.CARROCA_DE_QUINA, 
             Pedra.CARROCA_DE_QUADRA, 
             Pedra.CARROCA_DE_TERNO, 
-            Pedra.CARROCA_DE_DUQUE};        
-    
+            Pedra.CARROCA_DE_DUQUE
+    };        
+
     Partida(
         final MesaImpl mesa,
         final RandomGoddess fortuna,
@@ -68,7 +66,7 @@ class Partida {
     }
 
     protected ResultadoPartida jogar(final Dupla duplaQueGanhouApartidaAnterior) 
-            throws BugDeJogadorException{
+            throws BugDeJogadorException {
 
         mesa.embaralhaEdistribui();
         
@@ -108,9 +106,9 @@ class Partida {
                     Falha.NAO_JOGOU_NEM_TOCOU, 
                     jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
-                
+
                 this.eventListener.jogadorTocou(cadeira);
-                
+
                 //tocou mesmo?
                 final boolean tinhaPedraPraJogar = 
                     mesa.getPedras().isEmpty()
@@ -156,8 +154,8 @@ class Partida {
 
                 alguemBateu = maoDoJogadorDaVez.isEmpty();
             }
-            if(!alguemBateu){ //passado a vez
-                jogadorDaVez = proximo(jogadorDaVez);
+            if(!alguemBateu){
+                jogadorDaVez = proximo(jogadorDaVez); //passado a vez
             }
 
         }
@@ -188,31 +186,18 @@ class Partida {
      */
     private ResultadoPartida contaPontos() {
 
-        final ResultadoPartida resultado;
-
         final Integer pontos[] = 
             mesa.getJogadores()
                 .stream()
                 .map(JogadorWrapper::getNumeroDePontosNaMao)
                 .toArray(Integer[]::new);
         
-        final BiFunction<Integer,Integer, Integer> menor = 
-            MENOR_NO_ARRAY.apply(pontos);
+        final Integer melhorIdx = menorNoArray(pontos);
         
-        final int melhorIdxDupla1 = menor.apply(0,2);
-        final int melhorIdxDupla2 = menor.apply(1,3);
-        
-        if(pontos[melhorIdxDupla1].equals(pontos[melhorIdxDupla2])){
-            resultado = empate();
-        } else {
-            final int melhorIdx = menor.apply(melhorIdxDupla1, melhorIdxDupla2);
-            final JogadorWrapper jogadorComMenosPontosNaMao = 
-                this.jogadorDaVez(melhorIdx);
-            
-            resultado = batida(jogadorComMenosPontosNaMao,CONTAGEM_DE_PONTOS);
-        }
-        
-        return resultado;
+        return melhorIdx != null
+            ? batida(this.mesa.jogadorNaCadeira(melhorIdx),CONTAGEM_DE_PONTOS)
+            : empate();
+                
     }
 
     private JogadorWrapper decideDeQuemDosDoisVaiComecar(final Dupla dupla) 
@@ -413,10 +398,6 @@ class Partida {
         return ResultadoPartida.EMPATE;
     }
     
-    private JogadorWrapper jogadorDaVez(final int vez){
-        return this.mesa.jogadorNaCadeira(vez+1);
-    }
- 
     /**
      * Calcula qual deve ser a {@linkplain Pedra pedra} usada na primeira 
      * {@linkplain Jogada jogada} da primeira partida: Deve ser a maior 
@@ -437,5 +418,23 @@ class Partida {
             }
         }
         return carrocaInicial;
+    }
+    
+    /**
+     * Retorna o indíce num array de ints que tenha um valor menor que todos os
+     * outros, ou null caso tal índice não exista (por empate ou pelo array 
+     * estar vazio).
+     * 
+     * @param ints um array de ints.
+     * @return o índice do elemento de menor valor, caso exista.
+     */
+    private static Integer menorNoArray (final Integer ... ints ){
+        int idx = 0;
+        boolean empate = false;
+        for (int i = 1; i < ints.length; i++)
+        if((ints[i] < ints[idx] && !(empate = false)) 
+            || ((empate |= ints[i].equals(ints[idx])) && false)) 
+                idx = i;
+        return empate ? null : idx;
     }
 }
