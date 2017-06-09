@@ -83,16 +83,17 @@ class Dupla {
     }
 
     /**
-     * Retorna um número positivo se o {@link #getJogador0() jogador0} for 
-     * começar, negativo se o {@link #getJogador1() jogador1 } for começar, ou 
-     * zero caso empatem na vontade.
+     * Retorna um número positivo se o <em>jogador0</em> {@link 
+     * JogadorWrapper#getVontadeDeComecar()  tiver mais vontade de começar}, 
+     * negativo se for o <em>jogador1</em> que tiver, ou zero caso empatem na 
+     * vontade.
      * 
-     * @return um número positivo se o {@link #getJogador0() jogador0} for 
-     * começar, negativo se o {@link #getJogador1() jogador1 } for começar, ou 
-     * zero caso empatem na vontade.
+     * @return um número positivo se o <em>jogador0</em> tiver mais vontade de
+     * começar, negativo se o <em>jogador1</em> tiver, ou Zero caso empatem na 
+     * vontade.
      * 
      * @throws BugDeJogadorException Se algum jogador se enrolar até pra dizer 
-     * se quer começar ou não (com a {@link BugDeJogadorException#getFalha() 
+     * se quer ou não começar (com a {@link BugDeJogadorException#getFalha() 
      * falha} {@link Falha#NAO_SABE_SE_COMECE}).
      */
     int quemTemMaisVontadeDeComecar() throws BugDeJogadorException {
