@@ -58,7 +58,7 @@ public interface Mesa {
      * <p>Tentativas de alterar a lista direta ou indiretamene (através de um
      * {@link List#iterator() iterator}) vão resultar em {@link 
      * UnsupportedOperationException}.</p>
-     * <p>Durate uma partida, é garantido que será retornada sempre a mesa 
+     * <p>Durate uma partida, é garantido que será retornada sempre a mesma 
      * instância da lista, que vai sempre refletir situação atual dessa mesa. 
      * Enquanto a referência pra a lista pode ser reutilizada, os {@link 
      * List#iterator() iterators dessa lista} deixam de funcionar se houver uma

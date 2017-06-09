@@ -357,13 +357,13 @@ class Partida {
     }
 
     /**
-     * Métido auxiliar que anuncia o evento de que um dado {@linkplain 
-     * JogadorWrapper jogador} bateu (com um dado {@link Vitoria tipo de 
-     * batida}) e cria e retorna um {@link ResultadoPartida} equivalente a essa 
-     * vitória.
+     * Métido auxiliar que anuncia o {@linkplain 
+     * OmniscientDominoEventListener#jogadorBateu(int, Vitoria) evento de que um
+     * dado jogador bateu} (com um dado {@link Vitoria tipo de batida}) e cria e
+     * retorna um {@link ResultadoPartida} equivalente a essa vitória.
      * 
-     * @param vencedor O jogador que bateu.
-     * @param tipoDeBatida O tipo de batida.
+     * @param vencedor O {@linkplain JogadorWrapper jogador} que bateu.
+     * @param tipoDeBatida O {@linkplain Vitoria tipo de batida}.
      * @return Um {@link ResultadoPartida} equivalente a essa vitória.
      */
     private ResultadoPartida batida(
@@ -373,13 +373,15 @@ class Partida {
     }
     
     /**
-     * Métido auxiliar que anuncia o evento de que um dado {@linkplain 
-     * JogadorWrapper jogador} tinha 5 carroças na mão e a partida vai voltar e 
-     * cria e retorna um {@link ResultadoPartida} equivalente a essa situação.
+     * Métido auxiliar que anuncia o {@linkplain  
+     * OmniscientDominoEventListener#partidaVoltou(int) evento de que a partida 
+     * vai voltar} pois um dado {@linkplain JogadorWrapper jogador} tinha 5 
+     * carroças na mão e cria e retorna um {@link ResultadoPartida} equivalente 
+     * a essa situação.
      * 
      * @param vencedor O jogador que bateu.
      * @param tipoDeBatida O tipo de batida.
-     * @return Um {@link ResultadoPartida} equivalente a essa vitória.
+     * @return Uma {@link ResultadoPartida.Volta}.
      */
     private ResultadoPartida volta(final JogadorWrapper jogador) {
         this.eventListener.partidaVoltou(jogador.getCadeira());
@@ -387,8 +389,10 @@ class Partida {
     }
 
     /**
-     * Métido auxiliar que anuncia o evento de que a partida empatou e retorna 
-     * um {@link ResultadoPartida} equivalente a essa situação.
+     * Métido auxiliar que anuncia o {@linkplain  
+     * OmniscientDominoEventListener#partidaEmpatou() evento de que a partida 
+     * empatou} e retorna um {@link ResultadoPartida} equivalente a essa 
+     * situação.
      * 
      * @return {@link ResultadoPartida#EMPATE}.
      */

@@ -16,7 +16,6 @@
  */
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Numero;
@@ -114,7 +113,13 @@ final class MesaImpl implements Mesa {
         this.eventListener = eventListener;
         this.fortuna = fortuna; 
     }
-    
+    /**
+     * {@linkplain RandomGoddess#embaralha() Embaralha} as {@linkplain Pedra 
+     * pedras}, {@linkplain JogadorWrapper#recebeMao(Pedra,Pedra,Pedra,Pedra,
+     * Pedra,Pedra) entrega aos jogadores} (pedras de 0 a 6 ao primeiro, de 7 a 
+     * 12 ao segundo...) e {@linkplain #separaODorme(Pedra,
+     * Pedra,Pedra,Pedra) separa} as quatro do {@linkplain #getDorme() dorme}.
+     */
     void embaralhaEdistribui() {
 
         //emborca as pedras...
@@ -143,6 +148,16 @@ final class MesaImpl implements Mesa {
         this.separaODorme(pedras[24],pedras[25],pedras[26],pedras[27]);
     }
 
+    /**
+     * Adiciona 4 {@linkplain Pedra pedras} ao {@linkplain #getDorme() dorme} e 
+     * {@linkplain OmniscientDominoEventListener#dormeDefinido(Pedra,Pedra,
+     * Pedra,Pedra) anuncia o evento correspondente}.
+     * 
+     * @param pedra1 A primeira {@linkplain Pedra pedra} do dorme.
+     * @param pedra2 A segunda {@linkplain Pedra pedra} do dorme.
+     * @param pedra3 A terceira {@linkplain Pedra pedra} do dorme.
+     * @param pedra4 A última {@linkplain Pedra pedra} do dorme.
+     */
     private void separaODorme(
             final Pedra pedra1, 
             final Pedra pedra2, 
@@ -158,11 +173,18 @@ final class MesaImpl implements Mesa {
     }
 
     /**
-     * Entrega uma coleçao de {@link Pedra}s a um {@link Jogador} e anuncia o
-     * evento correspondente.
+     * Entrega 6 pedras de {@linkplain Pedra pedras} a um {@linkplain 
+     * JogadorWrapper jogador} e anuncia o {@linkplain 
+     * OmniscientDominoEventListener#jogadorRecebeuPedras(int,Pedra,Pedra,Pedra,
+     * Pedra,Pedra,Pedra) evento correspondente}.
      * 
      * @param jogador O jogador que vai receber as pedras.
-     * @param mao As pedras que o jogador vai receber.
+     * @param pedra1 A primeira {@linkplain Pedra pedra} da mão.
+     * @param pedra2 A segunda {@linkplain Pedra pedra} da mão.
+     * @param pedra3 A terceira {@linkplain Pedra pedra} da mão.
+     * @param pedra4 A quarta {@linkplain Pedra pedra} da mão.
+     * @param pedra5 A quinta {@linkplain Pedra pedra} da mão.
+     * @param pedra6 A última {@linkplain Pedra pedra} da mão.
      */
     private void entregaPedras(
             final JogadorWrapper jogador, 
@@ -187,14 +209,14 @@ final class MesaImpl implements Mesa {
     }
 
     /**
-     * Tenta colocar uma {@link Pedra} num dado {@link Lado} da {@link Mesa}, 
+     * Tenta colocar uma {@link Pedra} num dado {@link Lado} desta mesa, 
      * retornando um boolean dizendo se foi possível colocar. 
      * <p>É possível colocar qualquer pedra quando ainda não existe nenhuma 
      * {@linkplain #getPedras() pedra na mesa}. Quando existem pedras, a pedra 
-     * sendo colocada deve {@link Pedra#temNumero(Numero) possuir o número} do 
-     * lado sendo colocado.</p>
+     * sendo colocada deve {@linkplain Pedra#temNumero(Numero) possuir o número}
+     * do lado sendo colocado.</p>
      * 
-     * @param pedra A pedra que é pra colocar
+     * @param pedra A pedra que é pra colocar.
      * @param lado Onde botar ela.
      * @return {@code true} se a pedra foi realmente colocada, ou {@code false} 
      * caso fosse uma pedra bêba, que não {@link Pedra#temNumero(Numero) tem o 
@@ -208,8 +230,11 @@ final class MesaImpl implements Mesa {
     
     /**
      * Coloca uma {@link Pedra} na mesa se (e somente se) ainda não existir 
-     * nenhuma {@linkplain #getPedras() pedra na mesa}. Não faz nada (e retorna 
-     * {@code false}) se a mesa não estiver vazia.
+     * nenhuma {@linkplain #getPedras() pedra na mesa}, {@linkplain 
+     * Cabeca#inicia(Numero) iniciando as cabeças} da {@linkplain 
+     * #cabecaEsquerda esquerda} e da {@linkplain #cabecaDireita direita}. Não 
+     * faz nada (e retorna {@code false}) se a mesa não estiver vazia.
+     * 
      * @param pedra A {@link Pedra} pra iniciar a mesa.
      * @return {@code true} se a mesa estava vazia e a pedra foi colocada ou
      * {@code false} caso contrário.
@@ -227,42 +252,88 @@ final class MesaImpl implements Mesa {
 
     /**
      * Retorna o {@linkplain JogadorWrapper jogador} {@linkplain 
-     * JogadorWrapper#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentado 
-     * numa dada cadeira}.
+     * JogadorWrapper#sentaNaMesa(Mesa, int) sentado numa dada cadeira}.
      * 
      * @param cadeira A cadeira que o {@linkplain JogadorWrapper jogador} está 
      * sentado.
      * 
      * @return O {@linkplain JogadorWrapper jogador} {@linkplain 
-     * JogadorWrapper#sentaNaMesa(com.github.abdonia.domino.Mesa, int) sentado
-     * na cadeira}.
+     * JogadorWrapper#sentaNaMesa(Mesa, int) sentado na cadeira}.
      */
     JogadorWrapper jogadorNaCadeira(final int cadeira) {
         //sempre funciona: dupla = cadeira&1; jogadorNaDupla = cadeira>>1;
         return duplas[cadeira&1].getJogador(cadeira>>1);
     }
     
+    /**
+     * Retorna a primeira ou segunda {@linkplain Dupla dupla} de {@linkplain 
+     * JogadorWrapper jogadores}.
+     * 
+     * @param idxDupla 0 pra a primeira dupla, ou 1 para a segunda.
+     * @return Uma das duas {@linkplain Dupla duplas}.
+     */
     Dupla getDupla(final int idxDupla){
         return this.duplas[idxDupla];
     }
 
-    
+
+    /**
+     * Retorna a {@linkplain Dupla dupla} a que um dado {@linkplain 
+     * JogadorWrapper jogador} pertence.
+     * <p>Tem um comportamento indeterminado caso o jogador passado não pertença
+     * a nenhuma das duplas.</p>
+     * @param jogador O {@linkplain JogadorWrapper jogador} que se quer saber a
+     * que {@linkplain Dupla dupla} pertence.
+     * @return A {@linkplain Dupla dupla} á qual o {@linkplain JogadorWrapper 
+     * jogador} pertence.
+     */
     Dupla getDuplaDoJogador(final JogadorWrapper jogador){
         return duplas[jogador.getCadeira()&1];
     }
     
+    /**
+     * Retorna uma lista com os {@linkplain JogadorWrapper jogadores} na mesa,
+     * por ordem da {@linkplain JogadorWrapper#getCadeira() cadeira} em que 
+     * estão sentados.
+     * 
+     * <p>Essa lista não pode ser modificada, mas isto não é validado.</p>
+     * @return A lista de {@linkplain JogadorWrapper jogadores} na mesa.
+     */
     List<JogadorWrapper> getJogadores(){
         return this.jogadores;
     }
     
+    /**
+     * Diz qual é o {@linkplain Numero número} de um dado {@linkplain Lado lado}
+     * dessa mesa, podendo ser {@code null} se a mesa estiver vazia. 
+     * @param lado O {@linkplain lado} da mesa que se quer saber o {@linkplain 
+     * Numero número}.
+     * @return O {@linkplain Numero número} desse {@linkplain lado} da mesa, ou
+     * {@code null} se a mesa estiver vazia.
+     */
     Numero getNumero(final Lado lado) {
         return (lado == Lado.ESQUERDO?cabecaEsquerda:cabecaDireita).getNumero();
     }
-    
+
+    /**
+     * Diz se {@linkplain Numero número} de um dado {@linkplain Lado lado} dessa
+     * mesa (possivelmente {@code null}) é igual ao número do outro lado.
+     * @return {@code true} se essa mesa tiver o mesmo valor pra os {@linkplain 
+     * Numero números} dos dois {@linkplain Lado lados}.
+     */
     boolean taFechada(){
         return getNumeroEsquerda() == getNumeroDireita(); //mesmo null....
     }
-    
+
+    /**
+     * Retorna o conjunto das 4 {@linkplain Pedra pedras} que estão atualmente
+     * no dorme. Vai estar vazio antes da primeira {@linkplain Partida partida}
+     * começar e durante alguns instantes enquanto {@linkplain 
+     * #embaralhaEdistribui() as pedras estão sendo embaralhadas e distribuidas} 
+     * no início de uma nova partida.
+     * 
+     * @return O conjunto das {@linkplain Pedra pedras} no dorme.
+     */
     EnumSet<Pedra> getDorme(){
         return this.dorme;
     }
