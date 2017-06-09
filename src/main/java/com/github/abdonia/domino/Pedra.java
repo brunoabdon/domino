@@ -19,10 +19,9 @@ package com.github.abdonia.domino;
 /**
  * Cada uma das 28 pedras de um dominó.
  * 
- * <p>As constantes aparecem na ordem crescente do {@linkplain 
- * #getNumeroDePontos() número de pontos} da pedra, desempatando pelo valor do 
- * menor entre os dois números da pedra (que sempre será dado por 
- * {@link #getPrimeiroNumero()}).</p>
+ * <p>As constantes aparecem na ordem crescente do {@link #getPontos() pontos} 
+ * da pedra, desempatando pelo valor do menor entre os dois números da pedra 
+ * (que sempre será dado por {@link #getPrimeiroNumero()}).</p>
  * 
  * @author Bruno Abdon
  */
@@ -234,7 +233,7 @@ public enum Pedra {
      * 
      * @return A soma dos dois números;
      */
-    public int getNumeroDePontos() {
+    public int getPontos() {
         return this.numeroDePontos;
     }
 

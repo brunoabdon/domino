@@ -18,8 +18,6 @@ package com.github.abdonia.domino.motor;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Lado;
@@ -189,7 +187,7 @@ class Partida {
         final Integer pontos[] = 
             mesa.getJogadores()
                 .stream()
-                .map(JogadorWrapper::getNumeroDePontosNaMao)
+                .map(JogadorWrapper::getPontosNaMao)
                 .toArray(Integer[]::new);
         
         final Integer melhorIdx = menorNoArray(pontos);
@@ -269,7 +267,8 @@ class Partida {
      * @param jogador O {@linkplain  JogadorWrapper jogador} que deve 
      * {@linkplain JogadorWrapper#joga() jogar}.
      * 
-     * @param carroca A {@linkplain Pedra pedra} que o jogador deve jogar.
+     * @param carroca A {@linkplain Pedra#isCarroca()  carroca} que o jogador 
+     * deve jogar.
      * 
      * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
      * não seja a da maior carroça da mesa (que está na mão dele).

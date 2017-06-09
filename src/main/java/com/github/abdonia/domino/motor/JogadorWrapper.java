@@ -208,14 +208,15 @@ class JogadorWrapper implements Jogador {
     }
     
     /**
-     * Conta a soma dos {@linkplain Pedra#getNumeroDePontos() pontos} das 
-     * {@linkplain #getMao() pedras na mão desse jogador}.
-     * @return Quantos {@linkplain Pedra#getNumeroDePontos() pontos} somam as 
+     * Conta a soma dos {@link Pedra#getPontos() pontos} das {@linkplain 
+     * #getMao() pedras na mão desse jogador}.
+     * 
+     * @return Quantos {@link Pedra#getPontos() pontos} somam as 
      * {@linkplain #getMao() pedras na mão desse jogador}.
      */
-    int getNumeroDePontosNaMao(){
+    int getPontosNaMao(){
         return 
-            this.mao.parallelStream().mapToInt(Pedra::getNumeroDePontos).sum();
+            this.mao.parallelStream().mapToInt(Pedra::getPontos).sum();
     }
 
     /**
