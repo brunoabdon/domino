@@ -284,6 +284,10 @@ class Partida {
             throw new BugDeJogadorException(Falha.NAO_JOGOU_NEM_TOCOU, jogador);
         }
         
+        if(primeiraJogada == Jogada.TOQUE){
+            throw new BugDeJogadorException(Falha.TOCOU_TENDO,jogador);
+        }
+        
         final Pedra pedra = primeiraJogada.getPedra();
         final Lado lado = primeiraJogada.getLado();
         final int cadeira = jogador.getCadeira();
