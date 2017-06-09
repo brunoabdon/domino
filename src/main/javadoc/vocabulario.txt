@@ -1,0 +1,25 @@
+Batida
+Buxudinha
+Cadeira  -> contar do 0
+Carroça
+Cruzada
+Dobrada
+Dorme
+Dupla -> contar do 0
+Empate
+Inchadinha
+Jogada
+Jogador -> contar do 0
+Jogar
+Jogo
+Lá e lo
+Lado -> Esquerdo, Direito
+Mão
+Mesa -> mesa vazia
+Numero
+Partida -> partida voltar
+Pedra
+Pontinhos? -> não pode ser ponto
+Ponto -> Contagem de pontos
+Sentar
+Toque
