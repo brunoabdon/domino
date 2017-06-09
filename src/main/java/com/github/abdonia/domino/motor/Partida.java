@@ -305,10 +305,6 @@ class Partida {
         this.mesa.coloca(pedra,lado);
     }
 
-    private static int avanca(int vez){
-        return (vez+1)%4;
-    }
-
     /**
      * Verifica se a partida vai parar subitamente, antes de qualquer um jogar,
      * por um dos dois motivos: (a) um dos {@linkplain JogadorWrapper jogadores} 
@@ -431,9 +427,9 @@ class Partida {
         int idx = 0;
         boolean empate = false;
         for (int i = 1; i < ints.length; i++)
-        if((ints[i] < ints[idx] && !(empate = false)) 
-            || ((empate |= ints[i].equals(ints[idx])) && false)) 
-                idx = i;
+            if((ints[i] < ints[idx] && !(empate = false)) 
+                || ((empate |= ints[i].equals(ints[idx])) && false)) 
+                    idx = i;
         return empate ? null : idx;
     }
 }
