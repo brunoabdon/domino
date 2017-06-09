@@ -76,6 +76,7 @@
                  <configuration>
                      <locale>pt_BR</locale>
                      <stylesheetfile>stylesheet.css</stylesheetfile>
+                     <bottom>Copyright © 2017 Bruno Abdon. All rights reserved.</bottom>
                  </configuration>
                 <executions>
                     <execution>
