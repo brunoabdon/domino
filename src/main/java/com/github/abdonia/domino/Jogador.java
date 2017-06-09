@@ -74,8 +74,8 @@ package com.github.abdonia.domino;
  * pode terminar de outras quatro maneiras diferentes:</p>
  * <ol><li><em>Vitória por contagem de pontos na mão</em>: nenhum dos quatro 
  * jogadores tem uma pedra que encaixe na mesa e a partida trava. São somados, 
- * pra cada jogador, {@linkplain Pedra#getNumeroDePontos() os pontos de suas 
- * pedras} e vence o jogador que tiver menos.</li>
+ * pra cada jogador, {@linkplain Pedra#getPontos() os pontos de suas pedras} e 
+ * vence o jogador que tiver menos.</li>
  * <li><em>Empate por contagem de pontos</em>: A partida trava, jogadores de 
  * duplas diferentes empatam com o número mínimo de pontos na mão.</li>
  * <li><em>Partida abortada por cinco carroças na mão</em>: Se um dos jogadores

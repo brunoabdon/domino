@@ -194,14 +194,14 @@ public enum Pedra {
     private final Numero primeiroNumero;
     private final Numero segundoNumero;
 
-    private final int numeroDePontos;
+    private final int pontos;
 
     private Pedra(final Numero primeiroNumero, final Numero segundoNumero){
         this.primeiroNumero = primeiroNumero;
         this.segundoNumero = segundoNumero;
-        this.numeroDePontos = 
-            primeiroNumero.getNumeroDePontos() 
-            + segundoNumero.getNumeroDePontos();
+        this.pontos = 
+            primeiroNumero.getPontos() 
+            + segundoNumero.getPontos();
     }
 
     private Pedra(final Numero numeroDaCarroca){
@@ -209,8 +209,8 @@ public enum Pedra {
     }
 
     /**
-     * O menor {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
-     * {@linkplain #isCarroca() seja uma carroça}).
+     * Retorna o menor {@link Numero} dessa pedra (ou o {@link Numero} repetido,
+     * caso {@linkplain #isCarroca() seja uma carroça}).
      * 
      * @return O menor número dessa pedra.
      */
@@ -219,8 +219,9 @@ public enum Pedra {
     }
 
     /**
-     * O maior {@link Numero} dessa pedra. (Ou o {@link Numero} repetido, caso
-     * {@linkplain #isCarroca() seja uma carroça}).
+     * Retorna o maior {@link Numero} dessa pedra (ou o {@link Numero} repetido,
+     * caso {@linkplain #isCarroca() seja uma carroça}).
+     * 
      * @return O menor número dessa pedra.
      */
     public Numero getSegundoNumero() {
@@ -228,13 +229,15 @@ public enum Pedra {
     }
 
     /**
-     * A soma dos dois {@linkplain Numero números}. Usado quando tranca e tem 
-     * que contar os pontos na mão.
+     * A soma dos pontos dos dois {@linkplain Numero números} desta pedra. Usado 
+     * quando uma partida tranca (todos os {@linkplain Jogador jogadores} 
+     * {@linkplain Jogada#TOQUE tocam} em sequência) e é preciso contar os 
+     * pontos na mão de cada jogador.
      * 
-     * @return A soma dos dois números;
+     * @return A soma dos dois {@linkplain Numero números} desta pedra.
      */
     public int getPontos() {
-        return this.numeroDePontos;
+        return this.pontos;
     }
 
     /**
@@ -243,7 +246,7 @@ public enum Pedra {
      * 
      * @param numero Um {@link Numero}, pra testar se essa pedra tem ele.
      * @return {@code true} só se um dos dois {@linkplain Numero números} dessa 
-     * pedra for o dado como parâmetro.
+     * pedra for o número dado como parâmetro.
      */
     public boolean temNumero(final Numero numero){
         return numero == primeiroNumero || numero == segundoNumero; 

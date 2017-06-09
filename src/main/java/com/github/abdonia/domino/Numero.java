@@ -18,6 +18,7 @@ package com.github.abdonia.domino;
 
 /**
  * Os sete números que podem aparcer numa face de uma {@link Pedra} de dominó.
+ * 
  * @author Bruno Abdon
  */
 public enum Numero {
@@ -57,10 +58,10 @@ public enum Numero {
      */
     SENA(6);
 	
-    private final int numeroDePontos;
+    private final int pontos;
 
-    private Numero(final int numeroDePontos) {
-        this.numeroDePontos = numeroDePontos;
+    private Numero(final int pontos) {
+        this.pontos = pontos;
     }
 
     /**
@@ -68,7 +69,7 @@ public enum Numero {
      * 
      * @return Quantos pontinhos tem nesse número.
      */
-    public int getNumeroDePontos() {
-        return numeroDePontos;
+    public int getPontos() {
+        return pontos;
     }
 }
