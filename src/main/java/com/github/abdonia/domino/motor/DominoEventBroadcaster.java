@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,16 +44,10 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
 
     private final Map<Integer, Consumer<DominoEventListener>> cachedToques;
-    private final Map<Integer,Map<Optional<Lado>,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
+    private final Map<Integer,Map<Lado,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
     
     private static final Function<Integer, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> JOGADA_POR_UM_JOGADOR =
-        (num) -> {return (l) -> (p) -> (el) -> {el.jogadorJogou(num, l, p);};};
-
-    private static final Optional<Lado> OPTIONAL_ESQ = 
-        Optional.ofNullable(Lado.ESQUERDO);
-    private static final Optional<Lado> OPTIONAL_DIR =  
-        Optional.ofNullable(Lado.DIREITO);
-    private static final Optional<Lado> OPTIONAL_LADO_NENHUM = Optional.empty();
+        num -> l -> p -> el -> el.jogadorJogou(num, l, p);
 
     private static final Predicate<DominoEventListener> IS_OMNISCIENT = 
         e -> e instanceof OmniscientDominoEventListener;
@@ -146,7 +139,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             final Pedra pedra) {
         final Function<Pedra, Consumer<DominoEventListener>> 
                 jogadaDoJogadorDaqueleLado =
-            this.cachedJogadasNoLado.get(jogador).get(optional(lado));
+            this.cachedJogadasNoLado.get(jogador).get(lado);
         
         final Consumer<DominoEventListener> 
                 jogadaDessaPedraDesseLadoPorEsseJogador = 
@@ -155,14 +148,6 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
     }
 
-    private Optional<Lado> optional(final Lado lado) {
-        return lado == Lado.ESQUERDO 
-                ? OPTIONAL_ESQ 
-                : lado == Lado.DIREITO 
-                    ? OPTIONAL_DIR
-                    : OPTIONAL_LADO_NENHUM;
-    }
-                
     @Override
     public void partidaComecou(
             final int placarDupla0, 
@@ -211,14 +196,14 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
     private void montaCacheJogadasDoJogador(final int jogador) {
 
-        final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> 
+        final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
             jogadasDoJogadorDoLado = new HashMap<>(3);
 
         final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
             jogadaPorEsseJogador = JOGADA_POR_UM_JOGADOR.apply(jogador);
 
         final Consumer<DominoEventListener> toqueDesseJogador = 
-            (eventListener) -> {eventListener.jogadorTocou(jogador);};
+            eventListener -> eventListener.jogadorTocou(jogador);
         
         cacheJogadasDoLado(
             jogadasDoJogadorDoLado, 
@@ -229,28 +214,20 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             jogadasDoJogadorDoLado, 
             jogadaPorEsseJogador,
             Lado.DIREITO);
-
-        cacheJogadasDoLado(
-            jogadasDoJogadorDoLado, 
-            jogadaPorEsseJogador, 
-            null);
         
         this.cachedJogadasNoLado.put(jogador, jogadasDoJogadorDoLado);
         this.cachedToques.put(jogador, toqueDesseJogador);
     }
 
     private Function<Pedra, Consumer<DominoEventListener>> cacheJogadasDoLado(
-            final Map<Optional<Lado>, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado, 
+            final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado, 
             final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogador,
             final Lado lado) {
         
-        final Optional<Lado> talvezLado = optional(lado);
-
         final Function<Pedra, Consumer<DominoEventListener>> 
-            jogadaDesseJogadorDesseLado = 
-                jogadaPorEsseJogador.apply(lado);
-        return 
-            jogadasDoJogadorDoLado.put(talvezLado, jogadaDesseJogadorDesseLado);
+            jogadaDesseJogadorDesseLado = jogadaPorEsseJogador.apply(lado);
+
+        return jogadasDoJogadorDoLado.put(lado, jogadaDesseJogadorDesseLado);
     }
 
     @Override
