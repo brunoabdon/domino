@@ -23,15 +23,14 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Uma de que um {@link Jogador} decidiu fazer. Ela diz qual {@link Pedra}
- * ele vai jogar e em que {@linkplain Lado lado} da {@linkplain Mesa mesa} 
- * jogar.
+ * Uma jogada, por um um {@link Jogador}, de uma {@link Pedra} em  um 
+ * {@linkplain Lado lado} da {@linkplain Mesa mesa}.
  *
  * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar, 
- * retornando {@link #TOQUE} (retornar {@code null} não é permitido).
+ * retornando {@link #TOQUE} (retornar {@code null} é considerado um erro).</p>
  * 
- * <p>Essa classe é imutável e {@code final}. Suas instâncias são adquiridas pelo
- * método estático {@link #de(Pedra, Lado)}.</p>
+ * <p>Essa classe é imutável e {@code final}. Suas instâncias são adquiridas 
+ * pelo método estático {@link #de(Pedra, Lado)}.</p>
  * 
  * @author Bruno Abdon
  */
@@ -51,11 +50,9 @@ public final class Jogada {
     /**
      * Um cache com todas as 56 jogadas possiveis criadas.
      */
-    private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> JOGADAS = 
+    private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> JOGADAS =
         funcToMap (
-            lado->funcToMap(
-                pedra -> {return new Jogada(pedra,lado);}, 
-                Pedra.class), 
+            lado -> funcToMap(pedra -> new Jogada(pedra,lado), Pedra.class), 
             Lado.class
         );
     
@@ -63,29 +60,33 @@ public final class Jogada {
      * Método auxiliar que cria um {@link EnumMap} a partir de uma {@link 
      * Function} que mapeia o {@link Enum} em alguma coisa.
      * 
-     * @param <T> O tipo do valor do EnumMap
-     * @param <E> O tipo do Enum que sera chave do EnumMap
-     * @param f A função que determina qual o valor de cada chave
-     * @param t A classe dos valores do mapa.
+     * @param <T> O tipo do valor do {@link EnumMap}.
+     * @param <E> O tipo do enum que sera chave do {@link EnumMap}.
+     * @param mapperFunction A {@linkplain função} que vai ser refletida num 
+     * mapa.
+     * @param enumClass A classe dos valores do {@link EnumMap}.
      * 
-     * @return Um EnumMap que replica uma Function.
+     * @return Um {@link EnumMap} que replica uma {@link Function}.
      */
     private static <T,E extends Enum<E>> EnumMap<E,T> funcToMap(
-        final Function<E,T> f, final Class<E> t) {
-        
-            return Stream.of(t.getEnumConstants())
-                   .collect(
-                        Collectors.toMap(
-                            Function.identity(), 
-                            f, 
-                            (x,y)-> x, 
-                            ()-> new EnumMap<>(t)));
+        final Function<E,T> mapperFunction, 
+        final Class<E> enumClass) {
+
+        return 
+            Stream.of(enumClass.getEnumConstants()).collect(
+                Collectors.toMap(
+                    Function.identity(), 
+                    mapperFunction, 
+                    (x,y)-> x, 
+                    ()-> new EnumMap<>(enumClass)
+                )
+            );
     }
 
     /**
      * Retorna a Jogada de uma determinada {@link Pedra} em um determinado 
-     * {@link Lado} da {@link Mesa}. Para tocar, o singleton {@link #TOQUE} deve
-     * ser usado.
+     * {@link Lado} da {@linkplain Mesa mesa}. Para tocar, o singleton {@link 
+     * #TOQUE} deve ser usado.
      * 
      * <p>Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
      * construtor e fazer com que as instâncias sejam reutilizadas.</p>
@@ -105,7 +106,7 @@ public final class Jogada {
     public static Jogada de(final Pedra pedra, final Lado lado) {
         Validate.notNull(pedra, ERR_PEDRA_NULA);
         Validate.notNull(lado, ERR_LADO_NULO);
-            
+
         return  JOGADAS.get(lado).get(pedra);
     }
 
