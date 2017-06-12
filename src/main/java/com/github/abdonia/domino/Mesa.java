@@ -77,7 +77,7 @@ public interface Mesa {
      * 
      * @param qualJogador qual o jogador que se deseja saber (de 0 a 3).
      * 
-     * @return Quantas pedras o jogador de indice {@code qualJogador} tem
+     * @return Quantas pedras o jogador de índice {@code qualJogador} tem
      * na mão.
      * 
      * @throws IllegalArgumentException Se for passado um número que não seja 0, 

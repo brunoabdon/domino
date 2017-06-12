@@ -19,10 +19,18 @@ package com.github.abdonia.domino.eventos;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 
+
 /**
- * Interface para receber eventos com informações sigilosas que acontecem 
- * durante o jogo. Deve ser implementado por UIs, Loggers, etc. mas não por
- * {@link com.github.abdonia.domino.Jogador Jogadores}.
+ * Extensão de {@link DominoEventListener} que inclui eventos com informações 
+ * <em>sigilosas</em> ou <em>técnicas</em> sobre o que acontece durante um jogo,
+ * como a lista de {@linkplain Pedra pedras} que cada {@linkplain 
+ * com.github.abdonia.domino.Jogador jogador} {@linkplain 
+ * com.github.abdonia.domino.Jogador#recebeMao(Pedra, Pedra, Pedra, Pedra, 
+ * Pedra, Pedra) recebeu}, a lista de pedras no dorme e erros por partes dos 
+ * jogadores que levam ao cancelamento do jogo. 
+ * 
+ * <p>Essa interface deve ser implementada por UIs, Loggers, etc. mas não por 
+ * {@link com.github.abdonia.domino.Jogador Jogadores}.<p>
  * 
  * @author Bruno Abdon
  */
@@ -30,7 +38,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
 
     /**
      * Avisa que, no início de uma partida, um derterminado 
-     * {@linkplain com.github.abdonia.domino.Jogador jogador} recebeu dadas 
+     * {@linkplain com.github.abdonia.domino.Jogador jogador} recebeu suas
      * {@linkplain Pedra pedras}.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
@@ -55,7 +63,8 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
     
     /**
-     * As pedras foram distribuidas, e as quatro que sobraram foram pro dorme.
+     * Avisa que, no início de uma partida, as pedras foram distribuidas e as 
+     * quatro que sobraram foram pra o dorme.
      * 
      * @param pedra1 A primeira {@linkplain Pedra pedra} do dorme.
      * @param pedra2 A segunda {@linkplain Pedra pedra} do dorme.
@@ -70,8 +79,9 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
     
     /**
-     * O {@link com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} que 
-     * não cabia na {@link com.github.abdonia.domino.Mesa}.
+     * O {@linkplain com.github.abdonia.domino.Jogador jogador} {@linkplain 
+     * com.github.abdonia.domino.Jogador#joga() jogou} uma {@linkplain Pedra
+     * pedra} que não cabia na {@linkplain com.github.abdonia.domino.Mesa mesa}.
      * 
      * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
@@ -81,6 +91,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param pedra a {@link Pedra} que tentou jogar.
+     * 
      * @param numero o {@link Numero} que a pedra deveria ter pra caber na mesa.
      */
     public default void jogadorJogouPedraInvalida(
@@ -107,7 +118,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * O jogo vem por meio deste método informar que o jogador que estava 
      * sentado na cadeira cujo número está indicado como parâmetro já não está
      * mais entre nós. Ele teve um crash súbito, mas foi em paz. Em respeito ao
-     * luto, e dada a impossibilidade de difunto jogar, o jogo vai ser
+     * luto, e dada a impossibilidade de defunto jogar, o jogo vai ser
      * interrompido.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
@@ -115,7 +126,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      * 
      * @param causaMortis Uma mensagem que pode ou não ajudar a identificar
-     * a causa mortis do jogador.
+     * o que causou morte do jogador.
      */
     public default void jogadorFaleceu(
         final int quemFoi, 
@@ -123,12 +134,11 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     } 
     
     /**
-     * O {@link com.github.abdonia.domino.Jogador} retornou 
-     * {@code null} quando {@linkplain com.github.abdonia.domino.Jogador#joga()
-     * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma 
-     * {@linkplain Pedra pedra} pra jogar, o jogador não deve retornar {@code 
-     * null}, e sim {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocar} 
-     * explicitamente.
+     * O {@link com.github.abdonia.domino.Jogador} retornou {@code null} quando 
+     * {@linkplain com.github.abdonia.domino.Jogador#joga() perguntado qual 
+     * seria sua jogada}. Mesmo no caso de não ter uma {@linkplain Pedra pedra} 
+     * pra jogar, o jogador não deve retornar {@code null}, e sim {@linkplain 
+     * com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
      * 
      * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
      * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
@@ -148,7 +158,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * primeira partida, mas começou o jogo {@linkplain  
      * com.github.abdonia.domino.Jogada jogando} outra {@linkplain Pedra pedra}.
      * 
-     * <p>Esse cara não sabe o basico de jogar, não faz sentido continuar o 
+     * <p>Esse jogador não sabe o básico de dominó. Não faz sentido continuar o 
      * jogo.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
@@ -165,7 +175,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * Pedra pedras} na mão que poderiam ser {@linkplain
      * com.github.abdonia.domino.Jogada jogadas}. Isso é roubo (ou bug).
      * 
-     * <p>A pesar desse tipo de roubo ser comum na vida real, onde a pessoa faz
+     * <p>Apesar desse tipo de roubo ser comum na vida real, onde a pessoa faz
      * e ninguém percebe, o sistema é onisciente e não vai deixar isso rolar 
      * aqui.</p>
      * 
@@ -178,9 +188,9 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
 
     /**
-     * O {@linkplain com.github.abdonia.domino.Jogador} jogou uma {@link Pedra} 
-     * que ele não tinha na mão. Isso é roubo (ou bug) e faz o jogo ser 
-     * abortado.
+     * O {@linkplain com.github.abdonia.domino.Jogador jogador} jogou uma 
+     * {@linkplain Pedra pedra} que ele não tinha na mão. Isso é roubo (ou bug)
+     * e faz o jogo ser abortado.
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(

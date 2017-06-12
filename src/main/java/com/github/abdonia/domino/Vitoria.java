@@ -28,60 +28,66 @@ public enum Vitoria {
      * A {@linkplain Mesa mesa} foi trancada (isto é, todos os {@link Jogador 
      * jogadores} {@linkplain Jogada#TOQUE tocaram} seguidamente, nenhum tem uma 
      * {@linkplain Pedra pedra} jogável na mão) e ganhou aquele que 
-     * somava menos {@link Pedra#getPontos() pontos} nas pedras da mão. 
-     * Essa vitória vale 1 ponto.
+     * somava menos {@linkplain Pedra#getPontos() pontos} nas pedras da mão. 
+     * 
+     * <p>Essa vitória vale 1 ponto.</p>
      */
     CONTAGEM_DE_PONTOS(1), 
 
     /**
-     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link 
-     * Pedra pedra} (que {@link Pedra#isCarroca() não era uma carroça}) em um 
-     * dos {@linkplain Lado lados} da {@linkplain Mesa mesa} (e depois o {@link 
-     * Mesa#getNumeroEsquerda() número de um lado da mesa} não ficou igual ao
-     * {@link  Mesa#getNumeroDireita() número do outro lado}). 
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última 
+     * {@linkplain Pedra pedra} (que {@linkplain Pedra#isCarroca() não era uma 
+     * carroça}) em um dos {@linkplain Lado lados} da {@linkplain Mesa mesa} (e,
+     * depois, o {@linkplain Mesa#getNumeroEsquerda() número de um lado da mesa}
+     * não ficou igual ao {@linkplain Mesa#getNumeroDireita() número do outro 
+     * lado}). 
      * 
-     * <p>Essa vitória vale 1 ponto.</p>
+     * <p>Essa vitória {@linkplain #getPontos() vale 1 ponto}.</p>
      */
     BATIDA_SIMPLES(1), 
 
     /**
      * Caso raro: Se as seis {@linkplain Pedra pedras} que o {@linkplain Jogador 
-     * jogador} {@link Jogador#recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, 
-     * Pedra) receber} forem todas {@link Pedra#isCarroca() carroças}, a partida 
-     * termina imediatamente com {@link Vitoria vitória} pra a dupla desse 
-     * jogador. 
-     * <p>Essa vitória vale 1 ponto.</p>
+     * jogador} {@linkplain Jogador#recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, 
+     * Pedra) receber} forem todas {@linkplain Pedra#isCarroca() carroças}, a 
+     * partida termina imediatamente com {@linkplain Vitoria vitória} pra a 
+     * dupla desse  jogador. 
+     * 
+     * <p>Essa vitória {@linkplain #getPontos() vale 1 ponto}.</p>
      */
     SEIS_CARROCAS_NA_MAO(1), 
 
     /**
-     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link 
-     * Pedra pedra} que {@link Pedra#isCarroca() era uma carroça} em um dos 
-     * {@linkplain Lado lados} da {@linkplain Mesa mesa}, mas não poderia 
-     * encaixara carroça no outro lado, pois o {@link Numero número} lá era 
-     * diferente. 
-     * <p>Essa vitória vale 2 ponto.</p>
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última 
+     * {@linkplain Pedra pedra}, que {@linkplain Pedra#isCarroca() era uma 
+     * carroça}, em um dos {@linkplain Lado lados} da {@linkplain Mesa mesa}, 
+     * mas não poderia encaixar a carroça no outro lado, pois o {@linkplain 
+     * Numero número} lá era diferente. 
+     * 
+     * <p>Essa vitória {@linkplain #getPontos() vale 2 pontos}.</p>
      */
     CARROCA(2), 
 
     /**
-     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link 
-     * Pedra pedra} que {@link Pedra#isCarroca() não era uma carroça} e que 
-     * tanto seu {@link Pedra#getPrimeiroNumero() primeiro numero} quanto o  
-     * {@link Pedra#getSegundoNumero() segundo} poderiam ser usados pra encaixar
-     * a pedra na mesa.
-     * <p>Essa vitória vale 3 pontos.</p>
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última 
+     * {@linkplain Pedra pedra}, que {@linkplain Pedra#isCarroca() não era uma 
+     * carroça}, e que tanto seu {@linkplain Pedra#getPrimeiroNumero() primeiro 
+     * numero} quanto o {@linkplain Pedra#getSegundoNumero() segundo} poderiam 
+     * ser usados pra encaixar a pedra na mesa.
+     * 
+     * <p>Essa vitória {@linkplain #getPontos() vale 3 pontos}.</p>
      */
     LA_E_LO(3), 
 
     /**
-     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última {@link 
-     * Pedra pedra} que {@link Pedra#isCarroca() era uma carroça} e que poderia 
-     * se encaixar tanto {@linkplain Mesa#getNumeroEsquerda() num lado da mesa} 
-     * como {@linkplain Mesa#getNumeroDireita() no outro} (pois eram o mesmo 
-     * {@link Numero número}.
+     * Um dos {@linkplain Jogador jogadores} bateu jogando sua última 
+     * {@linkplain Pedra pedra}, que {@linkplain Pedra#isCarroca() era uma 
+     * carroça}, e que poderia se encaixar tanto {@linkplain 
+     * Mesa#getNumeroEsquerda() num lado da mesa} como {@linkplain 
+     * Mesa#getNumeroDireita() no outro} (pois eram o mesmo {@linkplain Numero 
+     * número}.
      * 
-     * <p>Essa vitória vale 4 pontos.</p>
+     * <p>Essa vitória {@linkplain #getPontos() vale 4 pontos}.</p>
      */
     CRUZADA(4);
 
@@ -92,7 +98,7 @@ public enum Vitoria {
     }
 
     /**
-     * Quantos pontos vale essa vitória.
+     * Diz quantos pontos vale essa vitória.
      * 
      * @return Quantos pontos vale a vitória.
      */
@@ -105,11 +111,12 @@ public enum Vitoria {
      * {@linkplain Pedra pedra}, fechando ou não a mesa.
      * 
      * @param ultimaPedra a última {@linkplain Pedra pedra} da mão do {@link 
-     * Jogador}, que ele {@link Jogador#joga() jogou} e bateu.
+     * Jogador}, que {@linkplain Jogador#joga() foi jogada} causando a batida.
      * 
      * @param fechouAMesa Diz se, depois dessa última {@linkplain Jogada 
-     * jogada}, a mesa ficou com {@link Mesa#getNumeroEsquerda() o número de um
-     * lado} igual ao {@link  Mesa#getNumeroDireita() número do outro}.
+     * jogada}, a mesa ficou com {@linkplain Mesa#getNumeroEsquerda() o número 
+     * de um lado} igual ao {@linkplain Mesa#getNumeroDireita() número do 
+     * outro}.
      * 
      * @return {@link #CRUZADA}, se a {@code ultimaPedra} for uma {@linkplain 
      * Pedra#isCarroca() carroça} e tiver fechado a mesa, ou {@link #LA_E_LO} se

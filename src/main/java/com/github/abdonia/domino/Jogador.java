@@ -42,7 +42,7 @@ package com.github.abdonia.domino;
  * partidas quem começa é um dos jogadores da dupla que venceu a partida 
  * anterior. A dupla precisa decidir quais dos dois membros vai começar, mas 
  * deve fazer isso sem que os membros troquem muita informação. Pra isso, cada 
- * jogador deve saber responde "{@link #getVontadeDeComecar() o quanto ele 
+ * jogador deve saber responder "{@linkplain #getVontadeDeComecar() o quanto ele 
  * gostaria de começar a jogar}" olhando apenas pra suas pedras iniciais, sem se 
  * comunicar com seu parceiro de dupla.</p>
  *
@@ -81,7 +81,7 @@ package com.github.abdonia.domino;
  * <li><em>Partida abortada por cinco carroças na mão</em>: Se um dos jogadores
  * {@linkplain #recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) receber}
  * cinco {@linkplain Pedra#isCarroca() carroças} entre as seis pedras inciais de
- * sua mão, a partida e cancelada e uma outra começa.</li>
+ * sua mão, a partida é cancelada e uma outra começa.</li>
  * <li><em>Vitória por seis carroças na mão</em>: Se um dos jogadores
  * {@linkplain #recebeMao(Pedra, Pedra, Pedra, Pedra, Pedra, Pedra) receber}
  * seis {@linkplain Pedra#isCarroca() carroças} já como as seis pedras inciais

@@ -26,8 +26,8 @@ import com.github.abdonia.domino.Mesa;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vontade;
 /**
- * Represena um jogador sentado na mesa, jogando uma partida: É a visão de um
- * {@link Jogador} do ponto de vista do motor do jogo.
+ * Representa um jogador sentado na mesa, jogando: É a visão de um
+ * {@link Jogador} do ponto de vista do {@linkplain Jogo motor do jogo}.
  * 
  * @author Bruno Abdon
  */

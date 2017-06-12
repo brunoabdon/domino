@@ -21,11 +21,13 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 
 /**
- * Interface para receber eventos publicos do que acontece durante o jogo.
+ * Interface para receber eventos do que acontece durante o jogo.
  * 
  * {@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem 
  * esta interface serão automaticamente registrados para serem avisados dos 
  * eventos.
+ * 
+ * @see OmniscientDominoEventListener
  * 
  * @author Bruno Abdon
  */
@@ -53,7 +55,7 @@ public interface DominoEventListener {
      * @param placarPrimeiraDupla Quantos pontos a dupla 0 tem.
      * @param placarSegundaDupla Quantos pontos a dupla 1 tem.
      * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por 
-     * causa de um empate na partida anterior (por ser o caso de ser uma 
+     * causa de um empate na partida anterior (pode ser o caso de ser uma 
      * seqüência de empates)
      */
     public default void partidaComecou(
@@ -63,7 +65,7 @@ public interface DominoEventListener {
     }
 
     /**
-     * Foi definido, por consentimento ou aleatoriamente, que {@link 
+     * Foi definido, por consentimento ou aleatoriamente, qual {@link 
      * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior 
      * vai começar a partida.
      * 
@@ -121,7 +123,7 @@ public interface DominoEventListener {
 
     /**
      * A partida voltou logo depois de serem distribuidas as {@linkplain Pedra 
-     * pedras} porque um dos {@linkplain com.github.abdonia.domino.Jogador 
+     * pedras}, porque um dos {@linkplain com.github.abdonia.domino.Jogador 
      * jogadores} tinha 5 {@linkplain Pedra#isCarroca() carroças} na mão. 
      * (Ninguém marca ponto quando isso acontece).
      * 
