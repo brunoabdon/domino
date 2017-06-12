@@ -134,7 +134,9 @@ class Dupla {
     
     /**
      * Diz se essa dupla já tem pelo menos 6 {@link #getPontos() pontos}.
-     * @return 
+     * 
+     * @return {@code true} se esta dupla tiver ao menos 6 {@link #getPontos() 
+     * pontos}.
      */
     boolean venceu() {
         return this.getPontos() >= 6;

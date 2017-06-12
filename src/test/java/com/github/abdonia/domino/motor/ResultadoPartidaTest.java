@@ -47,7 +47,7 @@ public class ResultadoPartidaTest {
         
         for (final Vitoria vitoria : Vitoria.values()) {
             final ResultadoPartida.Batida batida = 
-                ResultadoPartida.batida(vitoria,vencedor);
+                new ResultadoPartida.Batida(vitoria,vencedor);
             
             assertNotNull(batida);
             
@@ -63,7 +63,7 @@ public class ResultadoPartidaTest {
         final JogadorWrapper jogador = UtilsTests.makeJogador();
         
         final ResultadoPartida.Volta volta = 
-            ResultadoPartida.volta(jogador);
+            new ResultadoPartida.Volta(jogador);
         
         assertNotNull(volta);
         assertSame(volta.getJogadorRelevante(),jogador);

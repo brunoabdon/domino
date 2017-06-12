@@ -132,8 +132,10 @@ class BugDeJogadorException extends Exception {
      * comportamento bugado e a uma {@link Pedra pedra} ligada ao bug.
      * 
      * @param falha A falha do jogador.
-     * @param jogadorBuguento O jogador contendo o bug.
-     * @param pedra A pedra relevante ao bug.
+     * @param jogadorBuguento O {@link JogadorWrapper} encapsulando o {@link 
+     * com.github.abdonia.domino.Jogador jogador} contendo o bug.
+     * @param pedra A {@link Pedra} relevante ao bug.
+     * @param numero O {@link Numero} relevante ao bug.
      */
     BugDeJogadorException(
             final Falha falha, 

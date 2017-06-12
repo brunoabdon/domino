@@ -43,7 +43,8 @@ class JogadorWrapper implements Jogador {
      * Exceção que indica que um {@link Jogador} levantou uma {@link 
      * RuntimeException} enquanto tentava executar algum de seus métodos. A
      * exceção levantada pelo jogador será guardada como {@link 
-     * Throwable#getCause() causa} desta exceção.
+     * Throwable#getCause() causa} desta exceção, e o jogador responsável pelo 
+     * bug pode ser recuperado por {@link #getJogadorBuguento()}.
      */
     public class RuntimeBugDeJogadorException extends RuntimeException{
 
@@ -91,9 +92,9 @@ class JogadorWrapper implements Jogador {
      * @param pedra5 A quinta {@linkplain Pedra pedra} da mão.
      * @param pedra6 A última {@linkplain Pedra pedra} da mão.
      * 
-     * @throws BugDeJogadorException caso o {@link #getWrapped jogador wrapped} 
-     * lance uma {@link RuntimeException} ao receber as {@linkplain  Pedra 
-     * pedras}.
+     * @throws RuntimeBugDeJogadorException caso o {@link #getWrapped jogador 
+     * wrapped} lance uma {@link RuntimeException} ao receber as {@linkplain 
+     * Pedra pedras}.
      */
     @Override
     public void recebeMao(
@@ -124,8 +125,8 @@ class JogadorWrapper implements Jogador {
      * @return O que o o {@link #getWrapped jogador wrapped} retornar ao tentar 
      * jogar (podendo ser {@code null} ou outra coisa inválida).
      * 
-     * @throws BugDeJogadorException caso o {@link #getWrapped jogador wrapped} 
-     * lance uma {@link RuntimeException} ao {@linkplain Jogador#joga() tentar 
+     * @throws RuntimeBugDeJogadorException caso o {@link #getWrapped jogador 
+     * wrapped} lance uma {@link RuntimeException} ao {@linkplain Jogador#joga() tentar 
      * jogar}.
      */
     @Override
@@ -146,8 +147,8 @@ class JogadorWrapper implements Jogador {
      * @return O que o o {@link #getWrapped jogador wrapped} retornar sobre sua 
      * vontade de jogar (podendo ser {@code null} ou outra coisa inválida).
      * 
-     * @throws BugDeJogadorException caso o {@link #getWrapped jogador wrapped} 
-     * lance uma {@link RuntimeException} ao {@link 
+     * @throws RuntimeBugDeJogadorException caso o {@link #getWrapped jogador 
+     * wrapped} lance uma {@link RuntimeException} ao {@link 
      * Jogador#getVontadeDeComecar() tentar responder sobre sua vontade}.
      */
     @Override
@@ -163,12 +164,12 @@ class JogadorWrapper implements Jogador {
      * {@linkplain #getCadeira() Decora qual foi a cadeira que sentou} e repassa
      * a informação para o {@link #getWrapped jogador wrapped}.
      
-     * @param mesa A {@linkplain mesa} do jogo. 
+     * @param mesa A {@linkplain Mesa mesa} do jogo. 
      * @param cadeiraQueSentou A {@linkplain cadeira} em que sentei.
      * 
-     * @throws BugDeJogadorException caso o {@link #getWrapped jogador wrapped} 
-     * lance uma {@link RuntimeException} na hora que for {@linkplain 
-     * Jogador#sentaNaMesa(Mesa, int) sentar.
+     * @throws RuntimeBugDeJogadorException caso o {@link #getWrapped jogador 
+     * wrapped} lance uma {@link RuntimeException} na hora que for {@linkplain 
+     * Jogador#sentaNaMesa(Mesa, int) sentar}.
      */
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
@@ -182,7 +183,7 @@ class JogadorWrapper implements Jogador {
 
     /**
      * O nome desse jogador.
-     * @return 
+     * @return O nome desse jogador.
      */
     String getNome() {
         return nome;
@@ -201,7 +202,7 @@ class JogadorWrapper implements Jogador {
      * As {@linkplain Pedra pedras} na mão desse jogador. Essa colleção não é
      * automáticamente atualizada quando um jogador retorna uma {@link Pedra}
      * numa {@link Jogada} em {@link #joga()}.
-     * @return 
+     * @return As {@linkplain Pedra pedras} na mão desse jogador.
      */
     Collection<Pedra> getMao(){
         return this.mao;

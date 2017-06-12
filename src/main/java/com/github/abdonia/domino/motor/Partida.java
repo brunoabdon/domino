@@ -369,7 +369,7 @@ class Partida {
     private ResultadoPartida batida(
             final JogadorWrapper vencedor, final Vitoria tipoDeBatida) {
         this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
-        return ResultadoPartida.batida(tipoDeBatida, vencedor);
+        return new ResultadoPartida.Batida(tipoDeBatida, vencedor);
     }
     
     /**
@@ -385,7 +385,7 @@ class Partida {
      */
     private ResultadoPartida volta(final JogadorWrapper jogador) {
         this.eventListener.partidaVoltou(jogador.getCadeira());
-        return ResultadoPartida.volta(jogador);
+        return new ResultadoPartida.Volta(jogador);
     }
 
     /**

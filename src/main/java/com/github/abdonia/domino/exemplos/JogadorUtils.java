@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Métodos utilitários pra a implementação dos {@linkplain Jogador jogadores} de 
- * exemplo. 
+ * Métodos utilitários pra a implementação dos {@linkplain 
+ * com.github.abdonia.domino.Jogador jogadores} de exemplo. 
  * 
  * @author Bruno Abdon
  */
@@ -37,6 +37,9 @@ class JogadorUtils {
      * ou lança {@link java.util.NoSuchElementException} caso não 
      * exista uma carroça no conjunto.
      *  
+     * @param pedras um conjunto de {@linkplain Pedra pedras} de onde se quer
+     * identificar a maior {@linkplain Pedra#isCarroca() carroça}.
+     * 
      * @return A maior {@linkplain Pedra#isCarroca() carroça} entre as 
      * {@linkplain Pedra pedras} passsadas como parâmetro.
      * 

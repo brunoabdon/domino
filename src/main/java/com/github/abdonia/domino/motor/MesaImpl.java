@@ -306,10 +306,12 @@ final class MesaImpl implements Mesa {
     /**
      * Diz qual é o {@linkplain Numero número} de um dado {@linkplain Lado lado}
      * dessa mesa, podendo ser {@code null} se a mesa estiver vazia. 
-     * @param lado O {@linkplain lado} da mesa que se quer saber o {@linkplain 
-     * Numero número}.
-     * @return O {@linkplain Numero número} desse {@linkplain lado} da mesa, ou
-     * {@code null} se a mesa estiver vazia.
+     * 
+     * @param lado O {@linkplain Lado lado} da mesa que se quer saber o 
+     * {@linkplain Numero número}.
+     * 
+     * @return O {@linkplain Numero número} desse {@linkplain Lado lado} da 
+     * mesa, ou {@code null} se a mesa estiver vazia.
      */
     Numero getNumero(final Lado lado) {
         return (lado == Lado.ESQUERDO?cabecaEsquerda:cabecaDireita).getNumero();
