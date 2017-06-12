@@ -17,7 +17,9 @@
 package com.github.abdonia.domino.motor;
 
 /**
- *
+ * Métodos utilitários usados atualmente pra a implemetação de {@link 
+ * DominoConfig}.
+ * 
  * @author Bruno Abdon
  */
 class DominoConfigUtils {
@@ -28,6 +30,20 @@ class DominoConfigUtils {
     private static final String ERR_CLASSE_DESCONHECIDA = 
         "A classe \"%s\" foi mencionada mas ela nao pode ser encontrada.";    
     
+    /**
+     * Instancia um objeto dado o nome de sua classe, validando que esta classe
+     * seja subclasse de uma dada superclasse.
+     * 
+     * @param <K> O tipo do objeto a ser instanciado.
+     * @param superKlass O supertipo que a classe nomeada deve necessariamente
+     * extender.
+     * @param className O nome da classe que deve ser instanciada.
+     * @return Um objeto de classe cujo nome foi passado.
+     * 
+     * @throws DominoConfigException Se a classe não for encotrada, se ela não
+     * for uma subclasse da superclasse exigida, ou se houver um erro ao tentar
+     * instanciar a classe (deve ter um construtor vazio acessível).
+     */
     public static <K> K instancia(
             final Class<K> superKlass, 
             final String className) throws DominoConfigException {
@@ -35,22 +51,36 @@ class DominoConfigUtils {
         final K instance;
         
         try {
-            final Class<? extends K> klass =
-                Class.forName(className).asSubclass(superKlass);
-            
-            instance = instancia(superKlass, klass);
+
+            instance =
+                instancia(
+                    Class.forName(className).asSubclass(superKlass)
+                )
+            ;
 
         } catch (ClassCastException e) {
-            throw erroSuper(e, className, superKlass);
+            throw new DominoConfigException(
+                e,ERR_SUPER_KLASS,className,superKlass.getName());
         } catch (ClassNotFoundException e) {
-            throw new DominoConfigException(ERR_CLASSE_DESCONHECIDA, className);
+            throw new DominoConfigException(
+                e,ERR_CLASSE_DESCONHECIDA,className);
         }
         return instance;
     }
 
-    public static <K> K instancia(
-            final Class<? super K> superKlass, 
-            final Class<K> klass) throws DominoConfigException {
+    /**
+     * Instancia um objeto dada  sua classe, usando um construtor vazio 
+     * acessível.
+     * 
+     * @param <K> O tipo do objeto a ser instanciado.
+     * @param klass  A classe que deve ser instanciada.
+     * 
+     * @return Um objeto de classe que foi passada.
+     * 
+     * @throws DominoConfigException Se houver um erro ao tentar instanciar a 
+     * classe (deve ter um construtor vazio acessível).
+     */
+    public static <K> K instancia( Class<K> klass) throws DominoConfigException{
         
         final K instance;
 
@@ -64,16 +94,7 @@ class DominoConfigUtils {
         } catch (IllegalAccessException e) {
             throw new DominoConfigException(
                 e, "Preciso de um construtor: %s.", klass.getName());
-        } catch (ClassCastException e) {
-            throw erroSuper(e, klass.getName(), superKlass);
         }
         return instance;
-    }
-    private static DominoConfigException erroSuper(
-            final ClassCastException e,
-            final String klass,
-            final Class<?> superr){
-        return 
-            new DominoConfigException(e,ERR_SUPER_KLASS,klass,superr.getName());
     }
 }

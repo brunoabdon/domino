@@ -113,11 +113,9 @@ import pl.touk.throwing.exception.WrappedException;
  */
 public class DominoConfig {
 
-    private static final Function<Class, DominoEventListener> INSTN_LIST_KLASS = 
-        ThrowingFunction.unchecked(
-            k -> DominoConfigUtils.instancia(DominoEventListener.class, k)
-        )
-    ;
+    private static final Function<Class<? extends DominoEventListener>, DominoEventListener> 
+        INSTN_LIST_KLASS = 
+            ThrowingFunction.unchecked(DominoConfigUtils::instancia);
     
     private static final Function<String, DominoEventListener> INSTN_LIST_NAME = 
         ThrowingFunction.unchecked(
@@ -131,7 +129,8 @@ public class DominoConfig {
     private final Jogador[] jogadores  = new Jogador[4];
 
     private List<String> nomesEventListeners = new ArrayList<>();
-    private List<Class> classesEventListeners = new ArrayList<>();
+    private List<Class<? extends DominoEventListener>> classesEventListeners = 
+        new ArrayList<>();
     private List<DominoEventListener> eventListeners = new ArrayList<>();
 
     public String getNomeJogador0Dupla0() {
@@ -514,12 +513,12 @@ public class DominoConfig {
         this.eventListeners.add(eventListener);
     }
     
-    public List<Class> getClassesEventListeners() {
+    public List<Class<? extends DominoEventListener>> getClassesEventListeners() {
         return this.classesEventListeners;
     }
 
     public void setClassesEventListeners(
-            final List<Class> classesEventListeners) {
+            final List<Class<? extends DominoEventListener>> classesEventListeners) {
         this.classesEventListeners = classesEventListeners;
     }
 
@@ -547,7 +546,7 @@ public class DominoConfig {
         
         Jogador jogador = jogadores[index];
         if(jogador == null){
-            final Class klass = classesJogadores[index];
+            final Class<? extends Jogador> klass = classesJogadores[index];
             if(klass == null){
                 final String className = nomesClassesJogadores[index];
                 if(className == null){
@@ -558,7 +557,7 @@ public class DominoConfig {
                 }
                 jogador = DominoConfigUtils.instancia(Jogador.class, className);
             } else {
-                jogador = DominoConfigUtils.instancia(Jogador.class, klass);
+                jogador = DominoConfigUtils.instancia(klass);
             }
         }
         return jogador;
