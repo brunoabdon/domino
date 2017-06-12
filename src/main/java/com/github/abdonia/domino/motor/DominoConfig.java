@@ -54,10 +54,10 @@ import pl.touk.throwing.exception.WrappedException;
  *      DominoConfig dominoConfig = new DominoConfig();
  *      
  *      //obrigatoriamente 4 jogadores
- *      dominoConfig.setJogador1Dupla1("Bruno",new JogadorMamao());
- *      dominoConfig.setJogador2Dupla1("Amanda",new JogadorMamao());
- *      dominoConfig.setJogador1Dupla2("Marina",new JogadorAlheio());
- *      dominoConfig.setJogador2Dupla2("Paulo",new JogadorAlheio());
+ *      dominoConfig.setJogador0Dupla0("Bruno",new JogadorMamao());
+ *      dominoConfig.setJogador1Dupla0("Amanda",new JogadorMamao());
+ *      dominoConfig.setJogador0Dupla1("Marina",new JogadorAlheio());
+ *      dominoConfig.setJogador1Dupla1("Paulo",new JogadorAlheio());
  *      
  *      //opcional, mas importante, um listener pra mostrar o andamento do jogo.
  *      dominoConfig.addEventListener(new LoggerDominoEventListener());
@@ -70,25 +70,25 @@ import pl.touk.throwing.exception.WrappedException;
  * <p>Tanto para jogadores como para os listeners é possível escolher entre 
  * setar (1) suas instâncias, (2) suas {@linkplain Class classes} 
  * ou (3) o {@linkplain Class#getName() nome qualificado de suas classes}. Por 
- * exemplo, o jogador 1 da dupla 2 pode ser setado das seguinte maneiras:</p>
+ * exemplo, o jogador 0 da dupla 1 pode ser setado das seguinte maneiras:</p>
  * 
  * <pre>
  * {@code 
  *   DominoConfig dominoConfig = new DominoConfig();
  * 
  *   //(1) setando como instância
- *   dominoConfig.setJogador1Dupla2(new com.acme.domino.JogadorEsperto());
+ *   dominoConfig.setJogador0Dupla1(new com.acme.domino.JogadorEsperto());
  *
  *   //(2) setando a classe
- *   dominoConfig.setJogador1Dupla2(com.acme.domino.JogadorEsperto.class);
+ *   dominoConfig.setJogador0Dupla1(com.acme.domino.JogadorEsperto.class);
  *        
  *   //(3) setando o nome da classe
- *   dominoConfig.setJogador1Dupla2("com.acme.domino.JogadorEsperto");
+ *   dominoConfig.setJogador0Dupla1("com.acme.domino.JogadorEsperto");
  * }
  * </pre>
- * <p>No caso de jogadores, ao setar uma das três opções, as outras opções (prao
+ * <p>No caso de jogadores, ao setar uma das três opções, as outras opções (pra
  * o mesmo jogador da mesma dupla) são automaticamente setadas pra {@code null}.
- * Já no caso dos listeners é possível adcionar vários, cada um usando qualquer 
+ * Já no caso dos listeners, é possível adcionar vários, cada um usando qualquer 
  * uma das formas.</p>
  * 
  * <pre>
@@ -106,8 +106,8 @@ import pl.touk.throwing.exception.WrappedException;
  * <p>A instânciação da classe passada na opção <em>(2)</em> ou mesmo a checagem 
  * pela existência da classe cujo nome foi passado na opção <em>(3)</em> não 
  * acontece no momento de chamada dos métods {@code set}. Só ocorrera 
- * {@linkplain Jogo#Jogo(com.github.abdonia.domino.motor.DominoConfig) quando a
- * configuração for usada pra se criar um Jogo}.</p>
+ * {@linkplain Jogo#Jogo(DominoConfig) quando a configuração for usada pra se 
+ * criar um Jogo}.</p>
  * 
  * @author Bruno Abdon
  */
@@ -134,40 +134,91 @@ public class DominoConfig {
     private List<Class> classesEventListeners = new ArrayList<>();
     private List<DominoEventListener> eventListeners = new ArrayList<>();
 
-    public String getNomeJogador1Dupla1() {
+    public String getNomeJogador0Dupla0() {
         return this.nomesJogadores[0];
     }
 
-    public void setNomeJogador1Dupla1(final String nomeJogador1Dupla1) {
-        this.nomesJogadores[0] = nomeJogador1Dupla1;
+    public void setNomeJogador0Dupla0(final String nomeJogador0Dupla0) {
+        this.nomesJogadores[0] = nomeJogador0Dupla0;
     }
 
-    public String getNomeJogador2Dupla1() {
+    public String getNomeJogador1Dupla0() {
         return this.nomesJogadores[1];
     }
 
-    public void setNomeJogador2Dupla1(final String nomeJogador2Dupla1) {
-        this.nomesJogadores[1] = nomeJogador2Dupla1;
+    public void setNomeJogador1Dupla0(final String nomeJogador1Dupla0) {
+        this.nomesJogadores[1] = nomeJogador1Dupla0;
     }
 
-    public String getNomeJogador1Dupla2() {
+    public String getNomeJogador0Dupla1() {
         return this.nomesJogadores[2];
     }
 
-    public void setNomeJogador1Dupla2(final String nomeJogador1Dupla2) {
-        this.nomesJogadores[2] = nomeJogador1Dupla2;
+    public void setNomeJogador0Dupla1(final String nomeJogador0Dupla1) {
+        this.nomesJogadores[2] = nomeJogador0Dupla1;
     }
 
-    public String getNomeJogador2Dupla2() {
+    public String getNomeJogador1Dupla1() {
         return this.nomesJogadores[3];
     }
 
-    public void setNomeJogador2Dupla2(final String nomeJogador2Dupla2) {
-        this.nomesJogadores[3] = nomeJogador2Dupla2;
+    public void setNomeJogador1Dupla1(final String nomeJogador1Dupla1) {
+        this.nomesJogadores[3] = nomeJogador1Dupla1;
+    }
+
+    public String getNomeClasseJogador0Dupla0() {
+        return nomesClassesJogadores[0];
+    }
+
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
+     * 
+     * @param nomeClasseJogador0Dupla0 O nome da classe desse jogador.
+     */
+    public void setJogador0Dupla0(
+            final String nomeClasseJogador0Dupla0) {
+        this.nomesClassesJogadores[0] = nomeClasseJogador0Dupla0;
+        this.classesJogadores[0] = null;
+    }
+
+    public String getNomeClasseJogador1Dupla0() {
+        return nomesClassesJogadores[1];
+    }
+
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
+     * 
+     * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
+     */
+    public void setJogador1Dupla0(
+            final String nomeClasseJogador1Dupla0) {
+        this.nomesClassesJogadores[1] = nomeClasseJogador1Dupla0;
+        this.classesJogadores[1] = null;
+    }
+
+    public String getNomeClasseJogador0Dupla1() {
+        return nomesClassesJogadores[2];
+    }
+
+    /**
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
+     * 
+     * @param nomeClasseJogador0Dupla1 O nome da classe desse jogador.
+     */
+    public void setJogador0Dupla1(
+            final String nomeClasseJogador0Dupla1) {
+        this.nomesClassesJogadores[2] = nomeClasseJogador0Dupla1;
+        this.classesJogadores[2] = null;
     }
 
     public String getNomeClasseJogador1Dupla1() {
-        return nomesClassesJogadores[0];
+        return nomesClassesJogadores[3];
     }
 
     /**
@@ -179,63 +230,63 @@ public class DominoConfig {
      */
     public void setJogador1Dupla1(
             final String nomeClasseJogador1Dupla1) {
-        this.nomesClassesJogadores[0] = nomeClasseJogador1Dupla1;
-        this.classesJogadores[0] = null;
-    }
-
-    public String getNomeClasseJogador2Dupla1() {
-        return nomesClassesJogadores[1];
-    }
-
-    /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a {@code null}.
-     * 
-     * @param nomeClasseJogador2Dupla1 O nome da classe desse jogador.
-     */
-    public void setJogador2Dupla1(
-            final String nomeClasseJogador2Dupla1) {
-        this.nomesClassesJogadores[1] = nomeClasseJogador2Dupla1;
-        this.classesJogadores[1] = null;
-    }
-
-    public String getNomeClasseJogador1Dupla2() {
-        return nomesClassesJogadores[2];
-    }
-
-    /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a {@code null}.
-     * 
-     * @param nomeClasseJogador1Dupla2 O nome da classe desse jogador.
-     */
-    public void setJogador1Dupla2(
-            final String nomeClasseJogador1Dupla2) {
-        this.nomesClassesJogadores[2] = nomeClasseJogador1Dupla2;
-        this.classesJogadores[2] = null;
-    }
-
-    public String getNomeClasseJogador2Dupla2() {
-        return nomesClassesJogadores[3];
-    }
-
-    /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
-     * dos outros dois atributos vai a {@code null}.
-     * 
-     * @param nomeClasseJogador2Dupla2 O nome da classe desse jogador.
-     */
-    public void setJogador2Dupla2(
-            final String nomeClasseJogador2Dupla2) {
-        this.nomesClassesJogadores[3] = nomeClasseJogador2Dupla2;
+        this.nomesClassesJogadores[3] = nomeClasseJogador1Dupla1;
         this.classesJogadores[3] = null;
     }
 
-    public Class<? extends Jogador> getClasseJogador1Dupla1() {
+    public Class<? extends Jogador> getClasseJogador0Dupla0() {
         return classesJogadores[0];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a {@code null}.
+     * 
+     * @param classeJogador0Dupla0 a classe do jogador.
+     */
+    public void setJogador0Dupla0(
+            final Class<? extends Jogador> classeJogador0Dupla0) {
+        this.classesJogadores[0] = classeJogador0Dupla0;
+        this.nomesClassesJogadores[0] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador1Dupla0() {
+        return classesJogadores[1];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a {@code null}.
+     * 
+     * @param classeJogador1Dupla0 a classe do jogador.
+     */
+    public void setJogador1Dupla0(
+            final Class<? extends Jogador> classeJogador1Dupla0) {
+        this.classesJogadores[1] = classeJogador1Dupla0;
+        this.nomesClassesJogadores[1] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador0Dupla1() {
+        return classesJogadores[2];
+    }
+
+    /**
+     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
+     * da classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a {@code null}.
+     * 
+     * @param classeJogador0Dupla1 a classe do jogador.
+     */
+    public void setJogador0Dupla1(
+            final Class<? extends Jogador> classeJogador0Dupla1) {
+        this.classesJogadores[2] = classeJogador0Dupla1;
+        this.nomesClassesJogadores[2] = null;
+    }
+
+    public Class<? extends Jogador> getClasseJogador1Dupla1() {
+        return classesJogadores[3];
     }
 
     /**
@@ -247,58 +298,7 @@ public class DominoConfig {
      */
     public void setJogador1Dupla1(
             final Class<? extends Jogador> classeJogador1Dupla1) {
-        this.classesJogadores[0] = classeJogador1Dupla1;
-        this.nomesClassesJogadores[0] = null;
-    }
-
-    public Class<? extends Jogador> getClasseJogador2Dupla1() {
-        return classesJogadores[1];
-    }
-
-    /**
-     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
-     * 
-     * @param classeJogador2Dupla1 a classe do jogador.
-     */
-    public void setJogador2Dupla1(
-            final Class<? extends Jogador> classeJogador2Dupla1) {
-        this.classesJogadores[1] = classeJogador2Dupla1;
-        this.nomesClassesJogadores[1] = null;
-    }
-
-    public Class<? extends Jogador> getClasseJogador1Dupla2() {
-        return classesJogadores[2];
-    }
-
-    /**
-     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
-     * 
-     * @param classeJogador1Dupla2 a classe do jogador.
-     */
-    public void setJogador1Dupla2(
-            final Class<? extends Jogador> classeJogador1Dupla2) {
-        this.classesJogadores[2] = classeJogador1Dupla2;
-        this.nomesClassesJogadores[2] = null;
-    }
-
-    public Class<? extends Jogador> getClasseJogador2Dupla2() {
-        return classesJogadores[3];
-    }
-
-    /**
-     * Seta  a classe do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
-     * 
-     * @param classeJogador2Dupla2 a classe do jogador.
-     */
-    public void setJogador2Dupla2(
-            final Class<? extends Jogador> classeJogador2Dupla2) {
-        this.classesJogadores[3] = classeJogador2Dupla2;
+        this.classesJogadores[3] = classeJogador1Dupla1;
         this.nomesClassesJogadores[3] = null;
     }
     /**
@@ -409,9 +409,9 @@ public class DominoConfig {
             final int idxDupla, 
             final int idxJogadorNaDupla){
         
-        Validate.inclusiveBetween(1,2,idxDupla,"Dupla invalida: %d",idxDupla);
+        Validate.inclusiveBetween(0,1,idxDupla,"Dupla invalida: %d",idxDupla);
         Validate.inclusiveBetween(
-                1,2,idxJogadorNaDupla,"Jogador invalido: %d",idxJogadorNaDupla);
+            0,1,idxJogadorNaDupla,"Jogador invalido: %d",idxJogadorNaDupla);
 
         final int index = indexJogador(idxDupla, idxJogadorNaDupla);
         
@@ -422,10 +422,10 @@ public class DominoConfig {
     }
 
     private int indexJogador(final int idxDupla, final int idxJogadorNaDupla) {
-        return (idxDupla-1)*2 + (idxJogadorNaDupla-1);
+        return (idxDupla*2) + (idxJogadorNaDupla);
     }
 
-    public Jogador getJogador1Dupla1() {
+    public Jogador getJogador0Dupla0() {
         return jogadores[0];
     }
 
@@ -434,14 +434,14 @@ public class DominoConfig {
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
      * outros dois atributos vai a {@code null}.
      * 
-     * @param jogador1Dupla1 a instância do jogador.
+     * @param jogador0Dupla0 a instância do jogador.
      */
-    public void setJogador1Dupla1(final Jogador jogador1Dupla1) {
-        this.jogadores[0] = jogador1Dupla1;
+    public void setJogador0Dupla0(final Jogador jogador0Dupla0) {
+        this.jogadores[0] = jogador0Dupla0;
         this.nomesClassesJogadores[0] = null;
     }
 
-    public Jogador getJogador2Dupla1() {
+    public Jogador getJogador1Dupla0() {
         return jogadores[1];
     }
 
@@ -450,14 +450,14 @@ public class DominoConfig {
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
      * outros dois atributos vai a {@code null}.
      * 
-     * @param jogador2Dupla1 a instância do jogador.
+     * @param jogador1Dupla0 a instância do jogador.
      */
-    public void setJogador2Dupla1(final Jogador jogador2Dupla1) {
-        this.jogadores[1] = jogador2Dupla1;
+    public void setJogador1Dupla0(final Jogador jogador1Dupla0) {
+        this.jogadores[1] = jogador1Dupla0;
         this.nomesClassesJogadores[1] = null;
     }
 
-    public Jogador getJogador1Dupla2() {
+    public Jogador getJogador0Dupla1() {
         return jogadores[2];
     }
 
@@ -466,14 +466,14 @@ public class DominoConfig {
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
      * outros dois atributos vai a {@code null}.
      * 
-     * @param jogador1Dupla2 a instância do jogador.
+     * @param jogador0Dupla1 a instância do jogador.
      */
-    public void setJogador1Dupla2(final Jogador jogador1Dupla2) {
-        this.jogadores[2] = jogador1Dupla2;
+    public void setJogador0Dupla1(final Jogador jogador0Dupla1) {
+        this.jogadores[2] = jogador0Dupla1;
         this.nomesClassesJogadores[2] = null;
     }
 
-    public Jogador getJogador2Dupla2() {
+    public Jogador getJogador1Dupla1() {
         return jogadores[3];
     }
 
@@ -482,10 +482,10 @@ public class DominoConfig {
      * da classe, a classe ou a instância de um dado jogador, os valores dos 
      * outros dois atributos vai a {@code null}.
      * 
-     * @param jogador2Dupla2  a instância do jogador.
+     * @param jogador1Dupla1  a instância do jogador.
      */
-    public void setJogador2Dupla2(final Jogador jogador2Dupla2) {
-        this.jogadores[3] = jogador2Dupla2;
+    public void setJogador1Dupla1(final Jogador jogador1Dupla1) {
+        this.jogadores[3] = jogador1Dupla1;
         this.nomesClassesJogadores[3] = null;
     }
     

@@ -54,7 +54,7 @@ public class Jogo {
     
     /**
      * Cria um jogo de dominó de acordo com o descrito em {@link 
-     * #Jogo(DominoConfig, mas onde os eventos "aleatórios" são criados por uma 
+     * #Jogo(DominoConfig)} mas onde os eventos "aleatórios" são criados por uma 
      * {@link RandomGoddess} passada como parâmetro. Útil para testes 
      * controlados.
      * 
@@ -65,21 +65,21 @@ public class Jogo {
      * (deve conter 4 jogadores e todos os nomes de classe devem ser válidos, 
      * para classes com um construtor vazio).
      */
-    Jogo( DominoConfig configuracao, final RandomGoddess randomGoddess) 
+    Jogo(final DominoConfig configuracao, final RandomGoddess randomGoddess) 
             throws DominoConfigException{
 
         //pegando os 4 jogadores da configuracao
         final JogadorWrapper jogador1dupla1 = 
-            configuracao.makeInstanciaJogador(1, 1);
+            configuracao.makeInstanciaJogador(0, 0);
         
         final JogadorWrapper jogador1dupla2 = 
-            configuracao.makeInstanciaJogador(2, 1);
+            configuracao.makeInstanciaJogador(1, 0);
 
         final JogadorWrapper jogador2dupla1 = 
-            configuracao.makeInstanciaJogador(1, 2);
+            configuracao.makeInstanciaJogador(0, 1);
 
         final JogadorWrapper jogador2dupla2 = 
-            configuracao.makeInstanciaJogador(2, 2);
+            configuracao.makeInstanciaJogador(1, 1);
         
         //pegando os eventlisteners da configuracao
         final Collection<DominoEventListener> eventListeners = 
@@ -113,8 +113,8 @@ public class Jogo {
     }
 
     /**
-     * Roda um jogo com os quatro jogadores, notificando o andamento aos 
-     * {@link DominoEventListener}s passados no construtor.
+     * Roda um jogo de acordo com as {@linkplain DominoConfig configurações} 
+     * passasdas no {@linkplain #Jogo(DominoConfig) construtor}.
      */
     public void jogar(){
         
@@ -222,9 +222,9 @@ public class Jogo {
      * 
      * @param duplaDoVencedor A dupla vencedora.
      * @param tipoDeBatida Com foi a vitória.
-     * @param multiplicadorDobrada Diz por quanto deve multiplicado o {@link 
-     * Vitoria#getPontos() valor da vitória} (quando uma partida empata, a 
-     * próxima vale dobrada).
+     * @param multiplicadorDobrada Diz por quanto deve multiplicado o 
+     * {@linkplain Vitoria#getPontos() valor da vitória} (quando uma partida 
+     * {@linkplain ResultadoPartida#EMPATE empata}, a próxima vale dobrada).
      */
     private void atualizaPlacar(
         final Dupla duplaDoVencedor, 

@@ -107,8 +107,8 @@ class DominoXmlConfigLoader {
                 dominoConfig.setJogador(
                     nome, 
                     classe, 
-                    (idxJogador>>1)+1, 
-                    (idxJogador++&1)+1);
+                    idxJogador>>1, 
+                    idxJogador++&1);
 
             } else if(qName.equals(ELEMENT_EVENT_LISTENER)){
                 this.dominoConfig.addEventListener(classe);
