@@ -1,25 +1,39 @@
-Batida
-Buxudinha
-Cadeira  -> contar do 0
-Carroça
-Cruzada
-Dobrada
-Dorme
-Dupla -> contar do 0
-Empate
-Inchadinha
-Jogada
-Jogador -> contar do 0
-Jogar
-Jogo
-Lá e lo
-Lado -> Esquerdo, Direito
-Mão
-Mesa -> mesa vazia
-Numero
-Partida -> partida voltar
-Pedra
-Pontinhos? -> não pode ser ponto
-Ponto -> Contagem de pontos
-Sentar
-Toque
+Batida - quando um Jogador ganha uma Partida (sem ser por Empate)
+Buxudinha - Quando uma Dupla ganha um Jogo sem que a outra Dupla faça nenhum Ponto.
+Cadeira -> Diz-se que os Jogadores se sentam nas suas cadeiras pra jogar. As cadeiras são enumeradas de 0 a 3. Os jogadores se sentam alteranando as Duplas, com a Dupla 0 ocupando as Cadeiras 0 e 2 enquanto a Dupla 1 ocupa as cadeiras 1 e 3.
+Carroça -> Uma Pedra que tem os dois Números iguais. Cada uma é chamada por "Carroca de X" onde X é o Numero repetido. A Carroça de Sena também é chamada de Dozão.
+Contagem de Pontos -> Método pra decidir a Dupla vitoriosa numa Partida que Travou: Vence a Dupla do Jogador que tiver menos Pontos na Mão (podendo haver Empate).
+Cruzada -> Uma Batida com uma Carroça que poderia se encaixada em qualquer Lado da Mesa.
+Distribuir -> Entregar secreta-e-aleatoriamente 6 Pedras a cada Jogador (no início de cada Partida).
+Dobrada -> Uma Partida é Dobrada se a anterior terminou em Empate, e os Pontos dessa vão valer em dobro.
+Dorme -> A quatro Pedras que em cada Partida não ficam na Mão de nenhum Jogador.
+Dozão -> A Carroça de Sena.
+Dupla -> O time de dois Jogadores. São identificadas como Dupla 0 e Dupla 1. Temos então o "Jogador 0 da Dupla 0", "Jogador 0 da Dupla 1", "Jogador 1 da Dupla 0" e "Jogador 0 da Dupla 0".
+Duque -> O Número com 2 pontinhhos.
+Embaralhar -> Misturar as Pedras (no início de cada Partida).
+Empate -> Quando uma Partida Trava mas o Jogador com menos Pontos na Mão de uma Dupla tem a mesma quantidade de Pontos que o Jogador da outra Dupla com menos Pontos na Mão.
+Inchadinha -> Quando uma Dupla ganha um Jogo e a outra Dupla só fez 1 Ponto.
+Jogada -> O ato, por parte de um Jogador, de colocar uma Pedra em um Lado da Mesa, ou Tocar.
+Jogador -> Cada um dos 4 participantes do Jogo, identificados pelos números de 0 a 3.
+Jogar -> O ato de um jogador de produzir uma Jogada.
+Jogo -> Uma sequência da Partidas que se extende até uma das Duplas atigir 6 pontos.
+Lá e lo -> Uma Batida com uma pedra que não é Carroça e que encaixa um de seus Números de um Lado da Mesa e o outro Número do outro Lado.
+Lado -> Cada uma das duas pontas da lista de Pedras na mesa. São identificados, por convenção, como Lado Esquerdo e Lado Direito (mas poderia ser Lado A e Lado B, Lado X e Lado Y, etc...)
+Limpo -> O Número com Zero pontinhos.
+Mão -> As Pedras sob controle de um Jogador. Cada Jogador começa uma Partida com 6 Pedras na mão. Um Jogador que não tiver uma Pedra jogável na Mão vai Tocar....
+Mesa -> O espaço onde os 4 jogadores se Sentam em volta e onde fica a lista de Pedras que os Jogadors vão formando e onde descansa o Dorme. No ínicio de cada partida, antes da primeira Jogada, diz-se que a Mesa está Vazia.
+Numero -> Cada um dos 6 valores que apararee nas Pedras: Limpo, Pio, Duque, Terno, Quadra, Quina e Sena.
+Partida -> Uma das várias rodadas que compõe o Jogo, iniciando com a Mesa Vazia e as Pedras sendo Embaralhadas Distribuidas e se extende até que um jogador Bata (ou a Partida Trave ou Volte).
+Pedra - Cada uma das 28 peças do dominó, contendo dois Números.
+Pio -> O Número com 1 pontinho.
+Pontinhos -> Ao se referir às bolinhas que desenham os Números numa Pedra, usar "Pontinho" e não "Ponto". "Ponto" diz respeito à pontuação das Duplas no Jogo.
+Ponto -> Diz-se tanto sobre quantos Pontos cada Dupla tem, como sobre quantos Pontos um Numero vale (Limpo=Zero, Pio=1, Sena=6...), quantos Pontos uma Pedra tem (a soma dos Números) e quantos Pontos um Jogador tem na Mão (a soma dos Pontos das Pedras).
+Quadra -> O Número com 4 pontinhhos.
+Quina -> O Número com 5 pontinhhos.
+Roubo -> Uma Jogada inválida por parte de um Jogador (ex: Jogar uma Pedra que não tinha na Mão, ou que não cabe na Mesa, ou Tocar tendo Pedra pra Jogar).
+Sena -> O Número com 6 pontinhhos.
+Sentar -> O ato de um Jogador tomar posição pra começar um Jogo. Os Jogadores de 0 a 3 se sentam nas cadeiras de 0 a 3. As Duplas são 0 e 2 contra 1 e 3.
+Terno -> O Número com 3 pontinhhos.
+Toque -> A Jogada de um Jogador que não tem uma Pedra que encaixe na Mesa.
+Travar -> Quando os 4 Jogadores Tocam em sequência, a Partida Trava, e vai decidida pela Contagem de Pontos.
+Vazia -> O estado da Mesa antes da primeira Jogada de uma Partida.
