@@ -37,13 +37,19 @@ import org.xml.sax.ext.DefaultHandler2;
  */
 class DominoXmlConfigLoader {
 
+    private static final String ERRO_LER_ARQUIVO = 
+        "Erro ao tentar ler arquivo de configuração";
+    private static final String ERRO_CRIAR_PARSER = 
+        "Erro na criação do parse xml";
+
     private DominoXmlConfigLoader(){}
    
     /**
      * Carrega {@link DominoConfig configurações do jogo} a 
      * partir do {@link InputStream} do documento XML.
      * @param configInputStream O {@link InputStream} do documento XML de 
-     * configurações.
+     * configurações. <p>Este método assume que o arquivo está bem formado.
+     * Nenhuma nova validação será feita.</p>
      * @return As {@link DominoConfig configurações} do jogo, que estavam no 
      * documento XML.
      * @throws DominoAppException Caso ocorra algum erro ao tentar ler a stream
@@ -59,14 +65,14 @@ class DominoXmlConfigLoader {
             SAXParserFactory
                 .newInstance()
                 .newSAXParser()
-                .parse(configInputStream, 
-                        configHandler);
+                .parse(
+                    configInputStream,
+                    configHandler);
 
         } catch (ParserConfigurationException | SAXException e) {
-            throw new DominoAppException(e, "Erro na criação do parse xml");
+            throw new DominoAppException(e, ERRO_CRIAR_PARSER);
         } catch (IOException e) {
-            throw new DominoAppException(
-                e, "Erro ao tentar ler arquivo de configuração");
+            throw new DominoAppException(e, ERRO_LER_ARQUIVO);
         }
         
         return configHandler.dominoConfig;
