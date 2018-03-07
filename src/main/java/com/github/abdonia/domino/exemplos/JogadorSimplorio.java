@@ -97,7 +97,7 @@ public class JogadorSimplorio implements Jogador{
                 //(provavelmente a carroça de sena).
                 jogada = jogaMaiorCarroca();
             } else {
-                //poço começar a partida com qualquer pedra. vai ser a primeira.
+                //posso começar a partida com qualquer pedra. vai ser a primeira.
                 jogada = jogarAPrimeiraPedraDaMao();
             }
         } else {
