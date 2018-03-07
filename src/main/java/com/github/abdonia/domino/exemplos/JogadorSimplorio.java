@@ -94,7 +94,7 @@ public class JogadorSimplorio implements Jogador{
             //é o comeco de uma partida e eu sou o primeiro.
             if(!jaJogueiAlgumaVez){
                 //é a primeira partida do jogo. devo jogar  maior carroca.
-                //(provavelmente a carroça de senna).
+                //(provavelmente a carroça de sena).
                 jogada = jogaMaiorCarroca();
             } else {
                 //poço começar a partida com qualquer pedra. vai ser a primeira.
