@@ -128,9 +128,9 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     }
 
     /**
-     * Colabora com um possível parceiro da mesma classe: a vontade só empata
-     * caso os dois tenham o mesmo número de {@linkplain Pedra#isCarroca() 
-     * carroças} na mão.
+     * Colabora com um possível parceiro da mesma classe: as vontades só 
+	 * empatam caso os dois tenham o mesmo número de {@linkplain 
+	 * Pedra#isCarroca() carroças} na mão.
      * 
      * @return a vontade de começar a jogar, que vai aumentando de acordo com o
      * número de {@linkplain Pedra#isCarroca() carroças} na mão.
