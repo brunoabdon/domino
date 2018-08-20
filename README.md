@@ -1,6 +1,6 @@
 # domino 🁏
 
-domino é um "[Programming game](https://en.wikipedia.org/wiki/Programming_game)" 
+**domino** é um "[Programming game](https://en.wikipedia.org/wiki/Programming_game)" 
 onde os jogadores são classes programadas pra jogar um Jogo de Dominó, de acordo com as regras tradicionais de Recife.
 
 ## Quickstart:
