@@ -12,3 +12,4 @@ domino-config.xml
 .project
 .settings/
 domino-config.xml
+/bin/
