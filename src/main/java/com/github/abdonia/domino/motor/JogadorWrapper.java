@@ -118,18 +118,18 @@ class JogadorWrapper implements Jogador {
 
     /**
      * 
-     * Pede pra o {@link #getWrapped jogador wrapped} {@linkplain Jogador#joga() 
-     * jogar} e retorna o que ele retornar (sem nenhuma validação). A 
-     * {@linkplain Pedra pedra} retornada na {@link Jogada} não será removida do
-     * {@linkplain #getMao() armazenamento interno}, que deverá depois ser 
-     * atualizado}.
+     * Pede pra o {@link #getWrapped jogador wrapped} {@linkplain 
+     * Jogador#joga() jogar} e retorna o que ele retornar (sem nenhuma 
+     * validação). A {@linkplain Pedra pedra} retornada na {@link Jogada} não 
+     * será removida do {@linkplain #getMao() armazenamento interno}, que 
+     * deverá depois ser atualizado}.
      * 
      * @return O que o o {@link #getWrapped jogador wrapped} retornar ao tentar 
      * jogar (podendo ser {@code null} ou outra coisa inválida).
      * 
      * @throws RuntimeBugDeJogadorException caso o {@link #getWrapped jogador 
-     * wrapped} lance uma {@link RuntimeException} ao {@linkplain Jogador#joga() tentar 
-     * jogar}.
+     * wrapped} lance uma {@link RuntimeException} ao {@linkplain 
+     * Jogador#joga() tentar jogar}.
      */
     @Override
     public Jogada joga() {
@@ -163,8 +163,8 @@ class JogadorWrapper implements Jogador {
     }
 
     /**
-     * {@linkplain #getCadeira() Decora qual foi a cadeira que sentou} e repassa
-     * a informação para o {@link #getWrapped jogador wrapped}.
+     * {@linkplain #getCadeira() Decora qual foi a cadeira que sentou} e 
+     * repassa a informação para o {@link #getWrapped jogador wrapped}.
      
      * @param mesa A {@linkplain Mesa mesa} do jogo. 
      * @param cadeiraQueSentou A {@linkplain cadeira} em que sentei.
@@ -193,8 +193,8 @@ class JogadorWrapper implements Jogador {
 
     /**
      * A cadeira que esse jogador {@linkplain #sentaNaMesa(Mesa, int) sentou}.
-     * @return A cadeira em que esse jogador {@linkplain #sentaNaMesa(Mesa, int) 
-     * se sentou}.
+     * @return A cadeira em que esse jogador {@linkplain #sentaNaMesa(Mesa, 
+     * int) se sentou}.
      */
     int getCadeira() {
         return cadeira;

@@ -304,8 +304,8 @@ final class MesaImpl implements Mesa {
     }
     
     /**
-     * Diz qual é o {@linkplain Numero número} de um dado {@linkplain Lado lado}
-     * dessa mesa, podendo ser {@code null} se a mesa estiver vazia. 
+     * Diz qual é o {@linkplain Numero número} de um dado {@linkplain Lado 
+     * lado} dessa mesa, podendo ser {@code null} se a mesa estiver vazia. 
      * 
      * @param lado O {@linkplain Lado lado} da mesa que se quer saber o 
      * {@linkplain Numero número}.
@@ -331,8 +331,8 @@ final class MesaImpl implements Mesa {
      * Retorna o conjunto das 4 {@linkplain Pedra pedras} que estão atualmente
      * no dorme. Vai estar vazio antes da primeira {@linkplain Partida partida}
      * começar e durante alguns instantes enquanto {@linkplain 
-     * #embaralhaEdistribui() as pedras estão sendo embaralhadas e distribuidas} 
-     * no início de uma nova partida.
+     * #embaralhaEdistribui() as pedras estão sendo embaralhadas e 
+     * distribuidas} no início de uma nova partida.
      * 
      * @return O conjunto das {@linkplain Pedra pedras} no dorme.
      */

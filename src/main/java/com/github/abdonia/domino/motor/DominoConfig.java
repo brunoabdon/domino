@@ -59,7 +59,7 @@ import pl.touk.throwing.exception.WrappedException;
  *      dominoConfig.setJogador0Dupla1("Marina",new JogadorAlheio());
  *      dominoConfig.setJogador1Dupla1("Paulo",new JogadorAlheio());
  *      
- *      //opcional, mas importante, um listener pra mostrar o andamento do jogo.
+ *      //opcional, mas importante, um listener que mostra o andamento do jogo.
  *      dominoConfig.addEventListener(new LoggerDominoEventListener());
  *      
  *      //cria um jogo com essa configuração e joga
@@ -87,9 +87,9 @@ import pl.touk.throwing.exception.WrappedException;
  * }
  * </pre>
  * <p>No caso de jogadores, ao setar uma das três opções, as outras opções (pra
- * o mesmo jogador da mesma dupla) são automaticamente setadas pra {@code null}.
- * Já no caso dos listeners, é possível adcionar vários, cada um usando qualquer 
- * uma das formas.</p>
+ * o mesmo jogador da mesma dupla) são automaticamente setadas pra {@code 
+ * null}. Já no caso dos listeners, é possível adcionar vários, cada um usando 
+ * qualquer uma das formas.</p>
  * 
  * <pre>
  * {@code 
@@ -103,7 +103,7 @@ import pl.touk.throwing.exception.WrappedException;
  *    dominoConfig.addEventListener(new DominoGUI());
  * }
  * </pre>
- * <p>A instânciação da classe passada na opção <em>(2)</em> ou mesmo a checagem 
+ * <p>A instânciação da classe passada na opção <em>(2)</em> ou até a checagem 
  * pela existência da classe cujo nome foi passado na opção <em>(3)</em> não 
  * acontece no momento de chamada dos métods {@code set}. Só ocorrera 
  * {@linkplain Jogo#Jogo(DominoConfig) quando a configuração for usada pra se 
@@ -113,15 +113,17 @@ import pl.touk.throwing.exception.WrappedException;
  */
 public class DominoConfig {
 
-    private static final Function<Class<? extends DominoEventListener>, DominoEventListener> 
-        INSTN_LIST_KLASS = 
-            ThrowingFunction.unchecked(DominoConfigUtils::instancia);
+    private static final 
+        Function<Class<? extends DominoEventListener>, DominoEventListener> 
+            INSTN_LIST_KLASS = 
+                ThrowingFunction.unchecked(DominoConfigUtils::instancia);
     
-    private static final Function<String, DominoEventListener> INSTN_LIST_NAME = 
-        ThrowingFunction.unchecked(
-            s -> DominoConfigUtils.instancia(DominoEventListener.class, s)
-        )
-    ;
+    private static final 
+        Function<String, DominoEventListener> INSTN_LIST_NAME = 
+            ThrowingFunction.unchecked(
+                s -> DominoConfigUtils.instancia(DominoEventListener.class, s)
+            )
+        ;
     
     private final String[] nomesJogadores = new String[4];
     private final String[] nomesClassesJogadores  = new String[4];
@@ -188,8 +190,8 @@ public class DominoConfig {
     }
 
     /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar 
+     * o nome da classe, a classe ou a instância de um dado jogador, os valores 
      * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
@@ -205,8 +207,8 @@ public class DominoConfig {
     }
 
     /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar 
+     * o nome da classe, a classe ou a instância de um dado jogador, os valores 
      * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador0Dupla1 O nome da classe desse jogador.
@@ -222,8 +224,8 @@ public class DominoConfig {
     }
 
     /**
-     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar o
-     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * Seta o nome da classe do jogador indicado pelo nome do método. Ao setar 
+     * o nome da classe, a classe ou a instância de um dado jogador, os valores 
      * dos outros dois atributos vai a {@code null}.
      * 
      * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
@@ -303,8 +305,8 @@ public class DominoConfig {
     }
     /**
      * Seta o nome e a classe de um jogador de uma dupla. Ao setar o nome da 
-     * classe, a classe ou a instância de um dado jogador, os valores dos outros
-     * dois atributos vai a {@code null}.
+     * classe, a classe ou a instância de um dado jogador, os valores dos 
+     * outros dois atributos vai a {@code null}.
      * 
      * @param nomeJogador O nome do jogador.
      * @param classeJogador A classe do jogador.
@@ -430,9 +432,9 @@ public class DominoConfig {
     }
 
     /**
-     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param jogador0Dupla0 a instância do jogador.
      */
@@ -446,9 +448,9 @@ public class DominoConfig {
     }
 
     /**
-     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param jogador1Dupla0 a instância do jogador.
      */
@@ -462,9 +464,9 @@ public class DominoConfig {
     }
 
     /**
-     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param jogador0Dupla1 a instância do jogador.
      */
@@ -478,9 +480,9 @@ public class DominoConfig {
     }
 
     /**
-     * Seta a instância do jogador indicado pelo nome do método. Ao setar o nome
-     * da classe, a classe ou a instância de um dado jogador, os valores dos 
-     * outros dois atributos vai a {@code null}.
+     * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+     * nome da classe, a classe ou a instância de um dado jogador, os valores 
+     * dos outros dois atributos vai a {@code null}.
      * 
      * @param jogador1Dupla1  a instância do jogador.
      */
@@ -493,7 +495,7 @@ public class DominoConfig {
         return this.nomesEventListeners;
     }
 
-    public void setNomesEventListeners(final List<String> nomesEventListeners) {
+    public void setNomesEventListeners(final List<String> nomesEventListeners){
         this.nomesEventListeners = nomesEventListeners;
     }
 
@@ -514,12 +516,14 @@ public class DominoConfig {
         this.eventListeners.add(eventListener);
     }
     
-    public List<Class<? extends DominoEventListener>> getClassesEventListeners() {
+    public List<Class<? extends DominoEventListener>>
+               getClassesEventListeners(){
         return this.classesEventListeners;
     }
 
     public void setClassesEventListeners(
-            final List<Class<? extends DominoEventListener>> classesEventListeners) {
+            final List<Class<? extends DominoEventListener>> 
+                classesEventListeners) {
         this.classesEventListeners = classesEventListeners;
     }
 
@@ -534,8 +538,8 @@ public class DominoConfig {
         
         final int index = indexJogador(idxDupla, idxJogadorNaDupla);        
         
-        final String nome = pegaNomeJogador(index, idxJogadorNaDupla, idxDupla);
-        final Jogador jogador = makeJogador(index, idxJogadorNaDupla, idxDupla);
+        final String nome = pegaNomeJogador(index,idxJogadorNaDupla,idxDupla);
+        final Jogador jogador = makeJogador(index,idxJogadorNaDupla,idxDupla);
         
         return new JogadorWrapper(jogador, nome);
     }
@@ -556,7 +560,7 @@ public class DominoConfig {
                             idxJogadorNaDupla,
                             idxDupla);
                 }
-                jogador = DominoConfigUtils.instancia(Jogador.class, className);
+                jogador = DominoConfigUtils.instancia(Jogador.class,className);
             } else {
                 jogador = DominoConfigUtils.instancia(klass);
             }

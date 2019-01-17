@@ -16,7 +16,6 @@
  */
 package com.github.abdonia.domino.log;
 
-
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
