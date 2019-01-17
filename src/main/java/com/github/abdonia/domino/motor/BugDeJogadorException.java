@@ -38,6 +38,8 @@ import com.github.abdonia.domino.Pedra;
  */
 class BugDeJogadorException extends Exception {
 
+    private static final long serialVersionUID = 2807255638816204700L;
+
     /**
      * Identifica a falha cometida pelo jogador.
      */

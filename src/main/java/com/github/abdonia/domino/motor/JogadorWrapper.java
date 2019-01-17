@@ -48,6 +48,8 @@ class JogadorWrapper implements Jogador {
      */
     public class RuntimeBugDeJogadorException extends RuntimeException{
 
+        private static final long serialVersionUID = 2245060346273604579L;
+
         public RuntimeBugDeJogadorException(final RuntimeException cause) {
             super(cause);
         }

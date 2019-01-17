@@ -29,6 +29,8 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
  */
 public class DominoConfigException extends Exception {
 
+    private static final long serialVersionUID = -4270283101087959431L;
+
     /**
      * Construtor com mensagem de erro.
      * @param msg a mensagem de erro.

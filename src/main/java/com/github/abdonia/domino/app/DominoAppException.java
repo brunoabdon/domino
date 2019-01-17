@@ -18,6 +18,8 @@ package com.github.abdonia.domino.app;
 
 class DominoAppException extends Exception {
 
+    private static final long serialVersionUID = 9160974629222006269L;
+
     public DominoAppException(final Exception e, final String msg) {
         super(msg,e);
     }

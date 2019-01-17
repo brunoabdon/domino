@@ -90,7 +90,7 @@ final class MesaImpl implements Mesa {
         final RandomGoddess fortuna,
         final OmniscientDominoEventListener eventListener) {
         
-        final LinkedList pedras = new LinkedList();
+        final LinkedList<Pedra> pedras = new LinkedList<>();
         this.listaDePedras = pedras;
         this.visaoDaListaDePedras = Collections.unmodifiableList(pedras);
         

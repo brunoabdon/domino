@@ -125,7 +125,8 @@ public class DominoConfig {
     
     private final String[] nomesJogadores = new String[4];
     private final String[] nomesClassesJogadores  = new String[4];
-    private final Class[] classesJogadores  = new Class[4];
+    @SuppressWarnings("unchecked")
+    private final Class<? extends Jogador>[] classesJogadores  = new Class[4];
     private final Jogador[] jogadores  = new Jogador[4];
 
     private List<String> nomesEventListeners = new ArrayList<>();
