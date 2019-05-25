@@ -20,9 +20,10 @@ import com.github.abdonia.domino.Pedra;
 
 /**
  * Gerador de eventos aleatórios durante a partida, responsável por embaralhar
- * as pedras e por definir quem na dupla deve começar uma  partida em caso de 
- * empate na {@linkplain com.github.abdonia.domino.Jogador#getVontadeDeComecar() 
- * vontade demonstrada para começar a jogar}.
+ * as {@linkplain Pedra pedras} e por definir quem na {@linkplain Dupla dupla} 
+ * deve começar uma {@linkplain Partida partida} em caso de empate na 
+ * {@linkplain com.github.abdonia.domino.Jogador#getVontadeDeComecar() vontade 
+ * demonstrada para começar a jogar}.
  * 
  * @author Bruno Abdon
  */
@@ -38,8 +39,8 @@ interface RandomGoddess {
     public Pedra[] embaralha();
     
     /**
-     * Diz, aleatóriamente se o primeiro {@linkplain JogadorWrapper jogador} da 
-     * {@linkplain Dupla dupla} (e não o segundo) é quem deve {@linkplain 
+     * Diz, aleatóriamente, se o primeiro {@linkplain JogadorWrapper jogador} 
+     * da {@linkplain Dupla dupla} (e não o segundo) é quem deve {@linkplain 
      * JogadorWrapper#joga() fazer a primeira jogada} da  partida (em caso de 
      * empate na {@linkplain 
      * com.github.abdonia.domino.Jogador#getVontadeDeComecar() vontade 
