@@ -20,7 +20,6 @@ import java.util.EnumMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Uma jogada, por um um {@link Jogador}, de uma {@link Pedra} em  um 
