@@ -63,7 +63,7 @@ class JogadaTest {
 	
 	@EnumSource(Lado.class)
 	@ParameterizedTest(name="Deve falhar com pedra nula na {0}")
-	void deveFalhaComLadoNull(final Lado lado) {
+	void deveFalharComPedraNull(final Lado lado) {
 	    assertThrows(IllegalArgumentException.class, ()->Jogada.de(null,lado));
 	}
 	
