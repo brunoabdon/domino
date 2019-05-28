@@ -91,9 +91,9 @@ public final class Jogada {
      * <p>Como existem apenas 57 jogadas possíveis(*), foi decidido esconder o 
      * construtor e fazer com que as instâncias sejam reutilizadas.</p>
      * 
-     * <p>(*) As 57 jogadas possíveis são: cada uma das 28 pedras na {@linkplain 
-     * Lado#ESQUERDO esquerda}, mais cada uma das 28 pedras na {@linkplain 
-     * Lado#DIREITO direita}, mais o {@linkplain #TOQUE toque}.</p>
+     * <p>(*) As 57 jogadas possíveis são: cada uma das 28 pedras na 
+     * {@linkplain Lado#ESQUERDO esquerda}, mais cada uma das 28 pedras na 
+     * {@linkplain Lado#DIREITO direita}, mais o {@linkplain #TOQUE toque}.</p>
      * 
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.
