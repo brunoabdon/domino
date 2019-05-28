@@ -1,9 +1,15 @@
 package com.github.abdonia.domino;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.object.HasToString.hasToString;
+import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +38,7 @@ class JogadaTest {
 	@DisplayName("Deve tocar sem pedra nem lado")
 	void deveTratarToqueComoNenhumaJogada() throws Exception {
 		final Jogada toque = Jogada.TOQUE;
+		assertThat(toque,is(notNullValue()));
 		assertNull(toque.getLado());
 		assertNull(toque.getPedra());
 	}
@@ -40,7 +47,7 @@ class JogadaTest {
 		
 		//acao
 		final Jogada j = Jogada.de(pedra, lado);
-		
+				
 		//verificacao
 		assertEquals(j.getPedra(), pedra);
 		assertEquals(j.getLado(), lado);
@@ -62,6 +69,7 @@ class JogadaTest {
 	
 	@NullSource
 	@EnumSource(Lado.class)
+	@DisplayName("Deve falhar com pedra nula")
 	@ParameterizedTest(name="Deve falhar com pedra nula na {0}")
 	void deveFalharComPedraNull(final Lado lado) {
 	    assertThrows(IllegalArgumentException.class, ()->Jogada.de(null,lado));
@@ -69,6 +77,7 @@ class JogadaTest {
 
 	@NullSource
     @EnumSource(Pedra.class)
+	@DisplayName("Deve falhar com lado null")
     @ParameterizedTest(name="Deve falhar ao jogar {0} em lado nulo")
     void deveFalharComLadoNull(final Pedra pedra) {
         assertThrows(IllegalArgumentException.class,()->Jogada.de(pedra,null));
@@ -82,6 +91,30 @@ class JogadaTest {
 		final Jogada jogada2 = Jogada.de(pedra, lado);
 		
 		//verificacao
-		assertTrue(jogada1 == jogada2);
+		assertSame(jogada1, jogada2);
 	}
+
+    @EnumSource(Pedra.class)
+    @DisplayName("Deve suportar toString")
+    @ParameterizedTest(name="Deve suportar toString pra {0}")
+	void deveImplementarToString(final Pedra pedra){
+	    //cenario
+        final Jogada jogada = Jogada.de(pedra, Lado.ESQUERDO);
+        
+        auxDeveImplementarToString(jogada);
+	}
+    
+    @Test
+    @DisplayName("Deve suportar toString pra toque")
+    void deveImplementarToStringPraToque(){
+        //cenario
+        final Jogada jogada = Jogada.TOQUE;
+        
+        auxDeveImplementarToString(jogada);
+    }
+
+
+    private void auxDeveImplementarToString(final Jogada jogada) {
+        assertThat(jogada,hasToString(not(emptyOrNullString())));
+    }
 }
