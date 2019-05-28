@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
 
 class JogadaTest {
 
@@ -61,6 +62,7 @@ class JogadaTest {
 		auxDeveCriarJogadaSingleton(Lado.DIREITO, pedra);
 	}
 	
+	@NullSource
 	@EnumSource(Lado.class)
 	@ParameterizedTest(name="Deve falhar com pedra nula na {0}")
 	void deveFalharComPedraNull(final Lado lado) {
