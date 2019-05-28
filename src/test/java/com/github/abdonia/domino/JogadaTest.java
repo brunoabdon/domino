@@ -66,6 +66,13 @@ class JogadaTest {
 	void deveFalharComPedraNull(final Lado lado) {
 	    assertThrows(IllegalArgumentException.class, ()->Jogada.de(null,lado));
 	}
+
+	@NullSource
+    @EnumSource(Pedra.class)
+    @ParameterizedTest(name="Deve falhar ao jogar {0} em lado nulo")
+    void deveFalharComLadoNull(final Pedra pedra) {
+        assertThrows(IllegalArgumentException.class,()->Jogada.de(pedra,null));
+    }
 	
 	private void auxDeveCriarJogadaSingleton(
 	        final Lado lado, final Pedra pedra) {
