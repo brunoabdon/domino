@@ -104,10 +104,23 @@ public final class Jogada {
      * for {@code null}.
      */
     public static Jogada de(final Pedra pedra, final Lado lado) {
-        Validate.notNull(pedra, ERR_PEDRA_NULA);
-        Validate.notNull(lado, ERR_LADO_NULO);
+        notNull(pedra, ERR_PEDRA_NULA);
+        notNull(lado, ERR_LADO_NULO);
 
         return  JOGADAS.get(lado).get(pedra);
+    }
+
+    /**
+     * Lança {@link IllegalArgumentException} com a mensagem dada se o 
+     * argumento passado seja {@code null}. 
+     * @param o Um objeto.
+     * @param err A mensagem usada no {@link IllegalArgumentException} caso o
+     * objeto seja {@code null}.
+     * @throws IllegalArgumentException caso o primeiro parâmetro seja null.
+     */
+    private static void notNull(final Object o, final String err) {
+        if(o == null) throw new IllegalArgumentException(err);
+        
     }
 
     /**
