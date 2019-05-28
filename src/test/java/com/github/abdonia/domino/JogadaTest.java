@@ -1,7 +1,11 @@
 package com.github.abdonia.domino;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,6 +59,12 @@ class JogadaTest {
 	@DisplayName("Deve jogar singletons na direita")
 	void deveCriarJogadaSingletonNaDireita(final Pedra pedra) {
 		auxDeveCriarJogadaSingleton(Lado.DIREITO, pedra);
+	}
+	
+	@EnumSource(Lado.class)
+	@ParameterizedTest(name="Deve falhar com pedra nula na {0}")
+	void deveFalhaComLadoNull(final Lado lado) {
+	    assertThrows(IllegalArgumentException.class, ()->Jogada.de(null,lado));
 	}
 	
 	private void auxDeveCriarJogadaSingleton(
