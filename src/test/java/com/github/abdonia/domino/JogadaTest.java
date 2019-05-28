@@ -57,7 +57,8 @@ class JogadaTest {
 		auxDeveCriarJogadaSingleton(Lado.DIREITO, pedra);
 	}
 	
-	void auxDeveCriarJogadaSingleton(final Lado lado, final Pedra pedra) {
+	private void auxDeveCriarJogadaSingleton(
+	        final Lado lado, final Pedra pedra) {
 		
 		//acao
 		final Jogada jogada1 = Jogada.de(pedra, lado);
