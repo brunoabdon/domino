@@ -66,7 +66,6 @@ class PedraTest {
                 is(pontosPrimeiroNumero + pontosSegundoNumero)
             )
         );
-        
     }
     
 
