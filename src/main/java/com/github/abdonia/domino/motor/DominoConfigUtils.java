@@ -82,7 +82,8 @@ class DominoConfigUtils {
      * 
      * @throws NullPointerException se a classe passada for {@code null}.
      */
-    public static <K> K instancia( Class<K> klass) throws DominoConfigException{
+    public static <K> K instancia(final Class<K> klass)
+            throws DominoConfigException{
         
         final K instance;
 
