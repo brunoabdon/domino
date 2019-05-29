@@ -229,8 +229,8 @@ public enum Pedra {
     }
 
     /**
-     * A soma dos pontos dos dois {@linkplain Numero números} desta pedra. Usado 
-     * quando uma partida tranca (todos os {@linkplain Jogador jogadores} 
+     * A soma dos pontos dos dois {@linkplain Numero números} desta pedra. 
+     * Usado quando uma partida tranca (todos os {@linkplain Jogador jogadores} 
      * {@linkplain Jogada#TOQUE tocam} em sequência) e é preciso contar os 
      * pontos na mão de cada jogador.
      * 

@@ -21,7 +21,7 @@ import com.github.abdonia.domino.Pedra;
 
 /**
  * Exceção que indica um comportamente excepcional (errado) por parte de um 
- * {@link com.github.abdonia.domino.Jogador}. 
+ * {@linkplain com.github.abdonia.domino.Jogador jogador}. 
  * 
  * <p>É esperado que implementações de {@code Jogador} 
  * conheçam e sigam as regras do jogo. Quando um jogador tenta fazer alguma 
