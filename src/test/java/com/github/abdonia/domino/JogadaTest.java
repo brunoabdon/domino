@@ -36,7 +36,7 @@ class JogadaTest {
 	
 	@Test
 	@DisplayName("Deve tocar sem pedra nem lado")
-	void deveTratarToqueComoNenhumaJogada() throws Exception {
+	void deveTratarToqueComoNenhumaJogada() {
 		final Jogada toque = Jogada.TOQUE;
 		assertThat(toque,is(notNullValue()));
 		assertNull(toque.getLado());
