@@ -17,6 +17,7 @@
 package com.github.abdonia.domino.app;
 
 import com.github.abdonia.domino.motor.DominoConfig;
+import com.github.abdonia.domino.motor.DominoConfigException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +39,9 @@ class DominoXmlConfigLoader {
     private static final String ERRO_LER_ARQUIVO = 
         "Erro ao tentar ler arquivo de configuração";
     private static final String ERRO_CRIAR_PARSER = 
-        "Erro na criação do parse xml";
+            "Erro na criação do parse xml";
+    private static final String ERRO_EXECUTAR_CONFIG = 
+            "Erro ao executar configuração";
 
     private DominoXmlConfigLoader(){}
    
@@ -57,6 +60,7 @@ class DominoXmlConfigLoader {
         final InputStream configInputStream) 
             throws DominoAppException {
         
+        final DominoConfig dominoConfig;
         final ConfigHandler configHandler = new ConfigHandler();
 
         try {
@@ -67,13 +71,18 @@ class DominoXmlConfigLoader {
                     configInputStream,
                     configHandler);
 
+            dominoConfig = configHandler.builder.build();
+
         } catch (ParserConfigurationException | SAXException e) {
             throw new DominoAppException(e, ERRO_CRIAR_PARSER);
         } catch (IOException e) {
             throw new DominoAppException(e, ERRO_LER_ARQUIVO);
+        } catch (final DominoConfigException e) {
+            throw new DominoAppException(e, ERRO_EXECUTAR_CONFIG);
         }
         
-        return configHandler.dominoConfig;
+        
+        return dominoConfig;
 
     }
 }

@@ -17,12 +17,13 @@ class ConfigHandler extends DefaultHandler2 {
     private static final String ATT_NOME = "nome";
     private static final String ATT_CLASSE = "classe";
 
-    final DominoConfig dominoConfig;
+    final DominoConfig.Builder builder;
     private int idxJogador;
     
     public ConfigHandler(){
-        this.dominoConfig = new DominoConfig();
+        this.builder = new DominoConfig.Builder();
         this.idxJogador = 0;
+        
     }
 
     @Override
@@ -37,14 +38,15 @@ class ConfigHandler extends DefaultHandler2 {
         if(qName.equals(ELEMENT_JOGADOR)){
             final String nome = attributes.getValue(ATT_NOME);
             
-            dominoConfig.setJogador(
+            builder.setJogador(
                 nome, 
                 classe, 
                 idxJogador>>1, 
                 idxJogador++&1);
 
         } else if(qName.equals(ELEMENT_EVENT_LISTENER)){
-            this.dominoConfig.addEventListener(classe);
+            this.builder.addEventListener(classe);
         }
     }
+    
 }
