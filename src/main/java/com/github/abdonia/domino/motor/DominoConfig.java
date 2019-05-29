@@ -117,11 +117,6 @@ import pl.touk.throwing.exception.WrappedException;
 public class DominoConfig {
 
     private static final 
-        Function<Class<? extends DominoEventListener>, DominoEventListener> 
-            INSTN_LIST_KLASS = 
-                unchecked(DominoConfigUtils::instancia);
-
-    private static final 
         Function<String, DominoEventListener> INSTN_LIST_NAME = 
             unchecked(
                 s -> instancia(DominoEventListener.class, s)
@@ -133,6 +128,11 @@ public class DominoConfig {
     private List<DominoEventListener> eventListeners = new ArrayList<>();
 
     public static class Builder {
+
+        private static final 
+        Function<Class<? extends DominoEventListener>, DominoEventListener> 
+            INSTN_LIST_KLASS = 
+                unchecked(DominoConfigUtils::instancia);
 
         private final String[] nomesJogadores = new String[4];
 
