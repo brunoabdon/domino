@@ -19,6 +19,9 @@ package com.github.abdonia.domino.motor;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.eventos.DominoEventListener;
 
+import static com.github.abdonia.domino.motor.DominoConfigUtils.instancia;
+import static pl.touk.throwing.ThrowingFunction.unchecked;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -116,12 +119,12 @@ public class DominoConfig {
     private static final 
         Function<Class<? extends DominoEventListener>, DominoEventListener> 
             INSTN_LIST_KLASS = 
-                ThrowingFunction.unchecked(DominoConfigUtils::instancia);
-    
+                unchecked(DominoConfigUtils::instancia);
+
     private static final 
         Function<String, DominoEventListener> INSTN_LIST_NAME = 
-            ThrowingFunction.unchecked(
-                s -> DominoConfigUtils.instancia(DominoEventListener.class, s)
+            unchecked(
+                s -> instancia(DominoEventListener.class, s)
             )
         ;
     
@@ -129,8 +132,8 @@ public class DominoConfig {
 
     private List<DominoEventListener> eventListeners = new ArrayList<>();
 
-    
     public static class Builder {
+
         private final String[] nomesJogadores = new String[4];
 
         private final String[] nomesClassesJogadores  = new String[4];
