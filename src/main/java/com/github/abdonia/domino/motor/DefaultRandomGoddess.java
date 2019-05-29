@@ -16,11 +16,11 @@
  */
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Pedra;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+
+import com.github.abdonia.domino.Pedra;
 
 /**
  * Implementação de {@link  RandomGoddess} baseada em {@link Random}.
