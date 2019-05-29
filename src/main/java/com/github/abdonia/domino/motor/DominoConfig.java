@@ -145,20 +145,24 @@ public class DominoConfig {
                 new ArrayList<>();
         private List<DominoEventListener> eventListeners = new ArrayList<>();
 
-        public void setNomeJogador0Dupla0(final String nomeJogador0Dupla0) {
+        public Builder withNomeJogador0Dupla0(final String nomeJogador0Dupla0) {
             this.nomesJogadores[0] = nomeJogador0Dupla0;
+            return this;
         }
 
-        public void setNomeJogador1Dupla0(final String nomeJogador1Dupla0) {
+        public Builder withNomeJogador1Dupla0(final String nomeJogador1Dupla0) {
             this.nomesJogadores[1] = nomeJogador1Dupla0;
+            return this;
         }
 
-        public void setNomeJogador0Dupla1(final String nomeJogador0Dupla1) {
+        public Builder withNomeJogador0Dupla1(final String nomeJogador0Dupla1) {
             this.nomesJogadores[2] = nomeJogador0Dupla1;
+            return this;
         }
 
-        public void setNomeJogador1Dupla1(final String nomeJogador1Dupla1) {
+        public Builder withNomeJogador1Dupla1(final String nomeJogador1Dupla1) {
             this.nomesJogadores[3] = nomeJogador1Dupla1;
+            return this;
         }
 
         /**
@@ -168,10 +172,11 @@ public class DominoConfig {
          * 
          * @param nomeClasseJogador0Dupla0 O nome da classe desse jogador.
          */
-        public void setJogador0Dupla0(
+        public Builder withJogador0Dupla0(
                 final String nomeClasseJogador0Dupla0) {
             this.nomesClassesJogadores[0] = nomeClasseJogador0Dupla0;
             this.classesJogadores[0] = null;
+            return this;
         }
 
         /**
@@ -181,10 +186,11 @@ public class DominoConfig {
          * 
          * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
          */
-        public void setJogador1Dupla0(
+        public Builder withJogador1Dupla0(
                 final String nomeClasseJogador1Dupla0) {
             this.nomesClassesJogadores[1] = nomeClasseJogador1Dupla0;
             this.classesJogadores[1] = null;
+            return this;
         }
 
         /**
@@ -194,10 +200,11 @@ public class DominoConfig {
          * 
          * @param nomeClasseJogador0Dupla1 O nome da classe desse jogador.
          */
-        public void setJogador0Dupla1(
+        public Builder withJogador0Dupla1(
                 final String nomeClasseJogador0Dupla1) {
             this.nomesClassesJogadores[2] = nomeClasseJogador0Dupla1;
             this.classesJogadores[2] = null;
+            return this;
         }
 
         /**
@@ -207,10 +214,11 @@ public class DominoConfig {
          * 
          * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
          */
-        public void setJogador1Dupla1(
+        public Builder withJogador1Dupla1(
                 final String nomeClasseJogador1Dupla1) {
             this.nomesClassesJogadores[3] = nomeClasseJogador1Dupla1;
             this.classesJogadores[3] = null;
+            return this;
         }
 
         /**
@@ -220,10 +228,11 @@ public class DominoConfig {
          * 
          * @param classeJogador0Dupla0 a classe do jogador.
          */
-        public void setJogador0Dupla0(
+        public Builder withJogador0Dupla0(
                 final Class<? extends Jogador> classeJogador0Dupla0) {
             this.classesJogadores[0] = classeJogador0Dupla0;
             this.nomesClassesJogadores[0] = null;
+            return this;
         }
 
         /**
@@ -233,10 +242,11 @@ public class DominoConfig {
          * 
          * @param classeJogador1Dupla0 a classe do jogador.
          */
-        public void setJogador1Dupla0(
+        public Builder withJogador1Dupla0(
                 final Class<? extends Jogador> classeJogador1Dupla0) {
             this.classesJogadores[1] = classeJogador1Dupla0;
             this.nomesClassesJogadores[1] = null;
+            return this;
         }
         
         /**
@@ -246,10 +256,11 @@ public class DominoConfig {
          * 
          * @param classeJogador0Dupla1 a classe do jogador.
          */
-        public void setJogador0Dupla1(
+        public Builder withJogador0Dupla1(
                 final Class<? extends Jogador> classeJogador0Dupla1) {
             this.classesJogadores[2] = classeJogador0Dupla1;
             this.nomesClassesJogadores[2] = null;
+            return this;
         }
 
         /**
@@ -259,10 +270,11 @@ public class DominoConfig {
          * 
          * @param classeJogador1Dupla1 a classe do jogador.
          */
-        public void setJogador1Dupla1(
+        public Builder withJogador1Dupla1(
                 final Class<? extends Jogador> classeJogador1Dupla1) {
             this.classesJogadores[3] = classeJogador1Dupla1;
             this.nomesClassesJogadores[3] = null;
+            return this;
         }
         /**
          * Seta o nome e a classe de um jogador de uma dupla. Ao setar o nome da 
@@ -278,7 +290,7 @@ public class DominoConfig {
          * seja algo difernente de 1 e 2.
 
          */
-        public void setJogador(
+        public Builder withJogador(
                 final String nomeJogador, 
                 final Class<? extends Jogador> classeJogador, 
                 final int idxDupla, 
@@ -290,6 +302,7 @@ public class DominoConfig {
                     null, 
                     idxDupla, 
                     idxJogadorNaDupla);
+            return this;
         }    
 
         /**
@@ -306,7 +319,7 @@ public class DominoConfig {
          * @throws  IllegalArgumentException caso o número da dupla ou do jogador
          * seja algo difernente de 1 e 2.
          */
-        public void setJogador(
+        public Builder withJogador(
                 final String nomeJogador, 
                 final String nomeClasseJogador, 
                 final int idxDupla, 
@@ -318,6 +331,7 @@ public class DominoConfig {
                     null, 
                     idxDupla, 
                     idxJogadorNaDupla);
+            return this;
         }    
 
         
@@ -334,7 +348,7 @@ public class DominoConfig {
          * @throws  IllegalArgumentException caso o número da dupla ou do jogador
          * seja algo difernente de 1 e 2.
          */
-        public void setJogador(
+        public Builder withJogador(
                 final String nomeJogador, 
                 final Jogador jogador, 
                 final int idxDupla, 
@@ -346,6 +360,7 @@ public class DominoConfig {
                     jogador, 
                     idxDupla, 
                     idxJogadorNaDupla);
+            return this;
         }        
         /**
          * Método auxiliar que seta ao mesmo tempo o nome, o nome da classe, a 
@@ -396,9 +411,10 @@ public class DominoConfig {
          * 
          * @param jogador0Dupla0 a instância do jogador.
          */
-        public void setJogador0Dupla0(final Jogador jogador0Dupla0) {
+        public Builder withJogador0Dupla0(final Jogador jogador0Dupla0) {
             this.jogadores[0] = jogador0Dupla0;
             this.nomesClassesJogadores[0] = null;
+            return this;
         }
 
         /**
@@ -408,9 +424,10 @@ public class DominoConfig {
          * 
          * @param jogador1Dupla0 a instância do jogador.
          */
-        public void setJogador1Dupla0(final Jogador jogador1Dupla0) {
+        public Builder withJogador1Dupla0(final Jogador jogador1Dupla0) {
             this.jogadores[1] = jogador1Dupla0;
             this.nomesClassesJogadores[1] = null;
+            return this;
         }
 
         /**
@@ -420,9 +437,10 @@ public class DominoConfig {
          * 
          * @param jogador0Dupla1 a instância do jogador.
          */
-        public void setJogador0Dupla1(final Jogador jogador0Dupla1) {
+        public Builder withJogador0Dupla1(final Jogador jogador0Dupla1) {
             this.jogadores[2] = jogador0Dupla1;
             this.nomesClassesJogadores[2] = null;
+            return this;
         }
 
         /**
@@ -432,22 +450,26 @@ public class DominoConfig {
          * 
          * @param jogador1Dupla1  a instância do jogador.
          */
-        public void setJogador1Dupla1(final Jogador jogador1Dupla1) {
+        public Builder withJogador1Dupla1(final Jogador jogador1Dupla1) {
             this.jogadores[3] = jogador1Dupla1;
             this.nomesClassesJogadores[3] = null;
+            return this;
         }
     
-        public void setNomesEventListeners(final List<String> nomesEventListeners){
+        public Builder withNomesEventListeners(final List<String> nomesEventListeners){
             this.nomesEventListeners = nomesEventListeners;
+            return this;
         }
 
-        public void addEventListener(final String nomeEventListener) {
+        public Builder withEventListener(final String nomeEventListener) {
             this.nomesEventListeners.add(nomeEventListener);
+            return this;
         }
 
-        public void addEventListener(
+        public Builder withEventListener(
                 final Class<? extends DominoEventListener> classeEventListener) {
             this.classesEventListeners.add(classeEventListener);
+            return this;
         }
     
         private JogadorWrapper makeInstanciaJogador(

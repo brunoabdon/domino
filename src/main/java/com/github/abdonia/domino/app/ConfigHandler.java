@@ -38,14 +38,14 @@ class ConfigHandler extends DefaultHandler2 {
         if(qName.equals(ELEMENT_JOGADOR)){
             final String nome = attributes.getValue(ATT_NOME);
             
-            builder.setJogador(
+            builder.withJogador(
                 nome, 
                 classe, 
                 idxJogador>>1, 
                 idxJogador++&1);
 
         } else if(qName.equals(ELEMENT_EVENT_LISTENER)){
-            this.builder.addEventListener(classe);
+            this.builder.withEventListener(classe);
         }
     }
     
