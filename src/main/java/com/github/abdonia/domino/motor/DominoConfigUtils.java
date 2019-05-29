@@ -79,6 +79,8 @@ class DominoConfigUtils {
      * 
      * @throws DominoConfigException Se houver um erro ao tentar instanciar a 
      * classe (deve ter um construtor vazio acessível).
+     * 
+     * @throws NullPointerException se a classe passada for {@code null}.
      */
     public static <K> K instancia( Class<K> klass) throws DominoConfigException{
         
