@@ -35,13 +35,13 @@ import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
- * <p>Uma aplicação simples, por linha de comando, que roda um {@linkplain  Jogo 
- * jogo de dominó}.</p>
+ * <p>Uma aplicação simples, por linha de comando, que roda um {@linkplain  
+ * Jogo jogo de dominó}.</p>
  * 
  * <p>As {@linkplain DominoConfig configurações do Jogo} (isto é, quais 
- * implementações de jogadores serão usadas, quais serão seus nomes, etc.) podem 
- * ser informadas num arquivo chamado <em>domino-config.xml</em> que deve estar 
- * no diretório atual.</p>
+ * implementações de jogadores serão usadas, quais serão seus nomes, etc.) 
+ * podem ser informadas num arquivo chamado <em>domino-config.xml</em> que deve 
+ * estar no diretório atual.</p>
  * 
  * <p>Um exemplo de conteudo do arquivo é:</p>
  * 
@@ -134,13 +134,12 @@ public class DominoApp {
     }
 
     /**
-     * Retorna um {@link InputStream} de onde deverá ser lido o documento xml de 
-     * configuração do jogo. Tenta primeiro encontrar no diretório corrente o
-     * arquivo {@value #CONFIG_XML}. Caso não exista, vai usar um documento de 
-     * configuração default que existe no classpath em
-     * {@value #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console,
-     * uma mensagem podera ser exibida no caso da configuração default ser 
-     * usada.
+     * Retorna um {@link InputStream} de onde deverá ser lido o documento xml 
+     * de configuração do jogo. Tenta primeiro encontrar no diretório corrente 
+     * o arquivo {@value #CONFIG_XML}. Caso não exista, vai usar um documento 
+     * de configuração default que existe no classpath em {@value 
+     * #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console, uma 
+     * mensagem podera ser exibida no caso da configuração default ser usada.
      * 
      * @return Um {@link InputStream} com o documento xml de configuração.
      * 
@@ -173,8 +172,9 @@ public class DominoApp {
     /**
      * Caso a aplicação esteja rodando num {@linkplain Console console}, exibe 
      * uma mensagem avisando que o jogo usará uma configuração default (por não 
-     * ter encontrado nenhum arquivo de configuração). Após exibir a mensagem, o
-     * programa espera o usuário apertar <em>ENTER\u23CE</em> para prosseguir.
+     * ter encontrado nenhum arquivo de configuração). Após exibir a mensagem, 
+     * o programa espera o usuário apertar <em>ENTER\u23CE</em> para 
+     * prosseguir.
      * 
      * <p>Se a aplicação não estiver rodando num console, nada acontece.</p>
      * 
@@ -182,12 +182,14 @@ public class DominoApp {
     private static void tentarExibirAvisoConfiguracaoDefault() {
         final Console console = System.console();
         if(console != null){
-            console.writer().println(formatted("msg.defaultconfig",CONFIG_XML));
+            console.writer().println(
+                formatted("msg.defaultconfig",CONFIG_XML)
+            );
             console.readLine();
         }
     }
 
-    private static void log(final Level l, final String msg, final Exception e){
+    private static void log(final Level l,final String msg,final Exception e){
         final Console console = System.console();
         if(console != null){
             console.writer().println(formatted("error.config",e.getMessage()));
