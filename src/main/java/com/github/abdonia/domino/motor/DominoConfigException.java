@@ -17,13 +17,12 @@
 
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.eventos.DominoEventListener;
-
 /**
  * Uma {@link Exception exceção} indicando que aconteceu algum erro na 
  * tentativa de se criar um {@link Jogo} de dominó (não foram informados quais 
  * seriam os 4 jogadores, não foi possível instanciar a classe de um dos 
- * {@link DominoEventListener listeners} informados, etc...).
+ * {@link com.github.abdonia.domino.eventos.DominoEventListener listeners} 
+ * informados, etc...).
  * 
  * @author Bruno Abdon
  */

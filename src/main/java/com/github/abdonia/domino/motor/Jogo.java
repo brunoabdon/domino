@@ -70,20 +70,20 @@ public class Jogo {
 
         //pegando os 4 jogadores da configuracao
         final JogadorWrapper jogador1dupla1 = 
-            configuracao.makeInstanciaJogador(0, 0);
+            (JogadorWrapper) configuracao.getJogador0Dupla0();
         
         final JogadorWrapper jogador1dupla2 = 
-            configuracao.makeInstanciaJogador(1, 0);
+            (JogadorWrapper) configuracao.getJogador1Dupla0();
 
         final JogadorWrapper jogador2dupla1 = 
-            configuracao.makeInstanciaJogador(0, 1);
+            (JogadorWrapper) configuracao.getJogador0Dupla1();
 
         final JogadorWrapper jogador2dupla2 = 
-            configuracao.makeInstanciaJogador(1, 1);
+            (JogadorWrapper) configuracao.getJogador1Dupla1();
         
         //pegando os eventlisteners da configuracao
         final Collection<DominoEventListener> eventListeners = 
-            configuracao.makeInstanciasListeners();
+            configuracao.getEventListeners();
         
         this.fortuna = randomGoddess;
         
