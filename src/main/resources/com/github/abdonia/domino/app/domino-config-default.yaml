@@ -1,0 +1,30 @@
+implementacoes:
+    - &mamao com.github.abdonia.domino.exemplos.JogadorMamao
+    - &alheio com.github.abdonia.domino.exemplos.JogadorAlheio
+    - &naoCarroca com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca
+    
+jogadores:
+    - &amanda
+        nome: Amanda Borba
+        classe: *mamao
+    - &bruno
+        nome: Bruno Abdon
+        classe: *alheio
+    - &igor
+        nome: Igor Coutinho
+        classe: *naoCarroca
+    - &ronaldo
+        nome: Ronaldo Lopes
+        classe: *naoCarroca
+dupla0:
+    - *amanda
+    - *bruno
+dupla1:
+    - *igor
+    - *ronaldo
+
+listeners:
+    - com.github.abdonia.domino.log.LoggerDominoEventListener
+    #- com.github.abdonia.domino.log.RawLogger
+
+#random-goddess: com.github.abdonia.domino.motor.DefaultRandomGoddess
