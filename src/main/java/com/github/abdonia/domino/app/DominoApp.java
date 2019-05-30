@@ -46,24 +46,35 @@ import com.github.abdonia.domino.motor.Jogo;
  * <p>Um exemplo de conteudo do arquivo é:</p>
  * 
  * <pre>
- * &lt;?xml version="1.0" encoding="UTF-8"?&gt;
- * &lt;domino&gt;
- * &lt;duplas&gt;
- *   &lt;dupla&gt; 
- *        &lt;jogador nome="Amanda" classe="com.example.Jogador"/&gt;
- *        &lt;jogador nome="Bruno" classe="com.acme.Jogador"/&gt;
- *     &lt;/dupla&gt;
- *     &lt;dupla&gt;
- *        &lt;jogador nome="Igor" classe="com.foo.bar.Jogador"/&gt;
- *        &lt;jogador nome="Ronaldo" classe="com.example.Jogador"/&gt;
- *     &lt;/dupla&gt;
- *  &lt;/duplas&gt;
- *
- *  &lt;event-listeners&gt;
- *      &lt;event-listener classe="com.github.abdonia.domino.log.LoggerDominoEventListener"/&gt;
- *      &lt;event-listener classe="com.acme.GuiEventListener"/&gt;
- *  &lt;/event-listeners&gt;
- *&lt;/domino&gt;
+ * implementacoes:
+ *     - &mamao com.github.abdonia.domino.exemplos.JogadorMamao
+ *     - &alheio com.github.abdonia.domino.exemplos.JogadorAlheio
+ *     - &simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
+ *     
+ * jogadores:
+ *     - &amanda
+ *         nome: Amanda Borba
+ *         classe: *mamao
+ *     - &bruno
+ *         nome: Bruno Abdon
+ *         classe: *alheio
+ *     - &igor
+ *         nome: Igor Coutinho
+ *         classe: *simplorio
+ *     - &ronaldo
+ *         nome: Ronaldo Lopes
+ *         classe: *simplorio
+ * dupla0:
+ *     - *amanda
+ *     - *bruno
+ * dupla1:
+ *     - *igor
+ *     - *ronaldo
+ * 
+ * listeners:
+ *     - com.github.abdonia.domino.log.LoggerDominoEventListener
+ * 
+ * #random-goddess: com.github.abdonia.domino.motor.DefaultRandomGoddess
  * </pre>
  * 
  * <p>Caso o arquivo de configuração não seja encontrado, uma configuração 
