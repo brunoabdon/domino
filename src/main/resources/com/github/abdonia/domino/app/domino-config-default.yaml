@@ -2,11 +2,15 @@ implementacoes:
     - &mamao com.github.abdonia.domino.exemplos.JogadorMamao
     - &alheio com.github.abdonia.domino.exemplos.JogadorAlheio
     - &naoCarroca com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca
+    - &simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
     
 jogadores:
     - &amanda
         nome: Amanda Borba
         classe: *mamao
+    - &anapaula
+        nome: Ana Paula Oliveira
+        classe: *simplorio
     - &bruno
         nome: Bruno Abdon
         classe: *alheio
