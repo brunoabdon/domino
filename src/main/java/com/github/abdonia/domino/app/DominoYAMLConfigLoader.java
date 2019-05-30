@@ -18,7 +18,12 @@ package com.github.abdonia.domino.app;
 
 import java.io.InputStream;
 
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
+import org.yaml.snakeyaml.introspector.BeanAccess;
+
 import com.github.abdonia.domino.motor.DominoConfig;
+import com.github.abdonia.domino.motor.DominoConfigException;
 
 
 /**
@@ -29,13 +34,18 @@ import com.github.abdonia.domino.motor.DominoConfig;
  */
 class DominoYAMLConfigLoader {
 
-    private static final String ERRO_LER_ARQUIVO = 
-        "Erro ao tentar ler arquivo de configuração";
     private static final String ERRO_CRIAR_PARSER = 
-            "Erro na criação do parse yaml";
+            "Erro no parse do yaml";
     private static final String ERRO_EXECUTAR_CONFIG = 
             "Erro ao executar configuração";
 
+    private static final Yaml YAML;
+    
+    static {
+        YAML = new Yaml();
+        YAML.setBeanAccess(BeanAccess.FIELD);
+    }
+    
     private DominoYAMLConfigLoader(){}
    
     /**
@@ -52,8 +62,50 @@ class DominoYAMLConfigLoader {
     public static DominoConfig carregaConfiguracoes(
         final InputStream configInputStream) 
             throws DominoAppException {
+        
+        final DominoConfig dominoConfig;
+        try {
+            final DominoYAMLConfig yamlCfg = 
+                YAML.loadAs(                    
+                    configInputStream, 
+                    DominoYAMLConfig.class
+                );
+                    
+            dominoConfig = loadBuilder(yamlCfg).build();
+            
+        } catch (YAMLException e) {
+            throw new DominoAppException(e, ERRO_CRIAR_PARSER);
+        } catch (final DominoConfigException e) {
+            throw new DominoAppException(e, ERRO_EXECUTAR_CONFIG);
+        }
 
-        throw new UnsupportedOperationException("Under construction.");
+        return dominoConfig;
+    }
 
+    private static DominoConfig.Builder loadBuilder(
+            final DominoYAMLConfig yamlCfg) {
+        final JogadorConfig[] dupla0 = yamlCfg.getDupla0();
+        final JogadorConfig d0jogador0 = dupla0[0];
+        final JogadorConfig d0jogador1 = dupla0[1];
+        
+        final JogadorConfig[] dupla1 = yamlCfg.getDupla1();
+        final JogadorConfig d1jogador0 = dupla1[0];
+        final JogadorConfig d1jogador1 = dupla1[1];
+        
+        final DominoConfig.Builder builder =
+            new DominoConfig.Builder()
+            .withNomeJogador0Dupla0(d0jogador0.getNome())
+            .withJogador0Dupla0(d0jogador0.getClasse())
+            .withNomeJogador0Dupla1(d1jogador0.getNome())
+            .withJogador0Dupla1(d1jogador0.getClasse())
+            .withNomeJogador1Dupla0(d0jogador1.getNome())
+            .withJogador1Dupla0(d0jogador1.getClasse())
+            .withNomeJogador1Dupla1(d1jogador1.getNome())
+            .withJogador1Dupla1(d1jogador1.getClasse());
+        
+        for (final String listener : yamlCfg.getListeners()) {
+            builder.withEventListener(listener);
+        }
+        return builder;
     }
 }

@@ -77,9 +77,9 @@ import com.github.abdonia.domino.motor.Jogo;
  */
 public class DominoApp {
 
-    private static final String CONFIG_XML = "domino-config.xml";
+    private static final String CONFIG_XML = "domino-config.yaml";
     private static final String DEFAULT_CONFIG_XML = 
-        "domino-config-default.xml";
+        "domino-config-default.yaml";
     private static final String MSG_BUNDLE = 
         "com.github.abdonia.domino.app.DominoAppMsg";
 
@@ -112,7 +112,6 @@ public class DominoApp {
             log(Level.SEVERE, "Erro de configuracao: " + e.getMessage(), e);
             
         }
-            
     }
 
     /**
