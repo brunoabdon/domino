@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Bruno Abdon
+ * Copyright (C) 2019 Bruno Abdon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,73 +16,44 @@
  */
 package com.github.abdonia.domino.app;
 
-import com.github.abdonia.domino.motor.DominoConfig;
-import com.github.abdonia.domino.motor.DominoConfigException;
-
-import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.SAXException;
+import com.github.abdonia.domino.motor.DominoConfig;
 
 
 /**
  * Responsável por carregar as {@link DominoConfig configurações do jogo} a 
- * partir de um documento XML.
+ * partir de um documento YAML.
  * 
  * @author Bruno Abdon
  */
-class DominoXmlConfigLoader {
+class DominoYAMLConfigLoader {
 
     private static final String ERRO_LER_ARQUIVO = 
         "Erro ao tentar ler arquivo de configuração";
     private static final String ERRO_CRIAR_PARSER = 
-            "Erro na criação do parse xml";
+            "Erro na criação do parse yaml";
     private static final String ERRO_EXECUTAR_CONFIG = 
             "Erro ao executar configuração";
 
-    private DominoXmlConfigLoader(){}
+    private DominoYAMLConfigLoader(){}
    
     /**
      * Carrega {@link DominoConfig configurações do jogo} a 
-     * partir do {@link InputStream} do documento XML.
-     * @param configInputStream O {@link InputStream} do documento XML de 
+     * partir do {@link InputStream} do documento YAML.
+     * @param configInputStream O {@link InputStream} do documento YAML de 
      * configurações. <p>Este método assume que o arquivo está bem formado.
      * Nenhuma nova validação será feita.</p>
      * @return As {@link DominoConfig configurações} do jogo, que estavam no 
-     * documento XML.
+     * documento YAML.
      * @throws DominoAppException Caso ocorra algum erro ao tentar ler a stream
      * ou interpretar seu conteúdo.
      */
     public static DominoConfig carregaConfiguracoes(
         final InputStream configInputStream) 
             throws DominoAppException {
-        
-        final DominoConfig dominoConfig;
-        final ConfigHandler configHandler = new ConfigHandler();
 
-        try {
-            SAXParserFactory
-                .newInstance()
-                .newSAXParser()
-                .parse(
-                    configInputStream,
-                    configHandler);
-
-            dominoConfig = configHandler.builder.build();
-
-        } catch (ParserConfigurationException | SAXException e) {
-            throw new DominoAppException(e, ERRO_CRIAR_PARSER);
-        } catch (IOException e) {
-            throw new DominoAppException(e, ERRO_LER_ARQUIVO);
-        } catch (final DominoConfigException e) {
-            throw new DominoAppException(e, ERRO_EXECUTAR_CONFIG);
-        }
-        
-        
-        return dominoConfig;
+        throw new UnsupportedOperationException("Under construction.");
 
     }
 }

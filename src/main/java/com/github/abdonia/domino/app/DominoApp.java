@@ -130,7 +130,7 @@ public class DominoApp {
         final InputStream streamConfiguracao = 
                 abreStreamDocumentoDeConfiguracao();
 
-        return DominoXmlConfigLoader
+        return DominoYAMLConfigLoader
                 .carregaConfiguracoes(streamConfiguracao);
     }
 
