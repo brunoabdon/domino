@@ -38,19 +38,31 @@ class JogadaTest {
 	@DisplayName("Deve tocar sem pedra nem lado")
 	void deveTratarToqueComoNenhumaJogada() {
 		final Jogada toque = Jogada.TOQUE;
-		assertThat(toque,is(notNullValue()));
-		assertNull(toque.getLado());
-		assertNull(toque.getPedra());
+
+		assertThat(
+	        toque,
+	        is(allOf(
+                notNullValue(),
+                hasProperty("lado", nullValue()),
+                hasProperty("pedra", nullValue())
+            ))
+        );
 	}
 
 	void auxDeveCriarJogadaCerta(final Lado lado, final Pedra pedra) {
 		
 		//acao
-		final Jogada j = Jogada.de(pedra, lado);
+		final Jogada jogada = Jogada.de(pedra, lado);
 				
 		//verificacao
-		assertEquals(j.getPedra(), pedra);
-		assertEquals(j.getLado(), lado);
+		assertThat(
+	        jogada, 
+	        allOf(
+                notNullValue(),
+                hasProperty("pedra", is(pedra)),
+	            hasProperty("lado", is(lado))
+            )
+        );
 	}
 	
 	@ParameterizedTest(name="Deve jogar singletons de {0} na esquerda")
