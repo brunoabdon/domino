@@ -1,5 +1,6 @@
 package com.github.abdonia.domino;
 
+import static com.github.abdonia.domino.tests.Matchers.hasNonBlankToString;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -21,6 +22,8 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+
+import com.github.abdonia.domino.tests.Matchers;
 
 class PedraTest {
 
@@ -109,7 +112,7 @@ class PedraTest {
     @EnumSource(Pedra.class)
     @ParameterizedTest
     void testToString(final Pedra pedra) {
-        assertThat(pedra,hasToString(not(emptyOrNullString())));
+        assertThat(pedra,hasNonBlankToString());
     }
 
     @Test

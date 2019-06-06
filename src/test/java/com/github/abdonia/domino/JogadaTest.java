@@ -1,5 +1,6 @@
 package com.github.abdonia.domino;
 
+import static com.github.abdonia.domino.tests.Matchers.hasNonBlankToString;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -19,12 +20,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.NullSource;
 
+import com.github.abdonia.domino.tests.Matchers;
+
 class JogadaTest {
 
-    private final <X> Matcher<X> hasNonBlankToString(){
-        return hasToString(not(blankOrNullString())); 
-    }
-    
 	@ParameterizedTest(name = "Deve jogar {0} na esquerda")
 	@EnumSource(Pedra.class)
 	@DisplayName("Deve jogar a pedra na esquerda")
