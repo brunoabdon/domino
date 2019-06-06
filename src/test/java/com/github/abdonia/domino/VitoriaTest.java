@@ -75,7 +75,7 @@ class VitoriaTest {
     @EnumSource(Pedra.class)
     @ParameterizedTest(name="Testa bater com {0} sem fechar a mesa")
     void testTipoDeBatidaSemFecharAMesa(final Pedra pedra) {
-        final boolean fechouAMesa = true;
+        final boolean fechouAMesa = false;
         auxTestTipoDeBatidaFechandoAMesa(pedra, fechouAMesa);
     }
 
