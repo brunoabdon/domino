@@ -1,6 +1,7 @@
 package com.github.abdonia.domino;
 
 import static com.github.abdonia.domino.Vitoria.BATIDA_SIMPLES;
+import static com.github.abdonia.domino.Vitoria.CARROCA;
 import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
 import static com.github.abdonia.domino.Vitoria.CRUZADA;
 import static com.github.abdonia.domino.Vitoria.LA_E_LO;
@@ -12,29 +13,45 @@ import static org.hamcrest.core.Every.everyItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import org.junit.jupiter.api.Test;
+import java.util.EnumMap;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import com.github.abdonia.domino.tests.Matchers;
+
 class VitoriaTest {
 
-    @Test
-    void testGetPontos() {
+    private static EnumMap<Vitoria, Integer> pontuacaoVitorias;
 
-        final Vitoria batidaSimples = Vitoria.BATIDA_SIMPLES;
-        final Vitoria carroca = Vitoria.CARROCA;
-        final Vitoria contagemDePontos = Vitoria.CONTAGEM_DE_PONTOS;
-        final Vitoria cruzada = Vitoria.CRUZADA;
-        final Vitoria laElo = Vitoria.LA_E_LO;
-        final Vitoria seisCarrocas = Vitoria.SEIS_CARROCAS_NA_MAO;
-        
-        assertEquals(batidaSimples.getPontos(),1);
-        assertEquals(carroca.getPontos(),2);
-        assertEquals(contagemDePontos.getPontos(),1);
-        assertEquals(cruzada.getPontos(),4);
-        assertEquals(laElo.getPontos(),3);
-        assertEquals(seisCarrocas.getPontos(),1);
+    @BeforeAll
+    static void setUp() {
+        pontuacaoVitorias = new EnumMap<Vitoria, Integer>(Vitoria.class);
+        pontuacaoVitorias.put(BATIDA_SIMPLES, 1);
+        pontuacaoVitorias.put(CONTAGEM_DE_PONTOS, 1);
+        pontuacaoVitorias.put(CARROCA, 2);
+        pontuacaoVitorias.put(LA_E_LO, 3);
+        pontuacaoVitorias.put(CRUZADA, 4);
+        pontuacaoVitorias.put(SEIS_CARROCAS_NA_MAO,1);
     }
+    
+    
+    
+    @DisplayName("Testa quantos pontos vale cada vitória")
+    @EnumSource(Vitoria.class)
+    @ParameterizedTest(
+        name = "Vitoria por {0} deve valer a quantidade certa de pontos"
+    )
+    void testGetPontos(final Vitoria vitoria) {
+        //cenario
+        final Integer expectedPontos = pontuacaoVitorias.get(vitoria);
+        
+        //verificacao
+        assertThat(vitoria, Matchers.vale(expectedPontos));
+    }
+    
 
     @EnumSource(Pedra.class)
     @ParameterizedTest
