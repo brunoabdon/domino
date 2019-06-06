@@ -22,11 +22,15 @@ class DefaultRandomGoddessTest {
     @Test
     void testEmbaralha() {
 
+        //cenario
+        final Pedra[] todasAsPedras = Pedra.values();
+        
+        
         //acao
         final Pedra[] pedras = randomGoddes.embaralha();
         
         //verificacao
-        assertThat(pedras,is(arrayContainingInAnyOrder(Pedra.values())));
+        assertThat(pedras,is(arrayContainingInAnyOrder(todasAsPedras)));
     }
 
     @Test
