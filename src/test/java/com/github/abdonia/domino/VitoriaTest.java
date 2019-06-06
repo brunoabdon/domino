@@ -10,6 +10,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Every.everyItem;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -85,12 +86,12 @@ class VitoriaTest {
         final boolean ehCarroca = pedra.isCarroca();
         
         final boolean deveriaSerCruzada = fechouAMesa && ehCarroca;
-        final boolean deveriaSerLaELo = fechouAMesa &&  !ehCarroca;
+        final boolean deveriaSerLaELo = fechouAMesa && !ehCarroca;
         
         final boolean deveriaSerBatidaSimples = !fechouAMesa && !ehCarroca;
         final boolean deveriaSerContagemDePontos = false;
         final boolean deveriaSer6CarrocasNaMao = false; 
-                
+        
         final Vitoria tipoDeBatida = Vitoria.tipoDeBatida(pedra, fechouAMesa);
         final boolean foiCruzada = tipoDeBatida == CRUZADA;
         final boolean foiLaELo = tipoDeBatida == LA_E_LO;
@@ -100,11 +101,13 @@ class VitoriaTest {
         
         assumeTrue(tipoDeBatida != null);
         
-        assertEquals(foiCruzada,deveriaSerCruzada);
-        assertEquals(foiLaELo,deveriaSerLaELo);
-        assertEquals(foiBatidaSimples,deveriaSerBatidaSimples);
-        assertEquals(foiContagemDePontos,deveriaSerContagemDePontos);
-        assertEquals(foi6CarrocasNaMao,deveriaSer6CarrocasNaMao);
+        assertAll(
+            () -> assertEquals(foiCruzada,deveriaSerCruzada),
+            () -> assertEquals(foiLaELo,deveriaSerLaELo),
+            () -> assertEquals(foiBatidaSimples,deveriaSerBatidaSimples),
+            () -> assertEquals(foiContagemDePontos,deveriaSerContagemDePontos),
+            () -> assertEquals(foi6CarrocasNaMao,deveriaSer6CarrocasNaMao)
+        );
     }
     
 }
