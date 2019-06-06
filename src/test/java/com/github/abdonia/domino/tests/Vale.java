@@ -18,7 +18,8 @@ public class Vale extends TypeSafeMatcher<Vitoria>{
     }
     
     @Override
-    protected void describeMismatchSafely(final Vitoria vitoria,
+    protected void describeMismatchSafely(
+            final Vitoria vitoria,
             final Description mismatchDescription) {
         
         mismatchDescription
@@ -35,7 +36,7 @@ public class Vale extends TypeSafeMatcher<Vitoria>{
         description
             .appendText("uma Vitória valendo ")
             .appendValue(expectedPontos)
-            .appendText("pontos");
+            .appendText(" pontos");
         
     }
 

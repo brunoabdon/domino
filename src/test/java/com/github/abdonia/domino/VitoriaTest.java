@@ -79,7 +79,8 @@ class VitoriaTest {
         auxTestTipoDeBatidaFechandoAMesa(pedra, fechouAMesa);
     }
 
-    private void auxTestTipoDeBatidaFechandoAMesa(final Pedra pedra,
+    private void auxTestTipoDeBatidaFechandoAMesa(
+            final Pedra pedra,
             final boolean fechouAMesa) {
         final boolean ehCarroca = pedra.isCarroca();
         
@@ -90,7 +91,6 @@ class VitoriaTest {
         final boolean deveriaSerContagemDePontos = false;
         final boolean deveriaSer6CarrocasNaMao = false; 
                 
-        
         final Vitoria tipoDeBatida = Vitoria.tipoDeBatida(pedra, fechouAMesa);
         final boolean foiCruzada = tipoDeBatida == CRUZADA;
         final boolean foiLaELo = tipoDeBatida == LA_E_LO;
