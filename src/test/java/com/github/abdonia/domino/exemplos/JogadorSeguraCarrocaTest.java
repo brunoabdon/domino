@@ -32,7 +32,8 @@ class JogadorSeguraCarrocaTest extends JogadorTest<JogadorSeguraCarroca> {
         
         final Mesa mesa = mock(Mesa.class);
         
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(
+            IllegalArgumentException.class,
             () -> jogador.sentaNaMesa(mesa, cadeira)
         );
     }
@@ -42,7 +43,8 @@ class JogadorSeguraCarrocaTest extends JogadorTest<JogadorSeguraCarroca> {
         final Mesa mesa = null;
         final int cadeira = 3;
         
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(
+            IllegalArgumentException.class,
             () -> jogador.sentaNaMesa(mesa, cadeira)
         );
     }
