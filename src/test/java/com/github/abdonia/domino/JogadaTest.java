@@ -1,16 +1,18 @@
 package com.github.abdonia.domino;
 
+import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.object.HasToString.hasToString;
 import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +21,10 @@ import org.junit.jupiter.params.provider.NullSource;
 
 class JogadaTest {
 
+    private final <X> Matcher<X> hasNonEmptyToString(){
+        return hasToString(not(emptyOrNullString())); 
+    }
+    
 	@ParameterizedTest(name = "Deve jogar {0} na esquerda")
 	@EnumSource(Pedra.class)
 	@DisplayName("Deve jogar a pedra na esquerda")
@@ -113,7 +119,7 @@ class JogadaTest {
 	    //cenario
         final Jogada jogada = Jogada.de(pedra, Lado.ESQUERDO);
         
-        auxDeveImplementarToString(jogada);
+        assertThat(jogada, hasNonEmptyToString());
 	}
     
     @Test
@@ -122,11 +128,8 @@ class JogadaTest {
         //cenario
         final Jogada jogada = Jogada.TOQUE;
         
-        auxDeveImplementarToString(jogada);
-    }
+        //verificacao
+        assertThat(jogada, hasNonEmptyToString());
 
-
-    private void auxDeveImplementarToString(final Jogada jogada) {
-        assertThat(jogada,hasToString(not(emptyOrNullString())));
     }
 }
