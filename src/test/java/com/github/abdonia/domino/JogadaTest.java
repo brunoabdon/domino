@@ -5,10 +5,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.object.HasToString.hasToString;
-import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -21,8 +21,8 @@ import org.junit.jupiter.params.provider.NullSource;
 
 class JogadaTest {
 
-    private final <X> Matcher<X> hasNonEmptyToString(){
-        return hasToString(not(emptyOrNullString())); 
+    private final <X> Matcher<X> hasNonBlankToString(){
+        return hasToString(not(blankOrNullString())); 
     }
     
 	@ParameterizedTest(name = "Deve jogar {0} na esquerda")
@@ -119,7 +119,7 @@ class JogadaTest {
 	    //cenario
         final Jogada jogada = Jogada.de(pedra, Lado.ESQUERDO);
         
-        assertThat(jogada, hasNonEmptyToString());
+        assertThat(jogada, hasNonBlankToString());
 	}
     
     @Test
@@ -129,7 +129,7 @@ class JogadaTest {
         final Jogada jogada = Jogada.TOQUE;
         
         //verificacao
-        assertThat(jogada, hasNonEmptyToString());
+        assertThat(jogada, hasNonBlankToString());
 
     }
 }
