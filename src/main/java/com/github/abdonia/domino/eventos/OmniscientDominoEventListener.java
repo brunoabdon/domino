@@ -134,14 +134,15 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     } 
     
     /**
-     * O {@link com.github.abdonia.domino.Jogador} retornou {@code null} quando 
-     * {@linkplain com.github.abdonia.domino.Jogador#joga() perguntado qual 
-     * seria sua jogada}. Mesmo no caso de não ter uma {@linkplain Pedra pedra} 
-     * pra jogar, o jogador não deve retornar {@code null}, e sim {@linkplain 
-     * com.github.abdonia.domino.Jogada#TOQUE tocar} explicitamente.
+     * O {@linkplain com.github.abdonia.domino.Jogador Jogador} retornou {@code 
+     * null} quando {@linkplain com.github.abdonia.domino.Jogador#joga() 
+     * perguntado qual seria sua jogada}. Mesmo no caso de não ter uma 
+     * {@linkplain Pedra pedra} pra jogar, o jogador não deve retornar {@code 
+     * null}, e sim {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocar} 
+     * explicitamente.
      * 
-     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o {@link 
-     * com.github.abdonia.domino.motor.Jogo} ser abortado.</p>
+     * <p>Isso é um erro grave (bug da implementação do jogador), e faz o 
+     * {@linkplain com.github.abdonia.domino.motor.Jogo jogo} ser abortado.</p>
      * 
      * @param quemFoi O jogador em questão (identificado pelo 
      * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -154,7 +155,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     /**
      * O {@linkplain com.github.abdonia.domino.Jogador jogador} era quem 
      * tinha a maior {@linkplain Pedra#isCarroca() carroça} (provavelmente o 
-     * {@linkplain Pedra#CARROCA_DE_SENA Dozão} na mão na primeira rodada da 
+     * {@linkplain Pedra#CARROCA_DE_SENA Dozão}) na mão na primeira rodada da 
      * primeira partida, mas começou o jogo {@linkplain  
      * com.github.abdonia.domino.Jogada jogando} outra {@linkplain Pedra pedra}.
      * 
