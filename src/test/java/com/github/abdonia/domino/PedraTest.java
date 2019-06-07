@@ -30,17 +30,16 @@ class PedraTest {
     @EnumSource(Pedra.class)
     @ParameterizedTest
     void testaCarroca(final Pedra pedra){
-        
+
         final Numero primeiroNumero = pedra.getPrimeiroNumero();
         final Numero segundoNumero = pedra.getSegundoNumero();
         final boolean isCarroca = pedra.isCarroca();
-        
+
         assertThat(primeiroNumero, notNullValue());
         assertThat(segundoNumero, notNullValue());
-        
+
         assertTrue(isCarroca == (primeiroNumero == segundoNumero));
     }
-    
 
     @EnumSource(Pedra.class)
     @ParameterizedTest
@@ -71,7 +70,6 @@ class PedraTest {
         );
     }
     
-
     @EnumSource(Pedra.class)
     @ParameterizedTest
     void testTemNumero(final Pedra pedra) {
@@ -91,7 +89,6 @@ class PedraTest {
         );
         
        assertTrue(pedra.temNumero(primeiroNumero));
-        
     }
     
     private Matcher<Numero> pedraTem(final Pedra pedra) {
@@ -120,5 +117,4 @@ class PedraTest {
         final int quantosPossiveis = Pedra.values().length;
         assertEquals(quantosPossiveis, 28);
     }
-    
 }

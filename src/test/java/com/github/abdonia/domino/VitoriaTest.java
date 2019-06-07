@@ -38,8 +38,6 @@ class VitoriaTest {
         pontuacaoVitorias.put(SEIS_CARROCAS_NA_MAO,1);
     }
     
-    
-    
     @DisplayName("Testa quantos pontos vale cada vitória")
     @EnumSource(Vitoria.class)
     @ParameterizedTest(
@@ -52,7 +50,6 @@ class VitoriaTest {
         //verificacao
         assertThat(vitoria, Matchers.vale(expectedPontos));
     }
-    
 
     @EnumSource(Pedra.class)
     @ParameterizedTest
