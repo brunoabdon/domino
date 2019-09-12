@@ -3,7 +3,7 @@ implementacoes:
     - &alheio com.github.abdonia.domino.exemplos.JogadorAlheio
     - &naoCarroca com.github.abdonia.domino.exemplos.JogadorQueNaoGostaDeCarroca
     - &simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
-    
+
 jogadores:
     - &amanda
         nome: Amanda Borba
