@@ -151,13 +151,13 @@ public class DominoConfig {
             return this;
         }
 
-        public Builder withNomeJogador1Dupla0(final String nomeJogador1Dupla0){
-            this.nomesJogadores[1] = nomeJogador1Dupla0;
+        public Builder withNomeJogador0Dupla1(final String nomeJogador0Dupla1){
+            this.nomesJogadores[2] = nomeJogador0Dupla1;
             return this;
         }
 
-        public Builder withNomeJogador0Dupla1(final String nomeJogador0Dupla1){
-            this.nomesJogadores[2] = nomeJogador0Dupla1;
+        public Builder withNomeJogador1Dupla0(final String nomeJogador1Dupla0){
+            this.nomesJogadores[1] = nomeJogador1Dupla0;
             return this;
         }
 
@@ -166,6 +166,37 @@ public class DominoConfig {
             return this;
         }
 
+        /**
+         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @return {@code this}, for chaining.
+         * 
+         * @param jogador0Dupla0 a instância do jogador.
+         */
+        public Builder withJogador0Dupla0(final Jogador jogador0Dupla0) {
+            this.jogadores[0] = jogador0Dupla0;
+            this.nomesClassesJogadores[0] = null;
+            return this;
+        }
+
+        /**
+         * Seta  a classe do jogador indicado pelo nome do método. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @param classeJogador0Dupla0 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
+         */
+        public Builder withJogador0Dupla0(
+                final Class<? extends Jogador> classeJogador0Dupla0) {
+            this.classesJogadores[0] = classeJogador0Dupla0;
+            this.nomesClassesJogadores[0] = null;
+            return this;
+        }
+        
         /**
          * Seta o nome da classe do jogador indicado pelo nome do método. Ao 
          * setar o nome da classe, a classe ou a instância de um dado jogador, 
@@ -183,18 +214,33 @@ public class DominoConfig {
         }
 
         /**
-         * Seta o nome da classe do jogador indicado pelo nome do método. Ao 
-         * setar o nome da classe, a classe ou a instância de um dado jogador, 
-         * os valores dos outros dois atributos vai a {@code null}.
+         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
          * 
-         * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
+         * @param jogador0Dupla1 a instância do jogador.
          * 
          * @return {@code this}, for chaining.
          */
-        public Builder withJogador1Dupla0(
-                final String nomeClasseJogador1Dupla0) {
-            this.nomesClassesJogadores[1] = nomeClasseJogador1Dupla0;
-            this.classesJogadores[1] = null;
+        public Builder withJogador0Dupla1(final Jogador jogador0Dupla1) {
+            this.jogadores[2] = jogador0Dupla1;
+            this.nomesClassesJogadores[2] = null;
+            return this;
+        }
+
+        /**
+         * Seta  a classe do jogador indicado pelo nome do método. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @param classeJogador0Dupla1 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
+         */
+        public Builder withJogador0Dupla1(
+                final Class<? extends Jogador> classeJogador0Dupla1) {
+            this.classesJogadores[2] = classeJogador0Dupla1;
+            this.nomesClassesJogadores[2] = null;
             return this;
         }
 
@@ -215,34 +261,17 @@ public class DominoConfig {
         }
 
         /**
-         * Seta o nome da classe do jogador indicado pelo nome do método. Ao 
-         * setar o nome da classe, a classe ou a instância de um dado jogador, 
-         * os valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
-         * 
-         * @return {@code this}, for chaining.
-         */
-        public Builder withJogador1Dupla1(
-                final String nomeClasseJogador1Dupla1) {
-            this.nomesClassesJogadores[3] = nomeClasseJogador1Dupla1;
-            this.classesJogadores[3] = null;
-            return this;
-        }
-
-        /**
-         * Seta  a classe do jogador indicado pelo nome do método. Ao setar o 
+         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
          * nome da classe, a classe ou a instância de um dado jogador, os 
          * valores dos outros dois atributos vai a {@code null}.
          * 
-         * @param classeJogador0Dupla0 a classe do jogador.
+         * @param jogador1Dupla0 a instância do jogador.
          * 
          * @return {@code this}, for chaining.
          */
-        public Builder withJogador0Dupla0(
-                final Class<? extends Jogador> classeJogador0Dupla0) {
-            this.classesJogadores[0] = classeJogador0Dupla0;
-            this.nomesClassesJogadores[0] = null;
+        public Builder withJogador1Dupla0(final Jogador jogador1Dupla0) {
+            this.jogadores[1] = jogador1Dupla0;
+            this.nomesClassesJogadores[1] = null;
             return this;
         }
 
@@ -261,20 +290,34 @@ public class DominoConfig {
             this.nomesClassesJogadores[1] = null;
             return this;
         }
-        
+
         /**
-         * Seta  a classe do jogador indicado pelo nome do método. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
+         * Seta o nome da classe do jogador indicado pelo nome do método. Ao 
+         * setar o nome da classe, a classe ou a instância de um dado jogador, 
+         * os valores dos outros dois atributos vai a {@code null}.
          * 
-         * @param classeJogador0Dupla1 a classe do jogador.
+         * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
          * 
          * @return {@code this}, for chaining.
          */
-        public Builder withJogador0Dupla1(
-                final Class<? extends Jogador> classeJogador0Dupla1) {
-            this.classesJogadores[2] = classeJogador0Dupla1;
-            this.nomesClassesJogadores[2] = null;
+        public Builder withJogador1Dupla0(
+                final String nomeClasseJogador1Dupla0) {
+            this.nomesClassesJogadores[1] = nomeClasseJogador1Dupla0;
+            this.classesJogadores[1] = null;
+            return this;
+        }
+        /**
+         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @param jogador1Dupla1  a instância do jogador.
+         * 
+         * @return {@code this}, for chaining.
+         */
+        public Builder withJogador1Dupla1(final Jogador jogador1Dupla1) {
+            this.jogadores[3] = jogador1Dupla1;
+            this.nomesClassesJogadores[3] = null;
             return this;
         }
 
@@ -293,6 +336,60 @@ public class DominoConfig {
             this.nomesClassesJogadores[3] = null;
             return this;
         }
+
+        /**
+         * Seta o nome da classe do jogador indicado pelo nome do método. Ao 
+         * setar o nome da classe, a classe ou a instância de um dado jogador, 
+         * os valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
+         * 
+         * @return {@code this}, for chaining.
+         */
+        public Builder withJogador1Dupla1(
+                final String nomeClasseJogador1Dupla1) {
+            this.nomesClassesJogadores[3] = nomeClasseJogador1Dupla1;
+            this.classesJogadores[3] = null;
+            return this;
+        }
+        
+        public Builder withNomesEventListeners(
+                final List<String> nomesEventListeners){
+            this.nomesEventListeners = nomesEventListeners;
+            return this;
+        }
+
+        /**
+         * Seta o nome e a instância de um jogador de uma dupla. Ao setar o 
+         * nome da classe, a classe ou a instância de um dado jogador, os 
+         * valores dos outros dois atributos vai a {@code null}.
+         * 
+         * @param nomeJogador O nome do jogador.
+         * @param jogador O jogador.
+         * @param idxDupla O número da dupla (1 o 2).
+         * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+         * 
+         * @return {@code this}, for chaining.
+         * 
+         * @throws  IllegalArgumentException caso o número da dupla ou do 
+         * jogador seja algo difernente de 1 e 2.
+         */
+        public Builder withJogador(
+                final String nomeJogador, 
+                final Jogador jogador, 
+                final int idxDupla, 
+                final int idxJogadorNaDupla){
+            this.setNomeEClasseJogador(
+                    nomeJogador, 
+                    null, 
+                    null, 
+                    jogador, 
+                    idxDupla, 
+                    idxJogadorNaDupla);
+            return this;
+        }        
+
+        
         /**
          * Seta o nome e a classe de um jogador de uma dupla. Ao setar o nome 
          * da classe, a classe ou a instância de um dado jogador, os valores 
@@ -355,35 +452,6 @@ public class DominoConfig {
 
         
         /**
-         * Seta o nome e a instância de um jogador de uma dupla. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @param nomeJogador O nome do jogador.
-         * @param jogador O jogador.
-         * @param idxDupla O número da dupla (1 o 2).
-         * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
-         * 
-         * @return {@code this}, for chaining.
-         * 
-         * @throws  IllegalArgumentException caso o número da dupla ou do 
-         * jogador seja algo difernente de 1 e 2.
-         */
-        public Builder withJogador(
-                final String nomeJogador, 
-                final Jogador jogador, 
-                final int idxDupla, 
-                final int idxJogadorNaDupla){
-            this.setNomeEClasseJogador(
-                    nomeJogador, 
-                    null, 
-                    null, 
-                    jogador, 
-                    idxDupla, 
-                    idxJogadorNaDupla);
-            return this;
-        }        
-        /**
          * Método auxiliar que seta ao mesmo tempo o nome, o nome da classe, a 
          * classe e a instância de um dos dois jogadores de uma das duas 
          * duplas. Apenas um entre os parâmetros {@code nomeClasseJogador}, 
@@ -429,78 +497,6 @@ public class DominoConfig {
             return (idxDupla*2) + (idxJogadorNaDupla);
         }
 
-
-        /**
-         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @return {@code this}, for chaining.
-         * 
-         * @param jogador0Dupla0 a instância do jogador.
-         */
-        public Builder withJogador0Dupla0(final Jogador jogador0Dupla0) {
-            this.jogadores[0] = jogador0Dupla0;
-            this.nomesClassesJogadores[0] = null;
-            return this;
-        }
-
-        /**
-         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @param jogador1Dupla0 a instância do jogador.
-         * 
-         * @return {@code this}, for chaining.
-         */
-        public Builder withJogador1Dupla0(final Jogador jogador1Dupla0) {
-            this.jogadores[1] = jogador1Dupla0;
-            this.nomesClassesJogadores[1] = null;
-            return this;
-        }
-
-        /**
-         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @param jogador0Dupla1 a instância do jogador.
-         * 
-         * @return {@code this}, for chaining.
-         */
-        public Builder withJogador0Dupla1(final Jogador jogador0Dupla1) {
-            this.jogadores[2] = jogador0Dupla1;
-            this.nomesClassesJogadores[2] = null;
-            return this;
-        }
-
-        /**
-         * Seta a instância do jogador indicado pelo nome do método. Ao setar o 
-         * nome da classe, a classe ou a instância de um dado jogador, os 
-         * valores dos outros dois atributos vai a {@code null}.
-         * 
-         * @param jogador1Dupla1  a instância do jogador.
-         * 
-         * @return {@code this}, for chaining.
-         */
-        public Builder withJogador1Dupla1(final Jogador jogador1Dupla1) {
-            this.jogadores[3] = jogador1Dupla1;
-            this.nomesClassesJogadores[3] = null;
-            return this;
-        }
-    
-        public Builder withNomesEventListeners(
-                final List<String> nomesEventListeners){
-            this.nomesEventListeners = nomesEventListeners;
-            return this;
-        }
-
-        public Builder withEventListener(final String nomeEventListener) {
-            this.nomesEventListeners.add(nomeEventListener);
-            return this;
-        }
-
         public Builder withEventListener(
                 final Class<? extends DominoEventListener> 
                 classeEventListener) {
@@ -508,6 +504,11 @@ public class DominoConfig {
             return this;
         }
     
+        public Builder withEventListener(final String nomeEventListener) {
+            this.nomesEventListeners.add(nomeEventListener);
+            return this;
+        }
+
         private JogadorWrapper makeInstanciaJogador(
             final int idxDupla, 
             final int idxJogadorNaDupla) throws DominoConfigException{
