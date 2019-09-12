@@ -43,7 +43,7 @@ public class JogadorAlheio implements Jogador {
     private static final Collector<Pedra, ?, List<Pedra>> TO_LIST_COLLECTOR = 
         Collectors.toList();
 
-    private static final Random SORTE = new Random(2604l);
+    private static final Random SORTE = new Random(2604L);
     private static final Vontade VONTADES[] = Vontade.values(); //cache....
 
     private Mesa mesa;
