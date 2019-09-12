@@ -139,10 +139,14 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     public Vontade getVontadeDeComecar() {
         final Vontade vontade;
         switch((int)this.mao.parallelStream().filter(Pedra::isCarroca).count()){
-            case 0:         vontade = Vontade.NAO_QUERO_MESMO;  break;
-            case 1:         vontade = Vontade.NAO_QUERO;        break;
-            case 2:         vontade = Vontade.TANTO_FAZ;        break;
-            case 3:         vontade = Vontade.QUERO;            break;
+            case 0:         vontade = Vontade.NAO_QUERO_MESMO;  
+                            break;
+            case 1:         vontade = Vontade.NAO_QUERO;        
+                            break;
+            case 2:         vontade = Vontade.TANTO_FAZ;        
+                            break;
+            case 3:         vontade = Vontade.QUERO;            
+                            break;
             case 4: case 5: case 6: default: //sou o jogador com mais carrocas
                             vontade = Vontade.QUERO_MUITO;
         }
