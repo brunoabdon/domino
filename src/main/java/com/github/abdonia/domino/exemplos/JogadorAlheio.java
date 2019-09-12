@@ -83,6 +83,11 @@ public class JogadorAlheio implements Jogador {
                 : jogadaNormal();
     }
 
+    private Jogada joga(final Pedra pedra, final Lado lado) {
+        this.mao.remove(pedra);
+        return Jogada.de(pedra,lado);
+    }
+    
     private Jogada jogadaNormal() { 
         final Jogada jogada;
         
@@ -140,10 +145,5 @@ public class JogadorAlheio implements Jogador {
         //isso é pra eu me ligar que a primeira rodada já foi.
         this.perguntouSeEuQueriaJogar = true; 
         return VONTADES[SORTE.nextInt(5)];
-    }
-
-    private Jogada joga(final Pedra pedra, final Lado lado) {
-        this.mao.remove(pedra);
-        return Jogada.de(pedra,lado);
     }
 }
