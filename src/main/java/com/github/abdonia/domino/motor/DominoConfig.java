@@ -172,6 +172,8 @@ public class DominoConfig {
          * os valores dos outros dois atributos vai a {@code null}.
          * 
          * @param nomeClasseJogador0Dupla0 O nome da classe desse jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador0Dupla0(
                 final String nomeClasseJogador0Dupla0) {
@@ -186,6 +188,8 @@ public class DominoConfig {
          * os valores dos outros dois atributos vai a {@code null}.
          * 
          * @param nomeClasseJogador1Dupla0 O nome da classe desse jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla0(
                 final String nomeClasseJogador1Dupla0) {
@@ -200,6 +204,8 @@ public class DominoConfig {
          * os valores dos outros dois atributos vai a {@code null}.
          * 
          * @param nomeClasseJogador0Dupla1 O nome da classe desse jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador0Dupla1(
                 final String nomeClasseJogador0Dupla1) {
@@ -214,6 +220,8 @@ public class DominoConfig {
          * os valores dos outros dois atributos vai a {@code null}.
          * 
          * @param nomeClasseJogador1Dupla1 O nome da classe desse jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla1(
                 final String nomeClasseJogador1Dupla1) {
@@ -228,6 +236,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param classeJogador0Dupla0 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador0Dupla0(
                 final Class<? extends Jogador> classeJogador0Dupla0) {
@@ -242,6 +252,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param classeJogador1Dupla0 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla0(
                 final Class<? extends Jogador> classeJogador1Dupla0) {
@@ -256,6 +268,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param classeJogador0Dupla1 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador0Dupla1(
                 final Class<? extends Jogador> classeJogador0Dupla1) {
@@ -270,6 +284,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param classeJogador1Dupla1 a classe do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla1(
                 final Class<? extends Jogador> classeJogador1Dupla1) {
@@ -287,9 +303,10 @@ public class DominoConfig {
          * @param idxDupla O número da dupla (1 o 2).
          * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
          * 
+         * @return {@code this}, for chaining.
+         * 
          * @throws IllegalArgumentException caso o número da dupla ou do 
          * jogador seja algo difernente de 1 e 2.
-
          */
         public Builder withJogador(
                 final String nomeJogador, 
@@ -315,6 +332,8 @@ public class DominoConfig {
          * @param nomeClasseJogador O nome da classe do jogador.
          * @param idxDupla O número da dupla (1 o 2).
          * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+         * 
+         * @return {@code this}, for chaining.
          * 
          * @throws  IllegalArgumentException caso o número da dupla ou do 
          * jogador seja algo difernente de 1 e 2.
@@ -344,6 +363,8 @@ public class DominoConfig {
          * @param jogador O jogador.
          * @param idxDupla O número da dupla (1 o 2).
          * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+         * 
+         * @return {@code this}, for chaining.
          * 
          * @throws  IllegalArgumentException caso o número da dupla ou do 
          * jogador seja algo difernente de 1 e 2.
@@ -375,6 +396,8 @@ public class DominoConfig {
          * @param jogador A instância do jogador.
          * @param idxDupla O número da dupla (1 o 2).
          * @param idxJogadorNaDupla O número do jogador na dupla (1 ou 2).
+         * 
+         * @return {@code this}, for chaining.
          * 
          * @throws  IllegalArgumentException caso o número da dupla ou do 
          * jogador seja algo difernente de 1 e 2;
@@ -412,6 +435,8 @@ public class DominoConfig {
          * nome da classe, a classe ou a instância de um dado jogador, os 
          * valores dos outros dois atributos vai a {@code null}.
          * 
+         * @return {@code this}, for chaining.
+         * 
          * @param jogador0Dupla0 a instância do jogador.
          */
         public Builder withJogador0Dupla0(final Jogador jogador0Dupla0) {
@@ -426,6 +451,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param jogador1Dupla0 a instância do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla0(final Jogador jogador1Dupla0) {
             this.jogadores[1] = jogador1Dupla0;
@@ -439,6 +466,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param jogador0Dupla1 a instância do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador0Dupla1(final Jogador jogador0Dupla1) {
             this.jogadores[2] = jogador0Dupla1;
@@ -452,6 +481,8 @@ public class DominoConfig {
          * valores dos outros dois atributos vai a {@code null}.
          * 
          * @param jogador1Dupla1  a instância do jogador.
+         * 
+         * @return {@code this}, for chaining.
          */
         public Builder withJogador1Dupla1(final Jogador jogador1Dupla1) {
             this.jogadores[3] = jogador1Dupla1;

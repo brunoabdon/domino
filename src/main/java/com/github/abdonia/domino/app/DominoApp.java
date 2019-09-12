@@ -47,21 +47,21 @@ import com.github.abdonia.domino.motor.Jogo;
  * 
  * <pre>
  * implementacoes:
- *     - &mamao com.github.abdonia.domino.exemplos.JogadorMamao
- *     - &alheio com.github.abdonia.domino.exemplos.JogadorAlheio
- *     - &simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
+ *     - &amp;mamao com.github.abdonia.domino.exemplos.JogadorMamao
+ *     - &amp;alheio com.github.abdonia.domino.exemplos.JogadorAlheio
+ *     - &amp;simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
  *     
  * jogadores:
- *     - &amanda
+ *     - &amp;amanda
  *         nome: Amanda Borba
  *         classe: *mamao
- *     - &bruno
+ *     - &amp;bruno
  *         nome: Bruno Abdon
  *         classe: *alheio
- *     - &igor
+ *     - &amp;igor
  *         nome: Igor Coutinho
  *         classe: *simplorio
- *     - &ronaldo
+ *     - &amp;ronaldo
  *         nome: Ronaldo Lopes
  *         classe: *simplorio
  * dupla0:
