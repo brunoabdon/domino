@@ -21,6 +21,7 @@ import java.util.Collection;
 import com.github.abdonia.domino.Jogador;
 import com.github.abdonia.domino.Vitoria;
 import com.github.abdonia.domino.eventos.DominoEventListener;
+import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
 /**
  * Um jogo de dominó entre 4 {@link Jogador jogadores}, divididos em 2 duplas,
@@ -250,13 +251,15 @@ public class Jogo {
     /**
      * Dispara o evento correspondene a um {@link BugDeJogadorException bug de 
      * um dos jogadores}.
+     * 
      * @param e A exceção levantada por um bug por parte de um {@link Jogador}.
      */
     private void avisaQueJogadorErrou(final BugDeJogadorException e) {
 
         final int cadeira = e.getJogadorBuguento().getCadeira();
 
-        switch(e.getFalha()){
+        final Falha falha = e.getFalha();
+		switch(falha){
             case PEDRA_INVALIDA:
                 this.eventBroadcaster
                     .jogadorJogouPedraInvalida(
@@ -280,6 +283,11 @@ public class Jogo {
                 this.eventBroadcaster
                     .jogadorJogouPedraQueNãoTinha(cadeira,e.getPedra());
                 break;
+
+            default: 
+            	throw new RuntimeException(
+        			"Erro de programação: Enum novo " + falha
+    			); 
         }
     }
  }
