@@ -1,2 +1,5 @@
 javadoc-bundle-options
-site
+.classpath
+.project
+.settings
+target/
