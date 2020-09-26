@@ -16,6 +16,10 @@
  */
 package com.github.abdonia.domino.motor;
 
+import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
+import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
+import static com.github.abdonia.domino.Vitoria.tipoDeBatida;
+
 import java.util.Collection;
 import java.util.EnumSet;
 
@@ -23,9 +27,6 @@ import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
-import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
-import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
-import static com.github.abdonia.domino.Vitoria.tipoDeBatida;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
@@ -36,22 +37,22 @@ class Partida {
     private final MesaImpl mesa;
 
     private final OmniscientDominoEventListener eventListener;
-    
+
     /**
-     * Uma array auxliar, contendo só as 5 maiores carroças, em ordem 
-     * decrescente (de {@linkplain  Pedra#CARROCA_DE_SENA limpo} a 
-     * {@linkplain  Pedra#CARROCA_DE_DUQUE sena}): {@code {\uD83C\uDC93, 
-     * \uD83C\uDC8B, \uD83C\uDC83, \uD83C\uDC7B, \uD83C\uDC73}} que são as 
-     * carroças possíveis de serem a pedra da jogada inicial da primeira 
+     * Uma array auxliar, contendo só as 5 maiores carroças, em ordem
+     * decrescente (de {@linkplain  Pedra#CARROCA_DE_SENA limpo} a
+     * {@linkplain  Pedra#CARROCA_DE_DUQUE sena}): {@code {\uD83C\uDC93,
+     * \uD83C\uDC8B, \uD83C\uDC83, \uD83C\uDC7B, \uD83C\uDC73}} que são as
+     * carroças possíveis de serem a pedra da jogada inicial da primeira
      * partida.
      */
     private static final Pedra MAIORES_CARROCAS[] = {
-            Pedra.CARROCA_DE_SENA, 
-            Pedra.CARROCA_DE_QUINA, 
-            Pedra.CARROCA_DE_QUADRA, 
-            Pedra.CARROCA_DE_TERNO, 
-            Pedra.CARROCA_DE_DUQUE
-    };        
+        Pedra.CARROCA_DE_SENA,
+        Pedra.CARROCA_DE_QUINA,
+        Pedra.CARROCA_DE_QUADRA,
+        Pedra.CARROCA_DE_TERNO,
+        Pedra.CARROCA_DE_DUQUE
+    };
 
     Partida(
         final MesaImpl mesa,
@@ -63,17 +64,17 @@ class Partida {
         this.eventListener = eventListener;
     }
 
-    protected ResultadoPartida jogar(final Dupla duplaQueGanhouApartidaAnterior) 
+    protected ResultadoPartida jogar(final Dupla duplaQueGanhouApartidaAnterior)
             throws BugDeJogadorException {
 
         mesa.embaralhaEdistribui();
-        
+
         ResultadoPartida resultadoPartida = verificaMorteSubita();
         if(resultadoPartida != null){
             //retorno subito!
             return resultadoPartida;
         }
-        
+
         Pedra pedra = null;
 
         boolean alguemBateu = false, trancou = false;
@@ -87,7 +88,7 @@ class Partida {
             final JogadorWrapper primeiroJogador = primeiraJogada();
             jogadorDaVez = proximo(primeiroJogador);
         } else {
-            jogadorDaVez = 
+            jogadorDaVez =
                 decideDeQuemDosDoisVaiComecar(duplaQueGanhouApartidaAnterior);
         }
 
@@ -101,23 +102,23 @@ class Partida {
 
             if(jogada == null){
                 throw new BugDeJogadorException(
-                    Falha.NAO_JOGOU_NEM_TOCOU, 
+                    Falha.NAO_JOGOU_NEM_TOCOU,
                     jogadorDaVez);
             } else if(jogada == Jogada.TOQUE){
 
                 this.eventListener.jogadorTocou(cadeira);
 
                 //tocou mesmo?
-                final boolean tinhaPedraPraJogar = 
+                final boolean tinhaPedraPraJogar =
                     mesa.getPedras().isEmpty()
                     || maoDoJogadorDaVez.stream().anyMatch(
-                        pedraNaMao -> 
-                            pedraNaMao.temNumero(mesa.getNumeroEsquerda()) 
+                        pedraNaMao ->
+                            pedraNaMao.temNumero(mesa.getNumeroEsquerda())
                             || pedraNaMao.temNumero(mesa.getNumeroDireita()));
 
                 if(tinhaPedraPraJogar){
                     throw new BugDeJogadorException(
-                        Falha.TOCOU_TENDO, 
+                        Falha.TOCOU_TENDO,
                         jogadorDaVez);
                 }
 
@@ -128,12 +129,12 @@ class Partida {
                 pedra = jogada.getPedra();
 
                 this.eventListener.jogadorJogou(cadeira,lado,pedra);
-                
+
                 //o jogador tinha mesmo essa pedra, ou tirou do bolso?
                 if(!maoDoJogadorDaVez.contains(pedra)){
                     throw new BugDeJogadorException(
-                        Falha.TIROU_PEDRA_DO_BOLSO, 
-                        jogadorDaVez, 
+                        Falha.TIROU_PEDRA_DO_BOLSO,
+                        jogadorDaVez,
                         pedra);
                 }
 
@@ -143,7 +144,7 @@ class Partida {
                 if(!colocouMesmo){
                     throw new BugDeJogadorException(
                             Falha.PEDRA_INVALIDA,
-                            jogadorDaVez, 
+                            jogadorDaVez,
                             pedra,
                             mesa.getNumero(lado));
                 }
@@ -173,67 +174,67 @@ class Partida {
     }
 
     /**
-     * Conta quantos pontos cada {@linkplain JogadorWrapper jogador} tem na mão, 
-     * definindo quem ganha numa mesa travada. Lança o evento correspondente ao 
-     * resultado, que pode ser avisar sobre um empate ou sobre uma vitória por 
+     * Conta quantos pontos cada {@linkplain JogadorWrapper jogador} tem na mão,
+     * definindo quem ganha numa mesa travada. Lança o evento correspondente ao
+     * resultado, que pode ser avisar sobre um empate ou sobre uma vitória por
      * pontos.
-     * 
+     *
      * @return O resultado da partida, que vai ser ou um empate ou uma vitória
-     * por pontos (pelo {@linkplain JogadorWrapper jogador} que tiver menos 
+     * por pontos (pelo {@linkplain JogadorWrapper jogador} que tiver menos
      * pontos na mão).
      */
     private ResultadoPartida contaPontos() {
 
-        final Integer pontos[] = 
+        final Integer pontos[] =
             mesa.getJogadores()
                 .stream()
                 .map(JogadorWrapper::getPontosNaMao)
                 .toArray(Integer[]::new);
-        
+
         final Integer melhorIdx = menorNoArray(pontos);
-        
+
         return melhorIdx != null
             ? batida(this.mesa.jogadorNaCadeira(melhorIdx),CONTAGEM_DE_PONTOS)
             : empate();
-                
+
     }
 
-    private JogadorWrapper decideDeQuemDosDoisVaiComecar(final Dupla dupla) 
+    private JogadorWrapper decideDeQuemDosDoisVaiComecar(final Dupla dupla)
             throws BugDeJogadorException {
 
         final int quemTemMaisVontade = dupla.quemTemMaisVontadeDeComecar();
-        
+
         final boolean houveConsenso = quemTemMaisVontade != 0;
 
-        final boolean primeiroJogadorComeca = 
-            houveConsenso 
+        final boolean primeiroJogadorComeca =
+            houveConsenso
                 ? quemTemMaisVontade > 0
                 : fortuna.primeiroJogadorComeca();
-        
-        final JogadorWrapper jogadorQueComeca = 
-            primeiroJogadorComeca 
+
+        final JogadorWrapper jogadorQueComeca =
+            primeiroJogadorComeca
                 ? dupla.getJogador(0)
                 : dupla.getJogador(1);
-        
+
         final int cadeiraDoJogadorQueComeca = jogadorQueComeca.getCadeira();
-        
+
         this.eventListener.decididoQuemComeca(
             cadeiraDoJogadorQueComeca, houveConsenso);
-        
+
         return this.mesa.jogadorNaCadeira(cadeiraDoJogadorQueComeca);
     }
 
     /**
-     * Realiza a primeira rodada da primeira partida, que deve ser do 
-     * {@linkplain JogadorWrapper jogador} que tiver a maior {@link 
+     * Realiza a primeira rodada da primeira partida, que deve ser do
+     * {@linkplain JogadorWrapper jogador} que tiver a maior {@link
      * Pedra#isCarroca() carroça} na mão.
-     * 
-     * <p>O jogador será definido e será {@link JogadorWrapper#joga() chamado a 
-     * jogar}. Sua {@link Jogada} será validada, devendo ser obrigatoriamente a 
+     *
+     * <p>O jogador será definido e será {@link JogadorWrapper#joga() chamado a
+     * jogar}. Sua {@link Jogada} será validada, devendo ser obrigatoriamente a
      * maior carroça.</p>
-     * 
+     *
      * @return A vez do próximo jogador a jogar.
-     * 
+     *
      * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
      * não seja a da maior carroça da mesa (que está na mão dele).
      */
@@ -241,9 +242,9 @@ class Partida {
 
         //a pedra que tem que ser jogada
         final Pedra carrocaInicial = getMaiorCarrocaForaDoDorme();
-        
+
         //o jogador que tem que jogar
-        final JogadorWrapper jogadorComMaiorCarroca = 
+        final JogadorWrapper jogadorComMaiorCarroca =
             this.mesa
                 .getJogadores()
                 .parallelStream()
@@ -253,103 +254,101 @@ class Partida {
 
         //a jogada do jogador
         this.primeiraJogada(jogadorComMaiorCarroca,carrocaInicial);
-        
+
         return jogadorComMaiorCarroca;
     }
 
     /**
-     * Pede pra um {@linkplain  JogadorWrapper jogador} {@linkplain 
-     * JogadorWrapper#joga() jogar} e valida que ele jogue  uma dada {@linkplain 
+     * Pede pra um {@linkplain  JogadorWrapper jogador} {@linkplain
+     * JogadorWrapper#joga() jogar} e valida que ele jogue  uma dada {@linkplain
      * Pedra#isCarroca() carroça}, levantando {@link BugDeJogadorException} caso
-     * ele retorne {@code null} ou tente jogar uma outra {@linkplain Pedra 
-     * pedra}. 
-     * 
-     * @param jogador O {@linkplain  JogadorWrapper jogador} que deve 
+     * ele retorne {@code null} ou tente jogar uma outra {@linkplain Pedra
+     * pedra}.
+     *
+     * @param jogador O {@linkplain  JogadorWrapper jogador} que deve
      * {@linkplain JogadorWrapper#joga() jogar}.
-     * 
-     * @param carroca A {@linkplain Pedra#isCarroca()  carroca} que o jogador 
+     *
+     * @param carroca A {@linkplain Pedra#isCarroca()  carroca} que o jogador
      * deve jogar.
-     * 
+     *
      * @throws BugDeJogadorException Caso o jogador realize qualquer jogada que
      * não seja a da maior carroça da mesa (que está na mão dele).
      */
     private void primeiraJogada(
-            final JogadorWrapper jogador, 
-            final Pedra carroca) 
+            final JogadorWrapper jogador,
+            final Pedra carroca)
                 throws BugDeJogadorException {
-        
+
         final Jogada primeiraJogada = jogador.joga();
-        
+
         if(primeiraJogada == null){
             throw new BugDeJogadorException(Falha.NAO_JOGOU_NEM_TOCOU, jogador);
         }
-        
+
         if(primeiraJogada == Jogada.TOQUE){
             throw new BugDeJogadorException(Falha.TOCOU_TENDO,jogador);
         }
-        
+
         final Pedra pedra = primeiraJogada.getPedra();
         final Lado lado = primeiraJogada.getLado();
         final int cadeira = jogador.getCadeira();
-        
+
         this.eventListener.jogadorJogou(cadeira,lado,pedra);
-        
+
         //agora erre, meu velho
         if(pedra != carroca){
             throw new BugDeJogadorException(
-                    Falha.JA_COMECOU_ERRANDO,
-                    jogador,
-                    pedra
+                Falha.JA_COMECOU_ERRANDO, jogador, pedra
             );
         }
-        
+
         //limpeza
         jogador.getMao().remove(pedra);
-        
+
         this.mesa.coloca(pedra,lado);
     }
 
     /**
      * Verifica se a partida vai parar subitamente, antes de qualquer um jogar,
-     * por um dos dois motivos: (a) um dos {@linkplain JogadorWrapper jogadores} 
+     * por um dos dois motivos: (a) um dos {@linkplain JogadorWrapper jogadores}
      * recebeu 5 {@linkplain Pedra#isCarroca() carroças} na mão (e a partida
-     * {@linkplain ResultadoPartida.Volta volta}) ou (b) um dos jogadores 
-     * recebeu 6 carroças na mão e sua {@linkplain Dupla dupla} {@linkplain 
+     * {@linkplain ResultadoPartida.Volta volta}) ou (b) um dos jogadores
+     * recebeu 6 carroças na mão e sua {@linkplain Dupla dupla} {@linkplain
      * ResultadoPartida.Batida vence} imediatamente.
-     * 
-     * @return Uma {@linkplain ResultadoPartida.Volta}, se um dos {@linkplain 
-     * JogadorWrapper jogadores} recebeu exatamente 5 {@linkplain 
+     *
+     * @return Uma {@linkplain ResultadoPartida.Volta}, se um dos {@linkplain
+     * JogadorWrapper jogadores} recebeu exatamente 5 {@linkplain
      * Pedra#isCarroca() carroças} na mão, ou uma {@link
-     * ResultadoPartida.Batida} do tipo {@link Vitoria#SEIS_CARROCAS_NA_MAO 
-     * SEIS_CARROCAS_NA_MAO}, se um dos jogadores recebeu 6 carroças na mão, ou 
+     * ResultadoPartida.Batida} do tipo {@link Vitoria#SEIS_CARROCAS_NA_MAO
+     * SEIS_CARROCAS_NA_MAO}, se um dos jogadores recebeu 6 carroças na mão, ou
      * {@code null} caso nenhuma das condições ocorrer.
      */
     private ResultadoPartida verificaMorteSubita() {
-        
+
         ResultadoPartida resultado = null;
         int totalCarrocas = 0; //toltal que já vi na mão de jogador
         for (final JogadorWrapper jogador : mesa.getJogadores()) {
             //contagem pra esse jogador
             int quantasCarrocas = 0, quantasNaoCarrocas = 0;
             for (final Pedra pedra : jogador.getMao()) {
-                if((!pedra.isCarroca() || ++quantasCarrocas == -1) 
+                if((!pedra.isCarroca() || ++quantasCarrocas == -1)
                     && ++quantasNaoCarrocas == 2){
                     //jogador já tem 2 não-carrocas. nao vai ter 5 ou 6 carrocas
-                    break; 
+                    break;
                 }
             }
 
             if(quantasNaoCarrocas <= 1){
-                resultado = 
+                resultado =
                     quantasNaoCarrocas == 1
                         //partida voltou! 5 carrocas na mao!
-                        ? volta(jogador) 
+                        ? volta(jogador)
                         //batida imediata! 6 carrocas na mao!
                         : batida(jogador, SEIS_CARROCAS_NA_MAO);
                 break;
             }
-            
-            //se já vi pelo menos 3 carrocas em mao de jogador, mais nenhum vai 
+
+            //se já vi pelo menos 3 carrocas em mao de jogador, mais nenhum vai
             //ter 5 ou 6 mais.
             if((totalCarrocas += quantasCarrocas) >= 3) break;
         }
@@ -357,11 +356,11 @@ class Partida {
     }
 
     /**
-     * Métido auxiliar que anuncia o {@linkplain 
+     * Métido auxiliar que anuncia o {@linkplain
      * OmniscientDominoEventListener#jogadorBateu(int, Vitoria) evento de que um
      * dado jogador bateu} (com um dado {@link Vitoria tipo de batida}) e cria e
      * retorna um {@link ResultadoPartida} equivalente a essa vitória.
-     * 
+     *
      * @param vencedor O {@linkplain JogadorWrapper jogador} que bateu.
      * @param tipoDeBatida O {@linkplain Vitoria tipo de batida}.
      * @return Um {@link ResultadoPartida} equivalente a essa vitória.
@@ -371,14 +370,14 @@ class Partida {
         this.eventListener.jogadorBateu(vencedor.getCadeira(),tipoDeBatida);
         return new ResultadoPartida.Batida(tipoDeBatida, vencedor);
     }
-    
+
     /**
-     * Métido auxiliar que anuncia o {@linkplain  
-     * OmniscientDominoEventListener#partidaVoltou(int) evento de que a partida 
-     * vai voltar} pois um dado {@linkplain JogadorWrapper jogador} tinha 5 
-     * carroças na mão e cria e retorna um {@link ResultadoPartida} equivalente 
+     * Métido auxiliar que anuncia o {@linkplain
+     * OmniscientDominoEventListener#partidaVoltou(int) evento de que a partida
+     * vai voltar} pois um dado {@linkplain JogadorWrapper jogador} tinha 5
+     * carroças na mão e cria e retorna um {@link ResultadoPartida} equivalente
      * a essa situação.
-     * 
+     *
      * @param vencedor O jogador que bateu.
      * @param tipoDeBatida O tipo de batida.
      * @return Uma {@link ResultadoPartida.Volta}.
@@ -389,31 +388,31 @@ class Partida {
     }
 
     /**
-     * Métido auxiliar que anuncia o {@linkplain  
-     * OmniscientDominoEventListener#partidaEmpatou() evento de que a partida 
-     * empatou} e retorna um {@link ResultadoPartida} equivalente a essa 
+     * Métido auxiliar que anuncia o {@linkplain
+     * OmniscientDominoEventListener#partidaEmpatou() evento de que a partida
+     * empatou} e retorna um {@link ResultadoPartida} equivalente a essa
      * situação.
-     * 
+     *
      * @return {@link ResultadoPartida#EMPATE}.
      */
     private ResultadoPartida empate() {
         eventListener.partidaEmpatou();
         return ResultadoPartida.EMPATE;
     }
-    
+
     /**
-     * Calcula qual deve ser a {@linkplain Pedra pedra} usada na primeira 
-     * {@linkplain Jogada jogada} da primeira partida: Deve ser a maior 
-     * {@linkplain Pedra#isCarroca() carroça} que não estiver no {@linkplain 
+     * Calcula qual deve ser a {@linkplain Pedra pedra} usada na primeira
+     * {@linkplain Jogada jogada} da primeira partida: Deve ser a maior
+     * {@linkplain Pedra#isCarroca() carroça} que não estiver no {@linkplain
      * MesaImpl#getDorme() dorme}.
      * @return A maior {@linkplain Pedra#isCarroca() carroça} que não estiver no
      * {@linkplain MesaImpl#getDorme() dorme}.
      */
     private Pedra getMaiorCarrocaForaDoDorme(){
         Pedra carrocaInicial = null;
-        
+
         final EnumSet<Pedra> dorme = this.mesa.getDorme();
-        
+
         for (final Pedra pedra : MAIORES_CARROCAS) {
             if(!dorme.contains(pedra)){
                 carrocaInicial = pedra;
@@ -422,12 +421,12 @@ class Partida {
         }
         return carrocaInicial;
     }
-    
+
     /**
      * Retorna o indíce num array de ints que tenha um valor menor que todos os
-     * outros, ou null caso tal índice não exista (por empate ou pelo array 
+     * outros, ou null caso tal índice não exista (por empate ou pelo array
      * estar vazio).
-     * 
+     *
      * @param ints um array de ints.
      * @return o índice do elemento de menor valor, caso exista.
      */
@@ -435,8 +434,8 @@ class Partida {
         int idx = 0;
         boolean empate = false;
         for (int i = 1; i < ints.length; i++)
-            if((ints[i] < ints[idx] && !(empate = false)) 
-                || ((empate |= ints[i].equals(ints[idx])) && false)) 
+            if((ints[i] < ints[idx] && !(empate = false))
+                || ((empate |= ints[i].equals(ints[idx])) && false))
                     idx = i;
         return empate ? null : idx;
     }

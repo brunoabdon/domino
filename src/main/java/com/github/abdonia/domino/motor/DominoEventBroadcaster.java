@@ -33,29 +33,34 @@ import com.github.abdonia.domino.eventos.DominoEventListener;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 /**
- * Um {@link OmniscientDominoEventListener} que ecoa os eventos que ouve pra uma 
+ * Um {@link OmniscientDominoEventListener} que ecoa os eventos que ouve pra uma
  * lista de eventlisteners registrados.
- * 
+ *
  * @author Bruno Abdon
  */
 class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
-    private static final Function<Integer, Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> JOGADA_POR_UM_JOGADOR =
-        num -> l -> p -> el -> el.jogadorJogou(num, l, p);
+    private static final
+        Function<
+            Integer,Function<Lado,Function<Pedra,Consumer<DominoEventListener>>>
+        > JOGADA_POR_UM_JOGADOR =
+            num -> l -> p -> el -> el.jogadorJogou(num, l, p);
 
-    private static final Predicate<DominoEventListener> IS_OMNISCIENT = 
+    private static final Predicate<DominoEventListener> IS_OMNISCIENT =
         e -> e instanceof OmniscientDominoEventListener;
 
     private final List<DominoEventListener> eventListeners;
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
 
     private final Map<Integer, Consumer<DominoEventListener>> cachedToques;
-    private final Map<Integer,Map<Lado,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
-    
+    private final
+        Map<Integer,Map<Lado,Function<Pedra, Consumer<DominoEventListener>>>>
+            cachedJogadasNoLado;
+
     public DominoEventBroadcaster() {
         this.eventListeners = new LinkedList<>();
         this.omniscientEventListeners = new LinkedList<>();
-        
+
         this.cachedJogadasNoLado = new HashMap<>(4);
         this.cachedToques = new HashMap<>(4);
     }
@@ -63,20 +68,20 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     public void addEventListener(
             final DominoEventListener eventListener,
             final boolean permiteAcessoTotal) {
-        
+
         this.eventListeners.add(eventListener);
         if(permiteAcessoTotal && IS_OMNISCIENT.test(eventListener)){
             this.omniscientEventListeners
                 .add((OmniscientDominoEventListener)eventListener);
         }
     }
-    
+
     public void addEventListeners(
             final Collection<DominoEventListener> eventListeners,
             final boolean permiteAcessoTotal) {
 
         this.eventListeners.addAll(eventListeners);
-        
+
         if(permiteAcessoTotal){
             eventListeners
             .parallelStream()
@@ -85,44 +90,48 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             .forEach(this.omniscientEventListeners::add);
         }
     }
-    
+
     private <E> void broadCastEvent(
-            final Collection<E> listeners, 
+            final Collection<E> listeners,
             final Consumer<? super E> c) {
         listeners.parallelStream().forEach(c);
     }
 
     private void montaCacheJogadasDoJogador(final int jogador) {
 
-        final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
+        final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>>
             jogadasDoJogadorDoLado = new HashMap<>(3);
 
-        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
+        final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>
             jogadaPorEsseJogador = JOGADA_POR_UM_JOGADOR.apply(jogador);
 
-        final Consumer<DominoEventListener> toqueDesseJogador = 
+        final Consumer<DominoEventListener> toqueDesseJogador =
             eventListener -> eventListener.jogadorTocou(jogador);
-        
+
         cacheJogadasDoLado(
-            jogadasDoJogadorDoLado, 
-            jogadaPorEsseJogador, 
+            jogadasDoJogadorDoLado,
+            jogadaPorEsseJogador,
             Lado.ESQUERDO);
-        
+
         cacheJogadasDoLado(
-            jogadasDoJogadorDoLado, 
+            jogadasDoJogadorDoLado,
             jogadaPorEsseJogador,
             Lado.DIREITO);
-        
+
         this.cachedJogadasNoLado.put(jogador, jogadasDoJogadorDoLado);
         this.cachedToques.put(jogador, toqueDesseJogador);
     }
 
     private Function<Pedra, Consumer<DominoEventListener>> cacheJogadasDoLado(
-            final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado, 
-            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogador,
+            final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>>
+            jogadasDoJogadorDoLado,
+
+            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>
+            jogadaPorEsseJogador,
+
             final Lado lado) {
-        
-        final Function<Pedra, Consumer<DominoEventListener>> 
+
+        final Function<Pedra, Consumer<DominoEventListener>>
             jogadaDesseJogadorDesseLado = jogadaPorEsseJogador.apply(lado);
 
         return jogadasDoJogadorDoLado.put(lado, jogadaDesseJogadorDesseLado);
@@ -132,7 +141,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     public void jogoAcabou(final int placarDupla1, final int placarDupla2) {
         broadCastEvent(
             eventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener.jogoAcabou(placarDupla1, placarDupla2)
         );
     }
@@ -148,7 +157,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             eventListeners,eventListener -> eventListener.partidaVoltou(jogador)
        );
     }
-    
+
     @Override
     public void jogadorBateu(final int quemFoi, final Vitoria tipoDeVitoria) {
         broadCastEvent(
@@ -164,21 +173,21 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
     @Override
     public void jogadorJogou(
-            final int jogador, 
-            final Lado lado, 
+            final int jogador,
+            final Lado lado,
             final Pedra pedra) {
 
-        final Consumer<DominoEventListener> 
-                jogadaDessaPedraDesseLadoPorEsseJogador = 
+        final Consumer<DominoEventListener>
+                jogadaDessaPedraDesseLadoPorEsseJogador =
             this.cachedJogadasNoLado.get(jogador).get(lado).apply(pedra);
-        
+
         broadCastEvent(eventListeners, jogadaDessaPedraDesseLadoPorEsseJogador);
     }
 
     @Override
     public void partidaComecou(
-            final int placarDupla0, 
-            final int placarDupla1, 
+            final int placarDupla0,
+            final int placarDupla1,
             final boolean ehDobrada) {
         broadCastEvent(
             eventListeners,
@@ -194,24 +203,24 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             final int jogador, final boolean consentimentoMutuo) {
         broadCastEvent(
             eventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener.decididoQuemComeca(jogador, consentimentoMutuo)
-            
+
         );
     }
 
     @Override
     public void jogoComecou(
-        final String nomeDoJogador0, final String nomeDoJogador1, 
+        final String nomeDoJogador0, final String nomeDoJogador1,
         final String nomeDoJogador2, final String nomeDoJogador3) {
-        
+
         broadCastEvent(
             eventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener.jogoComecou(
-                    nomeDoJogador0, nomeDoJogador1, 
+                    nomeDoJogador0, nomeDoJogador1,
                     nomeDoJogador2, nomeDoJogador3)
-            
+
         );
 
         montaCacheJogadasDoJogador(0);
@@ -222,7 +231,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
     @Override
     public void jogadorRecebeuPedras(
-            final int quemFoi, 
+            final int quemFoi,
             final Pedra pedra1,
             final Pedra pedra2,
             final Pedra pedra3,
@@ -232,11 +241,11 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
         broadCastEvent(
             omniscientEventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener
                     .jogadorRecebeuPedras(
-                        quemFoi, 
-                        pedra1, pedra2, pedra3, 
+                        quemFoi,
+                        pedra1, pedra2, pedra3,
                         pedra4, pedra5, pedra6)
         );
     }
@@ -249,7 +258,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             final Pedra pedra4) {
         broadCastEvent(
             omniscientEventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener.dormeDefinido(pedra1, pedra2, pedra3, pedra4)
         );
     }
@@ -268,7 +277,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     public void jogadorTocouTendoPedraPraJogar(final int quemFoi) {
         broadCastEvent(
             omniscientEventListeners,
-            eventListener -> 
+            eventListener ->
                 eventListener.jogadorTocouTendoPedraPraJogar(quemFoi)
         );
     }
