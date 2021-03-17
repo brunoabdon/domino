@@ -81,7 +81,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             eventListeners
             .parallelStream()
             .filter(IS_OMNISCIENT)
-            .map(e -> (OmniscientDominoEventListener) e)
+            .map(OmniscientDominoEventListener.class::cast)
             .forEach(this.omniscientEventListeners::add);
         }
     }
