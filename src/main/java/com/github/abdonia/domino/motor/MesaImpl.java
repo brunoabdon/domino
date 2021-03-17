@@ -129,8 +129,8 @@ final class MesaImpl implements Mesa {
         this.cabecaDireita.limpa();
         
         //embaralha...
-        final Pedra pedras[] = fortuna.embaralha();
-        
+        final Pedra[] pedras = fortuna.embaralha();
+
         //distribui as maos dos 4 jogadores
         int i = 0;
         for(final JogadorWrapper jogador : jogadores){

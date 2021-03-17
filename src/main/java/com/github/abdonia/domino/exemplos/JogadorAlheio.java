@@ -33,29 +33,29 @@ import java.util.stream.Collectors;
 import com.github.abdonia.domino.Vontade;
 
 /**
- * {@link Jogador} que joga aleatoriamente qualquer {@link Pedra} dentre as 
+ * {@link Jogador} que joga aleatoriamente qualquer {@link Pedra} dentre as
  * válidas em sua mão no momento.
- * 
+ *
  * @author Bruno Abdon
  */
 public class JogadorAlheio implements Jogador {
 
-    private static final Collector<Pedra, ?, List<Pedra>> TO_LIST_COLLECTOR = 
+    private static final Collector<Pedra, ?, List<Pedra>> TO_LIST_COLLECTOR =
         Collectors.toList();
 
     private static final Random SORTE = new Random(2604L);
-    private static final Vontade VONTADES[] = Vontade.values(); //cache....
+    private static final Vontade[] VONTADES = Vontade.values(); //cache....
 
     private Mesa mesa;
     private List<Pedra> mao;
-    
+
     private boolean perguntouSeEuQueriaJogar;
 
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
         this.mesa = mesa;
     }
-    
+
     @Override
     public void recebeMao(
             final Pedra pedra1,
@@ -77,7 +77,7 @@ public class JogadorAlheio implements Jogador {
 
     @Override
     public Jogada joga() {
-        return  
+        return
             mesa.getPedras().isEmpty()
                 ? primeiraJogada()
                 : jogadaNormal();
@@ -87,13 +87,13 @@ public class JogadorAlheio implements Jogador {
         this.mao.remove(pedra);
         return Jogada.de(pedra,lado);
     }
-    
-    private Jogada jogadaNormal() { 
+
+    private Jogada jogadaNormal() {
         final Jogada jogada;
-        
+
         final Numero numeroEsquerda = mesa.getNumeroEsquerda();
         final Numero numeroDireita = mesa.getNumeroDireita();
-        
+
         final List<Pedra> jogaveis =
             this.mao
                 .stream()
@@ -107,8 +107,8 @@ public class JogadorAlheio implements Jogador {
 
         } else {
             final Pedra pedra = jogaveis.get(SORTE.nextInt(jogaveis.size()));
-            
-            final Lado lado = 
+
+            final Lado lado =
                     pedra.temNumero(numeroEsquerda)
                         ? pedra.temNumero(numeroDireita)
                             ? SORTE.nextBoolean()
@@ -134,8 +134,8 @@ public class JogadorAlheio implements Jogador {
         return joga(pedra,lado);
     }
 
-    
-    
+
+
     /**
      * Não sei o quanto eu quero. Vou chutar.
      * @return Uma {@link Vontade} aleatória.
@@ -143,7 +143,7 @@ public class JogadorAlheio implements Jogador {
     @Override
     public Vontade getVontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
-        this.perguntouSeEuQueriaJogar = true; 
+        this.perguntouSeEuQueriaJogar = true;
         return VONTADES[SORTE.nextInt(5)];
     }
 }
