@@ -24,7 +24,7 @@ import java.util.Random;
 
 /**
  * Implementação de {@link  RandomGoddess} baseada em {@link Random}.
- * 
+ *
  * @author Bruno Abdon
  */
 class DefaultRandomGoddess implements RandomGoddess{
@@ -33,7 +33,7 @@ class DefaultRandomGoddess implements RandomGoddess{
 
     @Override
     public Pedra[] embaralha() {
-        final Pedra pedras[] = Pedra.values();
+        final Pedra[] pedras = Pedra.values();
         Collections.shuffle(Arrays.asList(pedras),RAND);
         return pedras;
     }

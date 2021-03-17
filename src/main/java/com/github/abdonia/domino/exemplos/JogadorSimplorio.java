@@ -26,24 +26,24 @@ import com.github.abdonia.domino.Vontade;
 
 /**
  * Implementação mais simples possível de um {@link Jogador}.
- * 
+ *
  * @author Bruno Abdon
  */
 public class JogadorSimplorio implements Jogador{
 
     private Mesa mesa;
     private Pedra[] pedras;
-    
+
     private boolean jaJogueiAlgumaVez;
-    
+
     /**
-     * Vai guardar a referência pra a {@link Mesa} pra usar na hora de 
+     * Vai guardar a referência pra a {@link Mesa} pra usar na hora de
      * {@linkplain #joga() jogar}.
-     * 
+     *
      * @param mesa A mesa do jogo.
-     * @param cadeiraQueSentou a cadeira em que sentei (1, 2, 3 ou 4). Vou 
+     * @param cadeiraQueSentou a cadeira em que sentei (1, 2, 3 ou 4). Vou
      * ignorar esse parâmetro.
-     * 
+     *
      */
     @Override
     public void sentaNaMesa(final Mesa mesa, final int cadeiraQueSentou) {
@@ -73,17 +73,17 @@ public class JogadorSimplorio implements Jogador{
 
     /**
      * Vou dizer quais de minhas {@linkplain Pedra pedras} vou querer jogar.
-     * 
-     * <p>Se for a primeira jogada do jogo inteiro, então tenho que jogar 
+     *
+     * <p>Se for a primeira jogada do jogo inteiro, então tenho que jogar
      * obrigatoriamente a {@link Pedra#CARROCA_DE_SENA carroça de senna}. Se não
      * tiver, tem que ser a {@link Pedra#CARROCA_DE_QUINA carroça de quina}. Se
      * não, a de {@linkplain Pedra#CARROCA_DE_QUINA quadra}.</p>
-     * 
+     *
      * <p>Se não for qualquer outra jogada além da primeira do jogo, vou jogar
      * alguma das minhas pedras que caibam na {@linkplain Mesa mesa} ou, se não
      * tiver nenhuma pedra, vou {@linkplain Jogada#TOQUE tocar}.</p>
-     * 
-     * @return A {@link Jogada} (qual  pedra em que lado da mesa) que eu decidi 
+     *
+     * @return A {@link Jogada} (qual  pedra em que lado da mesa) que eu decidi
      * jogar.
      */
     @Override
@@ -110,25 +110,23 @@ public class JogadorSimplorio implements Jogador{
         return jogada;
     }
 
-    
+
     /**
-     * Retorna uma {@link Jogada} com a primeira {@link Pedra} que eu tiver na 
-     * mão, de um {@link Lado} qualquer. A pedra jogada será removida da 
+     * Retorna uma {@link Jogada} com a primeira {@link Pedra} que eu tiver na
+     * mão, de um {@link Lado} qualquer. A pedra jogada será removida da
      * {@linkplain #pedras mão}, pois não poderá ser jogada de novo.
-     * 
+     *
      * @return Uma {@link Jogada}.
      */
     private Jogada jogarAPrimeiraPedraDaMao(){
         final Pedra pedra = pedras[0]; //a primeira pedra da mão.
         pedras[0] = null; //tirando a pedra da mão.
-        
+
         final Lado lado = Lado.ESQUERDO; //qualquer lado... a mesa está vazia.
-        
-        final Jogada jogada = Jogada.de(pedra, lado); 
-        
-        return jogada;
+
+        return Jogada.de(pedra, lado);
     }
-    
+
     /**
      * Retorna uma {@link Jogada} com a maior carroça que tem na minha mão.
      * @return uma {@link Jogada} com a maior carroça que tem na minha mão.
@@ -142,14 +140,14 @@ public class JogadorSimplorio implements Jogador{
             if(pedra.isCarroca()){  //precisa ser carroca
                 //se eh a primeira carroca (mariorCarroca==null) ou
                 //se eh uma maior do que a anterior, ela é a maior agora.
-                if(maiorCarroca == null                     
+                if(maiorCarroca == null
                     || pedra.compareTo(maiorCarroca) > 0){
                     maiorCarroca = pedra;
                     indiceMaioCarroca = i;
                 }
             }
         }
-        
+
         //retirando a pedra da mao
         pedras[indiceMaioCarroca] = null;
         //retornando uma jogada com a maior carroça. o Lado é irrelevante.
@@ -157,10 +155,10 @@ public class JogadorSimplorio implements Jogador{
     }
 
     /**
-     * Retorna uma {@link Jogada} com alguma das minhas {@linkplain Pedra 
-     * pedras} que caibam na {@linkplain Mesa mesa}, ou retorna um {@link 
+     * Retorna uma {@link Jogada} com alguma das minhas {@linkplain Pedra
+     * pedras} que caibam na {@linkplain Mesa mesa}, ou retorna um {@link
      * Jogada#TOQUE} caso eu não tenha nenhuma pedra que sirva pa jogar.
-     * 
+     *
      * @return Uma jogada válida.
      */
     private Jogada jogaAlgumaPedraQueCaibaNaMesa() {
@@ -179,16 +177,16 @@ public class JogadorSimplorio implements Jogador{
                     jogada = Jogada.de(pedra,Lado.DIREITO);
                     pedras[i] = null; //removendo ela da minha mão.
                     break; //não precisa procurar mais.
-                } 
+                }
             }
         }
-        
+
         //se nao encontrei nenhuma pedra jogável, tenho que tocar.
         if(jogada == null) jogada = Jogada.TOQUE;
-        
+
         return jogada;
     }
-    
+
     /**
      * Pra mim, tanto faz começar ou não.
      * @return {@link Vontade#TANTO_FAZ}.
