@@ -17,6 +17,7 @@
 package com.github.abdonia.domino.motor;
 
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,17 +86,17 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             .forEach(this.omniscientEventListeners::add);
         }
     }
-    
+
     private <E> void broadCastEvent(
-            final Collection<E> listeners, 
+            final Collection<E> listeners,
             final Consumer<? super E> c) {
         listeners.parallelStream().forEach(c);
     }
 
     private void montaCacheJogadasDoJogador(final int jogador) {
 
-        final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
-            jogadasDoJogadorDoLado = new HashMap<>(3);
+        final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>>
+            jogadasDoJogadorDoLado = new EnumMap<>(Lado.class);
 
         final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> 
             jogadaPorEsseJogador = JOGADA_POR_UM_JOGADOR.apply(jogador);
