@@ -70,16 +70,16 @@ public class Jogo {
             throws DominoConfigException{
 
         //pegando os 4 jogadores da configuracao
-        final JogadorWrapper jogador1dupla1 =
+        final JogadorWrapper jogador0dupla0 =
             (JogadorWrapper) configuracao.getJogador0Dupla0();
 
-        final JogadorWrapper jogador1dupla2 =
+        final JogadorWrapper jogador1dupla0 =
             (JogadorWrapper) configuracao.getJogador1Dupla0();
 
-        final JogadorWrapper jogador2dupla1 =
+        final JogadorWrapper jogador0dupla1 =
             (JogadorWrapper) configuracao.getJogador0Dupla1();
 
-        final JogadorWrapper jogador2dupla2 =
+        final JogadorWrapper jogador1dupla1 =
             (JogadorWrapper) configuracao.getJogador1Dupla1();
 
         //pegando os eventlisteners da configuracao
@@ -94,10 +94,10 @@ public class Jogo {
         this.eventBroadcaster = new DominoEventBroadcaster();
 
         //registrando os jogadores que forem eventlistenres
+        jogadorAtento(jogador0dupla0);
+        jogadorAtento(jogador0dupla1);
+        jogadorAtento(jogador1dupla0);
         jogadorAtento(jogador1dupla1);
-        jogadorAtento(jogador2dupla1);
-        jogadorAtento(jogador1dupla2);
-        jogadorAtento(jogador2dupla2);
 
         //registrando os eventlisteners configurados
         this.eventBroadcaster.addEventListeners(eventListeners,true);
@@ -105,10 +105,10 @@ public class Jogo {
         //criando a mesa finalmente, com os jogadores sentados nela.
         this.mesa =
             MesaImpl.criaMesa(
+                jogador0dupla0,
+                jogador1dupla0,
+                jogador0dupla1,
                 jogador1dupla1,
-                jogador1dupla2,
-                jogador2dupla1,
-                jogador2dupla2,
                 this.fortuna,
                 this.eventBroadcaster);
     }
