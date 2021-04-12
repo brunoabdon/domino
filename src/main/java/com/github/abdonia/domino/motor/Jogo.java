@@ -106,8 +106,8 @@ public class Jogo {
         this.mesa =
             MesaImpl.criaMesa(
                 jogador0dupla0,
-                jogador1dupla0,
                 jogador0dupla1,
+                jogador1dupla0,
                 jogador1dupla1,
                 this.fortuna,
                 this.eventBroadcaster);
