@@ -16,13 +16,14 @@
  */
 package com.github.abdonia.domino.app;
 
+import static java.nio.file.StandardOpenOption.READ;
+
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import static java.nio.file.StandardOpenOption.READ;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -35,22 +36,22 @@ import com.github.abdonia.domino.motor.DominoConfigException;
 import com.github.abdonia.domino.motor.Jogo;
 
 /**
- * <p>Uma aplicação simples, por linha de comando, que roda um {@linkplain  
+ * <p>Uma aplicação simples, por linha de comando, que roda um {@linkplain
  * Jogo jogo de dominó}.</p>
- * 
- * <p>As {@linkplain DominoConfig configurações do Jogo} (isto é, quais 
- * implementações de jogadores serão usadas, quais serão seus nomes, etc.) 
- * podem ser informadas num arquivo chamado <em>domino-config.xml</em> que deve 
+ *
+ * <p>As {@linkplain DominoConfig configurações do Jogo} (isto é, quais
+ * implementações de jogadores serão usadas, quais serão seus nomes, etc.)
+ * podem ser informadas num arquivo chamado <em>domino-config.xml</em> que deve
  * estar no diretório atual.</p>
- * 
+ *
  * <p>Um exemplo de conteudo do arquivo é:</p>
- * 
+ *
  * <pre>
  * implementacoes:
  *     - &amp;mamao com.github.abdonia.domino.exemplos.JogadorMamao
  *     - &amp;alheio com.github.abdonia.domino.exemplos.JogadorAlheio
  *     - &amp;simplorio com.github.abdonia.domino.exemplos.JogadorSimplorio
- *     
+ *
  * jogadores:
  *     - &amp;amanda
  *         nome: Amanda Borba
@@ -70,43 +71,43 @@ import com.github.abdonia.domino.motor.Jogo;
  * dupla1:
  *     - *igor
  *     - *ronaldo
- * 
+ *
  * listeners:
  *     - com.github.abdonia.domino.log.LoggerDominoEventListener
- * 
+ *
  * #random-goddess: com.github.abdonia.domino.motor.DefaultRandomGoddess
  * </pre>
- * 
- * <p>Caso o arquivo de configuração não seja encontrado, uma configuração 
- * default é usada onde ocorre um jogo entre algumas 
- * {@linkplain com.github.abdonia.domino.exemplos implementações exemplo de 
- * jogadores} e onde um 
+ *
+ * <p>Caso o arquivo de configuração não seja encontrado, uma configuração
+ * default é usada onde ocorre um jogo entre algumas
+ * {@linkplain com.github.abdonia.domino.exemplos implementações exemplo de
+ * jogadores} e onde um
  * {@link com.github.abdonia.domino.log.LoggerDominoEventListener} é registrado
  * para imprimir na tela tudo o que acontece durante o jogo.</p>
- * 
+ *
  * @author Bruno Abdon
  */
 public class DominoApp {
 
     private static final String CONFIG_XML = "domino-config.yaml";
-    private static final String DEFAULT_CONFIG_XML = 
+    private static final String DEFAULT_CONFIG_XML =
         "domino-config-default.yaml";
-    private static final String MSG_BUNDLE = 
+    private static final String MSG_BUNDLE =
         "com.github.abdonia.domino.app.DominoAppMsg";
 
-    private static final ResourceBundle RESOURCE_BUNDLE = 
+    private static final ResourceBundle RESOURCE_BUNDLE =
         ResourceBundle.getBundle(MSG_BUNDLE);
-    
+
     private DominoApp(){}
-   
+
     /**
      * Roda um {@link Jogo}, de acordo com o arquivo <em>domino-config.xml</em>
      * ou segundo configurações default caso o arquivo não exista.
-     * 
+     *
      * @param args Argumentos são ignorados.
      */
     public static void main(final String[] args) {
-        
+
         try {
             //carregando as configurações
             final DominoConfig dominoConfig = carregaConfiguracao();
@@ -121,59 +122,59 @@ public class DominoApp {
             log(Level.WARNING, "Pipoco: ", e);
         } catch (DominoConfigException e) {
             log(Level.SEVERE, "Erro de configuracao: " + e.getMessage(), e);
-            
+
         }
     }
 
     /**
-     * Carrega a {@linkplain DominoConfig configuração do jogo} a ser usada, ou 
-     * seja, quais {@linkplain Jogador jogadores} irão participar, como 
+     * Carrega a {@linkplain DominoConfig configuração do jogo} a ser usada, ou
+     * seja, quais {@linkplain Jogador jogadores} irão participar, como
      * {@linkplain DominoEventListener os eventos serão tratados}, etc... .
-     * 
+     *
      * @return Uma {@linkplain  DominoConfig configuração de jogo de dominó}.
      * @throws DominoAppException Caso não consiga abrir, ler ou interpretar o
      * arquivo.
      */
-    private static DominoConfig carregaConfiguracao() 
+    private static DominoConfig carregaConfiguracao()
             throws DominoAppException {
 
-        final InputStream streamConfiguracao = 
-                abreStreamDocumentoDeConfiguracao();
+        final InputStream streamConfiguracao =
+            abreStreamDocumentoDeConfiguracao();
 
         return DominoYAMLConfigLoader
-                .carregaConfiguracoes(streamConfiguracao);
+            .carregaConfiguracoes(streamConfiguracao);
     }
 
     /**
-     * Retorna um {@link InputStream} de onde deverá ser lido o documento xml 
-     * de configuração do jogo. Tenta primeiro encontrar no diretório corrente 
-     * o arquivo {@value #CONFIG_XML}. Caso não exista, vai usar um documento 
-     * de configuração default que existe no classpath em {@value 
-     * #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console, uma 
+     * Retorna um {@link InputStream} de onde deverá ser lido o documento xml
+     * de configuração do jogo. Tenta primeiro encontrar no diretório corrente
+     * o arquivo {@value #CONFIG_XML}. Caso não exista, vai usar um documento
+     * de configuração default que existe no classpath em {@value
+     * #DEFAULT_CONFIG_XML}. Caso a aplicação esteja rodando num console, uma
      * mensagem podera ser exibida no caso da configuração default ser usada.
-     * 
+     *
      * @return Um {@link InputStream} com o documento xml de configuração.
-     * 
+     *
      * @throws DominoAppException Caso alguma falha aconteça ao tentar abrir o
      * arquivo.
      */
-    private static InputStream abreStreamDocumentoDeConfiguracao() 
+    private static InputStream abreStreamDocumentoDeConfiguracao()
             throws DominoAppException {
-        
+
         final InputStream streamConfiguracao;
 
         try {
-            final Path configPath = 
+            final Path configPath =
                 FileSystems.getDefault().getPath(CONFIG_XML);
-            
+
             if(Files.exists(configPath)){
                 streamConfiguracao = Files.newInputStream(configPath,READ);
             } else {
                 tentarExibirAvisoConfiguracaoDefault();
-                streamConfiguracao = 
+                streamConfiguracao =
                     DominoApp.class.getResourceAsStream(DEFAULT_CONFIG_XML);
             }
-            
+
         } catch (IOException ex) {
             throw new DominoAppException(ex, "Erro ao ler arquivo");
         }
@@ -181,14 +182,14 @@ public class DominoApp {
     }
 
     /**
-     * Caso a aplicação esteja rodando num {@linkplain Console console}, exibe 
-     * uma mensagem avisando que o jogo usará uma configuração default (por não 
-     * ter encontrado nenhum arquivo de configuração). Após exibir a mensagem, 
-     * o programa espera o usuário apertar <em>ENTER\u23CE</em> para 
+     * Caso a aplicação esteja rodando num {@linkplain Console console}, exibe
+     * uma mensagem avisando que o jogo usará uma configuração default (por não
+     * ter encontrado nenhum arquivo de configuração). Após exibir a mensagem,
+     * o programa espera o usuário apertar <em>ENTER\u23CE</em> para
      * prosseguir.
-     * 
+     *
      * <p>Se a aplicação não estiver rodando num console, nada acontece.</p>
-     * 
+     *
      */
     private static void tentarExibirAvisoConfiguracaoDefault() {
         final Console console = System.console();
@@ -208,7 +209,7 @@ public class DominoApp {
             Logger.getLogger(DominoApp.class.getName()).log(l, msg, e);
         }
     }
-    
+
     private static String formatted(final String key, final Object param){
         return MessageFormat.format(RESOURCE_BUNDLE.getString(key), param);
     }

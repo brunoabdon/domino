@@ -16,6 +16,10 @@
  */
 package com.github.abdonia.domino.motor;
 
+import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
+import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
+import static com.github.abdonia.domino.Vitoria.tipoDeBatida;
+
 import java.util.Collection;
 import java.util.EnumSet;
 
@@ -23,9 +27,6 @@ import com.github.abdonia.domino.Jogada;
 import com.github.abdonia.domino.Lado;
 import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
-import static com.github.abdonia.domino.Vitoria.CONTAGEM_DE_PONTOS;
-import static com.github.abdonia.domino.Vitoria.SEIS_CARROCAS_NA_MAO;
-import static com.github.abdonia.domino.Vitoria.tipoDeBatida;
 import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 import com.github.abdonia.domino.motor.BugDeJogadorException.Falha;
 
@@ -45,12 +46,12 @@ class Partida {
      * carroças possíveis de serem a pedra da jogada inicial da primeira
      * partida.
      */
-    private static final Pedra[] MAIORES_CARROCAS = {
-            Pedra.CARROCA_DE_SENA,
-            Pedra.CARROCA_DE_QUINA,
-            Pedra.CARROCA_DE_QUADRA,
-            Pedra.CARROCA_DE_TERNO,
-            Pedra.CARROCA_DE_DUQUE
+    private static final Pedra MAIORES_CARROCAS[] = {
+        Pedra.CARROCA_DE_SENA,
+        Pedra.CARROCA_DE_QUINA,
+        Pedra.CARROCA_DE_QUADRA,
+        Pedra.CARROCA_DE_TERNO,
+        Pedra.CARROCA_DE_DUQUE
     };
 
     Partida(
@@ -297,9 +298,7 @@ class Partida {
         //agora erre, meu velho
         if(pedra != carroca){
             throw new BugDeJogadorException(
-                    Falha.JA_COMECOU_ERRANDO,
-                    jogador,
-                    pedra
+                Falha.JA_COMECOU_ERRANDO, jogador, pedra
             );
         }
 

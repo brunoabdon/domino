@@ -42,8 +42,9 @@ import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
  */
 class DominoEventBroadcaster implements OmniscientDominoEventListener {
 
-    private static final IntFunction<Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>> JOGADA_POR_UM_JOGADOR =
-        num -> l -> p -> el -> el.jogadorJogou(num, l, p);
+    private static final IntFunction<Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>>
+        JOGADA_POR_UM_JOGADOR =
+            num -> l -> p -> el -> el.jogadorJogou(num, l, p);
 
     private static final Predicate<DominoEventListener> IS_OMNISCIENT =
         e -> e instanceof OmniscientDominoEventListener;
@@ -52,7 +53,9 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
 
     private final Map<Integer, Consumer<DominoEventListener>> cachedToques;
-    private final Map<Integer,Map<Lado,Function<Pedra, Consumer<DominoEventListener>>>> cachedJogadasNoLado;
+    private final
+        Map<Integer,Map<Lado,Function<Pedra, Consumer<DominoEventListener>>>>
+            cachedJogadasNoLado;
 
     public DominoEventBroadcaster() {
         this.eventListeners = new LinkedList<>();
@@ -120,8 +123,12 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     }
 
     private Function<Pedra, Consumer<DominoEventListener>> cacheJogadasDoLado(
-            final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadasDoJogadorDoLado,
-            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>> jogadaPorEsseJogador,
+            final Map<Lado, Function<Pedra, Consumer<DominoEventListener>>>
+            jogadasDoJogadorDoLado,
+
+            final Function<Lado, Function<Pedra, Consumer<DominoEventListener>>>
+            jogadaPorEsseJogador,
+
             final Lado lado) {
 
         final Function<Pedra, Consumer<DominoEventListener>>
