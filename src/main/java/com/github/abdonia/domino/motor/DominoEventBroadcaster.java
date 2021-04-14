@@ -264,12 +264,12 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     }
 
     @Override
-    public void jogadorJogouPedraQueNãoTinha(
+    public void jogadorJogouPedraQueNaoTinha(
             final int quemFoi, final Pedra pedra) {
         broadCastEvent(
             omniscientEventListeners,
             eventListener ->
-                eventListener.jogadorJogouPedraQueNãoTinha(quemFoi,pedra)
+                eventListener.jogadorJogouPedraQueNaoTinha(quemFoi,pedra)
         );
     }
 
@@ -307,10 +307,10 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
     }
 
     @Override
-    public void jogadorErrouVontadeDeComeçar(final int quemFoi) {
+    public void jogadorErrouVontadeDeComecar(final int quemFoi) {
         broadCastEvent(
             omniscientEventListeners,
-            eventListener -> eventListener.jogadorErrouVontadeDeComeçar(quemFoi)
+            eventListener -> eventListener.jogadorErrouVontadeDeComecar(quemFoi)
         );
     }
 

@@ -359,7 +359,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogadorErrouVontadeDeComeçar(int quemFoi) {
+    public void jogadorErrouVontadeDeComecar(int quemFoi) {
         final String msg = 
             new StringBuilder(nomeDosJogadores[quemFoi])
             .append(", tens que escolher um número de 0 a 10.")
@@ -412,7 +412,7 @@ public class LoggerDominoEventListener implements OmniscientDominoEventListener{
     }
 
     @Override
-    public void jogadorJogouPedraQueNãoTinha(int quemFoi, Pedra pedra) {
+    public void jogadorJogouPedraQueNaoTinha(int quemFoi, Pedra pedra) {
         final String msg = 
             new StringBuilder(nomeDosJogadores[quemFoi])
             .append(" jogou ")
