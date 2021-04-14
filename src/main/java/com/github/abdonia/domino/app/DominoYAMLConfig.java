@@ -8,7 +8,8 @@ class DominoYAMLConfig {
 
     private JogadorConfig[] jogadores;
 
-    private JogadorConfig[] dupla0, dupla1;
+    private JogadorConfig[] dupla0;
+    private JogadorConfig[] dupla1;
 
     private List<String> listeners;
 
