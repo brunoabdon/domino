@@ -109,7 +109,6 @@ import pl.touk.throwing.exception.WrappedException;
  *
  * //adicionando listener por nome da classe
  * builder.withEventListener("com.acme.domino.DBSaverEventListener");
- *
  * }
  * </pre>
  * <p>A instânciação da classe passada na opção <em>(2)</em> ou até a checagem
@@ -125,6 +124,13 @@ public class DominoConfig {
 
     private List<DominoEventListener> eventListeners = new ArrayList<>();
 
+    /**
+     * Um <a href="https://en.wikipedia.org/wiki/Builder_pattern"
+     * title="Builder pattern — Wikipedia" target="_new">builder</a> de
+     * instâncias de {@link DominoConfig}.
+     *
+     * @author Bruno Abdon
+     */
     public static class Builder {
 
         private static final

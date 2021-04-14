@@ -21,129 +21,129 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vitoria;
 
 /**
- * Interface para receber eventos do que acontece durante o jogo.
- * 
- * {@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem 
- * esta interface serão automaticamente registrados para serem avisados dos 
+ * Um listener que é informado sobre os eventos que acontecem durante o jogo.
+ *
+ * {@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem
+ * esta interface serão automaticamente registrados para serem avisados dos
  * eventos.
- * 
+ *
  * @see OmniscientDominoEventListener
- * 
+ *
  * @author Bruno Abdon
  */
 public interface DominoEventListener {
 
     /**
-     * O jogo comecou. O placar está zero a zero (um jogo é a 
-     * seqëncia de várias partidas). 
-     *   
+     * O jogo comecou. O placar está zero a zero (um jogo é a
+     * seqëncia de várias partidas).
+     *
      * @param nomeDoJogador0 nome do primeiro jogador da primeira dupla.
      * @param nomeDoJogador1 nome do primeiro jogador da segunda dupla.
      * @param nomeDoJogador2 nome do segundo jogador  da primeira dupla.
      * @param nomeDoJogador3 nome do segundo jogador  da segunda dupla.
      */
     public default void jogoComecou(
-            final String nomeDoJogador0, 
-            final String nomeDoJogador1, 
-            final String nomeDoJogador2, 
+            final String nomeDoJogador0,
+            final String nomeDoJogador1,
+            final String nomeDoJogador2,
             final String nomeDoJogador3){
     }
 
     /**
      * Mais uma partida começou (um jogo tem várias partidas).
-     *  
+     *
      * @param placarPrimeiraDupla Quantos pontos a dupla 0 tem.
      * @param placarSegundaDupla Quantos pontos a dupla 1 tem.
-     * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por 
-     * causa de um empate na partida anterior (pode ser o caso de ser uma 
+     * @param ehDobrada diz se os pontos dessa partida valeram em dobro, por
+     * causa de um empate na partida anterior (pode ser o caso de ser uma
      * seqüência de empates)
      */
     public default void partidaComecou(
-            final int placarPrimeiraDupla, 
-            final int placarSegundaDupla, 
+            final int placarPrimeiraDupla,
+            final int placarSegundaDupla,
             final boolean ehDobrada){
     }
 
     /**
-     * Foi definido, por consentimento ou aleatoriamente, qual {@link 
-     * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior 
+     * Foi definido, por consentimento ou aleatoriamente, qual {@link
+     * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior
      * vai começar a partida.
-     * 
-     * A decisão é tomada {@linkplain 
-     * com.github.abdonia.domino.Jogador#getVontadeDeComecar() peguntando-se a 
-     * cada jogador da dupla o quanto ele quer começar a partida}. Quando um dos 
-     * dois "quer" mais que o outro, diz-se que a decisão foi tomada por 
-     * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer 
-     * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve 
+     *
+     * A decisão é tomada {@linkplain
+     * com.github.abdonia.domino.Jogador#getVontadeDeComecar() peguntando-se a
+     * cada jogador da dupla o quanto ele quer começar a partida}. Quando um dos
+     * dois "quer" mais que o outro, diz-se que a decisão foi tomada por
+     * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer
+     * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve
      * consentimento mútuo na decisão.
-     * 
-     * @param quemFoi O jogador (identificado pelo {@linkplain  
+     *
+     * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que 
+     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * vai começar a partida.
-     * 
+     *
      * @param consentimentoMutuo Diz se a decisão foi tomanda por consentimento
      * mútuo, ou se o jogador teve que ser escolhido aleatoriamente.
      */
     public default void decididoQuemComeca(
         final int quemFoi, final boolean consentimentoMutuo){
     }
-    
+
     /**
-     * Um determinado {@link com.github.abdonia.domino.Jogador} {@linkplain 
-     * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e nao 
-     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver 
-     * batido, além desse evento, também ocorrerá {@link 
+     * Um determinado {@link com.github.abdonia.domino.Jogador} {@linkplain
+     * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e nao
+     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver
+     * batido, além desse evento, também ocorrerá {@link
      * #jogadorBateu(int, Vitoria)}.
-     * 
-     * @param quemFoi O jogador (identificado pelo {@linkplain  
+     *
+     * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que 
+     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * jogou.
      * @param lado onde jogou.
      * @param pedra o que jogou.
      */
     public default void jogadorJogou(
-            final int quemFoi, 
-            final Lado lado, 
+            final int quemFoi,
+            final Lado lado,
             final Pedra pedra){
     }
 
     /**
-     * Um {@link com.github.abdonia.domino.Jogador} 
+     * Um {@link com.github.abdonia.domino.Jogador}
      * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}.
-     * 
-     * @param quemFoi O jogador (identificado pelo {@linkplain  
+     *
+     * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que 
+     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * tocou.
      */
     public default void jogadorTocou(final int quemFoi){
     }
 
     /**
-     * A partida voltou logo depois de serem distribuidas as {@linkplain Pedra 
-     * pedras}, porque um dos {@linkplain com.github.abdonia.domino.Jogador 
-     * jogadores} tinha 5 {@linkplain Pedra#isCarroca() carroças} na mão. 
+     * A partida voltou logo depois de serem distribuidas as {@linkplain Pedra
+     * pedras}, porque um dos {@linkplain com.github.abdonia.domino.Jogador
+     * jogadores} tinha 5 {@linkplain Pedra#isCarroca() carroças} na mão.
      * (Ninguém marca ponto quando isso acontece).
-     * 
-     * @param quemFoi O jogador (identificado pelo {@linkplain  
+     *
+     * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
-     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que 
+     * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * tinha cinco pedras na mão.
      */
     public default void partidaVoltou(final int quemFoi){
     }
-    
+
     /**
-     * Um {@link com.github.abdonia.domino.Jogador} bateu e a partida acabou. 
+     * Um {@link com.github.abdonia.domino.Jogador} bateu e a partida acabou.
      * O jogo ainda pode continuar.
-     * 
-     * @param quemFoi O jogador (identificado pelo {@linkplain  
+     *
+     * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * bateu.
-     * 
+     *
      * @param tipoDeVitoria Como foi a batida.
      */
     public default void jogadorBateu(
@@ -158,11 +158,11 @@ public interface DominoEventListener {
 
     /**
      * Uma das duplas fez 6 pontos (ou mais) e o jogo acabou.
-     * 
+     *
      * @param placarDupla1 quantos pontos tinha a dupla 1
      * @param placarDupla2 quantos pontos tinha a dupla 2
      */
     public default void jogoAcabou(
             final int placarDupla1, final int placarDupla2){
-    }	
+    }
 }
