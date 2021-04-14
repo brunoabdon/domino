@@ -46,7 +46,7 @@ class Partida {
      * carroças possíveis de serem a pedra da jogada inicial da primeira
      * partida.
      */
-    private static final Pedra MAIORES_CARROCAS[] = {
+    private static final Pedra[] MAIORES_CARROCAS = {
         Pedra.CARROCA_DE_SENA,
         Pedra.CARROCA_DE_QUINA,
         Pedra.CARROCA_DE_QUADRA,
