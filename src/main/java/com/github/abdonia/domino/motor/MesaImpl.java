@@ -40,7 +40,8 @@ final class MesaImpl implements Mesa {
     private final Dupla[] duplas;
 
     private final Deque<Pedra> listaDePedras;
-    private final Cabeca cabecaEsquerda, cabecaDireita;
+    private final Cabeca cabecaEsquerda;
+    private final Cabeca cabecaDireita;
 
     private final EnumSet<Pedra> dorme;
 

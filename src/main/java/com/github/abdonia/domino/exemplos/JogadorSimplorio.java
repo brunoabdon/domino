@@ -171,13 +171,15 @@ public class JogadorSimplorio implements Jogador{
                     //a pedra cabe do lado esquerdo da mesa. vou jogar ela lá.
                     jogada = Jogada.de(pedra,Lado.ESQUERDO);
                     pedras[i] = null; //removendo ela da minha mão.
-                    break; //não precisa procurar mais.
                 } else if(pedra.temNumero(mesa.getNumeroDireita())){
                     //a pedra cabe do lado direito da mesa. vou jogar ela lá.
                     jogada = Jogada.de(pedra,Lado.DIREITO);
                     pedras[i] = null; //removendo ela da minha mão.
-                    break; //não precisa procurar mais.
+                } else {
+                    //continue procurando;
+                    continue;
                 }
+                break; //não precisa procurar mais.
             }
         }
 

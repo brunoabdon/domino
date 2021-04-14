@@ -111,7 +111,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * {@linkplain com.github.abdonia.domino.Jogador#sentaNaMesa(
      * com.github.abdonia.domino.Mesa, int) número da cadeira}).
      */
-    public default void jogadorErrouVontadeDeComeçar(final int quemFoi){
+    public default void jogadorErrouVontadeDeComecar(final int quemFoi){
     }
 
     /**
@@ -198,7 +198,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
      * 
      * @param pedra a {@link Pedra} que o jogador tirou do bolso pra jogar.
      */
-    public default void jogadorJogouPedraQueNãoTinha(
+    public default void jogadorJogouPedraQueNaoTinha(
             final int quemFoi, final Pedra pedra){
     }
 }

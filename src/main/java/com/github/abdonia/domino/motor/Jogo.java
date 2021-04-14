@@ -277,11 +277,11 @@ public class Jogo {
                 this.eventBroadcaster.jogadorTocouTendoPedraPraJogar(cadeira);
                 break;
             case NAO_SABE_SE_COMECE:
-                this.eventBroadcaster.jogadorErrouVontadeDeComeçar(cadeira);
+                this.eventBroadcaster.jogadorErrouVontadeDeComecar(cadeira);
                 break;
             case TIROU_PEDRA_DO_BOLSO:
                 this.eventBroadcaster
-                    .jogadorJogouPedraQueNãoTinha(cadeira,e.getPedra());
+                    .jogadorJogouPedraQueNaoTinha(cadeira,e.getPedra());
                 break;
 
             default:

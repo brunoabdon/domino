@@ -27,21 +27,21 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vontade;
 
 /**
- * {@link Jogador} mais simplório possível. Procura a primeira 
- * {@link Pedra} na mão que dá pra jogar na mesa e joga. 
- * 
+ * {@link Jogador} mais simplório possível. Procura a primeira
+ * {@link Pedra} na mão que dá pra jogar na mesa e joga.
+ *
  * @author Bruno Abdon
  *
  */
 public class JogadorMamao implements Jogador {
 
     /**
-     * A  {@link Mesa} em que esse {@link Jogador} 
-     * {@linkplain Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int) 
+     * A  {@link Mesa} em que esse {@link Jogador}
+     * {@linkplain Jogador#sentaNaMesa(com.github.abdonia.domino.Mesa, int)
      * sentou} pra jogar.
      */
     protected Mesa mesa;
-    
+
     /**
      * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
      */
@@ -63,7 +63,7 @@ public class JogadorMamao implements Jogador {
             final Pedra pedra5,
             final Pedra pedra6) {
         //guardar como uma List
-        this.mao = 
+        this.mao =
             JogadorUtils.fazMao(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
         this.perguntouSeEuQueriaJogar = false;
     }
@@ -76,23 +76,23 @@ public class JogadorMamao implements Jogador {
         Lado ladoDeJogar = null;
 
         if(mesa.getPedras().isEmpty()){
-            //opa! minha vez e a mesa tah vazia? é pra comecar agora! sou o 
+            //opa! minha vez e a mesa tah vazia? é pra comecar agora! sou o
             //primeiro;
             if(!perguntouSeEuQueriaJogar){
-                /* 
-                se nao me perguntaram se eu queria ser o da dupla a comecar a 
-                jogar,  entao essa é a primeira partida, e o sistema já se 
-                ligou que o jogador que tem a maior carroça sou eu. Tenho que 
+                /*
+                se nao me perguntaram se eu queria ser o da dupla a comecar a
+                jogar,  entao essa é a primeira partida, e o sistema já se
+                ligou que o jogador que tem a maior carroça sou eu. Tenho que
                 jogar ela, se não é roubo.
                 */
                 pedraPraJogar = JogadorUtils.aMaiorCarroca(this.mao);
             } else {
-                /* 
-                ah, eles perguntaram se eu queria ser o da dupla a comecar a 
-                jogar, e acabou que vou ser eu mesmo a comecar. nao precisa ser 
+                /*
+                ah, eles perguntaram se eu queria ser o da dupla a comecar a
+                jogar, e acabou que vou ser eu mesmo a comecar. nao precisa ser
                 carroça. vou jogar a primeira que tiver.
                 */
-                pedraPraJogar = mao.get(0); 
+                pedraPraJogar = mao.get(0);
             }
             //o lado, tanto faz. tá vazia a mesa mesmo.
             ladoDeJogar = Lado.ESQUERDO;
@@ -110,44 +110,45 @@ public class JogadorMamao implements Jogador {
                     //opa, achei uma. vai ser ela mesmo.
                     pedraPraJogar = pedraDaMao;
                     //na esquerda, que foi o lado que eu vi que tenho o número.
-                    ladoDeJogar = Lado.ESQUERDO; 
+                    ladoDeJogar = Lado.ESQUERDO;
                     //precisa nem procurar mais.
-                    break;
                 } else if (pedraDaMao.temNumero(numeroDireita)){
                     //opa, achei uma. vai ser ela mesmo.
                     pedraPraJogar = pedraDaMao;
                     //jogar na direita, que foi o que eu vi que tenho o número.
                     ladoDeJogar = Lado.DIREITO;
                     //precisa nem procurar mais.
-                    break;
+                } else {
+                    continue;
                 }
+                break;
             }
         }
 
-        if(pedraPraJogar == null){ 
+        if(pedraPraJogar == null){
             //lasquei-me. não achei nenhuma. toc toc
             jogada = Jogada.TOQUE;
         } else {
-            //pronto, vou tirar essa pedra da minha mão, pra não jogar duplicada 
+            //pronto, vou tirar essa pedra da minha mão, pra não jogar duplicada
             //depois.
             mao.remove(pedraPraJogar);
-            //criando a jogada: a pedra que escolhi e a cabeça em que vou 
+            //criando a jogada: a pedra que escolhi e a cabeça em que vou
             //colocar ela.
             jogada = Jogada.de(pedraPraJogar,ladoDeJogar);
         }
         //retornando a jogada
-        return jogada; 
+        return jogada;
     }
 
     /**
      * Não sei se comece... não sei se não comece... tanto faz.
-     * 
+     *
      * @return {@link Vontade#TANTO_FAZ}.
      */
     @Override
     public Vontade getVontadeDeComecar() {
         //isso é pra eu me ligar que a primeira rodada já foi.
-        this.perguntouSeEuQueriaJogar = true; 
+        this.perguntouSeEuQueriaJogar = true;
         //tanto faz
         return Vontade.TANTO_FAZ;
     }

@@ -46,7 +46,7 @@ class Partida {
      * carroças possíveis de serem a pedra da jogada inicial da primeira
      * partida.
      */
-    private static final Pedra MAIORES_CARROCAS[] = {
+    private static final Pedra[] MAIORES_CARROCAS = {
         Pedra.CARROCA_DE_SENA,
         Pedra.CARROCA_DE_QUINA,
         Pedra.CARROCA_DE_QUADRA,
@@ -77,7 +77,8 @@ class Partida {
 
         Pedra pedra = null;
 
-        boolean alguemBateu = false, trancou = false;
+        boolean alguemBateu = false;
+        boolean trancou = false;
 
         int numeroDeToquesSeguidos = 0;
 
@@ -329,7 +330,8 @@ class Partida {
         int totalCarrocas = 0; //toltal que já vi na mão de jogador
         for (final JogadorWrapper jogador : mesa.getJogadores()) {
             //contagem pra esse jogador
-            int quantasCarrocas = 0, quantasNaoCarrocas = 0;
+            int quantasCarrocas = 0;
+            int quantasNaoCarrocas = 0;
             for (final Pedra pedra : jogador.getMao()) {
                 if((!pedra.isCarroca() || ++quantasCarrocas == -1)
                     && ++quantasNaoCarrocas == 2){
