@@ -17,39 +17,43 @@
 package com.github.abdonia.domino.motor;
 
 /**
- * Métodos utilitários usados atualmente pra a implemetação de {@link 
+ * Métodos utilitários usados atualmente pra a implemetação de {@link
  * DominoConfig}.
- * 
+ *
  * @author Bruno Abdon
  */
 class DominoConfigUtils {
 
-    private static final String ERR_SUPER_KLASS = 
+    private static final String ERR_SUPER_KLASS =
         "A classe \"%s\" deveria mas nao implementa \"%s\".";
 
-    private static final String ERR_CLASSE_DESCONHECIDA = 
-        "A classe \"%s\" foi mencionada mas ela nao pode ser encontrada.";    
-    
+    private static final String ERR_CLASSE_DESCONHECIDA =
+        "A classe \"%s\" foi mencionada mas ela nao pode ser encontrada.";
+
+    private DominoConfigUtils() {
+        super();
+    }
+
     /**
      * Instancia um objeto dado o nome de sua classe, validando que esta classe
      * seja subclasse de uma dada superclasse.
-     * 
+     *
      * @param <K> O tipo do objeto a ser instanciado.
      * @param superKlass O supertipo que a classe nomeada deve necessariamente
      * extender.
      * @param className O nome da classe que deve ser instanciada.
      * @return Um objeto de classe cujo nome foi passado.
-     * 
+     *
      * @throws DominoConfigException Se a classe não for encotrada, se ela não
      * for uma subclasse da superclasse exigida, ou se houver um erro ao tentar
      * instanciar a classe (deve ter um construtor vazio acessível).
      */
     public static <K> K instancia(
-            final Class<K> superKlass, 
+            final Class<K> superKlass,
             final String className) throws DominoConfigException {
 
         final K instance;
-        
+
         try {
 
             instance =
@@ -69,22 +73,22 @@ class DominoConfigUtils {
     }
 
     /**
-     * Instancia um objeto dada  sua classe, usando um construtor vazio 
+     * Instancia um objeto dada  sua classe, usando um construtor vazio
      * acessível.
-     * 
+     *
      * @param <K> O tipo do objeto a ser instanciado.
      * @param klass  A classe que deve ser instanciada.
-     * 
+     *
      * @return Um objeto de classe que foi passada.
-     * 
-     * @throws DominoConfigException Se houver um erro ao tentar instanciar a 
+     *
+     * @throws DominoConfigException Se houver um erro ao tentar instanciar a
      * classe (deve ter um construtor vazio acessível).
-     * 
+     *
      * @throws NullPointerException se a classe passada for {@code null}.
      */
     public static <K> K instancia(final Class<K> klass)
             throws DominoConfigException{
-        
+
         final K instance;
 
         try {

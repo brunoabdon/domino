@@ -28,53 +28,53 @@ import com.github.abdonia.domino.Pedra;
 import com.github.abdonia.domino.Vontade;
 
 /**
- * {@link Jogador} que dá prioridade a jogar as {@linkplain Pedra#isCarroca() 
- * carroças}. Não tendo carroça, joga a primeira {@link Pedra} que encontrar que 
+ * {@link Jogador} que dá prioridade a jogar as {@linkplain Pedra#isCarroca()
+ * carroças}. Não tendo carroça, joga a primeira {@link Pedra} que encontrar que
  * caiba na {@link Mesa}.
  *
  * @author Bruno Abdon
  *
  */
 public class JogadorQueNaoGostaDeCarroca implements Jogador {
-   
+
     /**
-     * Dada uma {@link Mesa}, retorna uma {@link Function} que mapeia 
-     * {@linkplain Pedra pedras} em {@linkplain Jogada jogadas} nessa mesa. A 
+     * Dada uma {@link Mesa}, retorna uma {@link Function} que mapeia
+     * {@linkplain Pedra pedras} em {@linkplain Jogada jogadas} nessa mesa. A
      * jogada vai ser preferencialmente na {@linkplain Mesa#getNumeroEsquerda()
      * esquerda} (escolhido arbitrariamente), mas pode acontecer da única jogada
      * possível pode ser simplesmente {@linkplain Jogada#TOQUE tocar}.
      */
-    private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA = 
+    private static final Function<Mesa,Function<Pedra,Jogada>> JOGADA_MESA =
         m -> p ->
             m.getPedras().isEmpty() || p.temNumero(m.getNumeroEsquerda())
                 ? Jogada.de(p, Lado.ESQUERDO)
                 : p.temNumero(m.getNumeroDireita())
                     ? Jogada.de(p, Lado.DIREITO)
                     : Jogada.TOQUE;
-    
+
     /**
      * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@linkplain
-     * Pedra#isCarroca() carroça} é maior que uma não-carroça e (2) carroças 
-     * entre si e não-carroças entre si se comparam pelo {@link 
+     * Pedra#isCarroca() carroça} é maior que uma não-carroça e (2) carroças
+     * entre si e não-carroças entre si se comparam pelo {@link
      * Pedra#compareTo(java.lang.Enum) comparador natura de pedras}.
      */
     private static final Comparator<Pedra> COMP_PREFERE_CARROCA =
         Comparator.comparing(Pedra::isCarroca).thenComparing(Pedra::compareTo);
-    
+
     /**
-     * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é 
-     * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code 
+     * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é
+     * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code
      * TOQUE} se diferenciam apenas pelas suas {@linkplain Pedra pedras}
-     * (ignorando o {@link Lado}) de acordo com o comparador de pedras {@link 
+     * (ignorando o {@link Lado}) de acordo com o comparador de pedras {@link
      * #COMP_PREFERE_CARROCA}.
      */
     private static final Comparator<Jogada> COMP_PREFERE_JOGAR_CARROCA =
         (jog1,jog2) ->
-            jog1 == jog2                    ? 0 
-            : jog1 == Jogada.TOQUE          ? -1 
-            : jog2 == Jogada.TOQUE          ? 1 
+            jog1 == jog2                    ? 0
+            : jog1 == Jogada.TOQUE          ? -1
+            : jog2 == Jogada.TOQUE          ? 1
             : COMP_PREFERE_CARROCA.compare(jog1.getPedra(), jog2.getPedra());
-                    
+
     /**
      * As {@linkplain Pedra pedras} na mão desse {@link Jogador}.
      */
@@ -95,16 +95,16 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
             final Pedra pedra4,
             final Pedra pedra5,
             final Pedra pedra6) {
-        
-        this.mao = 
+
+        this.mao =
             EnumSet.of(pedra1, pedra2, pedra3, pedra4, pedra5, pedra6);
     }
-    
+
     /**
-     * Joga a maior {@linkplain Pedra#isCarroca() carroça} que puder jogar. Se 
-     * não tiver carroça que dê pra jogar, joga a maior não-carroça que puder 
+     * Joga a maior {@linkplain Pedra#isCarroca() carroça} que puder jogar. Se
+     * não tiver carroça que dê pra jogar, joga a maior não-carroça que puder
      * jogar (ou {@linkplain Jogada#TOQUE toca}).
-     * 
+     *
      * @return Uma {@link Pedra}, de preferência carroça.
      */
     @Override
@@ -115,10 +115,10 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
             .map(jogadaNaMesa) //...vê como seria uma jogada com ela...
             .max(COMP_PREFERE_JOGAR_CARROCA) //...e escolhe a melhor.
             .get();
-        
+
         //mesmo se for TOQUE, nao tem problema. TOQUE.getPedra() = null;
         this.mao.remove(jogada.getPedra());
-        
+
         return jogada;
     }
 
@@ -128,10 +128,10 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     }
 
     /**
-     * Colabora com um possível parceiro da mesma classe: as vontades só 
-	 * empatam caso os dois tenham o mesmo número de {@linkplain 
+     * Colabora com um possível parceiro da mesma classe: as vontades só
+	 * empatam caso os dois tenham o mesmo número de {@linkplain
 	 * Pedra#isCarroca() carroças} na mão.
-     * 
+     *
      * @return a vontade de começar a jogar, que vai aumentando de acordo com o
      * número de {@linkplain Pedra#isCarroca() carroças} na mão.
      */
@@ -139,13 +139,13 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
     public Vontade getVontadeDeComecar() {
         final Vontade vontade;
         switch((int)this.mao.parallelStream().filter(Pedra::isCarroca).count()){
-            case 0:         vontade = Vontade.NAO_QUERO_MESMO;  
+            case 0:         vontade = Vontade.NAO_QUERO_MESMO;
                             break;
-            case 1:         vontade = Vontade.NAO_QUERO;        
+            case 1:         vontade = Vontade.NAO_QUERO;
                             break;
-            case 2:         vontade = Vontade.TANTO_FAZ;        
+            case 2:         vontade = Vontade.TANTO_FAZ;
                             break;
-            case 3:         vontade = Vontade.QUERO;            
+            case 3:         vontade = Vontade.QUERO;
                             break;
             case 4: case 5: case 6: default: //sou o jogador com mais carrocas
                             vontade = Vontade.QUERO_MUITO;

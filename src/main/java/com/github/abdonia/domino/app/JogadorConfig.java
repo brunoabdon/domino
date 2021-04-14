@@ -4,8 +4,9 @@ class JogadorConfig {
 
     private String nome;
     private String classe;
-    
+
     public JogadorConfig() {
+        super();
     }
 
     public String getNome() {

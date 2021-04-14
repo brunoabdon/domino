@@ -17,34 +17,37 @@
 package com.github.abdonia.domino.exemplos;
 
 import java.util.ArrayList;
-
-import com.github.abdonia.domino.Pedra;
-
 import java.util.Collection;
 import java.util.List;
 
+import com.github.abdonia.domino.Pedra;
+
 /**
- * Métodos utilitários pra a implementação dos {@linkplain 
- * com.github.abdonia.domino.Jogador jogadores} de exemplo. 
- * 
+ * Métodos utilitários pra a implementação dos {@linkplain
+ * com.github.abdonia.domino.Jogador jogadores} de exemplo.
+ *
  * @author Bruno Abdon
  */
 class JogadorUtils {
 
+    private JogadorUtils() {
+        super();
+    }
+
     /**
-     * Retorna qual é a {@linkplain Pedra#compareTo(Enum) maior} {@linkplain 
+     * Retorna qual é a {@linkplain Pedra#compareTo(Enum) maior} {@linkplain
      * Pedra#isCarroca() carroça} entre um conjunto de {@linkplain Pedra pedras}
-     * ou lança {@link java.util.NoSuchElementException} caso não 
+     * ou lança {@link java.util.NoSuchElementException} caso não
      * exista uma carroça no conjunto.
-     *  
+     *
      * @param pedras um conjunto de {@linkplain Pedra pedras} de onde se quer
      * identificar a maior {@linkplain Pedra#isCarroca() carroça}.
-     * 
-     * @return A maior {@linkplain Pedra#isCarroca() carroça} entre as 
+     *
+     * @return A maior {@linkplain Pedra#isCarroca() carroça} entre as
      * {@linkplain Pedra pedras} passsadas como parâmetro.
-     * 
-     * @throws java.util.NoSuchElementException caso não exista uma {@linkplain  
-     * Pedra#isCarroca() carroça} entre as {@linkplain Pedra pedras} passsadas 
+     *
+     * @throws java.util.NoSuchElementException caso não exista uma {@linkplain
+     * Pedra#isCarroca() carroça} entre as {@linkplain Pedra pedras} passsadas
      * como parâmetro.
      */
     public static Pedra aMaiorCarroca(final Collection<Pedra> pedras) {
@@ -55,9 +58,9 @@ class JogadorUtils {
                 .get();
     }
     /**
-     * Constrói uma {@linkplain List lista} com as seis {@linkplain Pedra 
+     * Constrói uma {@linkplain List lista} com as seis {@linkplain Pedra
      * pedras} passadas como parâmetro, na ordem em que foram passadas.
-     * 
+     *
      * @param pedra1 A primeira {@linkplain Pedra pedra}.
      * @param pedra2 A segunda {@linkplain Pedra pedra}.
      * @param pedra3 A terceira {@linkplain Pedra pedra}.
@@ -73,16 +76,16 @@ class JogadorUtils {
             final Pedra pedra4,
             final Pedra pedra5,
             final Pedra pedra6) {
-     
+
         final List<Pedra> mao = new ArrayList<>(6);
-        
+
         mao.add(pedra1);
         mao.add(pedra2);
         mao.add(pedra3);
         mao.add(pedra4);
         mao.add(pedra5);
         mao.add(pedra6);
-        
+
         return mao;
     }
 }
