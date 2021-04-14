@@ -47,7 +47,7 @@ class DominoEventBroadcaster implements OmniscientDominoEventListener {
             num -> l -> p -> el -> el.jogadorJogou(num, l, p);
 
     private static final Predicate<DominoEventListener> IS_OMNISCIENT =
-        e -> e instanceof OmniscientDominoEventListener;
+        OmniscientDominoEventListener.class::isInstance;
 
     private final List<DominoEventListener> eventListeners;
     private final List<OmniscientDominoEventListener> omniscientEventListeners;
