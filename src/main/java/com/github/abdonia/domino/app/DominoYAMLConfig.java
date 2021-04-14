@@ -7,16 +7,17 @@ class DominoYAMLConfig {
     private List<String> implementacoes;
 
     private JogadorConfig[] jogadores;
-    
+
     private JogadorConfig[] dupla0, dupla1;
-    
+
     private List<String> listeners;
-    
+
     private String randomGoddess;
 
     public DominoYAMLConfig() {
+        super();
     }
-    
+
     public List<String> getImplementacoes() {
         return implementacoes;
     }
