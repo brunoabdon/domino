@@ -18,11 +18,10 @@ package com.github.abdonia.domino;
 
 import java.io.Serializable;
 import java.util.EnumMap;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.Validate;
 
 /**
  * Uma jogada, por um um {@link Jogador}, de uma {@link Pedra} em  um
@@ -108,8 +107,8 @@ public final class Jogada implements Serializable{
      * for {@code null}.
      */
     public static Jogada de(final Pedra pedra, final Lado lado) {
-        Validate.notNull(pedra, ERR_PEDRA_NULA);
-        Validate.notNull(lado, ERR_LADO_NULO);
+        Objects.requireNonNull(pedra, ERR_PEDRA_NULA);
+        Objects.requireNonNull(lado, ERR_LADO_NULO);
 
         return  JOGADAS.get(lado).get(pedra);
     }
