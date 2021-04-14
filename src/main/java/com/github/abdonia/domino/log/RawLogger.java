@@ -16,31 +16,31 @@
  */
 package com.github.abdonia.domino.log;
 
-import com.github.abdonia.domino.Lado;
-import com.github.abdonia.domino.Pedra;
-import com.github.abdonia.domino.Vitoria;
-import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
-
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.github.abdonia.domino.eventos.DominoEventListener;
+import org.apache.commons.text.TextStringBuilder;
 
-import org.apache.commons.lang3.text.StrBuilder;
+import com.github.abdonia.domino.Lado;
+import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.Vitoria;
+import com.github.abdonia.domino.eventos.DominoEventListener;
+import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
+
 
 /**
- * Um {@link DominoEventListener} que loga o que aconteceu no jogo como uma 
+ * Um {@link DominoEventListener} que loga o que aconteceu no jogo como uma
  * sequência de caractéres mais apropriada para máquinas (e não humanos) lerem.
- * 
+ *
  * @author Bruno Abdon
  */
 public class RawLogger implements OmniscientDominoEventListener{
 
     private List<LogPartida> logPartidas;
-    
+
     private LogPartida logPartidaAtual;
 
     private final PrintStream printStream;
@@ -56,96 +56,82 @@ public class RawLogger implements OmniscientDominoEventListener{
     /**
      * Cria uma instância que vai logar os {@link DominoEventListener eventos
      * do jogo} na stream passada como parâmetro.
-     * @param printStream uma stream onde devem ser logados os acontecimentos 
+     * @param printStream uma stream onde devem ser logados os acontecimentos
      * do jogo.
      */
     public RawLogger(final PrintStream printStream){
         this.printStream = printStream;
-    }    
+    }
 
-    private CharSequence formatEnum(Enum e) {
+    private CharSequence formatEnum(Enum<?> e) {
         return
             new StringBuilder(e.getDeclaringClass().getSimpleName())
                 .append(".")
                 .append(e.name());
     }
-    
+
     class LogPartida{
         final Integer[] ordemOriginalPedras;
         final boolean foiDobrada;
-        
+
         int placarFinalDupla1;
         int placarFinalDupla2;
         Vitoria tipoDeVitoria;
         Integer jogador;
-        
+
         final Collection<CharSequence> pedrasJogadas = new LinkedList<>();
         final Collection<CharSequence> ladosJogadas = new LinkedList<>();
 //        final Collection<Integer> escolhidos = new LinkedList<>();
         final Collection<Boolean> jogador1Comeca = new LinkedList<>();
-        
+
         boolean empatou(){
             return jogador == null && tipoDeVitoria == null;
         }
         boolean bateram(){
             return jogador != null && tipoDeVitoria != null;
-        };
+        }
         boolean voltou(){
             return jogador != null && tipoDeVitoria == null;
-        };
-                
+        }
+
         LogPartida(final boolean ehDobrada){
             this.ordemOriginalPedras = new Integer[28];
             this.foiDobrada = ehDobrada;
         }
-        
-        private <C extends  Collection<E>, E extends  Enum<E>> void printEnums(
-            final StringBuilder sb,
-            final String titulo,
-            final C enums
-            ){
-            sb.append("\n")
-                .append(titulo)
-                .append(": ");
-            
-            enums.stream().forEach((e) -> {
-                sb.append(e == null? "null":e.ordinal()).append(",");
-            });
-        }
-        
+
         private void print() {
-            
-            final StrBuilder sb = new StrBuilder("//partida\n");
+
+            final TextStringBuilder sb = new TextStringBuilder("//partida\n");
             sb.setNullText("null");
-            
+
             sb.append("final int[] ordemPedras = new int[]{")
                 .appendWithSeparators(this.ordemOriginalPedras, ",")
                 .appendln("};");
-            
+
             sb.append("final boolean[] jogador1Comeca = new boolean[]{")
                 .appendWithSeparators(this.jogador1Comeca, ",")
                 .appendln("};");
-            
+
             sb.append("final Lado[] lados = new Lado[]{")
                 .appendWithSeparators(this.ladosJogadas, ",")
                 .appendln("};");
-            
+
             sb.append("final Pedra[] pedras = new Pedra[]{")
                 .appendWithSeparators(this.pedrasJogadas, ",")
                 .appendln("};");
-            
+
             sb.append("\nResultado: ");
 
             if(empatou()){
                 sb.append("E");
             } else {
                 sb.append(voltou()?"V":"B").append(" ").append(jogador);
-            }  
+            }
 
             RawLogger.this.printStream.println(sb.toString());
         }
     }
-    
+
     @Override
     public void jogoComecou(
             final String nomeDoJogador1,
@@ -157,18 +143,18 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     @Override
     public void partidaComecou(
-            final int placarDupla1, 
-            final int placarDupla2, 
+            final int placarDupla1,
+            final int placarDupla2,
             final boolean ehDobrada) {
         if(this.logPartidaAtual != null){
             this.logPartidas.add(logPartidaAtual);
         }
         this.logPartidaAtual = new LogPartida(ehDobrada);
     }
-    
+
     @Override
     public void jogadorRecebeuPedras(
-            final int quemFoi, 
+            final int quemFoi,
             final Pedra pedra1,
             final Pedra pedra2,
             final Pedra pedra3,
@@ -176,7 +162,7 @@ public class RawLogger implements OmniscientDominoEventListener{
             final Pedra pedra5,
             final Pedra pedra6) {
         this.preenchePedaco(
-                (quemFoi-1) * 6, 
+                (quemFoi-1) * 6,
                 Arrays.asList(pedra1,pedra2,pedra3,pedra4,pedra5,pedra6));
     }
 
@@ -205,7 +191,7 @@ public class RawLogger implements OmniscientDominoEventListener{
         this.logPartidaAtual.jogador = quemFoi;
         this.logPartidaAtual.tipoDeVitoria = tipoDeVitoria;
     }
-    
+
     @Override
     public void jogadorTocou(final int jogador) {
         this.logPartidaAtual.pedrasJogadas.add(null);
@@ -221,17 +207,17 @@ public class RawLogger implements OmniscientDominoEventListener{
 
     @Override
     public void decididoQuemComeca(
-            final int jogador, 
+            final int jogador,
             final boolean consentimentoMutuo) {
-        if(!consentimentoMutuo) 
+        if(!consentimentoMutuo)
             this.logPartidaAtual
                 .jogador1Comeca
                 .add(jogador%2!=0);
     }
-    
+
     private void preenchePedaco(int idx, final Collection<Pedra> pedras){
         for (final Pedra pedra : pedras) {
             this.logPartidaAtual.ordemOriginalPedras[idx++] = pedra.ordinal();
         }
-    }    
+    }
 }

@@ -16,12 +16,6 @@
  */
 package com.github.abdonia.domino.motor;
 
-import com.github.abdonia.domino.Lado;
-import com.github.abdonia.domino.Mesa;
-import com.github.abdonia.domino.Numero;
-import com.github.abdonia.domino.Pedra;
-import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
@@ -31,7 +25,14 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.Validate;
+
+import com.github.abdonia.domino.Lado;
+import com.github.abdonia.domino.Mesa;
+import com.github.abdonia.domino.Numero;
+import com.github.abdonia.domino.Pedra;
+import com.github.abdonia.domino.eventos.OmniscientDominoEventListener;
 
 final class MesaImpl implements Mesa {
 
