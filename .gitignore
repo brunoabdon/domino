@@ -13,3 +13,9 @@ domino-config.xml
 .settings/
 domino-config.xml
 /bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
