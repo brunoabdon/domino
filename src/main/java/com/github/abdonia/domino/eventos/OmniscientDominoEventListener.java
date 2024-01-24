@@ -30,7 +30,7 @@ import com.github.abdonia.domino.Pedra;
  * jogadores que levam ao cancelamento do jogo.
  *
  * <p>Essa interface deve ser implementada por UIs, Loggers, etc. mas não por
- * {@link com.github.abdonia.domino.Jogador Jogadores}.<p>
+ * {@link com.github.abdonia.domino.Jogador Jogadores}.</p>
  *
  * @author Bruno Abdon
  */
