@@ -126,7 +126,7 @@ public class DominoConfig {
 
     /**
      * Um <a href="https://en.wikipedia.org/wiki/Builder_pattern"
-     * title="Builder pattern — Wikipedia" target="_new">builder</a> de
+     * target="_new">builder</a> de
      * instâncias de {@link DominoConfig}.
      *
      * @author Bruno Abdon

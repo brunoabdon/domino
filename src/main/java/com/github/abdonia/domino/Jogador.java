@@ -69,7 +69,7 @@ package com.github.abdonia.domino;
  * mais sobre o que se passa no jogo.</p>
  * <hr>
  * 
- * <p><a name="fim">(*)</a> Típicamente, uma partida acaba com um dos jogadores
+ * <p><a id="fim">(*)</a> Típicamente, uma partida acaba com um dos jogadores
  * colocando sua última pedra na mesa. É uma "batida". Mas uma partida também 
  * pode terminar de outras quatro maneiras diferentes:</p>
  * <ol><li><em>Vitória por contagem de pontos na mão</em>: nenhum dos quatro 
@@ -89,7 +89,7 @@ package com.github.abdonia.domino;
  * jogador. Isso é raríssimo de acontecer.</li>
  * </ol>
  * 
- * <p><a name="dozao">(**)</a> Pode acontecer do {@linkplain 
+ * <p><a id="dozao">(**)</a> Pode acontecer do {@linkplain
  * Pedra#CARROCA_DE_SENA Dozão} estar no dorme, e então o jogo deve começar com 
  * a {@linkplain Pedra#CARROCA_DE_QUINA carroça de quina}. Como o dorme tem 
  * quatro {@linkplain Pedra pedras}, é possivel até que estejam nele as carroças 
@@ -98,7 +98,7 @@ package com.github.abdonia.domino;
  * obrigando o jogo a ser inciado pelo jogador que tiver a {@linkplain 
  * Pedra#CARROCA_DE_DUQUE carroça de duque}.</p>
  * 
- * <p><a name="ini">(***)</a> É possível perceber que é a primeira jogada da 
+ * <p><a id="ini">(***)</a> É possível perceber que é a primeira jogada da
  * partida se não existir {@linkplain Mesa#getPedras() pedras na mesa}. E, se o 
  * método {@link #getVontadeDeComecar()} não foi chamado, então esta é a 
  * primeira partida  do jogo. É possível também saber quantas partidas foram 
