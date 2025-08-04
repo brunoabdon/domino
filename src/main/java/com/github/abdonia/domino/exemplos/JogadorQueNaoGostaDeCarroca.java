@@ -56,7 +56,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      * {@link Comparator} de {@link Pedra} que: (1) diz que qualquer {@linkplain
      * Pedra#isCarroca() carroça} é maior que uma não-carroça e (2) carroças
      * entre si e não-carroças entre si se comparam pelo {@link
-     * Pedra#compareTo(java.lang.Enum) comparador natura de pedras}.
+     * Pedra#compareTo(Pedra) comparador natura de pedras}.
      */
     private static final Comparator<Pedra> COMP_PREFERE_CARROCA =
         Comparator.comparing(Pedra::isCarroca).thenComparing(Pedra::compareTo);
@@ -65,7 +65,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
      * {@link Comparator} de {@link Jogada} que diz que: (1) Qualquer jogada é
      * maior que {@link Jogada#TOQUE} e (2) Duas jogadas que não são {@code
      * TOQUE} se diferenciam apenas pelas suas {@linkplain Pedra pedras}
-     * (ignorando o {@link Lado}) de acordo com o comparador de pedras {@link
+     * (ignorando o {@link Lado}) conforme o comparador de pedras {@link
      * #COMP_PREFERE_CARROCA}.
      */
     private static final Comparator<Jogada> COMP_PREFERE_JOGAR_CARROCA =
@@ -112,11 +112,11 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
 
         final Jogada jogada =
             mao.parallelStream() //pra cada pedra na minha mao...
-            .map(jogadaNaMesa) //...vê como seria uma jogada com ela...
-            .max(COMP_PREFERE_JOGAR_CARROCA) //...e escolhe a melhor.
+            .map(jogadaNaMesa) //... vê como seria uma jogada com ela...
+            .max(COMP_PREFERE_JOGAR_CARROCA) //... e escolhe a melhor.
             .get();
 
-        //mesmo se for TOQUE, nao tem problema. TOQUE.getPedra() = null;
+        //mesmo se for TOQUE, não tem problema. TOQUE.getPedra() = null;
         this.mao.remove(jogada.getPedra());
 
         return jogada;
@@ -132,7 +132,7 @@ public class JogadorQueNaoGostaDeCarroca implements Jogador {
 	 * empatam caso os dois tenham o mesmo número de {@linkplain
 	 * Pedra#isCarroca() carroças} na mão.
      *
-     * @return a vontade de começar a jogar, que vai aumentando de acordo com o
+     * @return a vontade de começar a jogar, que vai aumentando conforme o
      * número de {@linkplain Pedra#isCarroca() carroças} na mão.
      */
     @Override

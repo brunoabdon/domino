@@ -477,8 +477,6 @@ public class DominoConfig {
          * @param idxDupla O número da dupla (0 ou 1).
          * @param idxJogadorNaDupla O número do jogador na dupla (0 ou 1).
          *
-         * @return {@code this}, for chaining.
-         *
          * @throws  IllegalArgumentException caso o número da dupla ou do
          * jogador seja algo difernente de 0 e 1;
          */
