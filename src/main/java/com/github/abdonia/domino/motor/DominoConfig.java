@@ -153,10 +153,10 @@ public class DominoConfig {
 
         private List<String> nomesEventListeners = new ArrayList<>();
 
-        private List<Class<? extends DominoEventListener>>
+        private final List<Class<? extends DominoEventListener>>
             classesEventListeners = new ArrayList<>();
 
-        private List<DominoEventListener> eventListeners = new ArrayList<>();
+        private final List<DominoEventListener> eventListeners = new ArrayList<>();
 
         public Builder withNomeJogador0Dupla0(final String nomeJogador0Dupla0){
             this.nomesJogadores[0] = nomeJogador0Dupla0;
