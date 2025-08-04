@@ -153,10 +153,10 @@ public class DominoConfig {
 
         private List<String> nomesEventListeners = new ArrayList<>();
 
-        private List<Class<? extends DominoEventListener>>
+        private final List<Class<? extends DominoEventListener>>
             classesEventListeners = new ArrayList<>();
 
-        private List<DominoEventListener> eventListeners = new ArrayList<>();
+        private final List<DominoEventListener> eventListeners = new ArrayList<>();
 
         public Builder withNomeJogador0Dupla0(final String nomeJogador0Dupla0){
             this.nomesJogadores[0] = nomeJogador0Dupla0;
@@ -476,8 +476,6 @@ public class DominoConfig {
          * @param jogador A instância do jogador.
          * @param idxDupla O número da dupla (0 ou 1).
          * @param idxJogadorNaDupla O número do jogador na dupla (0 ou 1).
-         *
-         * @return {@code this}, for chaining.
          *
          * @throws  IllegalArgumentException caso o número da dupla ou do
          * jogador seja algo difernente de 0 e 1;

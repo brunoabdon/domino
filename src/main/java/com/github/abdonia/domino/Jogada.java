@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Uma jogada, por um um {@link Jogador}, de uma {@link Pedra} em  um
+ * Uma jogada, por um {@link Jogador}, de uma {@link Pedra} em um
  * {@linkplain Lado lado} da {@linkplain Mesa mesa}.
  *
  * <p>Quando o jogador não tem nenhuma peça possível de jogar, ele deve tocar,
@@ -42,7 +42,13 @@ public final class Jogada implements Serializable{
     private static final String ERR_LADO_NULO = "Lado 'null' numa jogada";
     private static final String ERR_PEDRA_NULA = "Pedra 'null' numa jogada";
 
+    /**
+     * A {@link Pedra} sendo jogada.
+     */
     private final Pedra pedra;
+    /**
+     * O {@link Lado} da {@linkplain Mesa mesa} onde a {@link Pedra} está sendo jogada.
+     */
     private final Lado lado;
 
     /**
@@ -51,7 +57,7 @@ public final class Jogada implements Serializable{
     public static final Jogada TOQUE = new Jogada(null,null);
 
     /**
-     * Um cache com todas as 56 jogadas possiveis criadas.
+     * Um cache com todas as 56 jogadas possíveis criadas.
      */
     private static final EnumMap<Lado,EnumMap<Pedra,Jogada>> JOGADAS =
         funcToMap (
@@ -64,8 +70,8 @@ public final class Jogada implements Serializable{
      * Function} que mapeia o {@link Enum} em alguma coisa.
      *
      * @param <T> O tipo do valor do {@link EnumMap}.
-     * @param <E> O tipo do enum que sera chave do {@link EnumMap}.
-     * @param mapperFunction A {@linkplain função} que vai ser refletida num
+     * @param <E> O tipo do enum que será chave do {@link EnumMap}.
+     * @param mapperFunction A {@linkplain Function função} que vai ser refletida num
      * mapa.
      * @param enumClass A classe dos valores do {@link EnumMap}.
      *
@@ -114,7 +120,7 @@ public final class Jogada implements Serializable{
     }
 
     /**
-     * Constroi uma jogada normal.
+     * Constrói uma jogada normal.
      *
      * @param pedra a pedra que quer jogar.
      * @param lado o lado da mesa pra colocar a pedra.
