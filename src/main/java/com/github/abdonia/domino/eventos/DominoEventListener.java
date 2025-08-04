@@ -42,7 +42,7 @@ public interface DominoEventListener {
      * @param nomeDoJogador2 nome do segundo jogador da primeira dupla.
      * @param nomeDoJogador3 nome do segundo jogador da segunda dupla.
      */
-    public default void jogoComecou(
+    default void jogoComecou(
             final String nomeDoJogador0,
             final String nomeDoJogador1,
             final String nomeDoJogador2,
@@ -58,7 +58,7 @@ public interface DominoEventListener {
      * causa de um empate na partida anterior (pode ser o caso de ser uma
      * seqüência de empates)
      */
-    public default void partidaComecou(
+    default void partidaComecou(
             final int placarPrimeiraDupla,
             final int placarSegundaDupla,
             final boolean ehDobrada){
@@ -85,7 +85,7 @@ public interface DominoEventListener {
      * @param consentimentoMutuo Diz se a decisão foi tomanda por consentimento
      * mútuo, ou se o jogador teve que ser escolhido aleatoriamente.
      */
-    public default void decididoQuemComeca(
+    default void decididoQuemComeca(
         final int quemFoi, final boolean consentimentoMutuo){
     }
 
@@ -103,7 +103,7 @@ public interface DominoEventListener {
      * @param lado onde jogou.
      * @param pedra o que jogou.
      */
-    public default void jogadorJogou(
+    default void jogadorJogou(
             final int quemFoi,
             final Lado lado,
             final Pedra pedra){
@@ -118,7 +118,7 @@ public interface DominoEventListener {
      * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * tocou.
      */
-    public default void jogadorTocou(final int quemFoi){
+    default void jogadorTocou(final int quemFoi){
     }
 
     /**
@@ -132,7 +132,7 @@ public interface DominoEventListener {
      * com.github.abdonia.domino.Mesa, int) número da cadeira que sentou}) que
      * tinha cinco pedras na mão.
      */
-    public default void partidaVoltou(final int quemFoi){
+    default void partidaVoltou(final int quemFoi){
     }
 
     /**
@@ -146,14 +146,14 @@ public interface DominoEventListener {
      *
      * @param tipoDeVitoria Como foi a batida.
      */
-    public default void jogadorBateu(
+    default void jogadorBateu(
             final int quemFoi, final Vitoria tipoDeVitoria){
     }
 
     /**
      * A partida acabou empatada. O jogo vai continuar.
      */
-    public default void partidaEmpatou(){
+    default void partidaEmpatou(){
     }
 
     /**
@@ -162,7 +162,7 @@ public interface DominoEventListener {
      * @param placarDupla1 quantos pontos tinha a dupla 1
      * @param placarDupla2 quantos pontos tinha a dupla 2
      */
-    public default void jogoAcabou(
+    default void jogoAcabou(
             final int placarDupla1, final int placarDupla2){
     }
 }
