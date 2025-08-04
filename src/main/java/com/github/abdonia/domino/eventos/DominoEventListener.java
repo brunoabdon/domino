@@ -23,9 +23,9 @@ import com.github.abdonia.domino.Vitoria;
 /**
  * Um listener que é informado sobre os eventos que acontecem durante o jogo.
  *
- * {@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem
+ * <p>{@linkplain com.github.abdonia.domino.Jogador Jogadores} que implementarem
  * esta interface serão automaticamente registrados para serem avisados dos
- * eventos.
+ * eventos.</p>
  *
  * @see OmniscientDominoEventListener
  *
@@ -35,12 +35,12 @@ public interface DominoEventListener {
 
     /**
      * O jogo comecou. O placar está zero a zero (um jogo é a
-     * seqëncia de várias partidas).
+     * sequência de várias partidas).
      *
      * @param nomeDoJogador0 nome do primeiro jogador da primeira dupla.
      * @param nomeDoJogador1 nome do primeiro jogador da segunda dupla.
-     * @param nomeDoJogador2 nome do segundo jogador  da primeira dupla.
-     * @param nomeDoJogador3 nome do segundo jogador  da segunda dupla.
+     * @param nomeDoJogador2 nome do segundo jogador da primeira dupla.
+     * @param nomeDoJogador3 nome do segundo jogador da segunda dupla.
      */
     public default void jogoComecou(
             final String nomeDoJogador0,
@@ -69,13 +69,13 @@ public interface DominoEventListener {
      * com.github.abdonia.domino.Jogador} da dupla que ganhou a partida anterior
      * vai começar a partida.
      *
-     * A decisão é tomada {@linkplain
+     * <p></p>A decisão é tomada {@linkplain
      * com.github.abdonia.domino.Jogador#getVontadeDeComecar() peguntando-se a
      * cada jogador da dupla o quanto ele quer começar a partida}. Quando um dos
      * dois "quer" mais que o outro, diz-se que a decisão foi tomada por
      * consentimento mútuo. Quando os dois "empatam" sobre quem mais quer
      * começar, um dos dois é escolhido aleatoriamente, e é dito que não houve
-     * consentimento mútuo na decisão.
+     * consentimento mútuo na decisão.</p>
      *
      * @param quemFoi O jogador (identificado pelo {@linkplain
      * com.github.abdonia.domino.Jogador#sentaNaMesa(
@@ -90,9 +90,9 @@ public interface DominoEventListener {
     }
 
     /**
-     * Um determinado {@link com.github.abdonia.domino.Jogador} {@linkplain
-     * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e nao
-     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}). (Se ele tiver
+     * Um determinado {@link com.github.abdonia.domino.Jogador Jogador} {@linkplain
+     * com.github.abdonia.domino.Jogada jogou} uma {@link Pedra} (e não
+     * {@linkplain com.github.abdonia.domino.Jogada#TOQUE tocou}). Se ele tiver
      * batido, além desse evento, também ocorrerá {@link
      * #jogadorBateu(int, Vitoria)}.
      *

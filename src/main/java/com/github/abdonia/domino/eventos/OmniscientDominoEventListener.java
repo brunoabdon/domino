@@ -19,7 +19,6 @@ package com.github.abdonia.domino.eventos;
 import com.github.abdonia.domino.Numero;
 import com.github.abdonia.domino.Pedra;
 
-
 /**
  * Um {@link DominoEventListener} que também escuta eventos com informações
  * <em>sigilosas</em> ou <em>técnicas</em> sobre o que acontece durante um jogo,
@@ -37,7 +36,7 @@ import com.github.abdonia.domino.Pedra;
 public interface OmniscientDominoEventListener extends DominoEventListener {
 
     /**
-     * Avisa que, no início de uma partida, um derterminado
+     * Avisa que, no início de uma partida, um determinado
      * {@linkplain com.github.abdonia.domino.Jogador jogador} recebeu suas
      * {@linkplain Pedra pedras}.
      *
@@ -63,7 +62,7 @@ public interface OmniscientDominoEventListener extends DominoEventListener {
     }
 
     /**
-     * Avisa que, no início de uma partida, as pedras foram distribuidas e as
+     * Avisa que, no início de uma partida, as pedras foram distribuídas e as
      * quatro que sobraram foram pra o dorme.
      *
      * @param pedra1 A primeira {@linkplain Pedra pedra} do dorme.
